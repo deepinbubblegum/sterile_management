@@ -13,12 +13,12 @@
      <!-- Mini column -->
      <div class="flex flex-col flex-shrink-0 h-full px-2 py-4 border-r dark:border-primary-darker">
          <!-- Brand -->
-         <div class="flex-shrink-0">
+         {{-- <div class="flex-shrink-0">
              <a href="../index.html"
                  class="inline-block text-xl font-bold tracking-wider uppercase text-primary-dark dark:text-light">
                  K-WD
              </a>
-         </div>
+         </div> --}}
          <div class="flex flex-col items-center justify-center flex-1 space-y-4">
              <!-- Notification button -->
              <button @click="openNotificationsPanel"
@@ -63,7 +63,7 @@
                      aria-haspopup="true" :aria-expanded="open ? 'true' : 'false'"
                      class="block transition-opacity duration-200 rounded-full dark:opacity-75 dark:hover:opacity-100 focus:outline-none focus:ring dark:focus:opacity-100">
                      <span class="sr-only">User menu</span>
-                     <img class="w-10 h-10 rounded-full" src="../build/images/avatar.jpg" alt="Ahmed Kamel" />
+                     <img class="w-10 h-10 rounded-full" src="{{asset('assets/image/users.png')}}" alt="Users" />
                  </button>
 
                  <!-- User dropdown menu -->
