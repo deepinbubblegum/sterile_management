@@ -28,7 +28,7 @@
 
                 {{-- Breadcrumb --}}
                 <div class="flex flex-col flex-1 h-full min-h-screen p-4 overflow-x-hidden overflow-y-auto">
-                    <div class="mx-auto rounded-md bg-white dark:bg-darker dark:text-light p-4 mb-4 leading-6 ">
+                    <div class="mx-auto rounded-md w-full bg-white dark:bg-darker dark:text-light p-4 mb-4 leading-6 ">
                         <nav class="flex" aria-label="Breadcrumb">
                             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                                 <li class="inline-flex items-center">
@@ -49,7 +49,7 @@
                     {{-- Breadcrumb end --}}
 
                     <div
-                        class="mx-auto h-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6">
+                        class="mx-auto h-full w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6">
                         Process
                     </div>
                 </div>
