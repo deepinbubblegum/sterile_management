@@ -5,11 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>K-WD Dashboard | Mini + One Columns Sidebar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}" />
-    <script src="{{ asset('assets/component.min.js') }}"></script>
-    <script src="{{ asset('assets/alpine.min.js') }}" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@100;200&display=swap" rel="stylesheet">
+
+    @include('component.Tagheader')
+
 </head>
 
 <body>
@@ -29,10 +28,51 @@
             <!-- Main content -->
             <main class="flex-1">
                 <div class="flex flex-col flex-1 h-full min-h-screen p-4 overflow-x-hidden overflow-y-auto">
-                    @for ($i = 0 ; $i < 1500 ; $i++)
-                        hello
-                        <br>
-                    @endfor
+
+
+                    {{Cookie::get('Username_server_Permission')}}
+
+                    <form class="w-full max-w-sm">
+                        <div class="md:flex md:items-center mb-6">
+                          <div class="md:w-1/3">
+                            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
+                              Full Name
+                            </label>
+                          </div>
+                          <div class="md:w-2/3">
+                            <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="text" value="Jane Doe">
+                          </div>
+                        </div>
+                        <div class="md:flex md:items-center mb-6">
+                          <div class="md:w-1/3">
+                            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-password">
+                              Password
+                            </label>
+                          </div>
+                          <div class="md:w-2/3">
+                            <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-password" type="password" placeholder="******************">
+                          </div>
+                        </div>
+                        <div class="md:flex md:items-center mb-6">
+                          <div class="md:w-1/3"></div>
+                          <label class="md:w-2/3 block text-gray-500 font-bold">
+                            <input class="mr-2 leading-tight" type="checkbox">
+                            <span class="text-sm">
+                              Send me your newsletter!
+                            </span>
+                          </label>
+                        </div>
+                        <div class="md:flex md:items-center">
+                          <div class="md:w-1/3"></div>
+                          <div class="md:w-2/3">
+                            <button class="px-4 py-2 text-sm text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark" type="button">
+                              Sign Up
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+
+
                 </div>
             </main>
 
