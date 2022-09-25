@@ -39,3 +39,11 @@ Route::group(['middleware' => ['authLogin']], function () {
 
 });
 
+
+Route::get('/oders', function () {
+    return view('oders');
+});
+
+Route::get('/process', function () {
+    return view('process');
+});

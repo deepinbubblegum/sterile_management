@@ -4,11 +4,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>K-WD Dashboard | Mini + One Columns Sidebar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@100;200&display=swap" rel="stylesheet">
-
-    @include('component.Tagheader')
-
+    <title>Sterile traceability</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&display=swap"
+        rel="stylesheet" />
+    <script src="{{ asset('assets/component.min.js') }}"></script>
+    <script src="{{ asset('assets/alpine.min.js') }}" defer></script>
+    @vite('resources/css/app.css')
+    @vite('resources/js/app.js')
 </head>
 
 <body>
@@ -23,6 +25,8 @@
             @include('component.slidebar')
             <!-- Main content -->
             <main class="flex-1">
+
+                {{-- Breadcrumb --}}
                 <div class="flex flex-col flex-1 h-full min-h-screen p-4 overflow-x-hidden overflow-y-auto">
                     <div class="mx-auto rounded-md w-full bg-white dark:bg-darker dark:text-light p-4 mb-4 leading-6 ">
                         <nav class="flex" aria-label="Breadcrumb">
@@ -36,28 +40,17 @@
                                                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                                             </path>
                                         </svg>
-                                        Dashboards
+                                        Process
                                     </a>
                                 </li>
                             </ol>
                         </nav>
                     </div>
+                    {{-- Breadcrumb end --}}
 
-                    <div class="mx-auto h-full w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6 ">
-
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat perferendis iusto quo quod. Ut
-                        deleniti, deserunt quaerat veniam repellendus corrupti rerum doloremque quod libero nulla
-                        inventore adipisci et pariatur officia.
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat perferendis iusto quo quod. Ut
-                        deleniti, deserunt quaerat veniam repellendus corrupti rerum doloremque quod libero nulla
-                        inventore adipisci et pariatur officia.
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat perferendis iusto quo quod. Ut
-                        deleniti, deserunt quaerat veniam repellendus corrupti rerum doloremque quod libero nulla
-                        inventore adipisci et pariatur officia.
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat perferendis iusto quo quod. Ut
-                        deleniti, deserunt quaerat veniam repellendus corrupti rerum doloremque quod libero nulla
-                        inventore adipisci et pariatur officia.
-
+                    <div
+                        class="mx-auto h-full w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6">
+                        Process
                     </div>
                 </div>
             </main>
