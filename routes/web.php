@@ -23,5 +23,5 @@ Route::get('/oders', function () {
 });
 
 Route::get('/process', function () {
-    return view('oders');
+    return view('process');
 });

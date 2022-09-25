@@ -7,9 +7,9 @@
     <title>Sterile traceability</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}" />
     <script src="{{ asset('assets/component.min.js') }}"></script>
     <script src="{{ asset('assets/alpine.min.js') }}" defer></script>
+    @vite('resources/css/app.css')
     @vite('resources/js/app.js')
 </head>
 
@@ -45,7 +45,8 @@
                         </nav>
                     </div>
 
-                    <div class="mx-auto h-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6 ">
+                    <div
+                        class="mx-auto h-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6 ">
 
                         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat perferendis iusto quo quod. Ut
                         deleniti, deserunt quaerat veniam repellendus corrupti rerum doloremque quod libero nulla
