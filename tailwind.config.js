@@ -13,7 +13,7 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ["cairo", ...defaultTheme.fontFamily.sans],
+                sans: ["Bai+Jamjuree", ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 light: "var(--light)",
