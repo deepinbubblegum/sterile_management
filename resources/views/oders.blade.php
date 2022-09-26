@@ -364,7 +364,7 @@
 
                                             oders: [{
                                                     "action": true,
-                                                    "ordersId": "ORD-000000246523515894525",
+                                                    "ordersId": "ORD-23515894525",
                                                     "customersName": "โรงพยาบาลสมเด็จพระยุพราช",
                                                     "departmentsName": "OPD สูติ-นรีเวชกรรม",
                                                     "notes": "เอกสารเสร็จสิ้น",
@@ -372,7 +372,7 @@
                                                 },
                                                 {
                                                     "action": true,
-                                                    "ordersId": "ORD-000000246523515894525",
+                                                    "ordersId": "ORD-23515894525",
                                                     "customersName": "โรงพยาบาลกรุงเทพ",
                                                     "departmentsName": "OPD ทางเดินหายใจ",
                                                     "notes": "เอกสารมีการแก้ไข",
@@ -380,7 +380,7 @@
                                                 },
                                                 {
                                                     "action": false,
-                                                    "ordersId": "ORD-000000246523515894525",
+                                                    "ordersId": "ORD-23515894525",
                                                     "customersName": "w.อายุเวชกรรมชาย",
                                                     "departmentsName": "ICU อายุรกรรม",
                                                     "notes": "เอกสารมีการแก้ไข",
@@ -388,7 +388,7 @@
                                                 },
                                                 {
                                                     "action": true,
-                                                    "ordersId": "ORD-000000246523515894525",
+                                                    "ordersId": "ORD-23515894525",
                                                     "customersName": "นาย สมชาย สมบัติ",
                                                     "departmentsName": "ICU อายุรกรรม",
                                                     "notes": "เอกสารเสร็จสิ้น",
@@ -396,7 +396,7 @@
                                                 },
                                                 {
                                                     "action": true,
-                                                    "ordersId": "ORD-000000246523515894525",
+                                                    "ordersId": "ORD-23515894525",
                                                     "customersName": "w.อายุเวชกรรมชาย",
                                                     "departmentsName": "ICU อายุรกรรม",
                                                     "notes": "เอกสารมีการแก้ไข",
@@ -404,7 +404,7 @@
                                                 },
                                                 {
                                                     "action": false,
-                                                    "ordersId": "ORD-000000246523515894525",
+                                                    "ordersId": "ORD-23515894525",
                                                     "customersName": "คลินิคคู่สัญญา",
                                                     "departmentsName": "เวชศาสตร์ฟื้นฟู",
                                                     "notes": "เอกสารมีการแก้ไข",
@@ -412,7 +412,7 @@
                                                 },
                                                 {
                                                     "action": true,
-                                                    "ordersId": "ORD-000000246523515894525",
+                                                    "ordersId": "ORD-23515894525",
                                                     "customersName": "นาย สมชาย สมบัติ",
                                                     "departmentsName": "w.อาคาร 2 ชั้น 6",
                                                     "notes": "เอกสารเสร็จสิ้น",
@@ -420,7 +420,7 @@
                                                 },
                                                 {
                                                     "action": true,
-                                                    "ordersId": "ORD-000000246523515894525",
+                                                    "ordersId": "ORD-23515894525",
                                                     "customersName": "คลินิคคู่สัญญา",
                                                     "departmentsName": "คลินิคผู้สูงอายุ",
                                                     "notes": "เอกสารมีการแก้ไข",
@@ -428,14 +428,14 @@
                                                 },
                                                 {
                                                     "action": false,
-                                                    "ordersId": "ORD-000000246523515894525",
+                                                    "ordersId": "ORD-23515894525",
                                                     "customersName": "คลินิคคู่สัญญา",
                                                     "departmentsName": "คลินิคผู้สูงอายุ",
                                                     "notes": "เอกสารมีการแก้ไข",
                                                     "created_at": "2021-05-25 10:00:00"
                                                 }, {
                                                     "action": true,
-                                                    "ordersId": "ORD-000000246523515894525",
+                                                    "ordersId": "ORD-23515894525",
                                                     "customersName": "นาย สมชาย สมบัติ",
                                                     "departmentsName": "คลินิคผู้สูงอายุ",
                                                     "notes": "เอกสารเสร็จสิ้น",
@@ -443,7 +443,7 @@
                                                 },
                                                 {
                                                     "action": true,
-                                                    "ordersId": "ORD-000000246523515894525",
+                                                    "ordersId": "ORD-23515894525",
                                                     "customersName": "คลินิคคู่สัญญา",
                                                     "departmentsName": "คลินิคผู้สูงอายุ",
                                                     "notes": "เอกสารมีการแก้ไข",
@@ -451,7 +451,7 @@
                                                 },
                                                 {
                                                     "action": false,
-                                                    "ordersId": "ORD-000000246523515894525",
+                                                    "ordersId": "ORD-23515894525",
                                                     "customersName": "คลินิคคู่สัญญา",
                                                     "departmentsName": "คลินิคผู้สูงอายุ",
                                                     "notes": "เอกสารมีการแก้ไข",
