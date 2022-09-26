@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
-const defaultTheme = require("tailwindcss/defaultTheme");
-const colors = require("tailwindcss/colors");
+const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
     content: [
@@ -9,24 +9,24 @@ module.exports = {
         "./resources/**/*.js",
         "./resources/**/*.vue",
     ],
-    darkMode: "class", // or 'media' or false
+    darkMode: 'class', // or 'media' or false
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Bai+Jamjuree", ...defaultTheme.fontFamily.sans],
+                sans: ['cairo', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                light: "var(--light)",
-                dark: "var(--dark)",
-                darker: "var(--darker)",
+                light: 'var(--light)',
+                dark: 'var(--dark)',
+                darker: 'var(--darker)',
                 primary: {
-                    DEFAULT: "var(--color-primary)",
-                    50: "var(--color-primary-50)",
-                    100: "var(--color-primary-100)",
-                    light: "var(--color-primary-light)",
-                    lighter: "var(--color-primary-lighter)",
-                    dark: "var(--color-primary-dark)",
-                    darker: "var(--color-primary-darker)",
+                    DEFAULT: 'var(--color-primary)',
+                    50: 'var(--color-primary-50)',
+                    100: 'var(--color-primary-100)',
+                    light: 'var(--color-primary-light)',
+                    lighter: 'var(--color-primary-lighter)',
+                    dark: 'var(--color-primary-dark)',
+                    darker: 'var(--color-primary-darker)',
                 },
                 secondary: {
                     DEFAULT: colors.fuchsia[600],
@@ -78,9 +78,9 @@ module.exports = {
     },
     variants: {
         extend: {
-            backgroundColor: ["checked", "disabled"],
-            opacity: ["dark"],
-            overflow: ["hover"],
+            backgroundColor: ['checked', 'disabled'],
+            opacity: ['dark'],
+            overflow: ['hover'],
         },
     },
     plugins: [],
