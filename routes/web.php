@@ -43,6 +43,10 @@ Route::group(['middleware' => ['authLogin']], function () {
         return view('welcome');
     })->name('welcome');
 
+    Route::get('/on-process', function () {
+        return view('Onprocess');
+    });
+
 });
 
 
