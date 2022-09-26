@@ -49,6 +49,11 @@ Route::group(['middleware' => ['authLogin']], function () {
 
 });
 
+Route::get('/logout', function () {
+    Cookie::queue(Cookie::forget('Username_server'));
+    Cookie::queue(Cookie::forget('Username_server_Permission'));
+    return redirect()->route('login');
+})->name('logout');
 
 Route::get('/oders', function () {
     return view('oders');
