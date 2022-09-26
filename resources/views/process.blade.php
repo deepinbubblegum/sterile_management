@@ -63,16 +63,16 @@
                                         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr>
                                             <th scope="col" class="py-3 px-6">
-                                                Product name
+                                                หมายเลข ออเดอร์
                                             </th>
                                             <th scope="col" class="py-3 px-6">
-                                                Color
+                                                สถานะ ออเดอร์
                                             </th>
                                             <th scope="col" class="py-3 px-6">
-                                                Category
+                                                หมายเหตุ
                                             </th>
                                             <th scope="col" class="py-3 px-6">
-                                                Price
+                                                วันที่สร้าง
                                             </th>
                                         </tr>
                                     </thead>
@@ -80,46 +80,46 @@
                                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <th scope="row"
                                                 class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Apple MacBook Pro 17"
+                                                <a href="{{url('/on-process')}}">  ORD-000000246523515894525</a>
                                             </th>
                                             <td class="py-4 px-6">
-                                                Sliver
+                                                On-Procress
                                             </td>
                                             <td class="py-4 px-6">
-                                                Laptop
+                                                รอล้าง
                                             </td>
                                             <td class="py-4 px-6">
-                                                $2999
+                                                $2021-05-25 10:00:00
                                             </td>
                                         </tr>
                                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <th scope="row"
                                                 class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Microsoft Surface Pro
+                                                <a href="{{url('/on-process')}}">  ORD-000000246523515894845</a>
                                             </th>
                                             <td class="py-4 px-6">
-                                                White
+                                                On-Procress
                                             </td>
                                             <td class="py-4 px-6">
-                                                Laptop PC
+                                                รอล้าง
                                             </td>
                                             <td class="py-4 px-6">
-                                                $1999
+                                                $2021-05-30 08:15:00
                                             </td>
                                         </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <th scope="row"
                                                 class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Magic Mouse 2
+                                                <a href="{{url('/on-process')}}">  ORD-000000246523515845646</a>
                                             </th>
                                             <td class="py-4 px-6">
-                                                Black
+                                                On-Procress
                                             </td>
                                             <td class="py-4 px-6">
-                                                Accessories
+                                                รอล้าง
                                             </td>
                                             <td class="py-4 px-6">
-                                                $99
+                                                $2021-05-30 08:15:00
                                             </td>
                                         </tr>
                                     </tbody>
@@ -163,6 +163,13 @@
             }
         }));
     })
+
+    $(function() {
+        $('table').on("click", "tr.table-tr", function() {
+            window.location = $(this).data("url");
+            //alert($(this).data("url"));
+        });
+    });
 </script>
 
 </html>
