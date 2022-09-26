@@ -5,12 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Sterile traceability</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&display=swap"
-        rel="stylesheet" />
-    <script src="{{ asset('assets/component.min.js') }}"></script>
-    <script src="{{ asset('assets/alpine.min.js') }}" defer></script>
-    @vite('resources/css/app.css')
-    @vite('resources/js/app.js')
+
+    @include('component.Tagheader')
+
 </head>
 
 <body>
@@ -22,12 +19,16 @@
                 class="fixed inset-0 z-50 flex items-center justify-center text-2xl font-semibold text-white bg-primary-darker">
                 Loading.....
             </div>
-            @include('component.slidebar')
-            <!-- Main content -->
-            <main class="flex-1">
 
-                {{-- Breadcrumb --}}
+            @include('component.slidebar')
+
+
+            <!-- Main content -->
+            <main class="flex-1 overflow-x-hidden">
+
                 <div class="flex flex-col flex-1 h-full min-h-screen p-4 overflow-x-hidden overflow-y-auto">
+
+                    {{-- Breadcrumb --}}
                     <div class="mx-auto rounded-md w-full bg-white dark:bg-darker dark:text-light p-4 mb-4 leading-6 ">
                         <nav class="flex" aria-label="Breadcrumb">
                             <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -50,7 +51,84 @@
 
                     <div
                         class="mx-auto h-full w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6">
+
                         Process
+
+
+                        <section>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                    <thead
+                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                        <tr>
+                                            <th scope="col" class="py-3 px-6">
+                                                Product name
+                                            </th>
+                                            <th scope="col" class="py-3 px-6">
+                                                Color
+                                            </th>
+                                            <th scope="col" class="py-3 px-6">
+                                                Category
+                                            </th>
+                                            <th scope="col" class="py-3 px-6">
+                                                Price
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <th scope="row"
+                                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                Apple MacBook Pro 17"
+                                            </th>
+                                            <td class="py-4 px-6">
+                                                Sliver
+                                            </td>
+                                            <td class="py-4 px-6">
+                                                Laptop
+                                            </td>
+                                            <td class="py-4 px-6">
+                                                $2999
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <th scope="row"
+                                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                Microsoft Surface Pro
+                                            </th>
+                                            <td class="py-4 px-6">
+                                                White
+                                            </td>
+                                            <td class="py-4 px-6">
+                                                Laptop PC
+                                            </td>
+                                            <td class="py-4 px-6">
+                                                $1999
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <th scope="row"
+                                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                Magic Mouse 2
+                                            </th>
+                                            <td class="py-4 px-6">
+                                                Black
+                                            </td>
+                                            <td class="py-4 px-6">
+                                                Accessories
+                                            </td>
+                                            <td class="py-4 px-6">
+                                                $99
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </section>
+
+
                     </div>
                 </div>
             </main>
@@ -60,5 +138,31 @@
     <!-- All javascript code in this project for now is just for demo DON'T RELY ON IT  -->
 
 </body>
+
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('accordion', {
+            tab: 0
+        });
+
+        Alpine.data('accordion', (idx) => ({
+            init() {
+                this.idx = idx;
+            },
+            idx: -1,
+            handleClick() {
+                this.$store.accordion.tab = this.$store.accordion.tab === this.idx ? 0 : this.idx;
+            },
+            handleRotate() {
+                return this.$store.accordion.tab === this.idx ? 'rotate-180' : '';
+            },
+            handleToggle() {
+                return this.$store.accordion.tab === this.idx ?
+                    `max-height: ${this.$refs.tab.scrollHeight}px` : '';
+            }
+        }));
+    })
+</script>
 
 </html>

@@ -27,6 +27,12 @@ Route::get('/login', function () {
     }
 })->name('login');
 
+Route::get('/logout', function () {
+    Cookie::queue(Cookie::forget('Username_server'));
+    Cookie::queue(Cookie::forget('Username_server_Permission'));
+    return redirect()->route('login');
+})->name('logout');
+
 
 Route::post('/Login_user', [Login_Controller::class, 'Login_user']);
 
@@ -36,6 +42,10 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/', function () {
         return view('welcome');
     })->name('welcome');
+
+    Route::get('/on-process', function () {
+        return view('Onprocess');
+    });
 
 });
 
