@@ -1,6 +1,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@100;200&display=swap" rel="stylesheet">
-
+{{-- <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@100;200&display=swap" rel="stylesheet"> --}}
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@200;300;400;600;700;900&display=swap"
+rel="stylesheet" />
 {{-- <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}" /> --}}
 
 <script src="{{ asset('assets/component.min.js') }}"></script>
@@ -9,7 +10,8 @@
 
 <style>
     body {
-        font-family: 'Kanit', sans-serif !important;
+        /* font-family: 'Kanit', sans-serif !important; */
+        font-family: 'Bai Jamjuree', sans-serif !important;
     }
 </style>
 
