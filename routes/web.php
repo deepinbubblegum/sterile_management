@@ -59,6 +59,10 @@ Route::get('/oders', function () {
     return view('oders');
 });
 
+Route::get('/oders/create', function () {
+    return view('createOders');
+});
+
 Route::get('/process', function () {
     return view('process');
 });
