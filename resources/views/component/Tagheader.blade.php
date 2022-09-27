@@ -8,6 +8,8 @@ rel="stylesheet" />
 <script src="{{ asset('assets/alpine.min.js') }}" defer></script>
 <script src="{{ asset('assets/jquery-3.6.1.min.js') }}"></script>
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet" />
+
 <style>
     body {
         /* font-family: 'Kanit', sans-serif !important; */
