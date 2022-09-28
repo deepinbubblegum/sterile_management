@@ -8,7 +8,8 @@ rel="stylesheet" />
 <script src="{{ asset('assets/alpine.min.js') }}" defer></script>
 <script src="{{ asset('assets/jquery-3.6.1.min.js') }}"></script>
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet" />
+<link href="{{ asset('assets/fontawesome-6.2/css/all.css') }}" rel="stylesheet" />
+<script defer src="{{ asset('assets/fontawesome-6.2/js/all.js') }}"></script>
 
 <style>
     body {
