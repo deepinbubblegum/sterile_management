@@ -8,6 +8,7 @@
 
     @include('component.Tagheader')
 
+
 </head>
 
 <body>
@@ -50,15 +51,15 @@
 
                     <div
                         class="mx-auto h-full w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6">
-                        <section class="overflow-x-auto">
+                        {{-- <section class="overflow-x-auto">
 
-                            <div >
-
-                            </div>
-
-                        </section>
-
-
+                        </section> --}}
+                        <div>
+                            <select class="js-example-basic-single" name="state">
+                                <option value="AL">Alabama</option>
+                                <option value="WY">Wyoming</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -71,7 +72,9 @@
 
 
 <script>
-
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    });
 </script>
 
 </html>

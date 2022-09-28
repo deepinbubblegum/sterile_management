@@ -4,10 +4,18 @@
 {{-- <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}" /> --}}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet" />
 
+
+@vite('resources/js/app.js')
+@vite('resources/css/select2.css')
+@vite('resources/css/app.css')
+
+<script src="{{asset('assets/jquery-3.6.1.min.js')}}"></script>
+
+
 <script src="{{ asset('assets/component.min.js') }}"></script>
 <script src="{{ asset('assets/alpine.min.js') }}" defer></script>
-<script src="{{ asset('assets/jquery-3.6.1.min.js') }}"></script>
 
+<script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
 <style>
     body {
         /* font-family: 'Kanit', sans-serif !important; */
@@ -15,5 +23,3 @@
     }
 </style>
 
-@vite('resources/js/app.js')
-@vite('resources/css/app.css')
