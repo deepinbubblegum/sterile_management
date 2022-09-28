@@ -6,7 +6,7 @@
 
 
 @vite('resources/js/app.js')
-@vite('resources/css/select2.css')
+{{-- @vite('resources/css/select2.css') --}}
 @vite('resources/css/app.css')
 
 <script src="{{asset('assets/jquery-3.6.1.min.js')}}"></script>
