@@ -46,6 +46,7 @@
                             </ol>
                         </nav>
                     </div>
+                    
                     {{-- Breadcrumb end --}}
                     <div class="mt-10 text-base sm:mt-0">
                         <div class="mt-5 md:mt-0 md:col-span-2">
@@ -59,9 +60,9 @@
                                                     หรือ ศูนย์การแพทย์</label>
                                                 <select id="customers" name="customers" autocomplete="customers"
                                                     class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    <option>United States</option>
+                                                    {{-- <option>United States</option>
                                                     <option>Canada</option>
-                                                    <option>Mexico</option>
+                                                    <option>Mexico</option> --}}
                                                 </select>
                                             </div>
 
@@ -70,9 +71,9 @@
                                                     class="block text-base font-medium dark:bg-darker dark:text-light mb-2">แผนก</label>
                                                 <select id="departments" name="departments" autocomplete="departments"
                                                     class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    <option>United States</option>
+                                                    {{-- <option>United States</option>
                                                     <option>Canada</option>
-                                                    <option>Mexico</option>
+                                                    <option>Mexico</option> --}}
                                                 </select>
                                             </div>
 
@@ -83,15 +84,17 @@
                                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                     placeholder="ข้อความหมายเหตุ..."></textarea>
                                             </div>
-
+                                            <div class="col-span-6 sm:col-span-6">
+                                                <hr class="mt-2">
+                                            </div>
                                             <div class="col-span-6 sm:col-span-1">
                                                 <label for="item_name"
                                                     class="block text-base font-medium dark:bg-darker dark:text-light mb-2">ชื่ออุปกรณ์</label>
                                                 <select autocomplete=""
                                                     class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    <option>United States</option>
+                                                    {{-- <option>United States</option>
                                                     <option>Canada</option>
-                                                    <option>Mexico</option>
+                                                    <option>Mexico</option> --}}
                                                 </select>
                                             </div>
 
@@ -101,9 +104,9 @@
                                                     Reason</label>
                                                 <select autocomplete=""
                                                     class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    <option>United States</option>
+                                                    {{-- <option>United States</option>
                                                     <option>Canada</option>
-                                                    <option>Mexico</option>
+                                                    <option>Mexico</option> --}}
                                                 </select>
                                             </div>
 
@@ -112,9 +115,9 @@
                                                     class="block text-base font-medium dark:bg-darker dark:text-light mb-2">Situation</label>
                                                 <select autocomplete=""
                                                     class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    <option>United States</option>
+                                                    {{-- <option>United States</option>
                                                     <option>Canada</option>
-                                                    <option>Mexico</option>
+                                                    <option>Mexico</option> --}}
                                                 </select>
                                             </div>
 
@@ -136,22 +139,23 @@
                                             <div class="col-span-6 sm:col-span-2">
                                                 <figure class="max-w-lg">
                                                     <img class="max-w-full h-auto rounded-md"
-                                                        src="{{asset('assets/image/image_preview.jpg')}}"
+                                                        src="{{ asset('assets/image/image_preview.jpg') }}"
                                                         alt="image description">
                                                 </figure>
                                             </div>
                                         </div>
 
                                         <hr class="mt-2">
-                                        <div
-                                            class="px-4 py-3 dark:bg-darker dark:text-light text-right sm:px-6">
-                                            <button href="http://localhost/oders/create" class="px-4 mr-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                                        <div class="px-4 py-3 dark:bg-darker dark:text-light text-right sm:px-6">
+                                            <button href="http://localhost/oders/create"
+                                                class="px-4 mr-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                                 <i class="fa-solid fa-camera fa-xl mr-2"></i>
                                                 แนบรูปภาพ
                                             </button>
 
-                                            <button href="http://localhost/oders/create" class="px-4 mr-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                <i class="fa-solid fa-plus fa-xl mr-2"></i> 
+                                            <button href="http://localhost/oders/create"
+                                                class="px-4 mr-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                                                <i class="fa-solid fa-plus fa-xl mr-2"></i>
                                                 เพิ่มรายการอุปกรณ์
                                             </button>
                                         </div>
@@ -231,14 +235,11 @@
                                 </div>
                             </form>
                         </div>
-
                     </div>
                 </div>
             </main>
         </div>
     </div>
-
-    <!-- All javascript code in this project for now is just for demo DON'T RELY ON IT  -->
 </body>
 
 </html>
