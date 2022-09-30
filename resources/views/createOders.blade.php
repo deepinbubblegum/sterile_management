@@ -25,7 +25,7 @@
 
             <!-- Main content -->
             <main class="flex-1 overflow-x-hidden">
-                <div class="flex flex-col flex-1 h-full min-h-screen p-4 overflow-x-hidden overflow-y-auto">
+                <div class="flex flex-col flex-1 h-full min-h-screen p-4  ">
 
                     {{-- Breadcrumb --}}
                     <div class="mx-auto rounded-md w-full bg-white dark:bg-darker dark:text-light p-4 mb-4 leading-6 ">
@@ -46,7 +46,7 @@
                             </ol>
                         </nav>
                     </div>
-                    
+
                     {{-- Breadcrumb end --}}
                     <div class="mt-10 text-base sm:mt-0">
                         <div class="mt-5 md:mt-0 md:col-span-2">
@@ -57,23 +57,23 @@
                                             <div class="col-span-6 sm:col-span-3">
                                                 <label for="customers"
                                                     class="block text-base font-medium dark:bg-darker dark:text-light mb-2">สถานพยาบาล
-                                                    หรือ ศูนย์การแพทย์</label>
+                                                    หรือ ศูนย์การแพทย์ *</label>
                                                 <select id="customers" name="customers" autocomplete="customers"
                                                     class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    {{-- <option>United States</option>
-                                                    <option>Canada</option>
-                                                    <option>Mexico</option> --}}
+                                                    <option value="" disabled selected> --- โปรดเลือก สถานพยาบาล
+                                                        หรือ ศูนย์การแพทย์ --- </option>
                                                 </select>
                                             </div>
 
                                             <div class="col-span-6 sm:col-span-3">
                                                 <label for="departments"
-                                                    class="block text-base font-medium dark:bg-darker dark:text-light mb-2">แผนก</label>
-                                                <select id="departments" name="departments" autocomplete="departments"
+                                                    class="block text-base font-medium dark:bg-darker dark:text-light mb-2">แผนก
+                                                    *</label>
+                                                <select disabled id="departments" name="departments"
+                                                    autocomplete="departments"
                                                     class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    {{-- <option>United States</option>
-                                                    <option>Canada</option>
-                                                    <option>Mexico</option> --}}
+                                                    <option value="" disabled selected> --- แผนก หรือ หน่วยงาน ---
+                                                    </option>
                                                 </select>
                                             </div>
 
@@ -89,49 +89,42 @@
                                             </div>
                                             <div class="col-span-6 sm:col-span-1">
                                                 <label for="item_name"
-                                                    class="block text-base font-medium dark:bg-darker dark:text-light mb-2">ชื่ออุปกรณ์</label>
-                                                <select autocomplete=""
+                                                    class="block text-base font-medium dark:bg-darker dark:text-light mb-2">Item name</label>
+                                                <select disabled autocomplete="" id="item_name" name="item_name"
                                                     class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    {{-- <option>United States</option>
-                                                    <option>Canada</option>
-                                                    <option>Mexico</option> --}}
+                                                    <option value="" disabled selected>--- โปรดเลือกอุปการณ์  ---</option>
                                                 </select>
                                             </div>
 
                                             <div class="col-span-6 sm:col-span-1">
-                                                <label for="notes_messages"
+                                                <label for="request_reason"
                                                     class="block text-base font-medium dark:bg-darker dark:text-light mb-2">Request
-                                                    Reason</label>
-                                                <select autocomplete=""
-                                                    class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    {{-- <option>United States</option>
-                                                    <option>Canada</option>
-                                                    <option>Mexico</option> --}}
-                                                </select>
+                                                    reason</label>
+                                                <input disabled type="text" id="request_reason" name="request_reason"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    value="" disabled>
                                             </div>
 
                                             <div class="col-span-6 sm:col-span-1">
                                                 <label for="Situation"
                                                     class="block text-base font-medium dark:bg-darker dark:text-light mb-2">Situation</label>
-                                                <select autocomplete=""
+                                                <select disabled autocomplete="" id="Situation" name="Situation"
                                                     class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    {{-- <option>United States</option>
-                                                    <option>Canada</option>
-                                                    <option>Mexico</option> --}}
+                                                    <option value="" disabled selected>--- โปรดเลือก  ---</option>
                                                 </select>
                                             </div>
 
                                             <div class="col-span-6 sm:col-span-1">
                                                 <label for="qty"
                                                     class="block text-base font-medium dark:bg-darker dark:text-light mb-2">Qty.</label>
-                                                <input type="number"
+                                                <input disabled type="number" id="qty" name="qty"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    placeholder="จำนวน" value="1" required>
+                                                    placeholder="จำนวน" value="1" min="1" required>
 
                                                 <label for="total_price"
                                                     class="mt-4 block text-base font-medium dark:bg-darker dark:text-light mb-2">Total
-                                                    Amount</label>
-                                                <input type="number"
+                                                    Price</label>
+                                                <input type="number" id="total_price" name="total_price"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                     value="0" disabled>
                                             </div>
@@ -226,7 +219,7 @@
                                         </div>
                                     </div>
                                     <div
-                                        class="px-4 py-3 bg-gray-50 dark:bg-darker dark:text-light text-right sm:px-6">
+                                        class="px-4 py-3 bg-white dark:bg-darker dark:text-light text-right sm:px-6">
                                         <button type="submit"
                                             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                             สร้างใบออเดอร์
