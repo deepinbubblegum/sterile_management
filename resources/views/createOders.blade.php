@@ -140,20 +140,20 @@
 
                                         <hr class="mt-2">
                                         <div class="px-4 py-3 dark:bg-darker dark:text-light text-right sm:px-6">
-                                            <button href="http://localhost/oders/create"
+                                            <button disabled
                                                 class="px-4 mr-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                                 <i class="fa-solid fa-camera fa-xl mr-2"></i>
                                                 แนบรูปภาพ
                                             </button>
 
-                                            <button href="http://localhost/oders/create"
+                                            <button id="add_item" disabled
                                                 class="px-4 mr-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                                 <i class="fa-solid fa-plus fa-xl mr-2"></i>
                                                 เพิ่มรายการอุปกรณ์
                                             </button>
                                         </div>
 
-                                        <div class="overflow-x-auto text-base rounded-lg mt-4 relative">
+                                        <div hidden id="div_tablefrom" class="overflow-x-auto text-base rounded-lg mt-4 relative">
                                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                                 <thead
                                                     class="text-sm text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -179,48 +179,13 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="align-top">
-                                                    <tr
-                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                                        <td scope="row"
-                                                            class="py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                            <input type="number"
-                                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                                value="0" disabled>
-                                                        </td>
-                                                        <td class="py-4 px-1">
-                                                            <input type="number"
-                                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                                value="0" disabled>
-                                                        </td>
-                                                        <td class="py-4 px-1">
-                                                            <input type="number"
-                                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                                value="0" disabled>
-                                                        </td>
-                                                        <td class="py-4 px-1">
-                                                            <input type="number"
-                                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                                placeholder="จำนวน" value="1" disabled>
-                                                        </td>
-                                                        <td class="py-4 px-1">
-                                                            <input type="number"
-                                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                                value="0" disabled>
-                                                        </td>
-                                                        <td class="py-4 px-1 text-center">
-                                                            <button target="_blank"
-                                                                class="mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-warning inline-flex items-center hover:bg-warning-dark focus:outline-none focus:ring focus:ring-warning focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                                <i class="fa-solid fa-xmark fa-2xl mx-auto"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
-                                    <div
+                                    <div hidden id="div_btn_save"
                                         class="px-4 py-3 bg-white dark:bg-darker dark:text-light text-right sm:px-6">
-                                        <button type="submit"
+                                        <button type="button" id="create_oders_save"
                                             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                             สร้างใบออเดอร์
                                         </button>
