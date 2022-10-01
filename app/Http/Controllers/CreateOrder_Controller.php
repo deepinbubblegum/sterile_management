@@ -54,9 +54,54 @@ class CreateOrder_Controller extends BaseController
         return $Situations_data;
     }
 
-    public function createOders(Request $request)
+    private function getAutoOrdersID()
+    {
+        $oid = DB::select(
+            'SELECT CONCAT("OID-",LPAD(SUBSTRING(IFNULL(MAX(orders.Order_id), "0"), 5,6)+1, 6,"0")) as auto_id FROM orders'
+        );
+        return $oid[0]->auto_id;
+    }
+
+    private function getAutoItemsID()
+    {
+        $itm = DB::select(
+            'SELECT CONCAT("ITM-",LPAD(SUBSTRING(IFNULL(MAX(items.Item_id), "0"), 5,6)+1, 6,"0")) as auto_id FROM items'
+        );
+        return $itm[0]->auto_id;
+    }
+
+    public function createOrders(Request $request)
     {
         $recv = $request->all();
-        dd($recv);
+        $_notes_messages = $recv['notes_messages'];
+        $_items = $recv['items'];
+        $order_id = $this->getAutoOrdersID();
+        $user_id = $request->cookie('Username_server_User_id');
+
+        try {
+            DB::table('orders')->insert([
+                'Order_id' => $order_id,
+                'StatusApprove' => 0,
+                'StatusOrder' => 'W',
+                'Notes' => $_notes_messages,
+                'Create_by' => $user_id,
+                'Create_at' => Carbon::now()
+            ]);
+    
+            foreach ($_items as $key => $value) {
+                $item_id = $this->getAutoItemsID();
+                DB::table('items')->insert([
+                    'Item_id' => $item_id,
+                    'Order_id' => $order_id,
+                    'Quantity' => $value['qty'],
+                    'Item_status' => 'W',
+                    'Equipment_id' => $value['equipment_id'],
+                    'Situation_id' => $value['situation']
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return json_decode(FALSE);
+        }
+        return json_decode(TRUE);
     }
 }

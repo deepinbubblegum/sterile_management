@@ -216,11 +216,11 @@
          </div> --}}
 
 
-         <!-- Oders links -->
+         <!-- Orders links -->
          <div x-data="{ isActive: false, open: false }">
              <!-- active classes 'bg-primary-100 dark:bg-primary' -->
-             {{-- <a href="/oders" @click="$event.preventDefault(); open = !open" --}}
-             <a href="/oders"
+             {{-- <a href="/orders" @click="$event.preventDefault(); open = !open" --}}
+             <a href="/orders"
                  class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
                  :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
                  :aria-expanded="(open || isActive) ? 'true' : 'false'">
@@ -231,7 +231,7 @@
                              d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                      </svg>
                  </span>
-                 <span class="ml-2 text-sm"> Oders </span>
+                 <span class="ml-2 text-sm"> Orders </span>
              </a>
          </div>
 

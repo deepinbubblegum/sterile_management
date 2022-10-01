@@ -6,7 +6,7 @@ $(document).ready(function () {
     function getcustomers() {
         $.ajax({
             type: "GET",
-            url: "/oders/create/getcustomers",
+            url: "/orders/create/getcustomers",
             dataType: "json",
             success: function (response) {
                 if (response.length === 1) {
@@ -31,7 +31,7 @@ $(document).ready(function () {
     function getdepartment(Customer_id) {
         $.ajax({
             type: "GET",
-            url: "/oders/create/getdepartments",
+            url: "/orders/create/getdepartments",
             data: {
                 Customer_id: Customer_id,
             },
@@ -65,7 +65,7 @@ $(document).ready(function () {
     function getequipments(Department_id) {
         $.ajax({
             type: "GET",
-            url: "/oders/create/getequipments",
+            url: "/orders/create/getequipments",
             data: {
                 Department_id: Department_id,
             },
@@ -89,7 +89,7 @@ $(document).ready(function () {
     function getsituations(params) {
         $.ajax({
             type: "GET",
-            url: "/oders/create/getsituations",
+            url: "/orders/create/getsituations",
             dataType: "json",
             success: function (response) {
                 // console.log(response);
@@ -107,11 +107,11 @@ $(document).ready(function () {
         });
     }
 
-    // function CreateOders()
-    function CreateOders(notes_messages, items) {
+    // function CreateOrders()
+    function CreateOrders(notes_messages, items) {
         $.ajax({
             type: "POST",
-            url: "/oders/create/createoders",
+            url: "/orders/create/createorders",
             data: {
                 notes_messages: notes_messages,
                 items: items,
@@ -119,6 +119,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 console.log(response);
+                window.location.href="/orders";
             }
         });
     }
@@ -254,6 +255,6 @@ $(document).ready(function () {
                 }
         }).get();
         console.log(tbl);
-        CreateOders(notes_messages, tbl);
+        CreateOrders(notes_messages, tbl);
     });
 });

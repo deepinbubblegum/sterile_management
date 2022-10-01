@@ -37,7 +37,7 @@
                                                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                                             </path>
                                         </svg>
-                                        Oders
+                                        Orders
                                     </a>
                                 </li>
                             </ol>
@@ -48,7 +48,7 @@
                     <div
                         class="mx-auto h-auto w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6">
                         <div class="flex justify-end">
-                            <a href="{{url('/oders/create')}}"
+                            <a href="{{url('/orders/create')}}"
                                 class="px-4 mr-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                 <i class="fa-solid fa-file-pen mr-2 -ml-1 w-4 h-4 fill-white"></i>
                                 สร้าง ออเดอร์
@@ -176,15 +176,15 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <template x-for="oder in oders" :key="oder.action">
+                                                <template x-for="order in orders" :key="order.action">
                                                     <tr>
                                                         <td class="border-dashed border-t border-gray-200 px-3">
                                                             <label
                                                                 class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
                                                                 <input type="checkbox"
                                                                     class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light"
-                                                                    :name="oder.action"
-                                                                    @click="getRowDetail($event, oder.action)">
+                                                                    :name="order.action"
+                                                                    @click="getRowDetail($event, order.action)">
                                                             </label>
                                                         </td>
                                                         <td class="border-dashed border-t border-gray-200 action">
@@ -211,29 +211,29 @@
                                                         <td class="border-dashed border-t border-gray-200 ordersId">
                                                             <span
                                                                 class="text-gray-700 dark:text-light px-6 py-1 flex items-center"
-                                                                x-text="oder.ordersId"></span>
+                                                                x-text="order.ordersId"></span>
                                                         </td>
                                                         <td
                                                             class="border-dashed border-t border-gray-200 customersName">
                                                             <span
                                                                 class="text-gray-700 dark:text-light px-6 py-1 flex items-center"
-                                                                x-text="oder.customersName"></span>
+                                                                x-text="order.customersName"></span>
                                                         </td>
                                                         <td
                                                             class="border-dashed border-t border-gray-200 departmentsName">
                                                             <span
                                                                 class="text-gray-700 dark:text-light px-6 py-1 flex items-center"
-                                                                x-text="oder.departmentsName"></span>
+                                                                x-text="order.departmentsName"></span>
                                                         </td>
                                                         <td class="border-dashed border-t border-gray-200 notes">
                                                             <span
                                                                 class="text-gray-700 dark:text-light px-6 py-1 flex items-center"
-                                                                x-text="oder.notes"></span>
+                                                                x-text="order.notes"></span>
                                                         </td>
                                                         <td class="border-dashed border-t border-gray-200 created_at">
                                                             <span
                                                                 class="text-gray-700 dark:text-light px-6 py-1 flex items-center"
-                                                                x-text="oder.created_at"></span>
+                                                                x-text="order.created_at"></span>
                                                         </td>
                                                     </tr>
                                                 </template>
@@ -284,7 +284,7 @@
                                                 }
                                             ],
 
-                                            oders: [{
+                                            orders: [{
                                                     "action": true,
                                                     "ordersId": "ORD-23515894525",
                                                     "customersName": "โรงพยาบาลสมเด็จพระยุพราช",

@@ -49,11 +49,11 @@ Route::group(['middleware' => ['authLogin']], function () {
     });
 
     // Create Order Page use here
-    Route::get('/oders/create/getcustomers', [CreateOrder_Controller::class, 'getCustomers']);
-    Route::get('/oders/create/getdepartments', [CreateOrder_Controller::class, 'getDepartments']);
-    Route::get('/oders/create/getequipments', [CreateOrder_Controller::class, 'getEquipments']);
-    Route::get('/oders/create/getsituations', [CreateOrder_Controller::class, 'getSituations']);
-    Route::post('/oders/create/createoders', [CreateOrder_Controller::class, 'createOders']);
+    Route::get('/orders/create/getcustomers', [CreateOrder_Controller::class, 'getCustomers']);
+    Route::get('/orders/create/getdepartments', [CreateOrder_Controller::class, 'getDepartments']);
+    Route::get('/orders/create/getequipments', [CreateOrder_Controller::class, 'getEquipments']);
+    Route::get('/orders/create/getsituations', [CreateOrder_Controller::class, 'getSituations']);
+    Route::post('/orders/create/createorders', [CreateOrder_Controller::class, 'createOrders']);
 });
 
 Route::get('/logout', function () {
@@ -62,12 +62,12 @@ Route::get('/logout', function () {
     return redirect()->route('login');
 })->name('logout');
 
-Route::get('/oders', function () {
-    return view('oders');
+Route::get('/orders', function () {
+    return view('orders');
 });
 
-Route::get('/oders/create', function () {
-    return view('createOders');
+Route::get('/orders/create', function () {
+    return view('createOrders');
 });
 
 Route::get('/process', function () {

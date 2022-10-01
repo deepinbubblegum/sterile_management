@@ -61,7 +61,7 @@
                     <div
                         class="mx-auto h-auto w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6">
 
-                        <p class="mb-3 text-3xl text-gray-900 dark:text-white">Oder-ABC123</p>
+                        <p class="mb-3 text-3xl text-gray-900 dark:text-white">Order-ABC123</p>
 
                         <hr>
 
@@ -257,7 +257,7 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <template x-for="oder in oders" :key="oder.action">
+                                                            <template x-for="order in orders" :key="order.action">
                                                                 <tr>
                                                                     <td
                                                                         class="border-dashed border-t border-gray-200 px-3">
@@ -265,8 +265,8 @@
                                                                             class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
                                                                             <input type="checkbox"
                                                                                 class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light"
-                                                                                :name="oder.action"
-                                                                                @click="getRowDetail($event, oder.action)">
+                                                                                :name="order.action"
+                                                                                @click="getRowDetail($event, order.action)">
                                                                         </label>
                                                                     </td>
                                                                     <td
@@ -313,25 +313,25 @@
                                                                         class="border-dashed border-t border-gray-200 ItemName">
                                                                         <span
                                                                             class="text-gray-700 dark:text-light px-6 py-1 flex items-center"
-                                                                            x-text="oder.ItemName"></span>
+                                                                            x-text="order.ItemName"></span>
                                                                     </td>
                                                                     <td
                                                                         class="border-dashed border-t border-gray-200 Washing">
                                                                         <span
                                                                             class="text-gray-700 dark:text-light px-6 py-1 flex items-center"
-                                                                            x-text="oder.Washing"></span>
+                                                                            x-text="order.Washing"></span>
                                                                     </td>
                                                                     <td
                                                                         class="border-dashed border-t border-gray-200 Status">
                                                                         <span
                                                                             class="text-gray-700 dark:text-light px-6 py-1 flex items-center"
-                                                                            x-text="oder.Status"></span>
+                                                                            x-text="order.Status"></span>
                                                                     </td>
                                                                     <td
                                                                         class="border-dashed border-t border-gray-200 created_at">
                                                                         <span
                                                                             class="text-gray-700 dark:text-light px-6 py-1 flex items-center"
-                                                                            x-text="oder.created_at"></span>
+                                                                            x-text="order.created_at"></span>
                                                                     </td>
                                                                 </tr>
                                                             </template>
@@ -366,7 +366,7 @@
                                                             }
                                                         ],
 
-                                                        oders: [{
+                                                        orders: [{
                                                                 "action": true,
                                                                 "ItemName": "อุปกรณ์-01",
                                                                 "Washing": "Washing-01",

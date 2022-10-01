@@ -8,7 +8,7 @@
 
     @include('component.Tagheader')
 
-    <script src="{{ asset('assets/js/createOders.js') }}"></script>
+    <script src="{{ asset('assets/js/createOrders.js') }}"></script>
 </head>
 
 <body>
@@ -40,7 +40,7 @@
                                                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                                             </path>
                                         </svg>
-                                        Create Oders
+                                        Create Orders
                                     </a>
                                 </li>
                             </ol>
@@ -185,7 +185,7 @@
                                     </div>
                                     <div hidden id="div_btn_save"
                                         class="px-4 py-3 bg-white dark:bg-darker dark:text-light text-right sm:px-6">
-                                        <button type="button" id="create_oders_save"
+                                        <button type="button" id="create_orders_save"
                                             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                             สร้างใบออเดอร์
                                         </button>
