@@ -53,6 +53,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/oders/create/getdepartments', [CreateOrder_Controller::class, 'getDepartments']);
     Route::get('/oders/create/getequipments', [CreateOrder_Controller::class, 'getEquipments']);
     Route::get('/oders/create/getsituations', [CreateOrder_Controller::class, 'getSituations']);
+    Route::post('/oders/create/createoders', [CreateOrder_Controller::class, 'createOders']);
 });
 
 Route::get('/logout', function () {

@@ -107,10 +107,19 @@ $(document).ready(function () {
         });
     }
 
-    function HtmlEncode(str)
-    {
-        return str.replace(/(&#(\d+);)/g, function(match, capture, charCode) {
-            return String.fromCharCode(charCode);
+    // function CreateOders()
+    function CreateOders(notes_messages, items) {
+        $.ajax({
+            type: "POST",
+            url: "/oders/create/createoders",
+            data: {
+                notes_messages: notes_messages,
+                items: items,
+            },
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+            }
         });
     }
 
@@ -121,7 +130,7 @@ $(document).ready(function () {
                             class="py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         <input type="text" name="Equipment_id"
                             class="${val.Equipment_id} bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value='' disabled>
+                            value="" data-value="${val.Equipment_id}" disabled>
                         </td>
                         <td class="py-4 px-1">
                         <input type="text" name="Process" 
@@ -230,5 +239,21 @@ $(document).ready(function () {
             // console.log("delete");
             $(this).parents("tr").remove();
         });
+    });
+
+    $("#div_btn_save").click(function (e) {
+        e.preventDefault();
+        notes_messages = $("#notes_messages").val();
+        var tbl = $('#tbody_data tr:has(td)').map(function(index, cell) {
+            var $td = $('td', this);
+                return {
+                    // id: ++index,
+                    equipment_id: $td.eq(0).find('input').data('value'),
+                    situation: $td.eq(2).find('input').data('value'),
+                    qty: $td.eq(3).find('input').val()
+                }
+        }).get();
+        console.log(tbl);
+        CreateOders(notes_messages, tbl);
     });
 });

@@ -53,4 +53,10 @@ class CreateOrder_Controller extends BaseController
             ->get();
         return $Situations_data;
     }
+
+    public function createOders(Request $request)
+    {
+        $recv = $request->all();
+        dd($recv);
+    }
 }
