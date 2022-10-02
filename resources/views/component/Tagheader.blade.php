@@ -16,6 +16,9 @@
 <script src="{{ asset('assets/component.min.js') }}"></script>
 <script src="{{ asset('assets/alpine.min.js') }}" defer></script>
 
+<link href="{{ asset('assets/fontawesome-6.2/css/all.css') }}" rel="stylesheet" />
+<script defer src="{{ asset('assets/fontawesome-6.2/js/all.js') }}"></script>
+
 <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
 <style>
     body {
@@ -24,6 +27,10 @@
     }
 </style>
 
+@vite('resources/js/app.js')
+@vite('resources/css/app.css')
+
+<script>
 <script type="text/javascript">
     $.ajaxSetup({
         headers: {
