@@ -30,8 +30,7 @@
 @vite('resources/js/app.js')
 @vite('resources/css/app.css')
 
-<script>
-<script type="text/javascript">
+<script script type="text/javascript">
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

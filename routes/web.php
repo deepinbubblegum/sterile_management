@@ -61,6 +61,14 @@ Route::group(['middleware' => ['authLogin']], function () {
     });
 
     Route::post('/Onprocess/GetOderItem', [OnProcess_controller::class, 'OnProcess_GetOderItem']);
+    Route::post('/process/GetOder', [Process_Controller::class, 'GetListOder']);
+    Route::get('/Onprocess/{oder_id}', function ($oder_id) {
+        // dd($oder_id);
+        return view('Onprocess', ['oder_id' => $oder_id]);
+    });
+
+    Route::post('/Onprocess/GetOderItem', [OnProcess_controller::class, 'OnProcess_GetOderItem']);
+
 
     // Create Order Page use here
     Route::get('/orders/create/getcustomers', [CreateOrder_Controller::class, 'getCustomers']);
