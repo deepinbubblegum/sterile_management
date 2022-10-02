@@ -25,27 +25,25 @@ class Login_Controller extends BaseController
             $return_data = new \stdClass();
 
             // $hash_pass = Hash::make($data['password']);
-
+            
             $users = DB::table('users')
-                ->select('Username', 'Password')
+                ->select('users.User_id', 'users.Username', 'users.Password', 'groups.Group_name', 'groups.Group_id')
+                ->leftjoin('groups', 'users.Group_id', '=', 'groups.Group_id')
                 ->where('Username', $data['Username'])
                 ->get();
             // dd($users[0]->Password);
-
+            // dd($users);
 
             $minutes = time() + 60 * 60 * 6;
             if(Hash::check($data['password'], $users[0]->Password)){
-
-
                 Cookie::queue('Username_server', $data['Username'], $minutes);
-                Cookie::queue('Username_server_Permission', 'admin', $minutes);
-
+                Cookie::queue('Username_server_User_id', $users[0]->User_id, $minutes);
+                Cookie::queue('Username_server_Permission', $users[0]->Group_name, $minutes);
+                Cookie::queue('Username_server_Permission_id', $users[0]->Group_id, $minutes);
                 $return_data->code = '200';
-
             }else{
 
                 $return_data->code = '401';
-
             }
 
             return $return_data;
