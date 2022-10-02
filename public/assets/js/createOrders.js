@@ -119,7 +119,12 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 console.log(response);
-                window.location.href="/orders";
+                if (response == true) {
+                    window.location.href="/orders";
+                }else{
+                    alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+                    window.location.href="http://localhost/orders/create";
+                }
             }
         });
     }

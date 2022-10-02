@@ -72,13 +72,13 @@ class CreateOrder_Controller extends BaseController
 
     public function createOrders(Request $request)
     {
-        $recv = $request->all();
-        $_notes_messages = $recv['notes_messages'];
-        $_items = $recv['items'];
-        $order_id = $this->getAutoOrdersID();
-        $user_id = $request->cookie('Username_server_User_id');
-
         try {
+            $recv = $request->all();
+            $_notes_messages = $recv['notes_messages'];
+            $_items = $recv['items'];
+            $order_id = $this->getAutoOrdersID();
+            $user_id = $request->cookie('Username_server_User_id');
+
             DB::table('orders')->insert([
                 'Order_id' => $order_id,
                 'StatusApprove' => 0,
