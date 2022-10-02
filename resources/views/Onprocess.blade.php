@@ -8,8 +8,6 @@
 
     @include('component.Tagheader')
 
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-
     <style>
         .disabledbutton {
             pointer-events: none;
@@ -22,6 +20,26 @@
             display: block !important;
         }
     </style>
+
+    <script>
+        var Oder_item;
+
+        const Get_Oder_item = async () => {
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/GetOderItem`,
+                data: {
+                    OrderId: '{{ $oder_id }}'
+                },
+                dataType: "json",
+                success: function(response) {
+                    Oder_item = response.items
+                }
+            });
+        }
+
+        Get_Oder_item();
+    </script>
 
 </head>
 
@@ -67,605 +85,61 @@
                     <div
                         class="mx-auto h-auto w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6">
 
-                        <p class="mb-3 text-3xl text-gray-900 dark:text-white">Oder-ABC123</p>
+                        <p class="mb-3 text-3xl text-gray-900 dark:text-white">{{ $oder_id }}</p>
+
+                        <div class="overflow-x-auto table-list-item mt-5 mb-5">
+                            <table class="mt-3 w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="py-3 px-6">
+                                            Item_id
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            Item_name
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            Quantity
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            Item_status
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            Item_Type
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            Process
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            Price
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            Instrument_type
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            Situation
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="list_item_id">
+                                </tbody>
+                            </table>
+                        </div>
+
 
                         <hr>
 
                         {{-- State washing --}}
-                        <section class="overflow-x-auto mt-8 mb-8" id="washing_state">
-
-                            <p class="text-2xl text-gray-900 dark:text-white" style="color: #ff8026;">Process Washing
-                            </p>
-
-                            <div class="mt-5">
-                                <form>
-                                    <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-2">
-                                        <div>
-                                            <label for="countries"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เลือกเครื่อง
-                                                Washing</label>
-                                            <select id="countries"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <option>Washing 01</option>
-                                                <option>Washing 02</option>
-                                                <option>Washing 03</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="last_name"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Cycle </label>
-                                            <input type="text" id="last_name"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                placeholder="Doe" value="3" disabled>
-                                        </div>
-                                    </div>
-
-                                    <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
-                                        <div>
-                                            <label for="countries"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เลือก
-                                                Item</label>
-                                            <select id="countries"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <option>Item 01</option>
-                                                <option>Item 02</option>
-                                                <option>Item 03</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="countries"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เพิ่ม
-                                                Item</label>
-                                            <button type="button"
-                                                class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add</button>
-                                        </div>
-                                    </div>
-
-                                    {{-- <div class="grid gap-6 mb-6 lg:grid-cols-2 md:grid-cols-2">
-                                        <div>
-                                            <label for="countries"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เลือกสถานะ
-                                                Washing ของ Item</label>
-                                            <select id="countries"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <option>OnProcess</option>
-                                                <option>Finish</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="countries"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Update
-                                                Status</label>
-                                            <button type="button"
-                                                class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Update</button>
-                                        </div>
-                                    </div> --}}
-
-                                    <div class="overflow-x-auto">
-                                        <table class="mt-3 w-full text-sm text-left text-gray-500 dark:text-gray-400"
-                                            id="tb_select">
-                                            <thead
-                                                class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                                <tr>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        <input type="checkbox" id="all_check"
-                                                            class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" />
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        Action
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        Item ID
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        Item Name
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        Machine
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        Program
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        Status-Packing
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        QTY
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                                    <td class="py-4 px-6">
-                                                        <input type="checkbox"
-                                                            class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" />
-                                                    </td>
-                                                    <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <button target="_blank"
-                                                            class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                            <i class="fa-solid fa-print fa-lg fill-white icon_center"></i>
-                                                        </button>
-
-                                                        <button class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-success inline-flex items-center hover:bg-success-dark focus:outline-none focus:ring focus:ring-success focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                            <i class="fa-solid fa-camera fa-lg fill-white icon_center"></i>
-                                                        </button>
-
-                                                        <button class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                            <i class="fa-regular fa-file-image fa-lg  fill-white icon_center"></i>
-                                                        </button>
-                                                    </td>
-                                                    <th class="py-4 px-6">
-                                                        Item 001
-                                                    </th>
-                                                    <td class="py-4 px-6">
-                                                        TestA
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        Machine-001
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        Program-001
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        Success
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        10
-                                                    </td>
-                                                </tr>
-                                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                                    <td class="py-4 px-6">
-                                                        <input type="checkbox"
-                                                            class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-dark dark:bg-dark dark:text-light" />
-                                                    </td>
-                                                    <td
-                                                        class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <button target="_blank"
-                                                            class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                            <i
-                                                                class="fa-solid fa-print fa-lg fill-white icon_center"></i>
-                                                        </button>
-
-                                                        <button
-                                                            class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-success inline-flex items-center hover:bg-success-dark focus:outline-none focus:ring focus:ring-success focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                            <i
-                                                                class="fa-solid fa-camera fa-lg fill-white icon_center"></i>
-                                                        </button>
-
-                                                        <button
-                                                            class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                            <i
-                                                                class="fa-regular fa-file-image fa-lg  fill-white icon_center"></i>
-                                                        </button>
-                                                    </td>
-                                                    <th class="py-4 px-6">
-                                                        Item 002
-                                                    </th>
-                                                    <td class="py-4 px-6">
-                                                        TestB
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        Machine-002
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        Program-002
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        Success
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        10
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <div class="text-center">
-                                        <button type="button"
-                                            class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">บันทึก</button>
-                                    </div>
-
-                                </form>
-                            </div>
-
-                        </section>
+                        @include('on_process.Washing')
 
                         <hr>
 
                         {{-- State Packing --}}
-                        <section class="overflow-x-auto mt-10 mb-8" id="Packing_state">
-
-                            <p class="text-2xl text-gray-900 dark:text-white" style="color: #ffe800;">Process Packing
-                            </p>
-
-                            {{-- <div class="grid gap-6 mb-6 lg:grid-cols-2 md:grid-cols-2">
-                                <div>
-                                    <label for="countries"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">สถานะ
-                                        Packing</label>
-                                    <select id="countries"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option>OnProcess</option>
-                                        <option>Finish</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="countries"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Update
-                                        Status</label>
-                                    <button type="button"
-                                        class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Update</button>
-                                </div>
-                            </div> --}}
-
-                            <div class="mt-5">
-                                <form>
-                                    <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
-                                        <div>
-                                            <label for="countries"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เลือกเครื่อง
-                                                Sterile</label>
-                                            <select id="countries"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <option>Sterile 01</option>
-                                                <option>Sterile 02</option>
-                                                <option>Sterile 03</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="countries"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เลือกโปรแกรม</label>
-                                            <select id="countries"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <option>Program 01</option>
-                                                <option>Program 02</option>
-                                                <option>Program 03</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="last_name"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Cycle </label>
-                                            <input type="text" id="last_name"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                placeholder="Doe" value="3" disabled>
-                                        </div>
-                                    </div>
-
-                                    <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
-                                        <div>
-                                            <label for="countries"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">ผู้ตรวจสอบ</label>
-                                            <select id="countries"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <option>user 01</option>
-                                                <option>user 02</option>
-                                                <option>user 03</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
-                                        <div>
-                                            <label for="countries"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เลือก
-                                                Item</label>
-                                            <select id="countries"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <option>Item 01</option>
-                                                <option>Item 02</option>
-                                                <option>Item 03</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="last_name"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                จำนวน </label>
-                                            <input type="text" id="last_name"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                placeholder="จำนวน">
-                                        </div>
-                                        <div>
-                                            <label for="countries"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เพิ่ม
-                                                Item</label>
-                                            <button type="button"
-                                                class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add</button>
-                                        </div>
-                                    </div>
-
-                                    {{-- <div class="grid gap-6 mb-6 lg:grid-cols-4 md:grid-cols-4">
-                                        <div class="col-span-3">
-                                            <label for="message"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">List
-                                                Item</label>
-                                            <textarea id="message" rows="4"
-                                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-
-                                        </div>
-                                        <div>
-                                            <label for="countries"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">ลบ
-                                                Item</label>
-                                            <button type="button"
-                                                class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>
-                                        </div>
-                                    </div> --}}
-
-                                    <div class="overflow-x-auto">
-                                        <table class="mt-3 w-full text-sm text-left text-gray-500 dark:text-gray-400"
-                                            id="tb_select">
-                                            <thead
-                                                class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                                <tr>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        <input type="checkbox" id="all_check"
-                                                            class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" />
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        Action
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        Item ID
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        Item Name
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        Machine
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        Program
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        Status-Packing
-                                                    </th>
-                                                    <th scope="col" class="py-3 px-6">
-                                                        QTY
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                                    <td class="py-4 px-6">
-                                                        <input type="checkbox"
-                                                            class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" />
-                                                    </td>
-                                                    <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <button target="_blank"
-                                                            class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                            <i class="fa-solid fa-print fa-lg fill-white icon_center"></i>
-                                                        </button>
-
-                                                        <button class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-success inline-flex items-center hover:bg-success-dark focus:outline-none focus:ring focus:ring-success focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                            <i class="fa-solid fa-camera fa-lg fill-white icon_center"></i>
-                                                        </button>
-
-                                                        <button class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                            <i class="fa-regular fa-file-image fa-lg  fill-white icon_center"></i>
-                                                        </button>
-                                                    </td>
-                                                    <th class="py-4 px-6">
-                                                        Item 001
-                                                    </th>
-                                                    <td class="py-4 px-6">
-                                                        TestA
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        Machine-001
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        Program-001
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        Success
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        10
-                                                    </td>
-                                                </tr>
-                                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                                    <td class="py-4 px-6">
-                                                        <input type="checkbox"
-                                                            class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-dark dark:bg-dark dark:text-light" />
-                                                    </td>
-                                                    <td
-                                                        class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <button target="_blank"
-                                                            class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                            <i
-                                                                class="fa-solid fa-print fa-lg fill-white icon_center"></i>
-                                                        </button>
-
-                                                        <button
-                                                            class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-success inline-flex items-center hover:bg-success-dark focus:outline-none focus:ring focus:ring-success focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                            <i
-                                                                class="fa-solid fa-camera fa-lg fill-white icon_center"></i>
-                                                        </button>
-
-                                                        <button
-                                                            class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                                            <i
-                                                                class="fa-regular fa-file-image fa-lg  fill-white icon_center"></i>
-                                                        </button>
-                                                    </td>
-                                                    <th class="py-4 px-6">
-                                                        Item 002
-                                                    </th>
-                                                    <td class="py-4 px-6">
-                                                        TestB
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        Machine-002
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        Program-002
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        Success
-                                                    </td>
-                                                    <td class="py-4 px-6">
-                                                        10
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="text-center mt-3">
-                                        <button type="button"
-                                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">บันทึก
-                                        </button>
-                                    </div>
-
-                                </form>
-                            </div>
-
-                        </section>
+                        @include('on_process.Packing')
 
                         <hr>
 
-                        <section class="overflow-x-auto mt-10 mb-8" id="Sterlie_state">
-
-                            <p class="text-2xl text-gray-900 dark:text-white" style="color: #00ffc0;">Process Sterlie
-                            </p>
-
-                            {{-- <div class="grid gap-6 mb-6 lg:grid-cols-2 md:grid-cols-2">
-                                <div>
-                                    <label for="countries"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เลือก
-                                        Item เพื่อ Update Status</label>
-                                    <select id="countries"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option>OnProcess</option>
-                                        <option>Finish</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="countries"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Update
-                                        Status</label>
-                                    <button type="button"
-                                        class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Update</button>
-                                </div>
-                            </div> --}}
-
-                            <div class="overflow-x-auto">
-                                <table class="mt-3 w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                    <thead
-                                        class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                        <tr>
-                                            <th scope="col" class="py-3 px-6">
-                                                Action
-                                            </th>
-                                            <th scope="col" class="py-3 px-6">
-                                                Item ID
-                                            </th>
-                                            <th scope="col" class="py-3 px-6">
-                                                Item Name
-                                            </th>
-                                            <th scope="col" class="py-3 px-6">
-                                                Machine
-                                            </th>
-                                            <th scope="col" class="py-3 px-6">
-                                                Program
-                                            </th>
-                                            <th scope="col" class="py-3 px-6">
-                                                Status-Packing
-                                            </th>
-                                            <th scope="col" class="py-3 px-6">
-                                                QTY
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <td
-                                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                <button target="_blank" title="Procress Finish"
-                                                    class="mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-
-                                                    <svg class="w-8 h-8 m-0 fill-white" version="1.1" id="Capa_1"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-                                                        y="0px" width="405.272px" height="405.272px"
-                                                        viewBox="0 0 405.272 405.272"
-                                                        style="enable-background:new 0 0 405.272 405.272;"
-                                                        xml:space="preserve">
-                                                        <path
-                                                            d="M393.401,124.425L179.603,338.208c-15.832,15.835-41.514,15.835-57.361,0L11.878,227.836
-                                               c-15.838-15.835-15.838-41.52,0-57.358c15.841-15.841,41.521-15.841,57.355-0.006l81.698,81.699L336.037,67.064
-                                               c15.841-15.841,41.523-15.829,57.358,0C409.23,82.902,409.23,108.578,393.401,124.425z" />
-                                                    </svg>
-
-                                                </button>
-                                            </td>
-                                            <th class="py-4 px-6">
-                                                Item 001
-                                            </th>
-                                            <td class="py-4 px-6">
-                                                TestA
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                Machine-001
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                Program-001
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                Success
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                10
-                                            </td>
-                                        </tr>
-                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <td
-                                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                <button target="_blank" title="Procress Finish"
-                                                    class="mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-
-                                                    <svg class="w-8 h-8 m-0 fill-white" version="1.1" id="Capa_1"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-                                                        y="0px" width="405.272px" height="405.272px"
-                                                        viewBox="0 0 405.272 405.272"
-                                                        style="enable-background:new 0 0 405.272 405.272;"
-                                                        xml:space="preserve">
-                                                        <path
-                                                            d="M393.401,124.425L179.603,338.208c-15.832,15.835-41.514,15.835-57.361,0L11.878,227.836
-                                               c-15.838-15.835-15.838-41.52,0-57.358c15.841-15.841,41.521-15.841,57.355-0.006l81.698,81.699L336.037,67.064
-                                               c15.841-15.841,41.523-15.829,57.358,0C409.23,82.902,409.23,108.578,393.401,124.425z" />
-                                                    </svg>
-
-                                                </button>
-                                                </button>
-                                            </td>
-                                            <th class="py-4 px-6">
-                                                Item 002
-                                            </th>
-                                            <td class="py-4 px-6">
-                                                TestB
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                Machine-002
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                Program-002
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                Success
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                10
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </section>
+                        {{-- State Sterlie --}}
+                        @include('on_process.Sterlie')
 
                     </div>
                 </div>
@@ -680,10 +154,51 @@
 
 <script>
     $(document).ready(function() {
-        $('.selectpicker').select2();
-        $('.js-example-basic-single').select2();
 
+        // alert('{{ $oder_id }}')
 
+        const table_listItem = () => {
+
+            html_item_list = ''
+            Oder_item.forEach(function(item) {
+                html_item_list += `
+                <tr>
+                    <td scope="col" class="py-3 px-6">
+                        ${item.Item_id}
+                    </td>
+                    <td scope="col" class="py-3 px-6">
+                        ${item.Name}
+                    </td>
+                    <td scope="col" class="py-3 px-6">
+                        ${item.Quantity}
+                    </td>
+                    <td scope="col" class="py-3 px-6">
+                        ${(item.Item_status == '' ? '-' : item.Item_status )}
+                    </td>
+                    <td scope="col" class="py-3 px-6">
+                        ${item.Item_Type}
+                    </td>
+                    <td scope="col" class="py-3 px-6">
+                        ${item.Process}
+                    </td>
+                    <td scope="col" class="py-3 px-6">
+                        ${item.Price}
+                    </td>
+                    <td scope="col" class="py-3 px-6">
+                        ${item.Instrument_type}
+                    </td>
+                    <td scope="col" class="py-3 px-6">
+                        ${item.Situation_name}
+                    </td>
+                </tr>
+                `
+            });
+
+            $('#list_item_id').html(html_item_list)
+
+        }
+
+        table_listItem()
 
         $('#all_check').change(function() {
             if ($(this).prop('checked')) {

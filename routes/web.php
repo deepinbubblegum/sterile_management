@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cookie;
 
 use App\Http\Controllers\Login_Controller;
+use App\Http\Controllers\Process_Controller;
+use App\Http\Controllers\OnProcess_controller;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -43,9 +46,21 @@ Route::group(['middleware' => ['authLogin']], function () {
         return view('welcome');
     })->name('welcome');
 
-    Route::get('/on-process', function () {
-        return view('Onprocess');
+
+    Route::get('/process', function () {
+        return view('process');
     });
+
+    Route::post('/process/GetOder', [Process_Controller::class, 'GetListOder']);
+
+
+
+    Route::get('/Onprocess/{oder_id}', function ($oder_id) {
+        // dd($oder_id);
+        return view('Onprocess', ['oder_id' => $oder_id]);
+    });
+
+    Route::post('/Onprocess/GetOderItem', [OnProcess_controller::class, 'OnProcess_GetOderItem']);
 
 });
 
@@ -63,6 +78,6 @@ Route::get('/oders/create', function () {
     return view('createOders');
 });
 
-Route::get('/process', function () {
-    return view('process');
-});
+// Route::get('/process', function () {
+//     return view('process');
+// });
