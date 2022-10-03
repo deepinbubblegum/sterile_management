@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Support\Facades\Cookie;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use PDF;
 
 class Order_Controller extends BaseController
 {
@@ -57,5 +58,17 @@ class Order_Controller extends BaseController
         $id = $data['id'];
         DB::table('orders')->where('Order_id', $id)->delete();
         return json_encode(true);
+    }
+
+    // function gen order pdf
+    public function getOrderPDF()
+    {
+    	$html = '<h1 style="color:red;">Hello World</h1>';
+        
+        PDF::SetTitle('Hello World');
+        PDF::AddPage();
+        PDF::writeHTML($html, true, false, true, false, '');
+
+        PDF::Output('hello_world.pdf');
     }
 }
