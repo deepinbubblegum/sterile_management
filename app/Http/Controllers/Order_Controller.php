@@ -35,7 +35,6 @@ class Order_Controller extends BaseController
                     }
                 })
                 ->orderBy('order_id', 'desc')
-                // ->get()
                 ->paginate(5);
 
             $return_data->orders = $users;
@@ -50,5 +49,13 @@ class Order_Controller extends BaseController
 
             return $return_data;
         }
+    }
+
+    public function delOrder(Request $request)
+    {
+        $data = $request->all();
+        $id = $data['id'];
+        DB::table('orders')->where('Order_id', $id)->delete();
+        return json_encode(true);
     }
 }

@@ -80,6 +80,7 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Order Page use here
     Route::get('/orders/getlistorder', [Order_Controller::class, 'getListOrder']);
+    Route::post('/orders/delOrder', [Order_Controller::class, 'delOrder']);
 });
 
 Route::get('/logout', function () {

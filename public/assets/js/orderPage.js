@@ -16,21 +16,17 @@ $(document).ready(function () {
                 <td class="border-dashed border-t border-gray-200 action">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
-                        <button target="_blank"
-                            class="mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                        <button type="button" value="${element.Order_id}"
+                            class="edit_order mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-regular fa-pen-to-square fa-xl mx-auto"></i>
                         </button>
-                        <button target="_blank"
-                            class="mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                        <button type="button" value="${element.Order_id}"
+                            class="print_order mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-solid fa-print fa-xl mx-auto"></i>
                         </button>
-                        <button target="_blank"
-                            class="mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                        <button type="button" value="${element.Order_id}"
+                            class="delete_order mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-solid fa-trash fa-xl mx-auto"></i>
-                        </button>
-                        <button target="_blank"
-                            class="mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-warning inline-flex items-center hover:bg-warning-dark focus:outline-none focus:ring focus:ring-warning focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                            <i class="fa-solid fa-xmark fa-2xl mx-auto"></i>
                         </button>
                     </span>
                 </td>
@@ -58,7 +54,7 @@ $(document).ready(function () {
                 <td class="border-dashed border-t border-gray-200 notes">
                     <span
                         class="cut-text text-gray-700 dark:text-light px-1 py-2 flex items-center">
-                        ${element.Notes != null ? element.Notes : '-'}
+                        ${element.Notes != null ? element.Notes : "-"}
                     </span>
                 </td>
                 <td class="border-dashed border-t border-gray-200 created_by">
@@ -76,29 +72,34 @@ $(document).ready(function () {
                 <td class="border-dashed border-t border-gray-200 Approve_by">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
-                        ${element.userApprove != null ? element.userApprove : '-'}
+                        ${
+                            element.userApprove != null
+                                ? element.userApprove
+                                : "-"
+                        }
                     </span>
                 </td>
                 <td class="border-dashed border-t border-gray-200 Approve_by">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
-                        ${element.Approve_at != null ? element.Approve_at : '-'}
+                        ${element.Approve_at != null ? element.Approve_at : "-"}
                     </span>
                 </td>
             </tr>
             `;
             $("#orderTable").append(rowHtml);
+            action_event();
         });
     }
 
     // function get list of order
-    function getListOrder(page = 1, txt_search = '') {
+    function getListOrder(page = 1, txt_search = "") {
         $.ajax({
             type: "GET",
             url: "/orders/getlistorder",
             data: {
                 page: page,
-                txt_search: txt_search
+                txt_search: txt_search,
             },
             dataType: "json",
             success: function (response) {
@@ -147,6 +148,20 @@ $(document).ready(function () {
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
+    function delOrder(id) {
+        $.ajax({
+            type: "POST",
+            url: "/orders/delOrder",
+            data: {
+                id: id,
+            },
+            dataType: "json",
+            success: function (response) {
+                getListOrder();
+            }
+        });
+    }
+
     $(document).on("click", "#select_page", function () {
         let type_btn = $(this).attr("type_btn");
         let url_data = $(this).attr("url_data");
@@ -158,13 +173,25 @@ $(document).ready(function () {
         getListOrder(page, txt_search);
     });
 
-    $("#search").keydown(function (e) { 
+    $("#search").keydown(function (e) {
         if (e.keyCode == 13) {
             let txt_search = $("#search").val();
-            getListOrder(txt_search=txt_search);
+            getListOrder((txt_search = txt_search));
         }
     });
 
     // init function
     getListOrder();
+
+    function action_event() {
+        // function delete order
+        $(".delete_order").click(function (e) {
+            e.preventDefault();
+            const order_id = $(this).attr("value");
+            if(confirm(`Are you sure delete order ${order_id}?`)){
+                console.log(order_id);
+                delOrder(order_id);
+            }
+        });
+    }
 });
