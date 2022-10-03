@@ -66,27 +66,14 @@ class Order_Controller extends BaseController
         $recv = $request->all();
         $id = $recv['orderid'];
 
-        // $data = [
-    	// 	'title' => 'Hello world!'
-    	// ];
-
-        // $view = \View::make('pdf.order', $data);
-        // $html = $view->render();
-
-        // PDF::SetFont('thsarabunnew', '', 16, '', true);        
-        // PDF::SetTitle('ใบรายการออเดอร์ที่ '.$id);
-        // // PDF::SetMargins(9, 12, 9);
-        // // PDF::SetPrintFooter(false);
-
-        // PDF::setPrintHeader(true);
-        // PDF::SetHeaderMargin(PDF_MARGIN_HEADER);
-        // PDF::SetHeaderData(PDF_HEADER_LOGO, 18, 'Select2Web inc.', "Contact Mobile: 0875412545\nEmail: xx@gmail.com");
-        
-        // // set auto page breaks
-        // PDF::SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-        // PDF::AddPage('P', 'A4');
-        // PDF::writeHTML($html, true, false, true, false, '');
-        // PDF::Output('ใบรายการออเดอร์-'.$id.'.pdf');
+        $data = [
+            'title' => 'Welcome to Nicesnippets.com',
+            'date' => date('m/d/Y')
+        ];
+          
+        $pdf = PDF::loadView('pdf.order', $data);
+        $pdf->setPaper('A4');
+    
+        return @$pdf->stream();
     }
 }
