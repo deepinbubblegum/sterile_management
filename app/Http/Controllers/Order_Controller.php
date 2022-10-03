@@ -35,7 +35,7 @@ class Order_Controller extends BaseController
                     }
                 })
                 ->orderBy('order_id', 'desc')
-                ->paginate(5);
+                ->paginate(8);
 
             $return_data->orders = $users;
 

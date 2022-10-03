@@ -9,14 +9,14 @@ $(document).ready(function () {
                 <td class="border-dashed border-t border-gray-200 px-3">
                     <label
                         class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
-                        <input type="checkbox"
+                        <input type="checkbox" value="${element.Order_id}"
                             class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light">
                     </label>
                 </td>
                 <td class="border-dashed border-t border-gray-200 action">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
-                        <button type="button" value="${element.Order_id}"
+                        <button disabled type="button" value="${element.Order_id}"
                             class="edit_order mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-regular fa-pen-to-square fa-xl mx-auto"></i>
                         </button>
