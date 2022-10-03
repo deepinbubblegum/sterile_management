@@ -54,21 +54,39 @@ class Order_Controller extends BaseController
 
     public function delOrder(Request $request)
     {
-        $data = $request->all();
-        $id = $data['id'];
+        $recv = $request->all();
+        $id = $recv['id'];
         DB::table('orders')->where('Order_id', $id)->delete();
         return json_encode(true);
     }
 
     // function gen order pdf
-    public function getOrderPDF()
+    public function getOrderPDF(Request $request)
     {
-    	$html = '<h1 style="color:red;">Hello World</h1>';
-        
-        PDF::SetTitle('Hello World');
-        PDF::AddPage();
-        PDF::writeHTML($html, true, false, true, false, '');
+        $recv = $request->all();
+        $id = $recv['orderid'];
 
-        PDF::Output('hello_world.pdf');
+        // $data = [
+    	// 	'title' => 'Hello world!'
+    	// ];
+
+        // $view = \View::make('pdf.order', $data);
+        // $html = $view->render();
+
+        // PDF::SetFont('thsarabunnew', '', 16, '', true);        
+        // PDF::SetTitle('ใบรายการออเดอร์ที่ '.$id);
+        // // PDF::SetMargins(9, 12, 9);
+        // // PDF::SetPrintFooter(false);
+
+        // PDF::setPrintHeader(true);
+        // PDF::SetHeaderMargin(PDF_MARGIN_HEADER);
+        // PDF::SetHeaderData(PDF_HEADER_LOGO, 18, 'Select2Web inc.', "Contact Mobile: 0875412545\nEmail: xx@gmail.com");
+        
+        // // set auto page breaks
+        // PDF::SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+        // PDF::AddPage('P', 'A4');
+        // PDF::writeHTML($html, true, false, true, false, '');
+        // PDF::Output('ใบรายการออเดอร์-'.$id.'.pdf');
     }
 }

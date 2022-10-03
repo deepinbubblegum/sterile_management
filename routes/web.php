@@ -80,7 +80,7 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Order Page use here
     Route::get('/orders/getlistorder', [Order_Controller::class, 'getListOrder']);
-    Route::get('/orders/pdforder', [Order_Controller::class, 'getOrderPDF']);
+    Route::get('/orders/pdf', [Order_Controller::class, 'getOrderPDF']);
     Route::post('/orders/delOrder', [Order_Controller::class, 'delOrder']);
 });
 
