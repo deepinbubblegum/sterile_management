@@ -268,10 +268,7 @@
         }
 
 
-        function list_oder(page , txt_search) {
-
-            if (!txt_search) txt_search = '';
-            if (page == null || page == '') page = 1;
+        function list_oder(page = 1, txt_search = '') {
 
             html_oder = ''
             $.ajax({
@@ -314,7 +311,7 @@
                                 ${item.StatusOrder}
                             </td>
                             <td class="py-4 px-6">
-                                ${item.Order_id}
+                                ${(item.Notes == null ? '-' : item.Notes)}
                             </td>
                             <td class="py-4 px-6">
                                 ${item.userApprove}

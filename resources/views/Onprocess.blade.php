@@ -20,27 +20,6 @@
             display: block !important;
         }
     </style>
-
-    <script>
-        var Oder_item;
-
-        const Get_Oder_item = async () => {
-            $.ajax({
-                type: "POST",
-                url: `/Onprocess/GetOderItem`,
-                data: {
-                    OrderId: '{{ $oder_id }}'
-                },
-                dataType: "json",
-                success: function(response) {
-                    Oder_item = response.items
-                }
-            });
-        }
-
-        Get_Oder_item();
-    </script>
-
 </head>
 
 <body>
@@ -157,10 +136,30 @@
 
         // alert('{{ $oder_id }}')
 
-        const table_listItem = () => {
+        var Oder_item;
+
+        const Get_Oder_item = async () => {
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/GetOderItem`,
+                data: {
+                    OrderId: '{{ $oder_id }}'
+                },
+                dataType: "json",
+                success: function(response) {
+                    Oder_item = response.items
+                    table_listItem()
+                }
+            });
+        }
+
+        Get_Oder_item();
+
+        const table_listItem = async () => {
 
             html_item_list = ''
-            Oder_item.forEach(function(item) {
+            // Oder_item.forEach(function(item) {
+            for (let item of Oder_item) {
                 html_item_list += `
                 <tr>
                     <td scope="col" class="py-3 px-6">
@@ -192,13 +191,11 @@
                     </td>
                 </tr>
                 `
-            });
+            };
 
             $('#list_item_id').html(html_item_list)
 
         }
-
-        table_listItem()
 
         $('#all_check').change(function() {
             if ($(this).prop('checked')) {
