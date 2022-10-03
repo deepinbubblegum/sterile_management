@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cookie;
 
 use App\Http\Controllers\Login_Controller;
+use App\Http\Controllers\Order_Controller;
 use App\Http\Controllers\Process_Controller;
 use App\Http\Controllers\OnProcess_controller;
 use App\Http\Controllers\CreateOrder_Controller;
@@ -76,6 +77,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/orders/create/getequipments', [CreateOrder_Controller::class, 'getEquipments']);
     Route::get('/orders/create/getsituations', [CreateOrder_Controller::class, 'getSituations']);
     Route::post('/orders/create/createorders', [CreateOrder_Controller::class, 'createOrders']);
+
+    // Order Page use here
+    Route::get('/orders/getlistorder', [Order_Controller::class, 'getListOrder']);
 });
 
 Route::get('/logout', function () {
