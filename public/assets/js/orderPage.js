@@ -20,10 +20,10 @@ $(document).ready(function () {
                             class="edit_order mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-regular fa-pen-to-square fa-xl mx-auto"></i>
                         </button>
-                        <button type="button" value="${element.Order_id}"
+                        <a type="button" value="${element.Order_id}" href="/orders/pdf?orderid=${element.Order_id}" target="_blank"
                             class="print_order mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-solid fa-print fa-xl mx-auto"></i>
-                        </button>
+                        </a>
                         <button type="button" value="${element.Order_id}"
                             class="delete_order mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-solid fa-trash fa-xl mx-auto"></i>

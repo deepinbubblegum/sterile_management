@@ -6,9 +6,9 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet" />
 
 
-@vite('resources/js/app.js')
+{{-- @vite('resources/js/app.js') --}}
 {{-- @vite('resources/css/select2.css') --}}
-@vite('resources/css/app.css')
+{{-- @vite('resources/css/app.css') --}}
 
 <script src="{{ asset('assets/jquery-3.6.1.min.js') }}"></script>
 
