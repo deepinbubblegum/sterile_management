@@ -23,16 +23,18 @@ class Order_Controller extends BaseController
             $data = $request->all();
 
             $users = DB::table('orders')
-                ->select('orders.*',  'userCreate.Username as userCreate', 'userUpdate.Username as userUpdate',  'userApprove.Username as userApprove')
+                ->select('orders.*',  'userCreate.Username as userCreate', 'userUpdate.Username as userUpdate',  'userApprove.Username as userApprove', 'customers.Customer_name', 'departments.Department_name')
                 ->leftjoin('users AS userCreate', 'orders.Create_by', '=', 'userCreate.user_id')
                 ->leftjoin('users AS userUpdate', 'orders.Update_by', '=', 'userUpdate.user_id')
                 ->leftjoin('users AS userApprove', 'orders.Approve_by', '=', 'userApprove.user_id')
-                // ->where(function ($query) use ($data) {
-                //     if ($data['txt_search'] != '') {
-                //         $query->where('order_id', 'like', '%' . $data['txt_search'] . '%');
-                //     }
-                // })
-                ->orderBy('order_id')
+                ->leftjoin('customers', 'orders.Customer_id', '=', 'customers.Customer_id')
+                ->leftjoin('departments', 'orders.Department_id', '=', 'departments.Department_id')
+                ->where(function ($query) use ($data) {
+                    if ($data['txt_search'] != '') {
+                        $query->where('order_id', 'like', '%' . $data['txt_search'] . '%');
+                    }
+                })
+                ->orderBy('order_id', 'desc')
                 // ->get()
                 ->paginate(5);
 

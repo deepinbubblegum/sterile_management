@@ -45,17 +45,19 @@ $(document).ready(function () {
                     class="border-dashed border-t border-gray-200 customerName">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
+                        ${element.Customer_name}
                     </span>
                 </td>
                 <td
                     class="border-dashed border-t border-gray-200 departmentsName">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
+                        ${element.Department_name}
                     </span>
                 </td>
                 <td class="border-dashed border-t border-gray-200 notes">
                     <span
-                        class="cut-text w-32 text-gray-700 dark:text-light px-1 py-2 flex items-center">
+                        class="cut-text text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.Notes != null ? element.Notes : '-'}
                     </span>
                 </td>
@@ -90,12 +92,13 @@ $(document).ready(function () {
     }
 
     // function get list of order
-    function getListOrder(page = 1) {
+    function getListOrder(page = 1, txt_search = '') {
         $.ajax({
             type: "GET",
             url: "/orders/getlistorder",
             data: {
                 page: page,
+                txt_search: txt_search
             },
             dataType: "json",
             success: function (response) {
@@ -150,9 +153,16 @@ $(document).ready(function () {
 
         let page = getParameterByName("page", url_data);
 
-        // let txt_search = $("#txt_search").val();
+        let txt_search = $("#search").val();
 
-        getListOrder(page);
+        getListOrder(page, txt_search);
+    });
+
+    $("#search").keydown(function (e) { 
+        if (e.keyCode == 13) {
+            let txt_search = $("#search").val();
+            getListOrder(txt_search=txt_search);
+        }
     });
 
     // init function

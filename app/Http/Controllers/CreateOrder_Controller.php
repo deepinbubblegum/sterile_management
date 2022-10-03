@@ -75,6 +75,8 @@ class CreateOrder_Controller extends BaseController
         try {
             $recv = $request->all();
             $_notes_messages = $recv['notes_messages'];
+            $_cutomers_id = $recv['customers_id'];
+            $_departments_id = $recv['departments_id'];
             $_items = $recv['items'];
             $order_id = $this->getAutoOrdersID();
             $user_id = $request->cookie('Username_server_User_id');
@@ -85,7 +87,9 @@ class CreateOrder_Controller extends BaseController
                 'StatusOrder' => 'W',
                 'Notes' => $_notes_messages,
                 'Create_by' => $user_id,
-                'Create_at' => Carbon::now()
+                'Create_at' => Carbon::now(),
+                'Customer_id' => $_cutomers_id,
+                'Department_id' => $_departments_id,
             ]);
     
             foreach ($_items as $key => $value) {
