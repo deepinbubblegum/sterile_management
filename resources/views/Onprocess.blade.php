@@ -149,6 +149,7 @@
                 success: function(response) {
                     Oder_item = response.items
                     table_listItem()
+                    option_item_washing(Oder_item);
                 }
             });
         }
@@ -227,6 +228,140 @@
 
             console.log(tbl)
         })
+
+        //----------------------------------------- Washing -----------------------------------------//
+        //----------------------------------------- ------- -----------------------------------------//
+        //----------------------------------------- ------- -----------------------------------------//
+
+        Get_Washing_machine();
+        GetWashing_List();
+        obj_table_washing()
+
+
+        function obj_table_washing() {
+            var arrData = [];
+            // loop over each table row (tr)
+            $("#tb_list_washing tr").each(function() {
+                var currentRow = $(this);
+
+                var col1_value = currentRow.find("td:eq(2)").text();
+                var col2_value = currentRow.find("td:eq(3)").text();
+                var col3_value = currentRow.find("td:eq(4)").text();
+
+                var obj = {};
+                obj.col1 = col1_value;
+                obj.col2 = col2_value;
+                obj.col3 = col3_value;
+
+                arrData.push(obj);
+            });
+
+            console.log(arrData);
+        }
+
+        function Get_Washing_machine() {
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/GetWashing_machine`,
+                data: {
+                    OrderId: '{{ $oder_id }}'
+                },
+                dataType: "json",
+                success: function(response) {
+
+                    html_item_list = ''
+
+                    // response.machineswashing
+                    for (let item of response.machineswashing) {
+                        html_item_list +=
+                            `<option value='${item.MachinesWashing_id}'>${item.MachinesWashingName}</option>`
+                    }
+
+                    $('#option_machineswashing').html(html_item_list)
+                }
+            });
+        }
+
+
+        function GetWashing_List() {
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/GetWashing_List`,
+                data: {
+                    OrderId: '{{ $oder_id }}'
+                },
+                dataType: "json",
+                success: function(response) {
+                    console.log(response)
+                }
+            });
+        }
+
+
+
+        function option_item_washing(Oder_item) {
+
+            html_item_list = ''
+
+            // response.machineswashing
+            for (let item of Oder_item) {
+                if (item.Item_status == '' || item.Item_status == null) {
+                    html_item_list += `<option value='${item.Item_id}'>${item.Item_id} - ${item.Name} </option>`
+                }
+            }
+
+            $('#option_item_washing').html(html_item_list)
+        }
+
+
+        $('#washing_all_check').change(function() {
+            if ($(this).prop('checked')) {
+                $('tbody tr td input[type="checkbox"]').each(function() {
+                    $(this).prop('checked', true);
+                    $(this).val('checked')
+                });
+            } else {
+                $('tbody tr td input[type="checkbox"]').each(function() {
+                    $(this).prop('checked', false);
+                    $(this).val('')
+                });
+            }
+        });
+
+
+        $('#btn_save_washing').on('click', function() {
+            var tbl = $('#tb_list_washing tr:has(td)').map(function(index, cell) {
+                console.log(tbl)
+                var $td = $('td', this);
+                return {
+                    name: $td.eq(3).text(),
+                    age: $td.eq(4).text(),
+                    grade: $td.eq(5).text()
+                }
+                // if ($('td input', this).prop('checked')) {
+                //     return {
+                //         name: $td.eq(1).text(),
+                //         age: $td.eq(2).text(),
+                //         grade: $td.eq(3).text()
+                //     }
+                // }
+            }).get();
+
+            console.log(tbl)
+        })
+
+        $('#item_add_washing').on('click', function() {
+            let machines = $('#option_machineswashing').find(":selected").val();
+            let item_washing = $('#option_item_washing').find(":selected").val();
+
+            // alert(machines);
+            row = $('<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"> </tr>');
+            col1 = $('<td class="py-4 px-6">col1</td>');
+            col2 = $('<td class="py-4 px-6">col2</td>');
+            col3 = $('<td class="py-4 px-6">col3</td>');
+            row.append(col1, col2, col3).prependTo("#tb_list_washing");
+        })
+
     });
 </script>
 

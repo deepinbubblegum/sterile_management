@@ -53,21 +53,20 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     Route::post('/process/GetOder', [Process_Controller::class, 'GetListOder']);
 
-
-
     Route::get('/Onprocess/{oder_id}', function ($oder_id) {
         // dd($oder_id);
         return view('Onprocess', ['oder_id' => $oder_id]);
     });
 
     Route::post('/Onprocess/GetOderItem', [OnProcess_controller::class, 'OnProcess_GetOderItem']);
-    Route::post('/process/GetOder', [Process_Controller::class, 'GetListOder']);
     Route::get('/Onprocess/{oder_id}', function ($oder_id) {
         // dd($oder_id);
         return view('Onprocess', ['oder_id' => $oder_id]);
     });
-
+    
     Route::post('/Onprocess/GetOderItem', [OnProcess_controller::class, 'OnProcess_GetOderItem']);
+    Route::post('/Onprocess/GetWashing_machine', [OnProcess_controller::class, 'OnProcess_GetWashing_machine']);
+    Route::post('/Onprocess/GetWashing_List', [OnProcess_controller::class, 'OnProcess_GetWashing_List']);
 
 
     // Create Order Page use here

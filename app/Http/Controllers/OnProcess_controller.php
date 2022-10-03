@@ -44,4 +44,57 @@ class OnProcess_controller extends BaseController
             return $return_data;
         }
     }
+
+
+    public function OnProcess_GetWashing_machine(Request $request)
+    {
+        try {
+
+            $return_data = new \stdClass();
+            $data = $request->all();
+
+            $items = DB::table('machineswashing')
+                ->select('*')
+                ->get();
+
+            $return_data->machineswashing = $items;
+
+            return $return_data;
+        } catch (Exception $e) {
+
+            $return_data = new \stdClass();
+
+            $return_data->code = '000000';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+        }
+    }
+
+
+    public function OnProcess_GetWashing_List(Request $request)
+    {
+        try {
+
+            $return_data = new \stdClass();
+            $data = $request->all();
+
+            $items = DB::table('washing')
+                ->select('*')
+                ->where('Order_id', $data['OrderId'])
+                ->get();
+
+            $return_data->washing_List = $items;
+
+            return $return_data;
+        } catch (Exception $e) {
+
+            $return_data = new \stdClass();
+
+            $return_data->code = '000000';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+        }
+    }
 }
