@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Cookie;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use PDF;
+use QrCode;
 
 class Order_Controller extends BaseController
 {
@@ -67,9 +68,9 @@ class Order_Controller extends BaseController
         $id = $recv['orderid'];
 
         $data = [
-            'title' => 'Welcome to Nicesnippets.com',
-            'date' => date('m/d/Y')
+            'qrcode_order' => base64_encode(QrCode::format('png')->size(200)->errorCorrection('H')->generate('string')),
         ];
+
           
         $pdf = PDF::loadView('pdf.order', $data);
         $pdf->setPaper('A4');
