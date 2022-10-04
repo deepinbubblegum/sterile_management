@@ -24,9 +24,10 @@ class OnProcess_controller extends BaseController
             $data = $request->all();
 
             $items = DB::table('items')
-                ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name')
+                ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name', 'washing.washing_id')
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
                 ->leftjoin('situations', 'items.Situation_id', '=', 'situations.Situation_id')
+                ->leftjoin('washing', 'items.item_id', '=', 'washing.item_id')
                 ->where('items.Order_id', $data['OrderId'])
                 // ->orderBy('items.item_id')
                 ->orderByRaw('LENGTH(items.item_id)')
@@ -47,55 +48,82 @@ class OnProcess_controller extends BaseController
     }
 
 
-    public function OnProcess_GetWashing_machine(Request $request)
-    {
-        try {
+    // public function OnProcess_GetWashing_machine(Request $request)
+    // {
+    //     try {
 
-            $return_data = new \stdClass();
-            $data = $request->all();
+    //         $return_data = new \stdClass();
+    //         $data = $request->all();
 
-            $items = DB::table('machineswashing')
-                ->select('*')
-                ->get();
+    //         $items = DB::table('machineswashing')
+    //             ->select('*')
+    //             ->get();
 
-            $return_data->machineswashing = $items;
+    //         $return_data->machineswashing = $items;
 
-            return $return_data;
-        } catch (Exception $e) {
+    //         return $return_data;
+    //     } catch (Exception $e) {
 
-            $return_data = new \stdClass();
+    //         $return_data = new \stdClass();
 
-            $return_data->code = '000000';
-            $return_data->message =  $e->getMessage();
+    //         $return_data->code = '000000';
+    //         $return_data->message =  $e->getMessage();
 
-            return $return_data;
-        }
-    }
+    //         return $return_data;
+    //     }
+    // }
 
 
-    public function OnProcess_GetWashing_List(Request $request)
-    {
-        try {
+    // public function OnProcess_GetWashing_List(Request $request)
+    // {
+    //     try {
 
-            $return_data = new \stdClass();
-            $data = $request->all();
+    //         $return_data = new \stdClass();
+    //         $data = $request->all();
 
-            $items = DB::table('washing')
-                ->select('*')
-                ->where('Order_id', $data['OrderId'])
-                ->get();
+    //         $items = DB::table('washing')
+    //             ->select('*')
+    //             ->where('Order_id', $data['OrderId'])
+    //             ->get();
 
-            $return_data->washing_List = $items;
+    //         $return_data->washing_List = $items;
 
-            return $return_data;
-        } catch (Exception $e) {
+    //         return $return_data;
+    //     } catch (Exception $e) {
 
-            $return_data = new \stdClass();
+    //         $return_data = new \stdClass();
 
-            $return_data->code = '000000';
-            $return_data->message =  $e->getMessage();
+    //         $return_data->code = '000000';
+    //         $return_data->message =  $e->getMessage();
 
-            return $return_data;
-        }
-    }
+    //         return $return_data;
+    //     }
+    // }
+
+    // public function Washing_newItem(Request $request)
+    // {
+
+    //     $return_data = new \stdClass();
+
+    //     try {
+
+    //         $data = $request->all();
+
+    //         DB::table('table name')
+    //             ->updateOrInsert(
+    //                 [
+    //                     'email' => 'admin@admin.com',
+    //                     'name' => 'Admin'
+    //                 ],
+    //                 ['id' => '7']
+    //             );
+
+    //     } catch (Exception $e) {
+
+    //         $return_data->code = '000000';
+    //         $return_data->message =  $e->getMessage();
+
+    //         return $return_data;
+    //     }
+    // }
 }

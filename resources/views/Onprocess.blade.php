@@ -358,7 +358,7 @@
             col1 = $(
                 `<td class="py-4 px-6"> <input id="WS_Check" type="checkbox" class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" /> </td>`
             );
-            col2 = $(`<td class="py-4 px-6"> - </td>`);
+            col2 = $(`<td class="py-4 px-6" value="${_Item[0].washing_id}" > ${_Item[0].washing_id == null ? '-' : _Item[0].washing_id} </td>`);
             col3 = $(`<td class="py-4 px-6" value="${_Item[0].Item_id}" >${_Item[0].Name}</td>`);
             col4 = $(`<td class="py-4 px-6" value="${machines_id}" >${machines_name}</td>`);
             col5 = $(`<td class="py-4 px-6"> - </td>`);
@@ -392,6 +392,7 @@
                 var $td = $('td', this);
                 return {
                     check: $('td input#WS_Check', this).prop('checked'),
+                    washing_id: $td.eq(1).attr('value'),
                     item_id: $td.eq(2).attr('value'),
                     Machines_id: $td.eq(3).attr('value'),
                     QTY: $td.eq(5).attr('value'),
@@ -406,6 +407,24 @@
             }).get();
 
             console.log(tb_list_washing)
+
+            if(tb_list_washing.length == 0) return false
+
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/New_WashingList`,
+                data: {
+                    WashingItem : tb_list_washing,
+                    OrderId: '{{ $oder_id }}'
+                },
+                dataType: "json",
+                success: function(response) {
+                    Oder_item = response.items
+                    table_listItem()
+                    option_item_washing(Oder_item);
+                }
+            });
+
         })
 
     });
