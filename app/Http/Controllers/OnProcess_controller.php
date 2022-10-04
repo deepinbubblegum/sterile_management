@@ -28,7 +28,8 @@ class OnProcess_controller extends BaseController
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
                 ->leftjoin('situations', 'items.Situation_id', '=', 'situations.Situation_id')
                 ->where('items.Order_id', $data['OrderId'])
-                ->orderBy('items.item_id')
+                // ->orderBy('items.item_id')
+                ->orderByRaw('LENGTH(items.item_id)')
                 ->get();
 
             $return_data->items = $items;

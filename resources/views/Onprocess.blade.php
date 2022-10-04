@@ -136,6 +136,17 @@
 
         // alert('{{ $oder_id }}')
 
+        function DateNowDay() {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = dd + '-' + mm + '-' + yyyy;
+            return (today)
+        }
+
+
         var Oder_item;
 
         const Get_Oder_item = async () => {
@@ -235,7 +246,7 @@
 
         Get_Washing_machine();
         GetWashing_List();
-        obj_table_washing()
+        // obj_table_washing()
 
 
         function obj_table_washing() {
@@ -258,6 +269,7 @@
 
             console.log(arrData);
         }
+
 
         function Get_Washing_machine() {
             $.ajax({
@@ -298,20 +310,66 @@
         }
 
 
-
         function option_item_washing(Oder_item) {
 
             html_item_list = ''
 
             // response.machineswashing
             for (let item of Oder_item) {
-                if (item.Item_status == '' || item.Item_status == null) {
+                if (item.Item_status == '' || item.Item_status == null || item.Item_status == 'W') {
                     html_item_list += `<option value='${item.Item_id}'>${item.Item_id} - ${item.Name} </option>`
                 }
             }
 
             $('#option_item_washing').html(html_item_list)
         }
+
+
+        function item_washing_checkDup(Item_id) {
+            let res = true;
+            $("#tb_list_washing tr").each(function() {
+                var currentRow = $(this);
+                var item_list_id = currentRow.find("td:eq(2)").attr('value');
+                // console.log(item_list_id)
+                if (Item_id == item_list_id) {
+                    res = false;
+                }
+            });
+            return res;
+        }
+
+
+        $('#item_add_washing').on('click', function() {
+
+
+            let machines_id = $('#option_machineswashing').find(":selected").val();
+            let machines_name = $('#option_machineswashing').find(":selected").text();
+            let item_washing = $('#option_item_washing').find(":selected").val();
+
+
+            let _Item = Oder_item.filter(v => v.Item_id == item_washing);
+
+            resultChk = item_washing_checkDup(_Item[0].Item_id)
+            if (resultChk == false) return resultChk;
+            console.log(resultChk)
+
+            // alert(machines);
+            row = $(`<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"> </tr>`);
+            col1 = $(
+                `<td class="py-4 px-6"> <input id="WS_Check" type="checkbox" class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" /> </td>`
+            );
+            col2 = $(`<td class="py-4 px-6"> - </td>`);
+            col3 = $(`<td class="py-4 px-6" value="${_Item[0].Item_id}" >${_Item[0].Name}</td>`);
+            col4 = $(`<td class="py-4 px-6" value="${machines_id}" >${machines_name}</td>`);
+            col5 = $(`<td class="py-4 px-6"> - </td>`);
+            col6 = $(`<td class="py-4 px-6" value="${_Item[0].Quantity}" >${_Item[0].Quantity}</td>`);
+            col7 = $(
+                `<td class="py-4 px-6" value="${_Item[0].Item_status}" >${_Item[0].Item_status}</td>`
+            );
+            col8 = $(`<td class="py-4 px-6" value="${DateNowDay()}" >${DateNowDay()}</td>`);
+            row.append(col1, col2, col3, col4, col5, col6, col7, col8).prependTo("#tb_list_washing");
+
+        })
 
 
         $('#washing_all_check').change(function() {
@@ -330,13 +388,13 @@
 
 
         $('#btn_save_washing').on('click', function() {
-            var tbl = $('#tb_list_washing tr:has(td)').map(function(index, cell) {
-                console.log(tbl)
+            var tb_list_washing = $('#tb_list_washing tr:has(td)').map(function(index, cell) {
                 var $td = $('td', this);
                 return {
-                    name: $td.eq(3).text(),
-                    age: $td.eq(4).text(),
-                    grade: $td.eq(5).text()
+                    check: $('td input#WS_Check', this).prop('checked'),
+                    item_id: $td.eq(2).attr('value'),
+                    Machines_id: $td.eq(3).attr('value'),
+                    QTY: $td.eq(5).attr('value'),
                 }
                 // if ($('td input', this).prop('checked')) {
                 //     return {
@@ -347,19 +405,7 @@
                 // }
             }).get();
 
-            console.log(tbl)
-        })
-
-        $('#item_add_washing').on('click', function() {
-            let machines = $('#option_machineswashing').find(":selected").val();
-            let item_washing = $('#option_item_washing').find(":selected").val();
-
-            // alert(machines);
-            row = $('<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"> </tr>');
-            col1 = $('<td class="py-4 px-6">col1</td>');
-            col2 = $('<td class="py-4 px-6">col2</td>');
-            col3 = $('<td class="py-4 px-6">col3</td>');
-            row.append(col1, col2, col3).prependTo("#tb_list_washing");
+            console.log(tb_list_washing)
         })
 
     });
