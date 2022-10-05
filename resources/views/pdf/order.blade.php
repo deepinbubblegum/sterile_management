@@ -63,7 +63,7 @@
 </head>
 
 <body>
-    {{dd($data)}}
+    {{-- {{dd($data)}} --}}
     <div class="header">
         <img src="{{ public_path('assets/image/medihealth_solutions.png') }}" alt="Logo" height="85px" width="195px">
         <div style="text-align: left; margin-left: 210px; margin-top: -85px;">
@@ -83,6 +83,8 @@
         </div>
         <hr class="mt-6">
     </div>
+    <img src="data:image/png;base64, {{$qrcode_order}}" alt="qrcode" height="100px" width="100px">
+    
 </body>
 
 </html>
