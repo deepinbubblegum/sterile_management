@@ -39,14 +39,9 @@ class CreateOrder_Controller extends BaseController
     public function getEquipments(Request $request)
     {
         $recv = $request->all();
-        // $Equipments_date = DB::table('equipments')
-        //     ->select('equipments.Equipment_id', 'equipments.Department_id', 'equipments.Name', 'equipments.Process', 'equipments.Price')
-        //     ->where('equipments.Department_id', $recv['Department_id'])
-        //     ->get();
-
         $Equipments_date = DB::table('dept_equip')
             ->select('dept_equip.Equipment_id', 'dept_equip.Department_id', 'equipments.Name', 'equipments.Process', 'equipments.Price')
-            ->join('equipments', 'equipments.Equipment_id', '=', 'dept_equip.Equipment_id')
+            ->leftjoin('equipments', 'equipments.Equipment_id', '=', 'dept_equip.Equipment_id')
             ->where('dept_equip.Department_id', $recv['Department_id'])
             ->where('equipments.Activate', 'A')
             ->get();
@@ -91,7 +86,6 @@ class CreateOrder_Controller extends BaseController
             DB::table('orders')->insert([
                 'Order_id' => $order_id,
                 'StatusApprove' => 0,
-                'StatusOrder' => 'W',
                 'Notes' => $_notes_messages,
                 'Create_by' => $user_id,
                 'Create_at' => Carbon::now(),

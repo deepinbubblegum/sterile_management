@@ -70,18 +70,18 @@
             <table class="w-full text-base px-2">
                 <tbody class="">
                     <tr class="">
-                        <td class="text-left px-2"><b>ใบออเดอร์ / เลขที่ :</b> {{$order_id}}</td>
-                        <td class="text-left px-2"><b>สถานพยาบาล / ศูนย์การแพทย์ :</b> {{$customer_name}}</td>
-                        <td class="text-left px-2"><b>แผนก :</b> {{$department_name}}</td>                    
+                        <td class="text-left px-1"><b>ออเดอร์ / เลขที่ :</b> {{$order_id}}</td>
+                        <td class="text-left px-1"><b>สถานพยาบาล / ศูนย์การแพทย์ :</b> {{$customer_name}}</td>
+                        <td class="text-left px-1"><b>แผนก :</b> {{$department_name}}</td>                    
                     </tr>
                     <tr>
-                        <td class="text-left px-2"><b>วันที่-เวลา : </b>{{$create_at}}</td>
-                        <td class="text-left px-2"><b>วันที่-เวลารับ : </b>{{$approve_at ? $approve_at : "-"}} </td>
+                        <td class="text-left px-1"><b>วันที่-เวลา : </b>{{$create_at}}</td>
+                        <td class="text-left px-1"><b>วันที่-เวลารับ : </b>{{$approve_at ? $approve_at : "-"}} </td>
                     </tr>
                     <tr>
-                        <td class="text-left px-2"><b>ออเดอร์โดย : </b>{{$create_by}}</td>
+                        <td class="text-left px-1"><b>ออเดอร์โดย : </b>{{$create_by}}</td>
 
-                        <td class="text-left px-2"><b>รับออเดอร์โดย : </b> {{$approve_by ? approve_by : "-"}} </td>
+                        <td class="text-left px-1"><b>รับออเดอร์โดย : </b> {{$approve_by ? approve_by : "-"}} </td>
                     </tr>
                 </tbody>
             </table>
@@ -131,8 +131,8 @@
                     </tr>
                     <tr>
                         <td colspan="4" class="text-right px-2 py-1">({{$total_price_txt}})</td>
-                        <td colspan="2" class="text-right px-2 py-1">จำนวนเงินรวมทั้งสิ้น</td>
-                        <td class="text-right px-2 py-1">{{$total_price_vat}} บาท</td>
+                        <td colspan="2" class="text-right px-2 py-1"><b> จำนวนเงินรวมทั้งสิ้น </b></td>
+                        <td class="text-right px-2 py-1"><b>{{$total_price_vat}} บาท</b></td>
                     </tr>
 
                 </tbody>

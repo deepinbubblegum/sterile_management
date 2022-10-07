@@ -88,8 +88,8 @@ $(document).ready(function () {
             </tr>
             `;
             $("#orderTable").append(rowHtml);
-            action_event();
         });
+        action_event();
     }
 
     // function get list of order
