@@ -88,6 +88,7 @@ class CreateOrder_Controller extends BaseController
                 'StatusApprove' => 0,
                 'Notes' => $_notes_messages,
                 'Create_by' => $user_id,
+                'StatusOrder' => null,
                 'Create_at' => Carbon::now(),
                 'Customer_id' => $_cutomers_id,
                 'Department_id' => $_departments_id,
@@ -105,6 +106,7 @@ class CreateOrder_Controller extends BaseController
                 ]);
             }
         } catch (\Throwable $th) {
+            // dd($th->getMessage());
             return json_decode(FALSE);
         }
         return json_decode(TRUE);
