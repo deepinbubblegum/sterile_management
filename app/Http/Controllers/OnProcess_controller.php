@@ -33,6 +33,7 @@ class OnProcess_controller extends BaseController
                 ->orderByRaw('LENGTH(items.item_id)')
                 ->get();
 
+            $return_data->code = '1000';
             $return_data->items = $items;
 
             return $return_data;
@@ -40,7 +41,7 @@ class OnProcess_controller extends BaseController
 
             $return_data = new \stdClass();
 
-            $return_data->code = '000000';
+            $return_data->code = '1000';
             $return_data->message =  $e->getMessage();
 
             return $return_data;

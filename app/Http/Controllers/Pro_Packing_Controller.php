@@ -17,31 +17,42 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Http\Controllers\OnProcess_controller;
 
-class Pro_Washing_Controller extends BaseController
+class Pro_Packing_Controller extends BaseController
 {
 
-    private function AutuIDWashing()
+    private function AutuIDPacking()
     {
         $oid = DB::select(
-            'SELECT CONCAT("WAS-",LPAD(SUBSTRING(IFNULL(MAX(washing.washing_id), "0"), 5,6)+1, 6,"0")) as auto_id FROM washing'
+            'SELECT CONCAT("PAC-",LPAD(SUBSTRING(IFNULL(MAX(packing.packing_id), "0"), 5,6)+1, 6,"0")) as auto_id FROM packing'
         );
         return $oid[0]->auto_id;
     }
 
 
-    public function OnProcess_GetWashing_machine(Request $request)
+    public function OnProcess_GetSterlie_machine(Request $request)
     {
         try {
 
             $return_data = new \stdClass();
             $data = $request->all();
 
-            $items = DB::table('machineswashing')
-                ->select('machineswashing.*')
+            $items_machine = DB::table('machine')
+                ->select('machine.*')
+                ->get();
+
+            $items_program = DB::table('machine_programs')
+                ->select('machine_programs.*')
+                ->get();
+
+            $items_process = DB::table('machine')
+                ->select('machine.Machine_type')
+                ->distinct('machine.Machine_type')
                 ->get();
 
             $return_data->code = '0000';
-            $return_data->machineswashing = $items;
+            $return_data->items_machine = $items_machine;
+            $return_data->items_program = $items_program;
+            $return_data->items_process = $items_process;
 
             return $return_data;
         } catch (Exception $e) {
@@ -56,24 +67,26 @@ class Pro_Washing_Controller extends BaseController
     }
 
 
-    public function OnProcess_GetWashing_List(Request $request)
+    public function OnProcess_GetPacking_List(Request $request)
     {
         try {
 
             $return_data = new \stdClass();
             $data = $request->all();
 
-            $items = DB::table('washing')
-                ->select('washing.*', 'equipments.Name', 'machineswashing.MachinesWashingName')
-                ->leftjoin('items', 'items.item_id', '=', 'washing.item_id')
+            $items = DB::table('packing')
+                ->select('packing.*', 'equipments.Name', 'machine.Machine_name' , 'machine_programs.Program_name' , 'machine_programs.Program_id' , 'users.Name as UserName_QC' , 'items.Quantity', 'items.Item_status')
+                ->leftjoin('items', 'items.item_id', '=', 'packing.item_id')
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
-                ->leftjoin('machineswashing', 'machineswashing.MachinesWashing_id', '=', 'washing.MachinesWashing_id')
-                ->where('washing.Order_id', $data['OrderId'])
-                ->orderBy('washing_id')
+                ->leftjoin('machine', 'packing.Machine_id', '=', 'machine.Machine_id')
+                ->leftjoin('machine_programs', 'machine.Machine_id', '=', 'machine_programs.Machine_id')
+                ->leftjoin('users', 'packing.Qc_by', '=', 'users.User_id')
+                ->where('packing.Order_id', $data['OrderId'])
+                ->orderBy('packing_id')
                 ->get();
 
             $return_data->code = '0000';
-            $return_data->washing_List = $items;
+            $return_data->Packing_List = $items;
 
             return $return_data;
         } catch (Exception $e) {
@@ -108,7 +121,7 @@ class Pro_Washing_Controller extends BaseController
     }
 
 
-    public function OnProcess_Washing_newItem(Request $request)
+    public function OnProcess_New_PackingList(Request $request)
     {
 
         $return_data = new \stdClass();
@@ -118,53 +131,50 @@ class Pro_Washing_Controller extends BaseController
             $data = $request->all();
             $dateNow = Carbon::now();
 
-            // dd($data['WashingItem']);
-            // $cycle = array_unique();
-
             $CUS_ID = DB::table('orders')
                 ->select('orders.*')
                 ->where('Order_id', $data['OrderId'])
                 ->get();
             // dd($CUS_ID[0]->Customer_id);
 
-            $Cycle_Customer = DB::table('washing')
+            $Cycle_Customer = DB::table('packing')
                 ->selectRaw('max(Cycle) as maxCycle')
-                ->leftjoin('orders', 'washing.Order_id', '=', 'orders.Order_id')
+                ->leftjoin('orders', 'packing.Order_id', '=', 'orders.Order_id')
                 ->where('orders.Customer_id', $CUS_ID[0]->Customer_id)
-                ->whereMonth('washing.Create_at', '=', now()->month)
                 ->get();
             // dd($Cycle_Customer[0]->maxCycle);
 
             $index = (int)$Cycle_Customer[0]->maxCycle;
             // $mach_cycle = array();
             $new_mach_cycle = collect([]);
-            $Cycle_ma = $this->unique_multidim_array($data['WashingItem'], 'Machines_id');
+            $Cycle_ma = $this->unique_multidim_array($data['PackingItem'], 'Machines_id');
             foreach ($Cycle_ma as $item_Cycle) {
                 // $item_Cycle->name = "My name";
                 $index++;
-                // $mach_cycle->Machines_id = $item_Cycle['Machines_id'];
-                // $mach_cycle->Cycle = $index;
-                // $mach_cycle[] = Collection::make([
-                //     'Machines_id' => $item_Cycle['Machines_id'],
-                //     'cycle' => $index
-                // ]);
                 $new_mach_cycle->push([
                     'Machines_id' => $item_Cycle['Machines_id'],
                     'cycle' => $index
                 ]);
             }
-            // dd($mach_cycle);
+            // dd($new_mach_cycle);
+            // dd();
 
 
-            foreach ($data['WashingItem'] as $item) {
+            foreach ($data['PackingItem'] as $item) {
 
-                $washing_id = $item['washing_id'];
+                $packing_id = $item['packing_id'];
 
 
-                if ($washing_id == 'null' || $washing_id == null || $washing_id == '' || $washing_id == '-') {
-                    $washing_id = $this->AutuIDWashing();
+                if ($packing_id == 'null' || $packing_id == null || $packing_id == '' || $packing_id == '-') {
+                    $packing_id = $this->AutuIDPacking();
                 }
-                // dd($washing_id);
+
+
+                $Exp_date = $item['Exp'];
+                if ($Exp_date == 'null' || $Exp_date == null || $Exp_date == '' || $Exp_date == '-') {
+                    $Exp_date =Carbon::now()->addDay($item['AddExp']);
+                }
+                // dd($dateNow);
 
                 $num_cycle = 0;
                 if ($item['Cycle'] == null || $item['Cycle'] == 'null' || $item['Cycle'] == '') {
@@ -176,21 +186,32 @@ class Pro_Washing_Controller extends BaseController
                 }
                 // dd($item['Cycle']);
 
-                DB::table('washing')->updateOrInsert(
+                DB::table('packing')->updateOrInsert(
                     [
-                        'washing_id' => $washing_id,
+                        'packing_id' => $packing_id,
                         'Order_id' => $data['OrderId'],
                         'item_id' => $item['item_id'],
                     ],
                     [
-                        'washing_id' => $washing_id,
+                        // 'packing_id' => $packing_id,
+                        // 'Order_id' => $data['OrderId'],
+                        // 'item_id' => $item['item_id'],
+                        // 'Cycle' => $num_cycle,
+                        // 'QTY' => $item['QTY'],
+                        // 'PassStatus' => $item['check'],
+                        // 'Create_at' => $dateNow,
                         'Order_id' => $data['OrderId'],
-                        'item_id' => $item['item_id'],
-                        'MachinesWashing_id' => $item['Machines_id'],
+                        'item_id'  => $item['item_id'],
+                        'Machine_id' => $item['Machines_id'],
+                        'Program_id' => $item['program_id'],
+                        'packing_id' => $packing_id,
+                        'SUD' => '',
                         'Cycle' => $num_cycle,
-                        'QTY' => $item['QTY'],
-                        'PassStatus' => $item['check'],
+                        'Qc_by' => $item['user_QC'],
+                        'Exp_date' => $Exp_date,
+                        'Create_by' => $request->cookie('Username_server_User_id'),
                         'Create_at' => $dateNow,
+
                     ]
                 );
 
@@ -199,14 +220,14 @@ class Pro_Washing_Controller extends BaseController
                         ->where('Item_id', $item['item_id'])
                         ->where('Order_id', $data['OrderId'])
                         ->update([
-                            'Item_status' => 'Washing Finish',
+                            'Item_status' => 'Packing Finish',
                         ]);
                 } else {
                     DB::table('items')
                         ->where('Item_id', $item['item_id'])
                         ->where('Order_id', $data['OrderId'])
                         ->update([
-                            'Item_status' => 'Washing',
+                            'Item_status' => 'Packing',
                         ]);
                 }
             }
@@ -227,4 +248,35 @@ class Pro_Washing_Controller extends BaseController
             return $return_data;
         }
     }
+
+
+    public function OnProcess_GetUserQC(Request $request)
+    {
+        try {
+
+            $return_data = new \stdClass();
+            $data = $request->all();
+
+            $user = DB::table('users')
+                ->select('*')
+                ->get();
+
+            $return_data->code = '1000';
+            $return_data->user = $user;
+
+            return $return_data;
+        } catch (Exception $e) {
+
+            $return_data = new \stdClass();
+
+            $return_data->code = '1000';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+        }
+    }
+
+    // public function OnProcess_New_PackingList(Request $request){
+
+    // }
 }

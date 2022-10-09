@@ -70,7 +70,7 @@
                         <tr>
                             <th scope="col" class="py-3 px-6">
                                 <input type="checkbox" id="washing_all_check"
-                                    class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" />
+                                    class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" /> <br>
                                     <label class="">เสร็จ</label>
                             </th>
                             <th scope="col" class="py-3 px-6">
