@@ -10,6 +10,10 @@ use App\Http\Controllers\OnProcess_controller;
 use App\Http\Controllers\CreateOrder_Controller;
 use App\Http\Controllers\Customers_Controller;
 
+use App\Http\Controllers\Pro_Washing_Controller;
+use App\Http\Controllers\Pro_Packing_Controller;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -55,21 +59,24 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     Route::post('/process/GetOder', [Process_Controller::class, 'GetListOder']);
 
-
-
     Route::get('/Onprocess/{oder_id}', function ($oder_id) {
         // dd($oder_id);
         return view('Onprocess', ['oder_id' => $oder_id]);
     });
 
     Route::post('/Onprocess/GetOderItem', [OnProcess_controller::class, 'OnProcess_GetOderItem']);
-    Route::post('/process/GetOder', [Process_Controller::class, 'GetListOder']);
-    Route::get('/Onprocess/{oder_id}', function ($oder_id) {
-        // dd($oder_id);
-        return view('Onprocess', ['oder_id' => $oder_id]);
-    });
 
-    Route::post('/Onprocess/GetOderItem', [OnProcess_controller::class, 'OnProcess_GetOderItem']);
+    // Process Washing
+    Route::post('/Onprocess/GetWashing_machine', [Pro_Washing_Controller::class, 'OnProcess_GetWashing_machine']);
+    Route::post('/Onprocess/GetWashing_List', [Pro_Washing_Controller::class, 'OnProcess_GetWashing_List']);
+    Route::post('/Onprocess/New_WashingList', [Pro_Washing_Controller::class, 'OnProcess_Washing_newItem']);
+
+    // Process Packing
+    Route::post('/Onprocess/GetSterlie_machine', [Pro_Packing_Controller::class, 'OnProcess_GetSterlie_machine']);
+    Route::post('/Onprocess/GetPacking_List', [Pro_Packing_Controller::class, 'OnProcess_GetPacking_List']);
+    Route::post('/Onprocess/GetUserQC', [Pro_Packing_Controller::class, 'OnProcess_GetUserQC']);
+    Route::post('/Onprocess/New_PackingList', [Pro_Packing_Controller::class, 'OnProcess_New_PackingList']);
+
 
 
     // Create Order Page use here
