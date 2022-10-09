@@ -232,6 +232,7 @@ class Order_Controller extends BaseController
                 ->where('Order_id', $value)
                 ->update([
                     'Approve_by' => $approve_by,
+                    'StatusApprove' => 1,
                     'Approve_at' => $current
                 ]);
         }
