@@ -103,6 +103,10 @@ Route::group(['middleware' => ['authLogin']], function () {
         return view('customers');
     });
     Route::get('/settings/customers/getlistcustomers', [Customers_Controller::class, 'getListCustomers']);
+    Route::get('/settings/customers/getcustomersdetail', [Customers_Controller::class, 'getCustomersDetail']);
+    Route::post('/settings/customers/createcustomers', [Customers_Controller::class, 'createCustomers']);
+    Route::post('/settings/customers/updatecustomers', [Customers_Controller::class, 'updateCustomers']);
+    Route::post('/settings/customers/deletecustomers', [Customers_Controller::class, 'deleteCustomers']);
 });
 
 Route::get('/logout', function () {
