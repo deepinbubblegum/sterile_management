@@ -14,6 +14,10 @@ $(document).ready(function () {
                             <i class="fa-regular fa-pen-to-square fa-xl mx-auto"></i>
                         </button>
                         <button type="button" value="${element.Customer_id}"
+                            class="delete_customer mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                            <i class="fa-solid fa-trash fa-xl mx-auto"></i>
+                        </button>
+                        <button type="button" value="${element.Customer_id}"
                             class="delete_customer mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-solid fa-trash fa-xl mx-auto"></i>
                         </button>
@@ -37,6 +41,7 @@ $(document).ready(function () {
             `;
             $("#customersTable").append(rowHtml);
         });
+        activeevent();
     }
 
     // function to get all customers
@@ -58,7 +63,8 @@ $(document).ready(function () {
                 $("#lastPage").text(response.customers.last_page);
                 $("#page_input").val(response.customers.current_page);
 
-                const btn_first_page = document.querySelector(".btn_first_page");
+                const btn_first_page =
+                    document.querySelector(".btn_first_page");
                 btn_first_page.setAttribute(
                     "url_data",
                     response.customers.first_page_url
@@ -87,4 +93,17 @@ $(document).ready(function () {
 
     // initial call to get all customers
     getCustomers();
+
+    function activeevent() {
+        $(".delete_customer").click(function (e) {
+            e.preventDefault();
+        });
+    }
+
+    $('.openModal').on('click', function(e){
+        $('#interestModal').removeClass('invisible');
+    });
+    $('.closeModal').on('click', function(e){
+        $('#interestModal').addClass('invisible');
+    });
 });
