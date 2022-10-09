@@ -100,7 +100,7 @@ class CreateOrder_Controller extends BaseController
                     'Item_id' => $item_id,
                     'Order_id' => $order_id,
                     'Quantity' => $value['qty'],
-                    'Item_status' => '-',
+                    'Item_status' => null,
                     'Equipment_id' => $value['equipment_id'],
                     'Situation_id' => $value['situation']
                 ]);
