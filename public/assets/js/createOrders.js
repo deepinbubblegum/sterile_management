@@ -108,11 +108,13 @@ $(document).ready(function () {
     }
 
     // function CreateOrders()
-    function CreateOrders(notes_messages, items) {
+    function CreateOrders(notes_messages, items, customers_id, departments_id) {
         $.ajax({
             type: "POST",
             url: "/orders/create/createorders",
             data: {
+                customers_id: customers_id,
+                departments_id: departments_id,
                 notes_messages: notes_messages,
                 items: items,
             },
@@ -250,6 +252,10 @@ $(document).ready(function () {
     $("#div_btn_save").click(function (e) {
         e.preventDefault();
         notes_messages = $("#notes_messages").val();
+        customers_id = $("#customers").find(":selected").val();
+        departments_id = $("#departments").find(":selected").val();
+        // console.log(customers_id);
+        // return;
         var tbl = $('#tbody_data tr:has(td)').map(function(index, cell) {
             var $td = $('td', this);
                 return {
@@ -260,6 +266,6 @@ $(document).ready(function () {
                 }
         }).get();
         console.log(tbl);
-        CreateOrders(notes_messages, tbl);
+        CreateOrders(notes_messages, tbl, customers_id, departments_id);
     });
 });

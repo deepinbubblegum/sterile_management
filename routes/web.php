@@ -4,9 +4,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cookie;
 
 use App\Http\Controllers\Login_Controller;
+use App\Http\Controllers\Order_Controller;
 use App\Http\Controllers\Process_Controller;
 use App\Http\Controllers\OnProcess_controller;
 use App\Http\Controllers\CreateOrder_Controller;
+use App\Http\Controllers\Customers_Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,11 +73,29 @@ Route::group(['middleware' => ['authLogin']], function () {
 
 
     // Create Order Page use here
+    Route::get('/orders/create', function () {
+        return view('createOrders');
+    });
     Route::get('/orders/create/getcustomers', [CreateOrder_Controller::class, 'getCustomers']);
     Route::get('/orders/create/getdepartments', [CreateOrder_Controller::class, 'getDepartments']);
     Route::get('/orders/create/getequipments', [CreateOrder_Controller::class, 'getEquipments']);
     Route::get('/orders/create/getsituations', [CreateOrder_Controller::class, 'getSituations']);
     Route::post('/orders/create/createorders', [CreateOrder_Controller::class, 'createOrders']);
+
+    // Order Page use here
+    Route::get('/orders', function () {
+        return view('orders');
+    });
+    Route::get('/orders/getlistorder', [Order_Controller::class, 'getListOrder']);
+    Route::get('/orders/pdf', [Order_Controller::class, 'getOrderPDF']);
+    Route::post('/orders/delOrder', [Order_Controller::class, 'delOrder']);
+    Route::post('/orders/approveOrder', [Order_Controller::class, 'approveOrder']);
+
+    // Settings Customer Page use here
+    Route::get('/settings/customers', function () {
+        return view('customers');
+    });
+    Route::get('/settings/customers/getlistcustomers', [Customers_Controller::class, 'getListCustomers']);
 });
 
 Route::get('/logout', function () {
@@ -84,13 +104,7 @@ Route::get('/logout', function () {
     return redirect()->route('login');
 })->name('logout');
 
-Route::get('/orders', function () {
-    return view('orders');
-});
 
-Route::get('/orders/create', function () {
-    return view('createOrders');
-});
 
 // Route::get('/process', function () {
 //     return view('process');

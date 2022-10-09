@@ -479,4 +479,12 @@
     padding: 6px;
 }
 
+.cut-text { 
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    width: 120px; 
+    height: 1.2em; 
+    white-space: nowrap;
+}
+
 @tailwind utilities;

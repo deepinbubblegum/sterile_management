@@ -39,9 +39,11 @@ class CreateOrder_Controller extends BaseController
     public function getEquipments(Request $request)
     {
         $recv = $request->all();
-        $Equipments_date = DB::table('equipments')
-            ->select('equipments.Equipment_id', 'equipments.Department_id', 'equipments.Name', 'equipments.Process', 'equipments.Price')
-            ->where('equipments.Department_id', $recv['Department_id'])
+        $Equipments_date = DB::table('dept_equip')
+            ->select('dept_equip.Equipment_id', 'dept_equip.Department_id', 'equipments.Name', 'equipments.Process', 'equipments.Price')
+            ->leftjoin('equipments', 'equipments.Equipment_id', '=', 'dept_equip.Equipment_id')
+            ->where('dept_equip.Department_id', $recv['Department_id'])
+            ->where('equipments.Activate', 'A')
             ->get();
         return $Equipments_date;
     }
@@ -75,6 +77,8 @@ class CreateOrder_Controller extends BaseController
         try {
             $recv = $request->all();
             $_notes_messages = $recv['notes_messages'];
+            $_cutomers_id = $recv['customers_id'];
+            $_departments_id = $recv['departments_id'];
             $_items = $recv['items'];
             $order_id = $this->getAutoOrdersID();
             $user_id = $request->cookie('Username_server_User_id');
@@ -82,10 +86,11 @@ class CreateOrder_Controller extends BaseController
             DB::table('orders')->insert([
                 'Order_id' => $order_id,
                 'StatusApprove' => 0,
-                'StatusOrder' => 'W',
                 'Notes' => $_notes_messages,
                 'Create_by' => $user_id,
-                'Create_at' => Carbon::now()
+                'Create_at' => Carbon::now(),
+                'Customer_id' => $_cutomers_id,
+                'Department_id' => $_departments_id,
             ]);
     
             foreach ($_items as $key => $value) {
@@ -94,7 +99,7 @@ class CreateOrder_Controller extends BaseController
                     'Item_id' => $item_id,
                     'Order_id' => $order_id,
                     'Quantity' => $value['qty'],
-                    'Item_status' => 'W',
+                    'Item_status' => '-',
                     'Equipment_id' => $value['equipment_id'],
                     'Situation_id' => $value['situation']
                 ]);
