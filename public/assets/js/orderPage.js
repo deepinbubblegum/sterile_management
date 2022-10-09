@@ -3,14 +3,14 @@ $(document).ready(function () {
     function setTable(data) {
         $("#orderTable").empty();
         data.forEach((element) => {
-            console.log(element);
+            // console.log(element);
             const rowHtml = `
             <tr>
                 <td class="border-dashed border-t border-gray-200 px-3">
                     <label
                         class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
-                        <input type="checkbox" value="${element.Order_id}"
-                            class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light">
+                        <input type="checkbox" ${(element.Approve_at != null ? "disabled": '')} name="order" value="${element.Order_id}"
+                            class="form-checkbox rowCheckbox focus:outline-none ${(element.Approve_at != null ? "hidden": '')} focus:shadow-outline bg-white dark:bg-dark dark:text-light">
                     </label>
                 </td>
                 <td class="border-dashed border-t border-gray-200 action">
@@ -176,7 +176,7 @@ $(document).ready(function () {
     $("#search").keydown(function (e) {
         if (e.keyCode == 13) {
             let txt_search = $("#search").val();
-            getListOrder((txt_search = txt_search));
+            getListOrder(null, txt_search);
         }
     });
 
@@ -189,9 +189,37 @@ $(document).ready(function () {
             e.preventDefault();
             const order_id = $(this).attr("value");
             if(confirm(`Are you sure delete order ${order_id}?`)){
-                console.log(order_id);
+                // console.log(order_id);
                 delOrder(order_id);
             }
         });
     }
+
+    $("#btnApprove").click(function (e) { 
+        e.preventDefault();
+        var selected = [];
+        $('input[name="order"]:checked').each(function() {
+            selected.push($(this).attr('value'));
+        });
+        // console.log(selected);
+
+        if(selected.length == 0){
+            alert('Please select order to approve!');
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/orders/approveOrder",
+            data: {
+                order_approve: selected,
+            },
+            dataType: "json",
+            success: function (response) {
+                // console.log(response);
+                getListOrder();
+            }
+        });
+
+    });
 });

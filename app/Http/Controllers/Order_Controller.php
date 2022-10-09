@@ -194,7 +194,7 @@ class Order_Controller extends BaseController
         foreach ($order_data_item as $key => $item) {
             $total_price += $item->Price * $item->Quantity;
         }
-
+        // dd($order_data);
         $data = [
             'qrcode_order' => base64_encode(QrCode::format('png')->size(200)->errorCorrection('H')->generate('string')),
             'order_id' => $id,
@@ -217,5 +217,24 @@ class Order_Controller extends BaseController
         $pdf->setPaper('A4');
     
         return @$pdf->stream();
+    }
+
+    // function approve order
+    public function approveOrder(Request $request)
+    {
+        $recv = $request->all();
+        $id = $recv['order_approve'];
+        $current = Carbon::now();
+        $approve_by = $request->cookie('Username_server_User_id');
+        foreach($id as $key => $value)
+        {
+            DB::table('orders')
+                ->where('Order_id', $value)
+                ->update([
+                    'Approve_by' => $approve_by,
+                    'Approve_at' => $current
+                ]);
+        }
+        return json_encode(TRUE);
     }
 }

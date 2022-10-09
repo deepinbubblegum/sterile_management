@@ -81,7 +81,7 @@
                     <tr>
                         <td class="text-left px-1"><b>ออเดอร์โดย : </b>{{$create_by}}</td>
 
-                        <td class="text-left px-1"><b>รับออเดอร์โดย : </b> {{$approve_by ? approve_by : "-"}} </td>
+                        <td class="text-left px-1"><b>รับออเดอร์โดย : </b> {{$approve_by ? $approve_by : "-"}} </td>
                     </tr>
                 </tbody>
             </table>

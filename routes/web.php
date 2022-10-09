@@ -82,6 +82,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/orders/getlistorder', [Order_Controller::class, 'getListOrder']);
     Route::get('/orders/pdf', [Order_Controller::class, 'getOrderPDF']);
     Route::post('/orders/delOrder', [Order_Controller::class, 'delOrder']);
+    Route::post('/orders/approveOrder', [Order_Controller::class, 'approveOrder']);
 });
 
 Route::get('/logout', function () {

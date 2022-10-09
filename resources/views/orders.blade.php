@@ -54,7 +54,7 @@
                                 สร้าง ออเดอร์
                             </a>
 
-                            <button target="_blank"
+                            <button type="button" id="btnApprove"
                                 class="px-4 mr-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white darker:focus:ring-offset-dark">
 
                                 <i class="fa-solid fa-file-export mr-2 -ml-1 w-4 h-4 fill-white"></i>
@@ -167,7 +167,6 @@
             </main>
         </div>
     </div>
-
     <!-- All javascript code in this project for now is just for demo DON'T RELY ON IT  -->
 </body>
 
