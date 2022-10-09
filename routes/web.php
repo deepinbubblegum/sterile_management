@@ -8,6 +8,7 @@ use App\Http\Controllers\Order_Controller;
 use App\Http\Controllers\Process_Controller;
 use App\Http\Controllers\OnProcess_controller;
 use App\Http\Controllers\CreateOrder_Controller;
+use App\Http\Controllers\Customers_Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +95,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/settings/customers', function () {
         return view('customers');
     });
+    Route::get('/settings/customers/getlistcustomers', [Customers_Controller::class, 'getListCustomers']);
 });
 
 Route::get('/logout', function () {
