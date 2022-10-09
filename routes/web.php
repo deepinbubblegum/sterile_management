@@ -72,6 +72,9 @@ Route::group(['middleware' => ['authLogin']], function () {
 
 
     // Create Order Page use here
+    Route::get('/orders/create', function () {
+        return view('createOrders');
+    });
     Route::get('/orders/create/getcustomers', [CreateOrder_Controller::class, 'getCustomers']);
     Route::get('/orders/create/getdepartments', [CreateOrder_Controller::class, 'getDepartments']);
     Route::get('/orders/create/getequipments', [CreateOrder_Controller::class, 'getEquipments']);
@@ -79,10 +82,18 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/orders/create/createorders', [CreateOrder_Controller::class, 'createOrders']);
 
     // Order Page use here
+    Route::get('/orders', function () {
+        return view('orders');
+    });
     Route::get('/orders/getlistorder', [Order_Controller::class, 'getListOrder']);
     Route::get('/orders/pdf', [Order_Controller::class, 'getOrderPDF']);
     Route::post('/orders/delOrder', [Order_Controller::class, 'delOrder']);
     Route::post('/orders/approveOrder', [Order_Controller::class, 'approveOrder']);
+
+    // Settings Customer Page use here
+    Route::get('/settings/customers', function () {
+        return view('customers');
+    });
 });
 
 Route::get('/logout', function () {
@@ -91,13 +102,7 @@ Route::get('/logout', function () {
     return redirect()->route('login');
 })->name('logout');
 
-Route::get('/orders', function () {
-    return view('orders');
-});
 
-Route::get('/orders/create', function () {
-    return view('createOrders');
-});
 
 // Route::get('/process', function () {
 //     return view('process');
