@@ -9,6 +9,7 @@ use App\Http\Controllers\Process_Controller;
 use App\Http\Controllers\OnProcess_controller;
 use App\Http\Controllers\CreateOrder_Controller;
 use App\Http\Controllers\Customers_Controller;
+use App\Http\Controllers\Departments_Controller;
 
 use App\Http\Controllers\Pro_Washing_Controller;
 use App\Http\Controllers\Pro_Packing_Controller;
@@ -107,6 +108,19 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/customers/createcustomers', [Customers_Controller::class, 'createCustomers']);
     Route::post('/settings/customers/updatecustomers', [Customers_Controller::class, 'updateCustomers']);
     Route::post('/settings/customers/deletecustomers', [Customers_Controller::class, 'deleteCustomers']);
+
+    // Settings Department Page use here
+    Route::get('/settings/customers/departments/{customer_id}', [Departments_Controller::class, 'departmentsView']);
+    Route::get('/settings/customers/departments/{customer_id}/getlistdepartments', [Departments_Controller::class, 'getListDepartments']);
+    Route::get('/settings/customers/departments/{customer_id}/getdepartmentsdetail', [Departments_Controller::class, 'getDepartmentsDetail']);
+    Route::post('/settings/customers/departments/{customer_id}/createdepartments', [Departments_Controller::class, 'createDepartments']);
+    Route::post('/settings/customers/departments/{customer_id}/updatedepartments', [Departments_Controller::class, 'updateDepartments']);
+    Route::post('/settings/customers/departments/{customer_id}/deletedepartments', [Departments_Controller::class, 'deleteDepartments']);
+
+    // Settings Equipments Page use here
+    Route::get('/settings/equipments', function () {
+        return view('equipments');
+    });
 });
 
 Route::get('/logout', function () {
