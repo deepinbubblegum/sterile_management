@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Hash;
 
 class Departments_Controller extends BaseController
 {
-    public function departmentsView(Request $request, $id)
-    {
-        $customer_id = $request->customer_id;
-        return view('departments', ['customer_id' => $customer_id]);
-    }
+    // public function departmentsView(Request $request, $id)
+    // {
+    //     $customer_id = $request->customer_id;
+    //     return view('departments', ['customer_id' => $customer_id]);
+    // }
 
     public function getListDepartments(Request $request, $id)
     {
