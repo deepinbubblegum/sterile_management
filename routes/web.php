@@ -11,6 +11,7 @@ use App\Http\Controllers\CreateOrder_Controller;
 use App\Http\Controllers\Customers_Controller;
 use App\Http\Controllers\Departments_Controller;
 use App\Http\Controllers\DeptEquip_Controller;
+use App\Http\Controllers\Equipments_Controller;
 
 use App\Http\Controllers\Pro_Washing_Controller;
 use App\Http\Controllers\Pro_Packing_Controller;
@@ -130,6 +131,8 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/settings/equipments', function () {
         return view('equipments');
     });
+    Route::get('/settings/equipments/getlistequipments', [Equipments_Controller::class, 'getListEquipments']);
+    Route::post('/settings/equipments/createequipments', [Equipments_Controller::class, 'createEquipments']);
 });
 
 Route::get('/logout', function () {
