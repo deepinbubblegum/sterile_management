@@ -5,7 +5,7 @@
 {{-- <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}" /> --}}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet" />
 
-
+<title>Medihealth Solution</title>
 {{-- @vite('resources/js/app.js') --}}
 {{-- @vite('resources/css/select2.css') --}}
 {{-- @vite('resources/css/app.css') --}}

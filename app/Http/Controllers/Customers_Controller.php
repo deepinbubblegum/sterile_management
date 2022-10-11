@@ -43,4 +43,55 @@ class Customers_Controller extends BaseController
             return $return_data;
         }
     }
+
+    private function getAutoCustomersID()
+    {
+        $oid = DB::select(
+            'SELECT CONCAT("CTM-",LPAD(SUBSTRING(IFNULL(MAX(customers.Customer_id), "0"), 5,6)+1, 6,"0")) as auto_id FROM customers'
+        );
+        return $oid[0]->auto_id;
+    }
+
+    public function createCustomers(Request $request)
+    {
+        $recv = $request->all();
+        $customer_name = $recv['customer_name'];
+        $address = $recv['address'];
+        $id_customer = $this->getAutoCustomersID();
+        DB::table('customers')->insert([
+            'Customer_id' => $id_customer,
+            'Customer_name' => $customer_name,
+            'address' => $address
+        ]);
+        return json_encode(TRUE);
+    }
+
+    public function deleteCustomers(Request $request)
+    {
+        $recv = $request->all();
+        $customer_id = $recv['customer_id'];
+        DB::table('customers')->where('Customer_id', $customer_id)->delete();
+        return json_encode(TRUE);
+    }
+
+    public function getCustomersDetail(Request $request)
+    {
+        $recv = $request->all();
+        $customer_id = $recv['customer_id'];
+        $customer = DB::table('customers')->where('Customer_id', $customer_id)->first();
+        return json_encode($customer);
+    }
+
+    public function updateCustomers(Request $request)
+    {
+        $recv = $request->all();
+        $customer_id = $recv['customer_id'];
+        $customer_name = $recv['customer_name'];
+        $address = $recv['customer_address'];
+        DB::table('customers')->where('Customer_id', $customer_id)->update([
+            'Customer_name' => $customer_name,
+            'address' => $address
+        ]);
+        return json_encode(TRUE);
+    }
 }

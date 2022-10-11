@@ -9,6 +9,9 @@ use App\Http\Controllers\Process_Controller;
 use App\Http\Controllers\OnProcess_controller;
 use App\Http\Controllers\CreateOrder_Controller;
 use App\Http\Controllers\Customers_Controller;
+use App\Http\Controllers\Departments_Controller;
+use App\Http\Controllers\DeptEquip_Controller;
+use App\Http\Controllers\Equipments_Controller;
 
 use App\Http\Controllers\Pro_Washing_Controller;
 use App\Http\Controllers\Pro_Packing_Controller;
@@ -103,6 +106,38 @@ Route::group(['middleware' => ['authLogin']], function () {
         return view('customers');
     });
     Route::get('/settings/customers/getlistcustomers', [Customers_Controller::class, 'getListCustomers']);
+    Route::get('/settings/customers/getcustomersdetail', [Customers_Controller::class, 'getCustomersDetail']);
+    Route::post('/settings/customers/createcustomers', [Customers_Controller::class, 'createCustomers']);
+    Route::post('/settings/customers/updatecustomers', [Customers_Controller::class, 'updateCustomers']);
+    Route::post('/settings/customers/deletecustomers', [Customers_Controller::class, 'deleteCustomers']);
+
+    // Settings Department Page use here
+    Route::get('/settings/customers/departments/{customer_id}', function () {
+        return view('departments');
+    });
+    Route::get('/settings/customers/departments/{customer_id}/getlistdepartments', [Departments_Controller::class, 'getListDepartments']);
+    Route::get('/settings/customers/departments/{customer_id}/getdepartmentsdetail', [Departments_Controller::class, 'getDepartmentsDetail']);
+    Route::post('/settings/customers/departments/{customer_id}/createdepartments', [Departments_Controller::class, 'createDepartments']);
+    Route::post('/settings/customers/departments/{customer_id}/updatedepartments', [Departments_Controller::class, 'updateDepartments']);
+    Route::post('/settings/customers/departments/{customer_id}/deletedepartments', [Departments_Controller::class, 'deleteDepartments']);
+
+    // Settings Equipment in Department Page use here
+    // Route::get('/settings/customers/departments/{customer_id}/{department_id}', function () {
+    //     return view('deptequip');
+    // });
+    Route::get('/settings/customers/departments/{customer_id}/{department_id}', [DeptEquip_Controller::class, 'viewDeptEquip']);
+    Route::get('/settings/customers/departments/{customer_id}/{department_id}/getlistdeptequip', [DeptEquip_Controller::class, 'getListDeptEquip']);
+
+    // Settings Equipments Page use here
+    Route::get('/settings/equipments', function () {
+        return view('equipments');
+    });
+    Route::get('/settings/equipments/getlistequipments', [Equipments_Controller::class, 'getListEquipments']);
+    Route::get('/settings/equipments/getequipmentsdetail', [Equipments_Controller::class, 'getEquipmentsDetail']);
+    Route::post('/settings/equipments/createequipments', [Equipments_Controller::class, 'createEquipments']);
+    Route::post('/settings/equipments/updateequipments', [Equipments_Controller::class, 'updateEquipments']);
+    Route::post('/settings/equipments/deleteequipments', [Equipments_Controller::class, 'deleteEquipments']);
+    Route::post('/settings/equipments/activateequipments', [Equipments_Controller::class, 'activateEquipments']);
 });
 
 Route::get('/logout', function () {

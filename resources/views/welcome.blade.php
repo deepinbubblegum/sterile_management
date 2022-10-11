@@ -43,8 +43,8 @@
 
 
 
-                    <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-4">
-                        
+                    {{-- <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-4">
+
                         <!-- Users card -->
                         <div class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
                             <div>
@@ -121,14 +121,10 @@
                                 </span>
                             </div>
                         </div>
-                    </div>
-
-            </div>
+                    </div> --}}
+                </div>
+            </main>
         </div>
-    </div>
-    </div>
-    </main>
-    </div>
     </div>
 
     <!-- All javascript code in this project for now is just for demo DON'T RELY ON IT  -->
