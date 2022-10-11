@@ -193,7 +193,7 @@
                                                 <option value="STEAM">STEAM</option>
                                                 <option value="PLASMA">PLASMA</option>
                                                 <option value="ETO">ETO</option>
-                                                <option value="Disinfection">Disinfection</option>
+                                                <option value="Wash&Disinfection">Wash&Disinfection</option>
                                             </select>
                                         </div>
                                         <div class="mr-2 ml-2">

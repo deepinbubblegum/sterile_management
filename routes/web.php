@@ -126,6 +126,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     //     return view('deptequip');
     // });
     Route::get('/settings/customers/departments/{customer_id}/{department_id}', [DeptEquip_Controller::class, 'viewDeptEquip']);
+    Route::get('/settings/customers/departments/{customer_id}/{department_id}/getlistdeptequip', [DeptEquip_Controller::class, 'getListDeptEquip']);
 
     // Settings Equipments Page use here
     Route::get('/settings/equipments', function () {
