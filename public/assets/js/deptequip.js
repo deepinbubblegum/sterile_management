@@ -8,6 +8,34 @@ $(document).ready(function () {
             console.log(element);
             const rowHtml = `
             <tr>
+                <td
+                    class="border-dashed border-t border-gray-200 Order_id">
+                    <span
+                        class="text-nowrap text-gray-700 dark:text-light px-6 py-2 flex items-center">
+                        ${element.Name}
+                    </span>
+                </td>
+                <td
+                    class="border-dashed border-t border-gray-200 Order_id">
+                    <span
+                        class="text-nowrap text-gray-700 dark:text-light px-1 py-2 flex items-center">
+                        ${element.Descriptions}
+                    </span>
+                </td>
+                <td
+                    class="border-dashed border-t border-gray-200 Order_id">
+                    <span
+                        class="text-nowrap text-gray-700 dark:text-light px-1 py-2 flex items-center">
+                        ${element.Customer_name}
+                    </span>
+                </td>
+                <td
+                    class="border-dashed border-t border-gray-200 Order_id">
+                    <span
+                        class="text-nowrap text-gray-700 dark:text-light px-1 py-2 flex items-center">
+                        ${element.Department_name}
+                    </span>
+                </td>
                 <td class="border-dashed border-t border-gray-200 action">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
@@ -15,13 +43,6 @@ $(document).ready(function () {
                             class="delete_equipments mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-solid fa-trash fa-xl mx-auto"></i>
                         </button>
-                    </span>
-                </td>
-                <td
-                    class="border-dashed border-t border-gray-200 Order_id">
-                    <span
-                        class="text-nowrap text-gray-700 dark:text-light px-1 py-2 flex items-center">
-                        ${element.Name}
                     </span>
                 </td>
             </tr>
@@ -86,5 +107,30 @@ $(document).ready(function () {
             let txt_search = $("#search").val();
             getDeptequip(page, txt_search);
         }
+    });
+
+    function getParameterByName(name, url) {
+        name = name.replace(/[\[\]]/g, "\\$&");
+        let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return "";
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+    
+    $(document).on("click", "#select_page", function () {
+        let type_btn = $(this).attr("type_btn");
+        let url_data = $(this).attr("url_data");
+
+        let page = getParameterByName("page", url_data);
+
+        let txt_search = $("#search").val();
+
+        getDeptequip(page, txt_search);
+    });
+
+    $("#search").keydown(function (e) {
+        let txt_search = $("#search").val();
+        getDeptequip(null, txt_search);
     });
 });

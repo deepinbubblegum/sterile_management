@@ -90,9 +90,6 @@
                                         class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr>
                                             <th scope="col" class="py-2 px-6">
-                                                Actions
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
                                                 ชื่ออุปกรณ์
                                             </th>
                                             <th scope="col" class="py-2 px-1">
@@ -103,6 +100,9 @@
                                             </th>
                                             <th scope="col" class="py-2 px-1">
                                                 แผนก
+                                            </th>
+                                            <th scope="col" class="py-2 px-1">
+                                                Actions
                                             </th>
                                         </tr>
                                     </thead>
