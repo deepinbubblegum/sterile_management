@@ -132,7 +132,11 @@ Route::group(['middleware' => ['authLogin']], function () {
         return view('equipments');
     });
     Route::get('/settings/equipments/getlistequipments', [Equipments_Controller::class, 'getListEquipments']);
+    Route::get('/settings/equipments/getequipmentsdetail', [Equipments_Controller::class, 'getEquipmentsDetail']);
     Route::post('/settings/equipments/createequipments', [Equipments_Controller::class, 'createEquipments']);
+    Route::post('/settings/equipments/updateequipments', [Equipments_Controller::class, 'updateEquipments']);
+    Route::post('/settings/equipments/deleteequipments', [Equipments_Controller::class, 'deleteEquipments']);
+    Route::post('/settings/equipments/activateequipments', [Equipments_Controller::class, 'activateEquipments']);
 });
 
 Route::get('/logout', function () {
