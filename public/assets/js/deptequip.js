@@ -6,6 +6,27 @@ $(document).ready(function () {
         $("#equipmentsTable").empty();
         data.forEach((element) => {
             console.log(element);
+            const rowHtml = `
+            <tr>
+                <td class="border-dashed border-t border-gray-200 action">
+                    <span
+                        class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
+                        <button type="button" data-equip="${element.Equipment_id}" data-dept="${element.Department_id}"
+                            class="delete_equipments mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                            <i class="fa-solid fa-trash fa-xl mx-auto"></i>
+                        </button>
+                    </span>
+                </td>
+                <td
+                    class="border-dashed border-t border-gray-200 Order_id">
+                    <span
+                        class="text-nowrap text-gray-700 dark:text-light px-1 py-2 flex items-center">
+                        ${element.Name}
+                    </span>
+                </td>
+            </tr>
+            `;
+            $("#equipmentsTable").append(rowHtml);
         });
     }
 
@@ -58,4 +79,12 @@ $(document).ready(function () {
 
     // initial call to get all deptequip
     getDeptequip();
+
+    $('#page_input').keydown(function (e) {
+        if (e.keyCode == 13) {
+            let page = $('#page_input').val();
+            let txt_search = $("#search").val();
+            getDeptequip(page, txt_search);
+        }
+    });
 });
