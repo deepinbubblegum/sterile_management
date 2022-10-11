@@ -59,15 +59,15 @@
                                     <div>
                                         <input type="text" id="txt_search"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Oder ID" value="">
+                                            placeholder="หมายเลข ออเดอร์" value="">
                                     </div>
 
                                 </div>
                                 <button type="button" id="btn_search"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search
+                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">ค้นหา
                                 </button>
                                 <button type="button" id="btn_clear_search"
-                                    class="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">Clear
+                                    class="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">ล้างการค้นหา
                                 </button>
                             </form>
                         </div>
@@ -80,31 +80,31 @@
                                         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr>
                                             <th scope="col" class="py-3 px-6">
-                                                Oder_id
+                                                หมายเลข ออเดอร์
                                             </th>
                                             <th scope="col" class="py-3 px-6">
-                                                Status_Oder
+                                                สถานะ ออเดอร์
                                             </th>
                                             <th scope="col" class="py-3 px-6">
-                                                Notes
+                                                หมายเหตุ
                                             </th>
                                             <th scope="col" class="py-3 px-6">
-                                                Approve_by
+                                                ผู้อนุมัติ
                                             </th>
                                             <th scope="col" class="py-3 px-6">
-                                                Approve_at
+                                                วันที่อนุมัติ
                                             </th>
                                             <th scope="col" class="py-3 px-6">
-                                                Create_by
+                                                สร้างโดย
                                             </th>
                                             <th scope="col" class="py-3 px-6">
-                                                Create_at
+                                                วันที่สร้าง
                                             </th>
                                             <th scope="col" class="py-3 px-6">
-                                                Update_by
+                                                ผู้อัปเดท
                                             </th>
                                             <th scope="col" class="py-3 px-6">
-                                                Update_at
+                                                วันที่อัปเดท
                                             </th>
                                         </tr>
                                     </thead>

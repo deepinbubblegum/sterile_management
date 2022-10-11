@@ -72,7 +72,7 @@
                     <tr class="">
                         <td class="text-left px-1"><b>ออเดอร์ / เลขที่ :</b> {{$order_id}}</td>
                         <td class="text-left px-1"><b>สถานพยาบาล / ศูนย์การแพทย์ :</b> {{$customer_name}}</td>
-                        <td class="text-left px-1"><b>แผนก :</b> {{$department_name}}</td>                    
+                        <td class="text-left px-1"><b>แผนก :</b> {{$department_name}}</td>
                     </tr>
                     <tr>
                         <td class="text-left px-1"><b>วันที่-เวลา : </b>{{$create_at}}</td>
@@ -114,9 +114,9 @@
                         <td class="text-right px-2 py-1">{{number_format((float)$item->Price, 2, '.', '');}}</td>
                         <td class="text-right px-2 py-1">{{number_format((float)$item->Price * $item->Quantity, 2, '.', '');}}</td>
                         <td class="text-center px-2 py-1 uppercase">{{$item->Process}}</td>
-                        <td class="text-center px-2 py-1"> 
+                        <td class="text-center px-2 py-1">
                             {{
-                                $item->Item_status == "W" ? "Washing" : ($item->Item_status == "P" ? "Packing" : ($item->Item_status == "S" ? "Sterlie" : "-" ))
+                                $item->Item_status == "W" ? "Washing" : ($item->Item_status == "P" ? "Packing" : ($item->Item_status == "S" ? "sterile" : "-" ))
                             }}
                         </td>
                     </tr>

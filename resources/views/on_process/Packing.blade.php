@@ -44,10 +44,10 @@
 
             <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
                 <div>
-                    <label for="option_Process_sterlie"
+                    <label for="option_Process_sterile"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Process
                         Sterile</label>
-                    <select id="option_Process_sterlie"
+                    <select id="option_Process_sterile"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         {{-- <option>Sterile 01</option>
                         <option>Sterile 02</option>
@@ -55,10 +55,10 @@
                     </select>
                 </div>
                 <div>
-                    <label for="option_machine_sterlie"
+                    <label for="option_machine_sterile"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เลือกเครื่อง
                         Sterile</label>
-                    <select id="option_machine_sterlie"
+                    <select id="option_machine_sterile"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         {{-- <option>Sterile 01</option>
                         <option>Sterile 02</option>
@@ -66,9 +66,9 @@
                     </select>
                 </div>
                 <div>
-                    <label for="option_program_sterlie"
+                    <label for="option_program_sterile"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เลือกโปรแกรม</label>
-                    <select id="option_program_sterlie"
+                    <select id="option_program_sterile"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         {{-- <option>Program 01</option>
                         <option>Program 02</option>
@@ -91,9 +91,9 @@
             </div>
 
             <div class="col-span-6 sm:col-span-6">
-                <label for="notes_messages"
+                <label for="notes_packing_messages"
                     class="block text-base font-medium dark:bg-darker dark:text-light mb-2">หมายเหตุ</label>
-                <textarea id="Packing_notes_messages" name="notes_messages" rows="4"
+                <textarea id="notes_packing_messages" name="notes_messages" rows="4"
                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="ข้อความหมายเหตุ..." value=""></textarea>
             </div>
@@ -129,10 +129,10 @@
                 <table class="mt-3 w-full text-sm text-left text-gray-500 dark:text-gray-400" id="tb_select">
                     <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="py-3 px-6">
+                            <th scope="col" class="py-3 px-6 text-center">
                                 <input type="checkbox" id="all_check_Packing"
                                     class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" />
-                                <label class="">เสร็จ</label>
+                                <label class="">QRcode</label>
                             </th>
                             <th scope="col" class="py-3 px-6">
                                 Action
@@ -155,25 +155,31 @@
                             <th scope="col" class="py-3 px-6">
                                 Cycle
                             </th>
+                            {{-- <th scope="col" class="py-3 px-6">
+                                PassStatus
+                            </th> --}}
                             <th scope="col" class="py-3 px-6">
-                                Status-Packing
-                            </th>
-                            <th scope="col" class="py-3 px-6">
-                                QC_by
+                                QC by
                             </th>
                             <th scope="col" class="py-3 px-6">
                                 QTY
                             </th>
                             <th scope="col" class="py-3 px-6">
-                                Exp_date
+                                Exp Date
                             </th>
                             <th scope="col" class="py-3 px-6">
-                                Create_at
+                                Note
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Create
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Delete
                             </th>
                         </tr>
                     </thead>
                     <tbody id="tb_list_packing">
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        {{-- <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <td class="py-4 px-6">
                                 <input type="checkbox"
                                     class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" />
@@ -212,13 +218,13 @@
                             <td class="py-4 px-6">
                                 10
                             </td>
-                        </tr>
+                        </tr> --}}
                     </tbody>
                 </table>
             </div>
             <div class="text-center mt-3">
                 <button type="button" id="btn_save_packing"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">บันทึก
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save
                 </button>
             </div>
 

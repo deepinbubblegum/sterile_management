@@ -15,6 +15,7 @@ use App\Http\Controllers\Equipments_Controller;
 
 use App\Http\Controllers\Pro_Washing_Controller;
 use App\Http\Controllers\Pro_Packing_Controller;
+use App\Http\Controllers\Pro_Sterile_Controller;
 
 
 /*
@@ -75,10 +76,15 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/Onprocess/New_WashingList', [Pro_Washing_Controller::class, 'OnProcess_Washing_newItem']);
 
     // Process Packing
-    Route::post('/Onprocess/GetSterlie_machine', [Pro_Packing_Controller::class, 'OnProcess_GetSterlie_machine']);
+    Route::post('/Onprocess/Getsterile_machine', [Pro_Packing_Controller::class, 'OnProcess_Getsterile_machine']);
     Route::post('/Onprocess/GetPacking_List', [Pro_Packing_Controller::class, 'OnProcess_GetPacking_List']);
     Route::post('/Onprocess/GetUserQC', [Pro_Packing_Controller::class, 'OnProcess_GetUserQC']);
     Route::post('/Onprocess/New_PackingList', [Pro_Packing_Controller::class, 'OnProcess_New_PackingList']);
+
+
+    // Process sterile
+    Route::post('/Onprocess/Getsterile_List', [Pro_Sterile_Controller::class, 'OnProcess_Getsterile_List']);
+    Route::post('/Onprocess/New_sterileList', [Pro_Sterile_Controller::class, 'OnProcess_New_sterileList']);
 
 
 

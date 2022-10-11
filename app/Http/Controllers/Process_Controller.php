@@ -36,6 +36,7 @@ class Process_Controller extends BaseController
                         $query->where('order_id', 'like', '%' . $data['txt_search'] . '%');
                     }
                 })
+                ->where('orders.StatusApprove', '1')
                 ->orderBy('order_id')
                 // ->get()
                 ->paginate(5);
