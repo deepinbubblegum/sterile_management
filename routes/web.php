@@ -128,11 +128,11 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/customers/departments/{customer_id}/deletedepartments', [Departments_Controller::class, 'deleteDepartments']);
 
     // Settings Equipment in Department Page use here
-    // Route::get('/settings/customers/departments/{customer_id}/{department_id}', function () {
-    //     return view('deptequip');
-    // });
     Route::get('/settings/customers/departments/{customer_id}/{department_id}', [DeptEquip_Controller::class, 'viewDeptEquip']);
+    Route::get('/settings/customers/departments/{customer_id}/{department_id}/getlistequip', [DeptEquip_Controller::class, 'getlistequip']);
     Route::get('/settings/customers/departments/{customer_id}/{department_id}/getlistdeptequip', [DeptEquip_Controller::class, 'getListDeptEquip']);
+    Route::post('/settings/customers/departments/{customer_id}/{department_id}/adddeptequip', [DeptEquip_Controller::class, 'addDeptEquip']);
+    Route::post('/settings/customers/departments/{customer_id}/{department_id}/deletedeptequip', [DeptEquip_Controller::class, 'deleteDeptEquip']);
 
     // Settings Equipments Page use here
     Route::get('/settings/equipments', function () {

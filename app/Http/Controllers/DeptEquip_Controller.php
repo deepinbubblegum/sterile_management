@@ -33,8 +33,8 @@ class DeptEquip_Controller extends BaseController
             $deptequip = DB::table('dept_equip')
                 ->select(
                     'dept_equip.Equipment_id', 'dept_equip.Department_id', 
-                    'customers.Customer_id', 'customers.Customer_name', 
-                    'equipments.Name', 'equipments.Descriptions',
+                    'customers.Customer_id', 'customers.Customer_name', 'equipments.Item_Type',
+                    'equipments.Name', 'equipments.Descriptions', 'equipments.Process',
                     'departments.Department_name'
                 )
                 ->leftjoin('departments', 'dept_equip.Department_id', '=', 'departments.Department_id')
@@ -47,7 +47,6 @@ class DeptEquip_Controller extends BaseController
                         $query->where('equipments.Name', 'like', '%' . $data['txt_search'] . '%');
                     }
                 })
-                ->orderBy('dept_equip.Equipment_id', 'desc')
                 ->paginate(8);
             $return_data->deptequip = $deptequip;
             return $return_data;
@@ -62,4 +61,40 @@ class DeptEquip_Controller extends BaseController
         }
     }
 
+    public function deleteDeptEquip(Request $request)
+    {
+        $recv = $request->all();
+        $equipment_id = $recv['equipment_id'];
+        $department_id = $recv['department_id'];
+        DB::table('dept_equip')
+            ->where('Equipment_id', $equipment_id)
+            ->where('Department_id', $department_id)
+            ->delete();
+        return json_encode(TRUE);
+    }
+
+    public function getlistequip(Request $request)
+    {
+        $department_id = strtoupper($request->department_id);
+        $equipments = DB::table('equipments')
+            ->select('equipments.Equipment_id', 'equipments.Name')
+            ->whereNotIn('equipments.Equipment_id',(function ($query) use ($department_id) {
+                $query->from('dept_equip')
+                    ->select('dept_equip.Equipment_id')
+                    ->where('dept_equip.Department_id', $department_id);
+            }))
+            ->get();
+        return $equipments;
+    }
+
+    public function addDeptEquip(Request $request)
+    {
+        $recv = $request->all();
+        $equipment_id = $recv['equipment_id'];
+        $department_id = strtoupper($request->department_id);
+        DB::table('dept_equip')->insert(
+            ['Equipment_id' => $equipment_id, 'Department_id' => $department_id]
+        );
+        return json_encode(TRUE);
+    }
 }

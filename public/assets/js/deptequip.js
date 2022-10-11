@@ -1,11 +1,12 @@
 $(document).ready(function () {
+    $(".select2").select2({});
     const url_path = window.location.pathname;
 
     // funtion set table
     function setTable(data) {
         $("#equipmentsTable").empty();
         data.forEach((element) => {
-            console.log(element);
+            // console.log(element);
             const rowHtml = `
             <tr>
                 <td
@@ -13,6 +14,20 @@ $(document).ready(function () {
                     <span
                         class="text-nowrap text-gray-700 dark:text-light px-6 py-2 flex items-center">
                         ${element.Name}
+                    </span>
+                </td>
+                <td
+                    class="border-dashed border-t border-gray-200 Order_id">
+                    <span
+                        class="text-nowrap text-gray-700 dark:text-light px-1 py-2 flex items-center">
+                        ${element.Process ? element.Process.toUpperCase() : "-"}
+                    </span>
+                </td>
+                <td
+                    class="border-dashed border-t border-gray-200 Order_id">
+                    <span
+                        class="text-nowrap text-gray-700 dark:text-light px-1 py-2 flex items-center">
+                        ${element.Process ? element.Item_Type : "-"}
                     </span>
                 </td>
                 <td
@@ -40,7 +55,7 @@ $(document).ready(function () {
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         <button type="button" data-equip="${element.Equipment_id}" data-dept="${element.Department_id}"
-                            class="delete_equipments mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                            class="delete_deptequip mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-solid fa-trash fa-xl mx-auto"></i>
                         </button>
                     </span>
@@ -49,6 +64,7 @@ $(document).ready(function () {
             `;
             $("#equipmentsTable").append(rowHtml);
         });
+        initgenevent();
     }
 
     // function to get all deptequip
@@ -133,4 +149,83 @@ $(document).ready(function () {
         let txt_search = $("#search").val();
         getDeptequip(null, txt_search);
     });
+
+    // function to set data to modal
+    function setModalData() {
+        $.ajax({
+            type: "GET",
+            url: `${url_path}/getlistequip`,
+            dataType: "json",
+            success: function (response) {
+                // console.log(response);
+                $("#equipment_list").empty();
+                $("#equipment_list").append('<option value="0" disabled selected> --- โปรดเลือก อุปกรณ์ --- </option>');
+                response.forEach(element => {
+                    $("#equipment_list").append(`<option value="${element.Equipment_id}">${element.Name}</option>`);
+                });
+            }
+        });
+    }
+
+    $("#add_equipment").click(function () {
+        let equip_id = $('#equipment_list').find(":selected").val();
+        if (equip_id == 0) {
+            alert("กรุณาเลือกอุปกรณ์");
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: `${url_path}/adddeptequip`,
+            data: {
+                equipment_id: equip_id,
+            },
+            dataType: "json",
+            success: function (response) {
+                // setModalData();
+                let page = $('#page_input').val();
+                let txt_search = $("#search").val();
+                $(`#equipment_list option[value='${equip_id}']`).each(function() {
+                    $(this).remove();
+                });
+                $("#equipment_list").val(0).change();
+                getDeptequip(page, txt_search);
+            }
+        });
+    });
+
+    $('.openAddModal').on('click', function(e){
+        e.preventDefault();
+        setModalData();
+        $('#interestModal').removeClass('invisible');
+    });
+    $('.closeModal').on('click', function(e){
+        e.preventDefault();
+        $('#interestModal').addClass('invisible');
+    });
+
+    // funtion init event
+    function initgenevent() {
+        // delete deptequip
+        $(".delete_deptequip").on("click", function (e) {
+            let equip_id = $(this).attr("data-equip");
+            let dept_id = $(this).attr("data-dept");
+
+            if (confirm("Are you sure you want to delete this?")) {
+                $.ajax({
+                    type: "POST",
+                    url: `${url_path}/deletedeptequip`,
+                    data: {
+                        equipment_id: equip_id,
+                        department_id: dept_id,
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        let page = $('#page_input').val();
+                        let txt_search = $("#search").val();
+                        getDeptequip(page, txt_search);
+                    },
+                });
+            }
+        });
+    }
 });
