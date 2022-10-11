@@ -74,25 +74,28 @@
                                     <label class="">เสร็จ</label>
                             </th>
                             <th scope="col" class="py-3 px-6">
-                                Washing_id
+                                หมายเลขการล้าง
                             </th>
                             <th scope="col" class="py-3 px-6">
-                                Item
+                                อุปกรณ์
                             </th>
                             <th scope="col" class="py-3 px-6">
-                                Machines
+                                เครื่องล้าง
                             </th>
                             <th scope="col" class="py-3 px-6">
-                                Cycle
+                                รอบเครื่อง
                             </th>
                             <th scope="col" class="py-3 px-6">
-                                QTY
+                                จำนวน
                             </th>
                             <th scope="col" class="py-3 px-6">
-                                PassStatus
+                                สถานะ
                             </th>
                             <th scope="col" class="py-3 px-6">
-                                Create_at
+                                วันที่สร้าง
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                ลบรายการ
                             </th>
                         </tr>
                     </thead>
@@ -130,7 +133,7 @@
 
             <div class="text-center">
                 <button type="button" id="btn_save_washing"
-                    class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">บันทึก</button>
+                    class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
             </div>
 
         </form>

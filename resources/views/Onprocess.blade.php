@@ -71,28 +71,28 @@
                                 <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
                                         <th scope="col" class="py-3 px-6">
-                                            Item_id
+                                            หมายเลขอุปกรณ์
                                         </th>
                                         <th scope="col" class="py-3 px-6">
-                                            Item_name
+                                            อุปกรณ์
                                         </th>
                                         <th scope="col" class="py-3 px-6">
-                                            Quantity
+                                            จำนวน
                                         </th>
                                         <th scope="col" class="py-3 px-6">
-                                            Item_status
+                                            สถานะอุปกรณ์
                                         </th>
                                         <th scope="col" class="py-3 px-6">
-                                            Item_Type
+                                            ชนิดของอุปกรณ์
                                         </th>
                                         <th scope="col" class="py-3 px-6">
                                             Process
                                         </th>
                                         <th scope="col" class="py-3 px-6">
-                                            Price
+                                            ราคา
                                         </th>
                                         <th scope="col" class="py-3 px-6">
-                                            Instrument_type
+                                            Instrument type
                                         </th>
                                         <th scope="col" class="py-3 px-6">
                                             Situation
@@ -116,8 +116,8 @@
 
                         <hr>
 
-                        {{-- State Sterlie --}}
-                        @include('on_process.Sterlie')
+                        {{-- State sterile --}}
+                        @include('on_process.sterile')
 
                     </div>
                 </div>
@@ -324,6 +324,7 @@
                                 <td class="py-4 px-6" value="${(item.QTY == null ? '' : item.QTY)}"> ${item.QTY} </td>
                                 <td class="py-4 px-6" value="${item.PassStatus}"> ${item.PassStatus} </td>
                                 <td class="py-4 px-6" value=""> ${item.Create_at} </td>
+                                <td class="py-4 px-6" value=""> - </td>
                             </tr>
                         `
                     }
@@ -384,9 +385,8 @@
 
             // alert(machines);
             row = $(`<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"> </tr>`);
-            col1 = $(
-                `<td class="py-4 px-6"> <input id="WS_Check" type="checkbox" class="check_OnProcess_Washing w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" /> </td>`
-            );
+            // col1 = $( `<td class="py-4 px-6"> <input id="WS_Check" type="checkbox" class="check_OnProcess_Washing w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" /> </td>`);
+            col1 = $( `<td class="py-4 px-6"> - </td>`);
             col2 = $(
                 `<td class="py-4 px-6" value="${_Item[0].washing_id == null ? '-' : _Item[0].washing_id}" > ${_Item[0].washing_id == null ? '-' : _Item[0].washing_id} </td>`
             );
@@ -396,11 +396,28 @@
             col6 = $(`<td class="py-4 px-6" value="${_Item[0].Quantity}" >${_Item[0].Quantity}</td>`);
             col7 = $(
                 `<td class="py-4 px-6" value="${_Item[0].Item_status}" >${_Item[0].Item_status}</td>`
-            );
-            col8 = $(`<td class="py-4 px-6" value="${DateNowDay()}" >${DateNowDay()}</td>`);
-            row.append(col1, col2, col3, col4, col5, col6, col7, col8).prependTo("#tb_list_washing");
+                );
+            col8 = $(`<td class="py-4 px-6" value="${DateNowDay()}"> ${DateNowDay()} </td>`);
+            col9 = $(
+                `<td class="py-4 px-6"> <button type="button" id="item_Remove_washing" class="py-2 px-3 text-xs font-medium text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"> x </button> </td>`
+                )
+            row.append(col1, col2, col3, col4, col5, col6, col7, col8, col9).prependTo(
+                "#tb_list_washing");
 
         })
+
+
+
+        $("#tb_list_washing").on("click", "#item_Remove_washing", function() {
+            let currentRow = $(this).closest("tr");
+            let item_name = currentRow.find("td:eq(2)").text();
+            let item_id = currentRow.find("td:eq(2)").attr('value');
+            $('#option_item_washing').append($('<option>', {
+                value: item_id,
+                text: `${item_id} - ${item_name}`
+            }));
+            $(this).closest("tr").remove();
+        });
 
 
         $('#washing_all_check').change(function() {
@@ -424,7 +441,7 @@
             var tb_list_washing = $('#tb_list_washing tr:has(td)').map(function(index, cell) {
                 var $td = $('td', this);
                 return {
-                    check: $('td input#WS_Check', this).prop('checked'),
+                    check: $('td input#WS_Check', this).prop('checked') || null,
                     washing_id: $td.eq(1).attr('value'),
                     item_id: $td.eq(2).attr('value'),
                     Machines_id: $td.eq(3).attr('value'),
@@ -485,30 +502,48 @@
                 },
                 dataType: "json",
                 success: function(response) {
-                    console.log(response.Packing_List)
+                    // console.log(response.Packing_List)
 
                     html_list = '';
                     for (let item of response.Packing_List) {
 
                         html_list += `
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <td class="py-4 px-6"> <input id="PK_Check" type="checkbox" ${(item.Item_status == 'Packing' ? '' : 'Checked')}
-                                        class="${(item.Item_status == 'Packing' ? 'check_OnProcess_Packing' : '')} w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light"  ${(item.Item_status == 'Packing Finish' ? 'disabled' : '' )}>
+                                <td class="py-4 px-6 text-center"> <input id="PK_Check" type="checkbox"
+                                        class="check_OnProcess_Packing w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" >
                                 </td>
-                                <td class="py-4 px-6" value="">  </td>
+                                <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <button
+                                        class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                                        <i class="fa-solid fa-print fa-lg fill-white icon_center"></i>
+                                    </button>
+
+                                    <button
+                                        class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-success inline-flex items-center hover:bg-success-dark focus:outline-none focus:ring focus:ring-success focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                                        <i class="fa-solid fa-camera fa-lg fill-white icon_center"></i>
+                                    </button>
+
+                                    <button
+                                        class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                                        <i class="fa-regular fa-file-image fa-lg  fill-white icon_center"></i>
+                                    </button>
+                                </td>
                                 <td class="py-4 px-6" value="${item.packing_id}"> ${item.packing_id} </td>
                                 <td class="py-4 px-6" value="${item.item_id}"> ${item.item_id} </td>
                                 <td class="py-4 px-6" value="${item.item_id}"> ${item.Name} </td>
                                 <td class="py-4 px-6" value="${item.Machine_id}"> ${item.Machine_name} </td>
                                 <td class="py-4 px-6" value="${item.Program_id}"> ${item.Program_name} </td>
                                 <td class="py-4 px-6" value="${item.Cycle}"> ${item.Cycle} </td>
-                                <td class="py-4 px-6" value="${(item.Item_status == null ? '' : item.Item_status)}"> ${item.Item_status} </td>
+
                                 <td class="py-4 px-6" value="${item.Qc_by}"> ${item.UserName_QC} </td>
                                 <td class="py-4 px-6" value="${(item.Quantity == null ? '' : item.Quantity)}"> ${item.Quantity} </td>
                                 <td class="py-4 px-6" value="${item.Exp_date}"> ${item.Exp_date} </td>
+                                <td class="py-4 px-6" value="${(item.Note == null ? '' : item.Note)}" > ${(item.Note == null ? '-' : item.Note)} </td>
                                 <td class="py-4 px-6" value=""> ${item.Create_at} </td>
+                                <td class="py-4 px-6" value=""> - </td>
                             </tr>
                         `
+                        // <td class="py-4 px-6" value="${(item.Item_status == null ? '' : item.Item_status)}"> ${item.Item_status} </td>
                     }
                     $('#tb_list_packing').html(html_list)
                 }
@@ -540,11 +575,11 @@
         }
 
 
-        var program_sterlie;
+        var program_sterile;
 
 
         function option_item_Packing(Oder_item) {
-            console.log(Oder_item)
+            // console.log(Oder_item)
             html_item_list = ''
 
             // response.machineswashing
@@ -556,22 +591,22 @@
             }
 
             $('#item_packing').html(html_item_list)
-            Get_Sterlie_machine()
+            Get_sterile_machine()
         }
 
 
         $('#item_packing').on('change', function() {
-            Get_Sterlie_machine()
+            Get_sterile_machine()
         })
 
 
-        function Get_Sterlie_machine() {
+        function Get_sterile_machine() {
 
             // alert($('#item_packing').find(":selected").val());
 
             $.ajax({
                 type: "POST",
-                url: `/Onprocess/GetSterlie_machine`,
+                url: `/Onprocess/Getsterile_machine`,
                 data: {
                     OrderId: '{{ $oder_id }}'
                 },
@@ -580,44 +615,44 @@
 
                     let item_process = $('#item_packing').find(":selected").data("process")
                     // alert($('#item_packing').find(":selected").data("process"))
-                    html_list_machine_sterlie = ''
+                    html_list_machine_sterile = ''
 
                     for (let item of response.items_machine) {
                         if (item.Machine_type == item_process) {
-                            html_list_machine_sterlie +=
+                            html_list_machine_sterile +=
                                 `<option value='${item.Machine_id}' data-process='${item.Machine_type}' >${item.Machine_name}</option>`
                         }
                     }
 
-                    $('#option_machine_sterlie').html(html_list_machine_sterlie)
-                    $('#name_process_machine_sterlie').val($('#option_machine_sterlie').find(
+                    $('#option_machine_sterile').html(html_list_machine_sterile)
+                    $('#name_process_machine_sterile').val($('#option_machine_sterile').find(
                         ":selected").data("process"))
 
 
                     // console.log(response.items_process)
-                    html_list_process_sterlie = ''
+                    html_list_process_sterile = ''
                     for (let item_pc of response.items_process) {
                         if (item_pc.Machine_type == item_process) {
-                            html_list_process_sterlie +=
+                            html_list_process_sterile +=
                                 `<option value='${item_pc.Machine_type}' >${item_pc.Machine_type}</option>`
                         }
                     }
-                    $('#option_Process_sterlie').html(html_list_process_sterlie)
-                    $('#option_Process_sterlie').val($('#option_machine_sterlie').find(":selected")
+                    $('#option_Process_sterile').html(html_list_process_sterile)
+                    $('#option_Process_sterile').val($('#option_machine_sterile').find(":selected")
                         .data("process"))
 
 
 
-                    program_sterlie = response.items_program
-                    html_list_program_sterlie = ''
+                    program_sterile = response.items_program
+                    html_list_program_sterile = ''
                     for (let item_p of response.items_program) {
-                        if (item_p.Machine_id == $('#option_machine_sterlie').find(":selected")
+                        if (item_p.Machine_id == $('#option_machine_sterile').find(":selected")
                             .val()) {
-                            html_list_program_sterlie +=
+                            html_list_program_sterile +=
                                 `<option value='${item_p.Program_id}' >${item_p.Program_name}</option>`
                         }
                     }
-                    $('#option_program_sterlie').html(html_list_program_sterlie)
+                    $('#option_program_sterile').html(html_list_program_sterile)
 
                 }
             });
@@ -625,25 +660,25 @@
 
 
         // Change Machine
-        $('#option_machine_sterlie').on('change', function() {
-            $('#option_Process_sterlie').val($(this).find(":selected").data("process"))
-            // console.log(program_sterlie)
+        $('#option_machine_sterile').on('change', function() {
+            $('#option_Process_sterile').val($(this).find(":selected").data("process"))
+            // console.log(program_sterile)
 
-            html_list_program_sterlie = ''
-            for (let item_p of program_sterlie) {
-                if (item_p.Machine_id == $('#option_machine_sterlie').find(":selected").val()) {
-                    html_list_program_sterlie +=
+            html_list_program_sterile = ''
+            for (let item_p of program_sterile) {
+                if (item_p.Machine_id == $('#option_machine_sterile').find(":selected").val()) {
+                    html_list_program_sterile +=
                         `<option value='${item_p.Program_id}' >${item_p.Program_name}</option>`
                 }
             }
-            $('#option_program_sterlie').html(html_list_program_sterlie)
+            $('#option_program_sterile').html(html_list_program_sterile)
         })
 
 
         // Change Process
-        $('#option_Process_sterlie').on('change', function() {
-            // $('#option_machine_sterlie').val()
-            $(`#option_machine_sterlie option[data-process='${($(this).val())}']`).prop("selected",
+        $('#option_Process_sterile').on('change', function() {
+            // $('#option_machine_sterile').val()
+            $(`#option_machine_sterile option[data-process='${($(this).val())}']`).prop("selected",
                 true);
         })
 
@@ -680,11 +715,11 @@
 
         $('#item_add_packing').on('click', function() {
 
-            let machines_id = $('#option_machine_sterlie').find(":selected").val();
-            let machines_name = $('#option_machine_sterlie').find(":selected").text();
+            let machines_id = $('#option_machine_sterile').find(":selected").val();
+            let machines_name = $('#option_machine_sterile').find(":selected").text();
 
-            let program_id = $('#option_program_sterlie').find(":selected").val();
-            let program_name = $('#option_program_sterlie').find(":selected").text();
+            let program_id = $('#option_program_sterile').find(":selected").val();
+            let program_name = $('#option_program_sterile').find(":selected").text();
 
             let item_packing = $('#item_packing').find(":selected").val();
 
@@ -692,6 +727,8 @@
 
             let userQC_id = $('#option_userQC').find(":selected").val();
             let userQC_name = $('#option_userQC').find(":selected").text();
+
+            let Note_Packing = $('#notes_packing_messages').val();
 
             if (item_packing == null) {
                 alert('ไม่มี item')
@@ -701,21 +738,18 @@
             let _Item = Oder_item.filter(v => v.Item_id == item_packing);
             resultChk = item_packing_checkDup(_Item[0].Item_id)
             if (resultChk == false) return resultChk;
+            console.log(_Item)
 
             // alert(machines);
             row = $(`<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"> </tr>`);
-            col1 = $(`<td scope="col" class="py-3 px-6">
-                        <input type="checkbox" id="PK_Check"
-                            class="check_OnProcess_Packing w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" />
-                    </td>`);
+            // col1 = $(`<td scope="col" class="py-3 px-6 text-center">
+            //             <input type="checkbox" id="PK_Check"
+            //                 class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" disabled />
+            //         </td>`);
+            col1 = $(`<td scope="col" class="py-3 px-6 text-center"> - </td>`);
             col2 = $(
                 `<td
                     class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <button target="_blank"
-                        class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                        <i
-                            class="fa-solid fa-print fa-lg fill-white icon_center"></i>
-                    </button>
 
                     <button
                         class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-success inline-flex items-center hover:bg-success-dark focus:outline-none focus:ring focus:ring-success focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
@@ -731,38 +765,63 @@
                 </td>`
             );
             col3 = $(
-                `<td class="py-4 px-6" value="${_Item[0].packing_id == null ? '-' : _Item[0].packing_id}" > ${_Item[0].packing_id == null ? '-' : _Item[0].packing_id} </td>`
+                `<td class="py-4 px-6" value="${_Item[0].packing_id == null ? '-' : _Item[0].packing_id}"> ${_Item[0].packing_id == null ? '-' : _Item[0].packing_id} </td>`
             );
             col4 = $(`<td class="py-4 px-6" value="${_Item[0].Item_id}"> ${_Item[0].Item_id} </td>`);
-            col5 = $(`<td class="py-4 px-6" value="${_Item[0].Item_id}"> ${_Item[0].Name} </td>`);
+            col5 = $(
+                `<td class="py-4 px-6" value="${_Item[0].Item_id}" data-process="${_Item[0].Process}"> ${_Item[0].Name} </td>`
+                );
             col6 = $(`<td class="py-4 px-6" value="${machines_id}"> ${machines_name} </td>`);
             col7 = $(`<td class="py-4 px-6" value="${program_id}"> ${program_name} </td>`);
-            col8 = $(`<td class="py-4 px-6" value=""></td>`);
-            col9 = $(`<td class="py-4 px-6" value=""> - </td>`);
+            col8 = $(`<td class="py-4 px-6" value=""> - </td>`);
             col10 = $(`<td class="py-4 px-6" value="${userQC_id}"> ${userQC_name} </td>`);
             col11 = $(`<td class="py-4 px-6" value="${_Item[0].Quantity}"> ${_Item[0].Quantity} </td>`);
-            col12 = $(`<td class="py-4 px-6" value="" data-addExp="${_Item[0].Expire}"> ${_Item[0].Expire} </td>`);
-            col13 = $(`<td class="py-4 px-6" value="${DateNowDay()}" >${DateNowDay()}</td>`);
-            row.append(col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13)
-                .prependTo("#tb_list_packing");
+            col12 = $(
+                `<td class="py-4 px-6" value="" data-addExp="${_Item[0].Expire}"> ${_Item[0].Expire} </td>`
+                );
+            col13 = $(`<td class="py-4 px-6" value="${Note_Packing}" > ${Note_Packing} </td>`);
+            col14 = $(`<td class="py-4 px-6" value="${DateNowDay()}" >${DateNowDay()}</td>`);
+            col15 = $(
+                `<td class="py-4 px-6"> <button type="button" id="item_Remove_Packing" class="py-2 px-3 text-xs font-medium text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"> x </button> </td>`
+                )
+            row.append(col1, col2, col3, col4, col5, col6, col7, col8, col10, col11, col12, col13,
+                col14, col15).prependTo("#tb_list_packing");
 
+            // $(selector).trigger("change");
+            Get_sterile_machine();
+            $('#notes_packing_messages').val('');
         })
+
+        $("#tb_list_packing").on("click", "#item_Remove_Packing", async function() {
+            let currentRow = $(this).closest("tr");
+            let item_name = currentRow.find("td:eq(4)").text();
+            let item_id = currentRow.find("td:eq(4)").attr('value');
+            let process = currentRow.find("td:eq(4)").attr('data-process');
+            $('#item_packing').append($('<option>', {
+                value: item_id,
+                text: `${item_id} - ${item_name}`,
+                "data-process": process
+            }));
+            await Get_sterile_machine();
+            $(this).closest("tr").remove();
+        });
 
 
         $('#btn_save_packing').on('click', function() {
             var tb_list_packing = $('#tb_list_packing tr:has(td)').map(function(index, cell) {
                 var $td = $('td', this);
                 return {
-                    check: $('td input#PK_Check', this).prop('checked'),
+                    check: $('td input#PK_Check', this).prop('checked') || 'false',
                     packing_id: $td.eq(2).attr('value'),
                     item_id: $td.eq(3).attr('value'),
                     Machines_id: $td.eq(5).attr('value'),
                     program_id: $td.eq(6).attr('value'),
                     Cycle: $td.eq(7).attr('value'),
-                    user_QC: $td.eq(9).attr('value'),
-                    QTY: $td.eq(10).attr('value'),
-                    Exp: $td.eq(11).attr('value'),
-                    AddExp: $td.eq(11).attr("data-addExp"),
+                    user_QC: $td.eq(8).attr('value'),
+                    QTY: $td.eq(9).attr('value'),
+                    Exp: $td.eq(10).attr('value'),
+                    AddExp: $td.eq(10).attr("data-addExp"),
+                    Note: $td.eq(11).attr("value"),
                 }
             }).get();
 
@@ -782,7 +841,109 @@
                     Oder_item = response.items
                     GetPacking_List()
                     Get_Oder_item();
+                    Getsterile_List()
+                }
+            });
 
+        })
+
+
+
+        //----------------------------------------- END Packing -------------------------------------//
+        //----------------------------------------- ------- -----------------------------------------//
+
+
+        //----------------------------------------- ------- -----------------------------------------//
+        //----------------------------------------- sterile -----------------------------------------//
+
+        Getsterile_List();
+
+
+        function Getsterile_List() {
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/Getsterile_List`,
+                data: {
+                    OrderId: '{{ $oder_id }}'
+                },
+                dataType: "json",
+                success: function(response) {
+                    // console.log(response.sterile_List)
+
+                    html_list = '';
+                    for (let item of response.sterile_List) {
+
+                        html_list += `
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <td class="py-4 px-6"> <input id="WS_Check" type="checkbox" ${(item.PassStatus == 'false' ? '' : 'Checked')}
+                                        class="${(item.PassStatus == 'false' ? 'check_OnProcess_sterile' : '')} w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light"  ${(item.PassStatus == 'true' ? 'disabled' : '' )}>
+                                </td>
+                                <td class="py-4 px-6" value="${item.sterile_qc_id}"> ${item.sterile_qc_id} </td>
+                                <td class="py-4 px-6" value="${item.item_id}"> ${item.item_id} </td>
+                                <td class="py-4 px-6" value="${item.item_id}"> ${item.Name} </td>
+                                <td class="py-4 px-6" value="${(item.Quantity == null ? '' : item.Quantity)}"> ${item.Quantity} </td>
+                                <td class="py-4 px-6" value="${item.Exp_date}"> ${item.Exp_date} </td>
+                                <td class="py-4 px-6" value="${item.Machine_id}"> ${item.Machine_name} </td>
+                                <td class="py-4 px-6" value="${item.Program_id}"> ${item.Program_name} </td>
+                                <td class="py-4 px-6" value="${item.Cycle}"> ${item.Cycle} </td>
+                                <td class="py-4 px-6" value="${item.Item_status}"> ${item.Item_status} </td>
+                                <td class="py-4 px-6" value="${(item.Note == null ? '' : item.Note)}" > ${(item.Note == null ? '-' : item.Note)} </td>
+                            </tr>
+                        `
+                        // <td class="py-4 px-6" value="${(item.Item_status == null ? '' : item.Item_status)}"> ${item.Item_status} </td>
+                    }
+                    $('#tb_list_sterile').html(html_list)
+                }
+            });
+        }
+
+
+        $('#all_check_sterile').change(function() {
+            if ($(this).prop('checked')) {
+                $(`tbody tr td input[type="checkbox"][class*="check_OnProcess_sterile"]`).each(
+                    function() {
+                        $(this).prop('checked', true);
+                        $(this).val('checked')
+                    });
+            } else {
+                $(`tbody tr td input[type="checkbox"][class*="check_OnProcess_sterile"]`).each(
+                    function() {
+                        $(this).prop('checked', false);
+                        $(this).val('')
+                    });
+            }
+        });
+
+
+
+        $('#btn_save_sterile').on('click', function() {
+            var tb_list_sterile = $('#tb_list_sterile tr:has(td)').map(function(index, cell) {
+                var $td = $('td', this);
+                if ($('td input', this).prop('checked')) {
+                    return {
+                        check: $('td input#ST_Check', this).prop('checked'),
+                        item_id: $td.eq(3).attr('value'),
+                        sterile_qc_id: $td.eq(1).attr('value'),
+                    }
+                }
+            }).get();
+
+            console.log(tb_list_sterile)
+
+            if (tb_list_sterile.length == 0) return false
+
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/New_sterileList`,
+                data: {
+                    sterileItem: tb_list_sterile,
+                    OrderId: '{{ $oder_id }}'
+                },
+                dataType: "json",
+                success: function(response) {
+                    Oder_item = response.items
+                    Getsterile_List();
+                    Get_Oder_item();
                 }
             });
 

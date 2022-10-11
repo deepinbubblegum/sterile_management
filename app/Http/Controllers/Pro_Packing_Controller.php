@@ -29,7 +29,16 @@ class Pro_Packing_Controller extends BaseController
     }
 
 
-    public function OnProcess_GetSterlie_machine(Request $request)
+    private function AutuIDsterile()
+    {
+        $oid = DB::select(
+            'SELECT CONCAT("STE-",LPAD(SUBSTRING(IFNULL(MAX(sterile_qc.sterile_qc_id), "0"), 5,6)+1, 6,"0")) as auto_id FROM sterile_qc'
+        );
+        return $oid[0]->auto_id;
+    }
+
+
+    public function OnProcess_Getsterile_machine(Request $request)
     {
         try {
 
@@ -75,7 +84,7 @@ class Pro_Packing_Controller extends BaseController
             $data = $request->all();
 
             $items = DB::table('packing')
-                ->select('packing.*', 'equipments.Name', 'machine.Machine_name' , 'machine_programs.Program_name' , 'machine_programs.Program_id' , 'users.Name as UserName_QC' , 'items.Quantity', 'items.Item_status')
+                ->select('packing.*', 'equipments.Name', 'machine.Machine_name', 'machine_programs.Program_name', 'machine_programs.Program_id', 'users.Name as UserName_QC', 'items.Quantity', 'items.Item_status')
                 ->leftjoin('items', 'items.item_id', '=', 'packing.item_id')
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
                 ->leftjoin('machine', 'packing.Machine_id', '=', 'machine.Machine_id')
@@ -141,6 +150,7 @@ class Pro_Packing_Controller extends BaseController
                 ->selectRaw('max(Cycle) as maxCycle')
                 ->leftjoin('orders', 'packing.Order_id', '=', 'orders.Order_id')
                 ->where('orders.Customer_id', $CUS_ID[0]->Customer_id)
+                ->whereMonth('packing.Create_at', '=', now()->month)
                 ->get();
             // dd($Cycle_Customer[0]->maxCycle);
 
@@ -172,7 +182,7 @@ class Pro_Packing_Controller extends BaseController
 
                 $Exp_date = $item['Exp'];
                 if ($Exp_date == 'null' || $Exp_date == null || $Exp_date == '' || $Exp_date == '-') {
-                    $Exp_date =Carbon::now()->addDay($item['AddExp']);
+                    $Exp_date = Carbon::now()->addDay($item['AddExp']);
                 }
                 // dd($dateNow);
 
@@ -211,25 +221,59 @@ class Pro_Packing_Controller extends BaseController
                         'Exp_date' => $Exp_date,
                         'Create_by' => $request->cookie('Username_server_User_id'),
                         'Create_at' => $dateNow,
-
+                        'PassStatus' => $item['check'],
+                        // 'PassStatus' => 'true',
+                        'Note' => $item['Note'],
                     ]
                 );
 
-                if ($item['check'] == 'true') {
+                $Item_status = DB::table('packing')
+                    ->select('items.Item_status')
+                    ->leftjoin('items', 'items.item_id', '=', 'packing.item_id')
+                    ->where('packing.Order_id', $data['OrderId'])
+                    ->where('packing.item_id', $item['item_id'])
+                    ->where('packing.packing_id', $packing_id)
+                    ->get();
+
+                if ($Item_status[0]->Item_status == 'Washing Finish') {
                     DB::table('items')
                         ->where('Item_id', $item['item_id'])
                         ->where('Order_id', $data['OrderId'])
                         ->update([
-                            'Item_status' => 'Packing Finish',
+                            'Item_status' => 'On sterile',
                         ]);
-                } else {
-                    DB::table('items')
-                        ->where('Item_id', $item['item_id'])
-                        ->where('Order_id', $data['OrderId'])
-                        ->update([
-                            'Item_status' => 'Packing',
-                        ]);
+
+                    DB::table('sterile_qc')->insert([
+                        'Order_id' => $data['OrderId'],
+                        'item_id' => $item['item_id'],
+                        'sterile_qc_id' =>  $this->AutuIDsterile(),
+                        'PassStatus' => 'false',
+                        'Create_by' => $request->cookie('Username_server_User_id'),
+                        'Create_at' => $dateNow,
+                        // 'Update_at' => null,
+                    ]);
                 }
+
+                // if($item['check'] == 'true'){
+
+                // }
+
+
+                // if ($item['check'] == 'true' && ( $Item_status[0]->Item_status == 'Packing' || $Item_status[0]->Item_status == 'Washing Finish' )) {
+                //     DB::table('items')
+                //         ->where('Item_id', $item['item_id'])
+                //         ->where('Order_id', $data['OrderId'])
+                //         ->update([
+                //             'Item_status' => 'Packing Finish',
+                //         ]);
+                // } elseif($item['check'] != 'true' && $Item_status[0]->Item_status == 'Washing Finish') {
+                //     DB::table('items')
+                //         ->where('Item_id', $item['item_id'])
+                //         ->where('Order_id', $data['OrderId'])
+                //         ->update([
+                //             'Item_status' => 'Packing',
+                //         ]);
+                // }
             }
 
             $OnProcess_controller = new OnProcess_controller;

@@ -189,19 +189,29 @@ class Pro_Washing_Controller extends BaseController
                         'MachinesWashing_id' => $item['Machines_id'],
                         'Cycle' => $num_cycle,
                         'QTY' => $item['QTY'],
-                        'PassStatus' => $item['check'],
+                        'PassStatus' => $item['check'] ?: 'false' ,
                         'Create_at' => $dateNow,
                     ]
                 );
 
-                if ($item['check'] == 'true') {
+
+                $Item_status = DB::table('washing')
+                    ->select('items.Item_status')
+                    ->leftjoin('items', 'items.item_id', '=', 'washing.item_id')
+                    ->where('washing.Order_id', $data['OrderId'])
+                    ->where('washing.item_id', $item['item_id'])
+                    ->where('washing.washing_id', $washing_id)
+                    ->get();
+                // dd($Item_status);
+
+                if ($item['check'] == 'true' && $Item_status[0]->Item_status == 'Washing') {
                     DB::table('items')
                         ->where('Item_id', $item['item_id'])
                         ->where('Order_id', $data['OrderId'])
                         ->update([
                             'Item_status' => 'Washing Finish',
                         ]);
-                } else {
+                } elseif ($item['check'] != 'true' && $Item_status[0]->Item_status == '') {
                     DB::table('items')
                         ->where('Item_id', $item['item_id'])
                         ->where('Order_id', $data['OrderId'])
