@@ -137,6 +137,14 @@
 
                 </tbody>
             </table>
+            <div class="mt-1 ml-1 remark text-base">
+                <p>
+                    <b>หมายเหตุ : </b>
+                    <div class="text-base border p-2 rounded-lg min-h-85">
+                        {{$notes ? $notes : ""}}
+                    </div>
+                </p>
+            </div>
         </span>
     </body>
 

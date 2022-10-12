@@ -65,7 +65,7 @@ class Order_Controller extends BaseController
     {
         $order_data = DB::table('orders')
             ->select(
-                'orders.Order_id', 'orders.Department_id', 'orders.Create_at',  'orders.Approve_at', 
+                'orders.Order_id', 'orders.Department_id', 'orders.Notes', 'orders.Create_at',  'orders.Approve_at', 
                 'customers.Customer_name', 'departments.Department_name', 'userCreate.Name as Create_byName',
                 'userApprove.Name as Approve_byName'
             )
@@ -206,6 +206,7 @@ class Order_Controller extends BaseController
             'approve_by' => $order_data[0]->Approve_byName,
             'create_at' => $order_data[0]->Create_at,
             'approve_at' => $order_data[0]->Approve_at,
+            'notes' => $order_data[0]->Notes,
             'order_item' => $order_data_item,
             'total_price' => $total_price,
             'total_vat' => $total_price * 0.07,
