@@ -86,8 +86,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/Onprocess/Getsterile_List', [Pro_Sterile_Controller::class, 'OnProcess_Getsterile_List']);
     Route::post('/Onprocess/New_sterileList', [Pro_Sterile_Controller::class, 'OnProcess_New_sterileList']);
 
-
-
+    
     // Create Order Page use here
     Route::get('/orders/create', function () {
         return view('createOrders');
@@ -97,6 +96,12 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/orders/create/getequipments', [CreateOrder_Controller::class, 'getEquipments']);
     Route::get('/orders/create/getsituations', [CreateOrder_Controller::class, 'getSituations']);
     Route::post('/orders/create/createorders', [CreateOrder_Controller::class, 'createOrders']);
+
+    // Edit Order Page use here
+    Route::get('/orders/edit/{order_id}', function () {
+        return view('editOrders');
+    });
+    // Route::get('/orders/edit/{order_id}/getorders', [Order_Controller::class, 'getOrders']);
 
     // Order Page use here
     Route::get('/orders', function () {
