@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Cookie;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
+use PDF;
+use QrCode;
 
 use App\Http\Controllers\OnProcess_controller;
 
@@ -221,7 +223,7 @@ class Pro_Packing_Controller extends BaseController
                         'Exp_date' => $Exp_date,
                         'Create_by' => $request->cookie('Username_server_User_id'),
                         'Create_at' => $dateNow,
-                        'PassStatus' => $item['check'],
+                        // 'PassStatus' => $item['check'],
                         // 'PassStatus' => 'true',
                         'Note' => $item['Note'],
                     ]
@@ -320,7 +322,49 @@ class Pro_Packing_Controller extends BaseController
         }
     }
 
-    // public function OnProcess_New_PackingList(Request $request){
+    public function getPackingPDF(Request $request)
+    {
 
-    // }
+        $data = $request->all();
+        $dateNow = Carbon::now();
+        $oder_id = $request->route('oder_id');
+        $item_id = $request->route('item_id');
+
+        // dd($oder_id);
+        $items = DB::table('packing')
+            ->select('packing.*', 'equipments.Name', 'machine.Machine_name', 'machine_programs.Program_name', 'machine_programs.Program_id', 'users.Name as UserName_QC',
+            'items.Quantity', 'items.Item_status' , 'orders.Department_id', 'departments.Department_name', 'customers.Customer_name', 'equipments.Process', 'user_create.Name as UserCreate')
+            ->leftjoin('items', 'items.item_id', '=', 'packing.item_id')
+            ->leftjoin('orders', 'items.Order_id', '=', 'orders.Order_id')
+            ->leftjoin('departments', 'orders.Department_id', '=', 'departments.Department_id')
+            ->leftjoin('customers', 'orders.Customer_id', '=', 'customers.Customer_id')
+            ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
+            ->leftjoin('machine', 'packing.Machine_id', '=', 'machine.Machine_id')
+            ->leftjoin('machine_programs', 'machine.Machine_id', '=', 'machine_programs.Machine_id')
+            ->leftjoin('users', 'packing.Qc_by', '=', 'users.User_id')
+            ->leftjoin('users as user_create', 'packing.Create_by', '=', 'users.User_id')
+            ->where('packing.Order_id', $oder_id)
+            ->where(function($query) use ($item_id) {
+                if(isset($item_id)){
+                    $query->where('items.item_id' , $item_id);
+                }
+            })
+            ->orderBy('packing_id')
+            ->get();
+        // dd($items->toArray());
+
+        foreach ($items as $item) {
+            // dd($item->item_id);
+            $item->qr_code = base64_encode(QrCode::format('png')->size(200)->errorCorrection('H')->generate($item->item_id));
+            // dd($item);
+        }
+
+
+
+        $pdf = PDF::loadView('pdf.QR_Code_Packing',compact('items'));
+        $customPaper = array(0, 0, 156.168, 184.2519685032);
+        $pdf->setPaper($customPaper);
+
+        return @$pdf->stream();
+    }
 }

@@ -340,7 +340,7 @@
 
             // response.machineswashing
             for (let item of Oder_item) {
-                if (item.Item_status == '' || item.Item_status == null) {
+                if (item.Item_status == '' || item.Item_status == null || item.Item_status == '-') {
                     html_item_list += `<option value='${item.Item_id}'>${item.Item_id} - ${item.Name} </option>`
                 }
             }
@@ -509,14 +509,11 @@
 
                         html_list += `
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <td class="py-4 px-6 text-center"> <input id="PK_Check" type="checkbox"
-                                        class="check_OnProcess_Packing w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" >
-                                </td>
                                 <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    <button
+                                    <a type="button" href="/Onprocess/pdf/{{ $oder_id }}/${item.item_id}" target="_blank"
                                         class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                         <i class="fa-solid fa-print fa-lg fill-white icon_center"></i>
-                                    </button>
+                                    </a>
 
                                     <button
                                         class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-success inline-flex items-center hover:bg-success-dark focus:outline-none focus:ring focus:ring-success focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
@@ -746,7 +743,7 @@
             //             <input type="checkbox" id="PK_Check"
             //                 class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" disabled />
             //         </td>`);
-            col1 = $(`<td scope="col" class="py-3 px-6 text-center"> - </td>`);
+            // col1 = $(`<td scope="col" class="py-3 px-6 text-center"> - </td>`);
             col2 = $(
                 `<td
                     class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -784,7 +781,7 @@
             col15 = $(
                 `<td class="py-4 px-6"> <button type="button" id="item_Remove_Packing" class="py-2 px-3 text-xs font-medium text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"> x </button> </td>`
                 )
-            row.append(col1, col2, col3, col4, col5, col6, col7, col8, col10, col11, col12, col13,
+            row.append(col2, col3, col4, col5, col6, col7, col8, col10, col11, col12, col13,
                 col14, col15).prependTo("#tb_list_packing");
 
             // $(selector).trigger("change");
@@ -794,9 +791,9 @@
 
         $("#tb_list_packing").on("click", "#item_Remove_Packing", async function() {
             let currentRow = $(this).closest("tr");
-            let item_name = currentRow.find("td:eq(4)").text();
-            let item_id = currentRow.find("td:eq(4)").attr('value');
-            let process = currentRow.find("td:eq(4)").attr('data-process');
+            let item_name = currentRow.find("td:eq(3)").text();
+            let item_id = currentRow.find("td:eq(3)").attr('value');
+            let process = currentRow.find("td:eq(3)").attr('data-process');
             $('#item_packing').append($('<option>', {
                 value: item_id,
                 text: `${item_id} - ${item_name}`,
@@ -811,17 +808,17 @@
             var tb_list_packing = $('#tb_list_packing tr:has(td)').map(function(index, cell) {
                 var $td = $('td', this);
                 return {
-                    check: $('td input#PK_Check', this).prop('checked') || 'false',
-                    packing_id: $td.eq(2).attr('value'),
-                    item_id: $td.eq(3).attr('value'),
-                    Machines_id: $td.eq(5).attr('value'),
-                    program_id: $td.eq(6).attr('value'),
-                    Cycle: $td.eq(7).attr('value'),
-                    user_QC: $td.eq(8).attr('value'),
-                    QTY: $td.eq(9).attr('value'),
-                    Exp: $td.eq(10).attr('value'),
-                    AddExp: $td.eq(10).attr("data-addExp"),
-                    Note: $td.eq(11).attr("value"),
+                    // check: $('td input#PK_Check', this).prop('checked') || 'false',
+                    packing_id: $td.eq(1).attr('value'),
+                    item_id: $td.eq(2).attr('value'),
+                    Machines_id: $td.eq(4).attr('value'),
+                    program_id: $td.eq(5).attr('value'),
+                    Cycle: $td.eq(6).attr('value'),
+                    user_QC: $td.eq(7).attr('value'),
+                    QTY: $td.eq(8).attr('value'),
+                    Exp: $td.eq(9).attr('value'),
+                    AddExp: $td.eq(9).attr("data-addExp"),
+                    Note: $td.eq(10).attr("value"),
                 }
             }).get();
 
@@ -844,6 +841,23 @@
                     Getsterile_List()
                 }
             });
+
+        })
+
+
+        $('#btn_pdf_packing').on('click' , function(){
+            var tb_list_packing = $('#tb_list_packing tr:has(td)').map(function(index, cell) {
+                var $td = $('td', this);
+                return {
+                    packing_id: $td.eq(1).attr('value'),
+                    item_id: $td.eq(2).attr('value'),
+                }
+            }).get();
+
+            if (tb_list_packing.length == 0) return false
+
+            $('')
+            // windows.local('pdf/test');
 
         })
 

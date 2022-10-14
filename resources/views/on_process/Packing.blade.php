@@ -129,11 +129,11 @@
                 <table class="mt-3 w-full text-sm text-left text-gray-500 dark:text-gray-400" id="tb_select">
                     <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="py-3 px-6 text-center">
+                            {{-- <th scope="col" class="py-3 px-6 text-center">
                                 <input type="checkbox" id="all_check_Packing"
                                     class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" />
                                 <label class="">QRcode</label>
-                            </th>
+                            </th> --}}
                             <th scope="col" class="py-3 px-6">
                                 Action
                             </th>
@@ -223,9 +223,19 @@
                 </table>
             </div>
             <div class="text-center mt-3">
-                <button type="button" id="btn_save_packing"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save
-                </button>
+                <div class="lg:grid-cols-1 md:grid-cols-1 mt-1">
+                    <div>
+                        {{-- <a type="button" id="btn_pdf_packing" href="/Onprocess/pdf/{{ $oder_id }}" target="_blank"
+                            class="my-2 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Print QR Code
+                        </a> --}}
+
+                        <button type="button" id="btn_save_packing"
+                            class="my-2 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                            Save
+                        </button>
+                    </div>
+                </div>
             </div>
 
         </form>

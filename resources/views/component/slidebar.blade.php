@@ -253,6 +253,23 @@
              </a>
          </div>
 
+         {{-- Stock --}}
+         <div x-data="{ isActive: false, open: false }">
+            <a href="/stock"
+                class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
+                :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
+                :aria-expanded="(open || isActive) ? 'true' : 'false'">
+                <span aria-hidden="true">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                </span>
+                <span class="ml-2 text-sm">Stock</span>
+            </a>
+        </div>
+
          <!-- Reports links -->
          <div x-data="{ isActive: false, open: false }">
              <!-- active classes 'bg-primary-100 dark:bg-primary' -->
