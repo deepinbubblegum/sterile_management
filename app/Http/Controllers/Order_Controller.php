@@ -196,7 +196,7 @@ class Order_Controller extends BaseController
         }
         // dd($order_data);
         $data = [
-            'qrcode_order' => base64_encode(QrCode::format('png')->size(200)->errorCorrection('H')->generate('string')),
+            'qrcode_order' => base64_encode(QrCode::format('png')->size(200)->errorCorrection('H')->generate($id)),
             'order_id' => $id,
             'order_date' => $current->format('d/m/Y'),
             'print_by' => $print_by,
