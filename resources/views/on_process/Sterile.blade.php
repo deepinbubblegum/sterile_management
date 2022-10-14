@@ -1,4 +1,4 @@
-<section class="overflow-x-auto mt-10 mb-8" id="sterile_state">
+<section class="overflow-x-auto mt-10" id="sterile_state">
 
     <p class="text-2xl text-gray-900 dark:text-white" style="color: #00ffc0;">Process sterile
     </p>
@@ -111,9 +111,14 @@
         </table>
     </div>
     <div class="text-center mt-3">
-        <button type="button" id="btn_save_sterile"
-            class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Finish
-        </button>
+        <div class="lg:grid-cols-1 md:grid-cols-1 mt-1">
+            <div>
+                <button type="button" id="btn_save_sterile"
+                    class="my-2 text-white bg-orange-700 hover:bg-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-2 mb-2 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">
+                    Sterile Finish
+                </button>
+            </div>
+        </div>
     </div>
 
 </section>
