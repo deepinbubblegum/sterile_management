@@ -332,7 +332,7 @@ class Pro_Packing_Controller extends BaseController
 
         // dd($oder_id);
         $items = DB::table('packing')
-            ->select('packing.*', 'equipments.Name', 'machine.Machine_name', 'machine_programs.Program_name', 'machine_programs.Program_id', 'users.Name as UserName_QC',
+            ->select('packing.*', 'equipments.Name', 'machine.Machine_name', 'machine_programs.Program_name', 'machine_programs.Program_id', 'user_QC.Name as UserName_QC',
             'items.Quantity', 'items.Item_status' , 'orders.Department_id', 'departments.Department_name', 'customers.Customer_name', 'equipments.Process', 'user_create.Name as UserCreate')
             ->leftjoin('items', 'items.item_id', '=', 'packing.item_id')
             ->leftjoin('orders', 'items.Order_id', '=', 'orders.Order_id')
@@ -341,8 +341,8 @@ class Pro_Packing_Controller extends BaseController
             ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
             ->leftjoin('machine', 'packing.Machine_id', '=', 'machine.Machine_id')
             ->leftjoin('machine_programs', 'machine.Machine_id', '=', 'machine_programs.Machine_id')
-            ->leftjoin('users', 'packing.Qc_by', '=', 'users.User_id')
-            ->leftjoin('users as user_create', 'packing.Create_by', '=', 'users.User_id')
+            ->leftjoin('users as user_QC', 'packing.Qc_by', '=', 'user_QC.User_id')
+            ->leftjoin('users as user_create', 'packing.Create_by', '=', 'user_create.User_id')
             ->where('packing.Order_id', $oder_id)
             ->where(function($query) use ($item_id) {
                 if(isset($item_id)){
@@ -351,6 +351,7 @@ class Pro_Packing_Controller extends BaseController
             })
             ->orderBy('packing_id')
             ->get();
+        // dd($items);
         // dd($items->toArray());
 
         foreach ($items as $item) {

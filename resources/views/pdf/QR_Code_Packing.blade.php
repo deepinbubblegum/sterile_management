@@ -4,6 +4,36 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+    <style>
+        @font-face {
+            font-family: 'THSarabunNew';
+            font-style: normal;
+            font-weight: normal;
+            src: url("{{ public_path('fonts/THSarabunNew.ttf') }}") format('truetype');
+        }
+
+        @font-face {
+            font-family: 'THSarabunNew';
+            font-style: normal;
+            font-weight: bold;
+            src: url("{{ public_path('fonts/THSarabunNew Bold.ttf') }}") format('truetype');
+        }
+
+        @font-face {
+            font-family: 'THSarabunNew';
+            font-style: italic;
+            font-weight: normal;
+            src: url("{{ public_path('fonts/THSarabunNew Italic.ttf') }}") format('truetype');
+        }
+
+        @font-face {
+            font-family: 'THSarabunNew';
+            font-style: italic;
+            font-weight: bold;
+            src: url("{{ public_path('fonts/THSarabunNew BoldItalic.ttf') }}") format('truetype');
+        }
+    </style>
+
     <link rel="stylesheet" href="{{ public_path('assets/css/packing_qrcode.css') }}">
 
 </head>
@@ -32,7 +62,7 @@
 
             <div class="body">
 
-                <img class="img_QR_top" src="data:image/png;base64, {{ $items->qr_code }}" width="40px"
+                <img class="img_QR_top" src="data:image/png;base64, {{ $items->qr_code }}" width="30px"
                     height="auto">
 
                 <div class="textBody">
@@ -67,7 +97,7 @@
 
             <div class="footer">
 
-                <img class="img_QR_buttom" src="data:image/png;base64, {{ $items->qr_code }}" width="40px"
+                <img class="img_QR_buttom" src="data:image/png;base64, {{ $items->qr_code }}" width="30px"
                     height="auto">
 
                 <div class="textfooter">
