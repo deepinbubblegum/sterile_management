@@ -17,6 +17,7 @@ use App\Http\Controllers\Pro_Washing_Controller;
 use App\Http\Controllers\Pro_Packing_Controller;
 use App\Http\Controllers\Pro_Sterile_Controller;
 
+use App\Http\Controllers\Stock_Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,13 +81,20 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/Onprocess/GetPacking_List', [Pro_Packing_Controller::class, 'OnProcess_GetPacking_List']);
     Route::post('/Onprocess/GetUserQC', [Pro_Packing_Controller::class, 'OnProcess_GetUserQC']);
     Route::post('/Onprocess/New_PackingList', [Pro_Packing_Controller::class, 'OnProcess_New_PackingList']);
+    Route::get('/Onprocess/pdf/{oder_id}', [Pro_Packing_Controller::class, 'getPackingPDF']);
+    Route::get('/Onprocess/pdf/{oder_id}/{item_id}', [Pro_Packing_Controller::class, 'getPackingPDF']);
 
 
     // Process sterile
     Route::post('/Onprocess/Getsterile_List', [Pro_Sterile_Controller::class, 'OnProcess_Getsterile_List']);
     Route::post('/Onprocess/New_sterileList', [Pro_Sterile_Controller::class, 'OnProcess_New_sterileList']);
 
-    
+    Route::get('/stock', function () {
+        return view('stock');
+    });
+
+    Route::post('/Get_Stock', [Stock_Controller::class, 'Get_Stock']);
+
     // Create Order Page use here
     Route::get('/orders/create', function () {
         return view('createOrders');

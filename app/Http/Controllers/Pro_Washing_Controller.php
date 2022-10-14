@@ -155,6 +155,22 @@ class Pro_Washing_Controller extends BaseController
             }
             // dd($mach_cycle);
 
+            $check_Order = DB::table('orders')
+                ->select('StatusOrder')
+                ->where('Order_id', $data['OrderId'])
+                ->get();
+
+
+            if ($check_Order[0]->StatusOrder == '' || $check_Order[0]->StatusOrder == null || $check_Order[0]->StatusOrder == '-') {
+                DB::table('orders')
+                    ->where('Order_id', $data['OrderId'])
+                    ->update([
+                        'StatusOrder' => 'On Process',
+                    ]);
+            }
+
+
+
 
             foreach ($data['WashingItem'] as $item) {
 
@@ -189,7 +205,7 @@ class Pro_Washing_Controller extends BaseController
                         'MachinesWashing_id' => $item['Machines_id'],
                         'Cycle' => $num_cycle,
                         'QTY' => $item['QTY'],
-                        'PassStatus' => $item['check'] ?: 'false' ,
+                        'PassStatus' => $item['check'] ?: 'false',
                         'Create_at' => $dateNow,
                     ]
                 );
@@ -211,7 +227,7 @@ class Pro_Washing_Controller extends BaseController
                         ->update([
                             'Item_status' => 'Washing Finish',
                         ]);
-                } elseif ($item['check'] != 'true' && $Item_status[0]->Item_status == '') {
+                } elseif ($item['check'] != 'true' && ($Item_status[0]->Item_status == '' || $Item_status[0]->Item_status == '-' || $Item_status[0]->Item_status == null)) {
                     DB::table('items')
                         ->where('Item_id', $item['item_id'])
                         ->where('Order_id', $data['OrderId'])

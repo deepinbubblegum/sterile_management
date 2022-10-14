@@ -86,6 +86,7 @@ class Pro_Sterile_Controller extends BaseController
                 // dd($Item_status);
 
                 if ($Item_status[0]->Item_status == 'On sterile') {
+
                     DB::table('items')
                         ->where('Item_id', $item['item_id'])
                         ->where('Order_id', $data['OrderId'])
@@ -117,10 +118,30 @@ class Pro_Sterile_Controller extends BaseController
                 }
             }
 
+
+            $check_state_AllItem = DB::table('items')
+                ->select('Item_status')
+                ->where('Order_id', $data['OrderId'])
+                ->where('Item_status', 'Stock')
+                ->count();
+
+            $Count_AllItem = DB::table('items')
+                ->select('Item_status')
+                ->where('Order_id', $data['OrderId'])
+                ->count();
+
+            if ($check_state_AllItem == $Count_AllItem) {
+                DB::table('orders')
+                    ->where('Order_id', $data['OrderId'])
+                    ->update([
+                        'StatusOrder' => 'Stock',
+                    ]);
+            }
+
+
             $return_data->code = '0000';
 
             return $return_data;
-
         } catch (Exception $e) {
 
             $return_data = new \stdClass();
