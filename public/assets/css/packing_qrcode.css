@@ -95,7 +95,7 @@ body {
 
 .textfooter {
     margin-left: 0.3cm;
-    margin-right: 1.1cm;
+    /* margin-right: 1.25cm; */
     margin-top: 0.0cm;
     line-height: 0.5rem;
 }
@@ -103,7 +103,7 @@ body {
 .img_QR_buttom {
     position: fixed;
     right: 0.3cm;
-    margin-top: 5.15cm;
+    margin-top: 5.3cm;
 }
 
 
