@@ -33,7 +33,7 @@ $(document).ready(function () {
                     class="border-dashed border-t border-gray-200 Order_id">
                     <span
                         class="text-nowrap text-gray-700 dark:text-light px-1 py-2 flex items-center">
-                        ${element.Price.toFixed(2)} บาท
+                        ${Number(element.Price).toFixed(2)} บาท
                     </span>
                 </td>
                 <td
@@ -306,6 +306,14 @@ $(document).ready(function () {
                     $('#editModal').addClass('invisible');
                 }
             });
+        });
+
+        $('#page_input').keydown(function (e) {
+            if (e.keyCode == 13) {
+                let page = $('#page_input').val();
+                let txt_search = $("#search").val();
+                getEquipments(page, txt_search);
+            }
         });
     }
 });

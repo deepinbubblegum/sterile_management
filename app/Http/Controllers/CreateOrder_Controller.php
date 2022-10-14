@@ -111,4 +111,9 @@ class CreateOrder_Controller extends BaseController
         }
         return json_decode(TRUE);
     }
+
+    // public function editOrder(Request $request)
+    // {
+        
+    // }
 }

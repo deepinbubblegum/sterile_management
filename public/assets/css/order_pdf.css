@@ -49,6 +49,43 @@ footer {
     line-height: 1.5cm;
 }
 
+.w-16 {
+    width: 4rem/* 64px */;
+}
+
+.w-96 {
+    width: 24rem/* 384px */;
+}
+
+.remark {
+    width: 55%;
+}
+
+.border {
+    border-width: 1px;
+}
+
+.rounded {
+    border-radius: 0.25rem/* 4px */;
+}
+
+.rounded-lg {
+    border-radius: 0.5rem/* 8px */;
+}
+
+.min-h-85 {
+    min-height: 85px;
+}
+
+
+.p-1 {
+    padding: 0.25rem/* 4px */;
+}
+
+.p-2 {
+    padding: 0.5rem/* 8px */;
+}
+
 p {
     margin: 0;
     padding: 0;

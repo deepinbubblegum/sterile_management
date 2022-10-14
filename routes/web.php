@@ -89,16 +89,11 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/Onprocess/Getsterile_List', [Pro_Sterile_Controller::class, 'OnProcess_Getsterile_List']);
     Route::post('/Onprocess/New_sterileList', [Pro_Sterile_Controller::class, 'OnProcess_New_sterileList']);
 
-
-
     Route::get('/stock', function () {
         return view('stock');
     });
 
     Route::post('/Get_Stock', [Stock_Controller::class, 'Get_Stock']);
-
-
-
 
     // Create Order Page use here
     Route::get('/orders/create', function () {
@@ -109,6 +104,12 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/orders/create/getequipments', [CreateOrder_Controller::class, 'getEquipments']);
     Route::get('/orders/create/getsituations', [CreateOrder_Controller::class, 'getSituations']);
     Route::post('/orders/create/createorders', [CreateOrder_Controller::class, 'createOrders']);
+
+    // Edit Order Page use here
+    Route::get('/orders/edit/{order_id}', function () {
+        return view('editOrders');
+    });
+    // Route::get('/orders/edit/{order_id}/getorders', [Order_Controller::class, 'getOrders']);
 
     // Order Page use here
     Route::get('/orders', function () {
@@ -140,11 +141,11 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/customers/departments/{customer_id}/deletedepartments', [Departments_Controller::class, 'deleteDepartments']);
 
     // Settings Equipment in Department Page use here
-    // Route::get('/settings/customers/departments/{customer_id}/{department_id}', function () {
-    //     return view('deptequip');
-    // });
     Route::get('/settings/customers/departments/{customer_id}/{department_id}', [DeptEquip_Controller::class, 'viewDeptEquip']);
+    Route::get('/settings/customers/departments/{customer_id}/{department_id}/getlistequip', [DeptEquip_Controller::class, 'getlistequip']);
     Route::get('/settings/customers/departments/{customer_id}/{department_id}/getlistdeptequip', [DeptEquip_Controller::class, 'getListDeptEquip']);
+    Route::post('/settings/customers/departments/{customer_id}/{department_id}/adddeptequip', [DeptEquip_Controller::class, 'addDeptEquip']);
+    Route::post('/settings/customers/departments/{customer_id}/{department_id}/deletedeptequip', [DeptEquip_Controller::class, 'deleteDeptEquip']);
 
     // Settings Equipments Page use here
     Route::get('/settings/equipments', function () {

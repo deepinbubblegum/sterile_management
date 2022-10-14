@@ -246,8 +246,27 @@ $(document).ready(function () {
             e.preventDefault();
             // console.log("delete");
             $(this).parents("tr").remove();
+            check_disable();
         });
+        check_disable();
     });
+
+    function check_disable(){
+        var tbl = $('#tbody_data tr:has(td)').map(function(index, cell) {
+            var $td = $('td', this);
+                return {
+                    id: ++index,
+                    // equipment_id: $td.eq(0).find('input').data('value'),
+                    // situation: $td.eq(2).find('input').data('value'),
+                    // qty: $td.eq(3).find('input').val()
+                }
+        }).get();
+        if(tbl.length > 0){
+            $("#departments").prop("disabled", true);
+        }else{
+            $("#departments").prop("disabled", false);
+        }
+    }
 
     $("#div_btn_save").click(function (e) {
         e.preventDefault();
@@ -265,7 +284,7 @@ $(document).ready(function () {
                     qty: $td.eq(3).find('input').val()
                 }
         }).get();
-        console.log(tbl);
+        // console.log(tbl);
         CreateOrders(notes_messages, tbl, customers_id, departments_id);
     });
 });
