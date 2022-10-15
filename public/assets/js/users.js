@@ -352,7 +352,6 @@ $(document).ready(function () {
                 $('#username').val('');
                 $('#password').val('');
                 $('#email').val('');
-                $('#group option:selected').val('');
                 $('#confirm_password').val('');
                 $('#name_lname').val('');
             }
