@@ -117,7 +117,7 @@
                         <hr>
 
                         {{-- State sterile --}}
-                        @include('on_process.sterile')
+                        @include('on_process.Sterile')
 
                     </div>
                 </div>
