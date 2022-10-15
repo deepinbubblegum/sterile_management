@@ -12,6 +12,7 @@ use App\Http\Controllers\Customers_Controller;
 use App\Http\Controllers\Departments_Controller;
 use App\Http\Controllers\DeptEquip_Controller;
 use App\Http\Controllers\Equipments_Controller;
+use App\Http\Controllers\Users_Controller;
 
 use App\Http\Controllers\Pro_Washing_Controller;
 use App\Http\Controllers\Pro_Packing_Controller;
@@ -157,6 +158,19 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/equipments/updateequipments', [Equipments_Controller::class, 'updateEquipments']);
     Route::post('/settings/equipments/deleteequipments', [Equipments_Controller::class, 'deleteEquipments']);
     Route::post('/settings/equipments/activateequipments', [Equipments_Controller::class, 'activateEquipments']);
+
+    // Settings Users Page use here
+    Route::get('/settings/users', function () {
+        return view('users');
+    });
+    Route::get('/settings/getgroup', [Users_Controller::class, 'getGroup']);
+    Route::get('/settings/users/getallusers', [Users_Controller::class, 'getAllUsers']);
+    Route::get('/settings/users/getusersdetail', [Users_Controller::class, 'getUsersDetail']);
+    Route::post('/settings/users/deleteusers', [Users_Controller::class, 'delUser']);
+    Route::post('/settings/users/toggleactivateusers', [Users_Controller::class, 'setActivate']);
+    Route::post('/settings/users/createusers', [Users_Controller::class, 'createUsers']);
+    Route::post('/settings/users/editusers', [Users_Controller::class, 'updateUsers']);
+
 });
 
 Route::get('/logout', function () {
@@ -164,8 +178,6 @@ Route::get('/logout', function () {
     Cookie::queue(Cookie::forget('Username_server_Permission'));
     return redirect()->route('login');
 })->name('logout');
-
-
 
 // Route::get('/process', function () {
 //     return view('process');
