@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Cookie;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 
 use App\Http\Controllers\OnProcess_controller;
 
@@ -25,6 +26,15 @@ class Pro_Sterile_Controller extends BaseController
     {
         $oid = DB::select(
             'SELECT CONCAT("STK-",LPAD(SUBSTRING(IFNULL(MAX(stock.Stock_id), "0"), 5,6)+1, 6,"0")) as auto_id FROM stock'
+        );
+        return $oid[0]->auto_id;
+    }
+
+
+    private function AutuIDImg()
+    {
+        $oid = DB::select(
+            'SELECT CONCAT("IMG_STE-",LPAD(SUBSTRING(IFNULL(MAX(sterile_qc_image.image_id), "0"), 9,6)+1, 6,"0")) as auto_id FROM sterile_qc_image'
         );
         return $oid[0]->auto_id;
     }
@@ -81,6 +91,7 @@ class Pro_Sterile_Controller extends BaseController
                     ->leftjoin('items', 'items.item_id', '=', 'sterile_qc.item_id')
                     ->where('sterile_qc.Order_id', $data['OrderId'])
                     ->where('sterile_qc.item_id', $item['item_id'])
+                    ->where('sterile_qc.sterile_qc_id', $item['sterile_qc_id'])
                     ->get();
 
                 // dd($Item_status);
@@ -152,4 +163,102 @@ class Pro_Sterile_Controller extends BaseController
             return $return_data;
         }
     }
+
+
+    public function OnProcess_GetSterile_Img_list(Request $request)
+    {
+
+        try {
+
+            $return_data = new \stdClass();
+            $data = $request->all();
+
+            $sterile_img = DB::table('sterile_qc_image')
+                ->select('*')
+                ->where('sterile_qc_id', $data['sterile_qc_id'])
+                ->get();
+
+            $return_data->code = '1000';
+            $return_data->sterile_img = $sterile_img;
+
+            return $return_data;
+        } catch (Exception $e) {
+
+            $return_data = new \stdClass();
+
+            $return_data->code = '0200';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+        }
+
+    }
+
+
+    public function OnProcess_New_ImageSterile(Request $request)
+    {
+
+        $data = $request->all();
+        $return_data = new \stdClass();
+
+        try {
+
+            // dd($data['files']->getClientOriginalExtension());
+
+            $image_id = $this->AutuIDImg();
+
+            $imageName = $image_id . '.' . $data['files']->getClientOriginalExtension();
+            $data['files']->move(public_path('assets/image/sterile'), $imageName);
+            // dd($data['packing_id']);
+
+            DB::table('sterile_qc_image')->insert([
+                'sterile_qc_id' => $data['sterile_qc_id'],
+                'image_id' => $image_id,
+                'image' =>  $imageName,
+            ]);
+
+            $return_data->code = '1000';
+            return $return_data;
+
+        } catch (Exception $e) {
+
+            $return_data->code = '0200';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+
+        }
+
+    }
+
+
+    public function Delete_Img_list_Sterile(Request $request)
+    {
+        $data = $request->all();
+        $return_data = new \stdClass();
+
+        try {
+
+            if (File::exists(public_path('assets/image/sterile/'.$data['image']))) {
+                File::delete(public_path('assets/image/sterile/'.$data['image']));
+            }
+
+            DB::table('sterile_qc_image')
+                ->where('sterile_qc_id', $data['sterile_qc_id'])
+                ->where('image_id', $data['image_id'])
+                ->delete();
+
+            $return_data->code = '1000';
+            return $return_data;
+
+        } catch (Exception $e) {
+
+            $return_data->code = '0200';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+
+        }
+    }
+
 }

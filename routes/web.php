@@ -19,6 +19,8 @@ use App\Http\Controllers\Pro_Packing_Controller;
 use App\Http\Controllers\Pro_Sterile_Controller;
 
 use App\Http\Controllers\Stock_Controller;
+use App\Http\Controllers\StockList_Controller;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -94,12 +96,23 @@ Route::group(['middleware' => ['authLogin']], function () {
     // Process sterile
     Route::post('/Onprocess/Getsterile_List', [Pro_Sterile_Controller::class, 'OnProcess_Getsterile_List']);
     Route::post('/Onprocess/New_sterileList', [Pro_Sterile_Controller::class, 'OnProcess_New_sterileList']);
+    Route::post('/Onprocess/New_ImageSterile', [Pro_Sterile_Controller::class, 'OnProcess_New_ImageSterile']);
+    Route::post('/Onprocess/GetSterile_Img_list', [Pro_Sterile_Controller::class, 'OnProcess_GetSterile_Img_list']);
+    Route::post('/Onprocess/Delete_Img_list_Sterile', [Pro_Sterile_Controller::class, 'Delete_Img_list_Sterile']);
 
+
+    // Stock
     Route::get('/stock', function () {
         return view('stock');
     });
-
     Route::post('/Get_Stock', [Stock_Controller::class, 'Get_Stock']);
+
+
+    Route::get('/stock/{oder_id}', function ($oder_id) {
+        return view('stockList', ['oder_id' => $oder_id]);
+    });
+    Route::post('/stock/GetStockItem', [StockList_Controller::class, 'Get_StockList_Item']);
+
 
     // Create Order Page use here
     Route::get('/orders/create', function () {

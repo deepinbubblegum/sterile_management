@@ -307,7 +307,7 @@
                                 ${item.Order_id}
                             </th>
                             <td class="py-4 px-6">
-                                ${item.StatusOrder}
+                                ${(item.StatusOrder == null ? '-' : item.StatusOrder)}
                             </td>
                             <td class="py-4 px-6">
                                 ${(item.Notes == null ? '-' : item.Notes)}
@@ -325,10 +325,10 @@
                                 ${item.Create_at}
                             </td>
                             <td class="py-4 px-6">
-                                ${item.userUpdate}
+                                ${(item.userUpdate == null ? '-' : item.userUpdate)}
                             </td>
                             <td class="py-4 px-6">
-                                ${item.Update_at}
+                                ${(item.Update_at == null ? '-' : item.Update_at)}
                             </td>
                         </tr>
                         `
