@@ -131,7 +131,7 @@
 
                                             <div class="col-span-6 sm:col-span-2">
                                                 <figure class="max-w-lg">
-                                                    <img class="max-w-full h-auto rounded-md"
+                                                    <img class="max-w-full h-auto rounded-md" id="img_item"
                                                         src="{{ asset('assets/image/image_preview.jpg') }}"
                                                         alt="image description">
                                                 </figure>
