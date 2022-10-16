@@ -24,7 +24,7 @@ class OnProcess_controller extends BaseController
             $data = $request->all();
 
             $items = DB::table('items')
-                ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name', 'washing.washing_id')
+                ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name', 'washing.washing_id' , 'equipments.Item_Type')
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
                 ->leftjoin('situations', 'items.Situation_id', '=', 'situations.Situation_id')
                 ->leftjoin('washing', 'items.item_id', '=', 'washing.item_id')
