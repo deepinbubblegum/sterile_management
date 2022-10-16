@@ -117,7 +117,7 @@
                         <hr>
 
                         {{-- State sterile --}}
-                        @include('on_process.sterile')
+                        @include('on_process.Sterile')
 
                     </div>
                 </div>
@@ -190,7 +190,7 @@
                         ${(item.Item_status == '' ? '-' : item.Item_status )}
                     </td>
                     <td scope="col" class="py-3 px-6">
-                        ${item.Item_Type}
+                        ${item.Item_Type.toUpperCase()}
                     </td>
                     <td scope="col" class="py-3 px-6">
                         ${item.Process}
@@ -386,7 +386,7 @@
             // alert(machines);
             row = $(`<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"> </tr>`);
             // col1 = $( `<td class="py-4 px-6"> <input id="WS_Check" type="checkbox" class="check_OnProcess_Washing w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" /> </td>`);
-            col1 = $( `<td class="py-4 px-6"> - </td>`);
+            col1 = $(`<td class="py-4 px-6"> - </td>`);
             col2 = $(
                 `<td class="py-4 px-6" value="${_Item[0].washing_id == null ? '-' : _Item[0].washing_id}" > ${_Item[0].washing_id == null ? '-' : _Item[0].washing_id} </td>`
             );
@@ -396,11 +396,11 @@
             col6 = $(`<td class="py-4 px-6" value="${_Item[0].Quantity}" >${_Item[0].Quantity}</td>`);
             col7 = $(
                 `<td class="py-4 px-6" value="${_Item[0].Item_status}" >${_Item[0].Item_status}</td>`
-                );
+            );
             col8 = $(`<td class="py-4 px-6" value="${DateNowDay()}"> ${DateNowDay()} </td>`);
             col9 = $(
                 `<td class="py-4 px-6"> <button type="button" id="item_Remove_washing" class="py-2 px-3 text-xs font-medium text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"> x </button> </td>`
-                )
+            )
             row.append(col1, col2, col3, col4, col5, col6, col7, col8, col9).prependTo(
                 "#tb_list_washing");
 
@@ -515,15 +515,11 @@
                                         <i class="fa-solid fa-print fa-lg fill-white icon_center"></i>
                                     </a>
 
-                                    <button
+                                    <button id="btn_packing_image"  type="button" data-packingId="${item.packing_id}"
                                         class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-success inline-flex items-center hover:bg-success-dark focus:outline-none focus:ring focus:ring-success focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                         <i class="fa-solid fa-camera fa-lg fill-white icon_center"></i>
                                     </button>
 
-                                    <button
-                                        class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                        <i class="fa-regular fa-file-image fa-lg  fill-white icon_center"></i>
-                                    </button>
                                 </td>
                                 <td class="py-4 px-6" value="${item.packing_id}"> ${item.packing_id} </td>
                                 <td class="py-4 px-6" value="${item.item_id}"> ${item.item_id} </td>
@@ -744,21 +740,27 @@
             //                 class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" disabled />
             //         </td>`);
             // col1 = $(`<td scope="col" class="py-3 px-6 text-center"> - </td>`);
+            // col2 = $(
+            //     `<td
+            //         class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+
+            //         <button
+            //             class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-success inline-flex items-center hover:bg-success-dark focus:outline-none focus:ring focus:ring-success focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+            //             <i
+            //                 class="fa-solid fa-camera fa-lg fill-white icon_center"></i>
+            //         </button>
+
+            //         <button
+            //             class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+            //             <i
+            //                 class="fa-regular fa-file-image fa-lg  fill-white icon_center"></i>
+            //         </button>
+            //     </td>`
+            // );
             col2 = $(
                 `<td
                     class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-
-                    <button
-                        class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-success inline-flex items-center hover:bg-success-dark focus:outline-none focus:ring focus:ring-success focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                        <i
-                            class="fa-solid fa-camera fa-lg fill-white icon_center"></i>
-                    </button>
-
-                    <button
-                        class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                        <i
-                            class="fa-regular fa-file-image fa-lg  fill-white icon_center"></i>
-                    </button>
+                   -
                 </td>`
             );
             col3 = $(
@@ -767,7 +769,7 @@
             col4 = $(`<td class="py-4 px-6" value="${_Item[0].Item_id}"> ${_Item[0].Item_id} </td>`);
             col5 = $(
                 `<td class="py-4 px-6" value="${_Item[0].Item_id}" data-process="${_Item[0].Process}"> ${_Item[0].Name} </td>`
-                );
+            );
             col6 = $(`<td class="py-4 px-6" value="${machines_id}"> ${machines_name} </td>`);
             col7 = $(`<td class="py-4 px-6" value="${program_id}"> ${program_name} </td>`);
             col8 = $(`<td class="py-4 px-6" value=""> - </td>`);
@@ -775,12 +777,12 @@
             col11 = $(`<td class="py-4 px-6" value="${_Item[0].Quantity}"> ${_Item[0].Quantity} </td>`);
             col12 = $(
                 `<td class="py-4 px-6" value="" data-addExp="${_Item[0].Expire}"> ${_Item[0].Expire} </td>`
-                );
+            );
             col13 = $(`<td class="py-4 px-6" value="${Note_Packing}" > ${Note_Packing} </td>`);
             col14 = $(`<td class="py-4 px-6" value="${DateNowDay()}" >${DateNowDay()}</td>`);
             col15 = $(
                 `<td class="py-4 px-6"> <button type="button" id="item_Remove_Packing" class="py-2 px-3 text-xs font-medium text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"> x </button> </td>`
-                )
+            )
             row.append(col2, col3, col4, col5, col6, col7, col8, col10, col11, col12, col13,
                 col14, col15).prependTo("#tb_list_packing");
 
@@ -845,7 +847,7 @@
         })
 
 
-        $('#btn_pdf_packing').on('click' , function(){
+        $('#btn_pdf_packing').on('click', function() {
             var tb_list_packing = $('#tb_list_packing tr:has(td)').map(function(index, cell) {
                 var $td = $('td', this);
                 return {
@@ -862,6 +864,129 @@
         })
 
 
+
+        $(document).on('click', '#btn_packing_image', function() {
+            $('#textIdpacking').text($(this).attr('data-packingId'))
+            $('#id_packing_modal').val($(this).attr('data-packingId'))
+            $('#Modal_Img_Packing').removeClass('invisible');
+
+            GetPacking_Img_list($(this).attr('data-packingId'))
+        })
+
+
+        $(document).on('click', '#modal_Packing_close', function() {
+            $('#Modal_Img_Packing').addClass('invisible');
+            // $('#Input_Image_packing').val()
+            document.getElementById("Input_Image_packing").value = null;
+            let output = document.getElementById('packing_img_preview');
+            output.src = null;
+            output.style.height = "0px";
+            output.style.width = "auto";
+        })
+
+
+        $('#Input_Image_packing').on('change', function() {
+            let files = document.getElementById("Input_Image_packing").files;
+
+            reader = new FileReader();
+            // console.log(files)
+            reader.onload = function() {
+                let output = document.getElementById('packing_img_preview');
+                output.src = reader.result;
+                output.style.height = "50%";
+                output.style.width = "auto";
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        })
+
+
+        $('#add_img_pakcing').on('click', function() {
+            // $('#packing_img_preview').attr('src')
+            let files = document.getElementById("Input_Image_packing").files;
+            console.log(files[0])
+            let packing_id = $('#id_packing_modal').val()
+
+            if (files[0] == undefined) return 0;
+
+            var Formdata = new FormData();
+
+            Formdata.append('packing_id', packing_id);
+            Formdata.append('files', files[0]);
+
+
+
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/New_ImagePacking`,
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: Formdata,
+                dataType: "json",
+                success: function(response) {
+                    document.getElementById("Input_Image_packing").value = null;
+                    let output = document.getElementById('packing_img_preview');
+                    output.src = null;
+                    output.style.height = "0px";
+                    output.style.width = "auto";
+
+                    GetPacking_Img_list(packing_id)
+                }
+            });
+        })
+
+
+        function GetPacking_Img_list(packing_id){
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/GetPacking_Img_list`,
+                data: {
+                    packing_id: packing_id
+                },
+                success: function(response) {
+                    // console.log(response)
+
+                    html_list = '';
+                    for (let item of response.packing_img) {
+
+                        html_list += `
+                            <div class="relative" height="40px" width="auto">
+                                <img class="w-full" src="{{ asset('assets/image/packing/${item.image}') }}"
+                                    alt="dummy-image">
+                                <button id="btn_remove_img" data-ID_img="${item.image_id}" data-PackingID="${item.packing_id}" data-image="${item.image}"
+                                    class="absolute top-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
+                                    remove </button>
+                            </div>
+                        `
+                        // <td class="py-4 px-6" value="${(item.Item_status == null ? '' : item.Item_status)}"> ${item.Item_status} </td>
+                    }
+                    $('#list_img_packing').html(html_list)
+                }
+            });
+
+        }
+
+
+        $(document).on('click', '#btn_remove_img', function(){
+            let image_id =  $(this).attr('data-ID_img')
+            let packing_id = $(this).attr('data-PackingID')
+            let image = $(this).attr('data-image')
+
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/Delete_Img_list`,
+                data: {
+                    packing_id: packing_id,
+                    image_id: image_id,
+                    image: image
+                },
+                success: function(response) {
+                    // console.log(response)
+                    GetPacking_Img_list(packing_id)
+                }
+            });
+
+        });
 
         //----------------------------------------- END Packing -------------------------------------//
         //----------------------------------------- ------- -----------------------------------------//
@@ -891,6 +1016,12 @@
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <td class="py-4 px-6"> <input id="WS_Check" type="checkbox" ${(item.PassStatus == 'false' ? '' : 'Checked')}
                                         class="${(item.PassStatus == 'false' ? 'check_OnProcess_sterile' : '')} w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light"  ${(item.PassStatus == 'true' ? 'disabled' : '' )}>
+                                </td>
+                                <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <button id="btn_Sterile_image"  type="button" data-SterileId="${item.sterile_qc_id}"
+                                        class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-success inline-flex items-center hover:bg-success-dark focus:outline-none focus:ring focus:ring-success focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                                        <i class="fa-solid fa-camera fa-lg fill-white icon_center"></i>
+                                    </button>
                                 </td>
                                 <td class="py-4 px-6" value="${item.sterile_qc_id}"> ${item.sterile_qc_id} </td>
                                 <td class="py-4 px-6" value="${item.item_id}"> ${item.item_id} </td>
@@ -961,6 +1092,41 @@
                 }
             });
 
+        })
+
+
+        $(document).on('click', '#btn_Sterile_image', function() {
+            $('#textIdSterile').text($(this).attr('data-SterileId'))
+            $('#id_Sterile_modal').val($(this).attr('data-SterileId'))
+            $('#Modal_Img_Sterile').removeClass('invisible');
+
+            // GetSterile_Img_list($(this).attr('data-SterileId'))
+        })
+
+
+        $(document).on('click', '#modal_Sterile_close', function() {
+            $('#Modal_Img_Sterile').addClass('invisible');
+            // $('#Input_Image_Sterile').val()
+            document.getElementById("Input_Image_Sterile").value = null;
+            let output = document.getElementById('Sterile_img_preview');
+            output.src = null;
+            output.style.height = "0px";
+            output.style.width = "auto";
+        })
+
+
+        $('#Input_Image_Sterile').on('change', function() {
+            let files = document.getElementById("Input_Image_Sterile").files;
+
+            reader = new FileReader();
+            // console.log(files)
+            reader.onload = function() {
+                let output = document.getElementById('Sterile_img_preview');
+                output.src = reader.result;
+                output.style.height = "50%";
+                output.style.width = "auto";
+            };
+            reader.readAsDataURL(event.target.files[0]);
         })
 
 

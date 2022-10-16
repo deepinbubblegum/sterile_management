@@ -67,28 +67,34 @@
 
                 <div class="textBody">
 
-                    <b>Department</b> : {{ $items->Department_name }}
+                    <b>Department : <span class="Data_Item"> {{ $items->Department_name }}  </span> </b>
                     <br>
 
-                    <b>Item Name</b> : {{ $items->Name }}
+                    <b>Item Name : <span class="Data_Item"> {{ $items->Name }} </span> </b>
                     <br>
 
-                    {{-- <b>Category</b> : {{ $items->Name }}
+                    {{-- <b>Item Name : <span class="Data_Item"> {{ $items->Name }} </span> </b>
                     <br> --}}
 
-                    <b>Process</b> : {{ $items->Process }}
+                    <b>Remark : <span class="Data_Item"> {{ isset($items->Note) ? $items->Note : '-' }} </span> </b>
                     <br>
 
-                    <b>Packing By</b> : {{ $items->UserCreate }}
+                    <b>Category : <span class="Data_Item"> {{ strtoupper($items->Instrument_type) }} </span> </b>
                     <br>
 
-                    <b>QC by</b> : {{ $items->UserName_QC }}
+                    <b>Process : <span class="Data_Item"> {{ strtoupper($items->Process) }} {{$items->txt_processNO}} Cycle {{ $items->Cycle }}</span> </b>
                     <br>
 
-                    <b>Packing date</b> : {{ date('d-m-Y', strtotime($items->Create_at)) }}
+                    <b>Packing By : <span class="Data_Item"> {{ $items->UserCreate }} </span> </b>
                     <br>
 
-                    <b>Expired date</b> : {{ date('d-m-Y', strtotime($items->Exp_date)) }}
+                    <b>QC by : <span class="Data_Item"> {{ $items->UserName_QC }} </span> </b>
+                    <br>
+
+                    <b>Packing date : <span class="Data_Item"> {{ date('d/m/Y', strtotime($items->Create_at)) }} </span> </b>
+                    <br>
+
+                    <b>Expired date : <span class="Data_Item"> {{ date('d/m/Y', strtotime($items->Exp_date)) }} </span> </b>
 
                 </div>
             </div>
@@ -102,13 +108,13 @@
 
                 <div class="textfooter">
 
-                    <b>Item Name</b> : {{ $items->Name }}
+                    <b>Item Name : <span class="Data_Item"> {{ $items->Name }} </span> </b>
                     <br>
 
-                    <b>Packing date</b> : {{ date('d-m-Y', strtotime($items->Create_at)) }}
+                    <b>Packing date : <span class="Data_Item"> {{ date('d/m/Y', strtotime($items->Create_at)) }} </span> </b>
                     <br>
 
-                    <b>Expired date</b> : {{ date('d-m-Y', strtotime($items->Exp_date)) }}
+                    <b>Expired date : <span class="Data_Item"> {{ date('d/m/Y', strtotime($items->Exp_date)) }} </span> </b>
 
                 </div>
             </div>

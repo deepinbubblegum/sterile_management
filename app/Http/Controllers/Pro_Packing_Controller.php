@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Hash;
 use PDF;
 use QrCode;
 
+use Illuminate\Support\Facades\File;
+
 use App\Http\Controllers\OnProcess_controller;
 
 class Pro_Packing_Controller extends BaseController
@@ -35,6 +37,15 @@ class Pro_Packing_Controller extends BaseController
     {
         $oid = DB::select(
             'SELECT CONCAT("STE-",LPAD(SUBSTRING(IFNULL(MAX(sterile_qc.sterile_qc_id), "0"), 5,6)+1, 6,"0")) as auto_id FROM sterile_qc'
+        );
+        return $oid[0]->auto_id;
+    }
+
+
+    private function AutuIDImg()
+    {
+        $oid = DB::select(
+            'SELECT CONCAT("IMG_PAC-",LPAD(SUBSTRING(IFNULL(MAX(packing_img.image_id), "0"), 9,6)+1, 6,"0")) as auto_id FROM packing_img'
         );
         return $oid[0]->auto_id;
     }
@@ -322,6 +333,107 @@ class Pro_Packing_Controller extends BaseController
         }
     }
 
+
+    public function OnProcess_GetPacking_Img_list(Request $request)
+    {
+
+        try {
+
+            $return_data = new \stdClass();
+            $data = $request->all();
+
+            $packing_img = DB::table('packing_img')
+                ->select('*')
+                ->where('packing_id', $data['packing_id'])
+                ->get();
+
+            $return_data->code = '1000';
+            $return_data->packing_img = $packing_img;
+
+            return $return_data;
+        } catch (Exception $e) {
+
+            $return_data = new \stdClass();
+
+            $return_data->code = '0200';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+        }
+
+    }
+
+
+    public function OnProcess_New_ImagePacking(Request $request)
+    {
+        $data = $request->all();
+        $return_data = new \stdClass();
+
+        try {
+
+            // dd($data['files']->getClientOriginalExtension());
+
+            $image_id = $this->AutuIDImg();
+
+            $imageName = $image_id . '.' . $data['files']->getClientOriginalExtension();
+            $data['files']->move(public_path('assets/image/packing'), $imageName);
+            // dd($data['packing_id']);
+
+            DB::table('packing_img')->insert([
+                'packing_id' => $data['packing_id'],
+                'image_id' => $image_id,
+                'image' =>  $imageName,
+            ]);
+
+            $return_data->code = '1000';
+            return $return_data;
+
+        } catch (Exception $e) {
+
+            $return_data->code = '0200';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+
+        }
+    }
+
+    public function OnProcess_Delete_Img_list(Request $request)
+    {
+        $data = $request->all();
+        $return_data = new \stdClass();
+
+        try {
+
+            // dd($data['files']->getClientOriginalExtension());
+
+            // $imageName = $image_id . '.' . $data['files']->getClientOriginalExtension();
+            // $data['files']->move(public_path('assets/image/packing'), $imageName);
+            // dd($data['packing_id']);
+
+            if (File::exists(public_path('assets/image/packing/'.$data['image']))) {
+                File::delete(public_path('assets/image/packing/'.$data['image']));
+            }
+
+            DB::table('packing_img')
+                ->where('packing_id', $data['packing_id'])
+                ->where('image_id', $data['image_id'])
+                ->delete();
+
+            $return_data->code = '1000';
+            return $return_data;
+
+        } catch (Exception $e) {
+
+            $return_data->code = '0200';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+
+        }
+    }
+
+
     public function getPackingPDF(Request $request)
     {
 
@@ -332,8 +444,22 @@ class Pro_Packing_Controller extends BaseController
 
         // dd($oder_id);
         $items = DB::table('packing')
-            ->select('packing.*', 'equipments.Name', 'machine.Machine_name', 'machine_programs.Program_name', 'machine_programs.Program_id', 'user_QC.Name as UserName_QC',
-            'items.Quantity', 'items.Item_status' , 'orders.Department_id', 'departments.Department_name', 'customers.Customer_name', 'equipments.Process', 'user_create.Name as UserCreate')
+            ->select(
+                'packing.*',
+                'equipments.Name',
+                'machine.Machine_name',
+                'machine_programs.Program_name',
+                'machine_programs.Program_id',
+                'user_QC.Name as UserName_QC',
+                'items.Quantity',
+                'items.Item_status',
+                'orders.Department_id',
+                'departments.Department_name',
+                'customers.Customer_name',
+                'equipments.Process',
+                'user_create.Name as UserCreate',
+                'equipments.Instrument_type'
+            )
             ->leftjoin('items', 'items.item_id', '=', 'packing.item_id')
             ->leftjoin('orders', 'items.Order_id', '=', 'orders.Order_id')
             ->leftjoin('departments', 'orders.Department_id', '=', 'departments.Department_id')
@@ -344,9 +470,9 @@ class Pro_Packing_Controller extends BaseController
             ->leftjoin('users as user_QC', 'packing.Qc_by', '=', 'user_QC.User_id')
             ->leftjoin('users as user_create', 'packing.Create_by', '=', 'user_create.User_id')
             ->where('packing.Order_id', $oder_id)
-            ->where(function($query) use ($item_id) {
-                if(isset($item_id)){
-                    $query->where('items.item_id' , $item_id);
+            ->where(function ($query) use ($item_id) {
+                if (isset($item_id)) {
+                    $query->where('items.item_id', $item_id);
                 }
             })
             ->orderBy('packing_id')
@@ -357,12 +483,15 @@ class Pro_Packing_Controller extends BaseController
         foreach ($items as $item) {
             // dd($item->item_id);
             $item->qr_code = base64_encode(QrCode::format('png')->size(200)->errorCorrection('H')->generate($item->item_id));
-            // dd($item);
+            $regular_no = preg_match('/\No[.].*$/', $item->Machine_name, $match);
+            $item->txt_processNO = isset($match[0]) ? $match[0] : '';
+            // dd($item->Machine_name[strlen($txt_process)-1]);
+            // dd($match);
         }
 
 
 
-        $pdf = PDF::loadView('pdf.QR_Code_Packing',compact('items'));
+        $pdf = PDF::loadView('pdf.QR_Code_Packing', compact('items'));
         $customPaper = array(0, 0, 156.168, 184.2519685032);
         $pdf->setPaper($customPaper);
 

@@ -81,6 +81,11 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/Onprocess/GetPacking_List', [Pro_Packing_Controller::class, 'OnProcess_GetPacking_List']);
     Route::post('/Onprocess/GetUserQC', [Pro_Packing_Controller::class, 'OnProcess_GetUserQC']);
     Route::post('/Onprocess/New_PackingList', [Pro_Packing_Controller::class, 'OnProcess_New_PackingList']);
+
+    Route::post('/Onprocess/New_ImagePacking', [Pro_Packing_Controller::class, 'OnProcess_New_ImagePacking']);
+    Route::post('/Onprocess/GetPacking_Img_list', [Pro_Packing_Controller::class, 'OnProcess_GetPacking_Img_list']);
+    Route::post('/Onprocess/Delete_Img_list', [Pro_Packing_Controller::class, 'OnProcess_Delete_Img_list']);
+
     Route::get('/Onprocess/pdf/{oder_id}', [Pro_Packing_Controller::class, 'getPackingPDF']);
     Route::get('/Onprocess/pdf/{oder_id}/{item_id}', [Pro_Packing_Controller::class, 'getPackingPDF']);
 
