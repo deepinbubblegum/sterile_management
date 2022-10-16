@@ -207,6 +207,22 @@ $(document).ready(function () {
         $("#total_price").val(Price);
 
         $("#add_item").prop("disabled", false);
+        $.ajax({
+            type: "GET",
+            url: "/orders/create/getequipimages",
+            data: {
+                equip_id: item_value_selected.Equipment_id,
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response == null) {
+                    $("#img_item").attr("src", `/assets/image/image_preview.jpg`);
+                }else{
+                    // console.log(response);
+                    $("#img_item").attr("src", `/assets/${response.Image_path}/${response.Image_id}.jpg`);
+                }
+            }
+        });
     });
 
     $("#qty").change(function (e) {

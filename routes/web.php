@@ -110,6 +110,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/orders/create/getequipments', [CreateOrder_Controller::class, 'getEquipments']);
     Route::get('/orders/create/getsituations', [CreateOrder_Controller::class, 'getSituations']);
     Route::post('/orders/create/createorders', [CreateOrder_Controller::class, 'createOrders']);
+    Route::get('/orders/create/getequipimages', [CreateOrder_Controller::class, 'getEquipImages']);
 
     // Edit Order Page use here
     Route::get('/orders/edit/{order_id}', function () {

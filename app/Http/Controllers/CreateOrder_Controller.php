@@ -116,4 +116,19 @@ class CreateOrder_Controller extends BaseController
     // {
         
     // }
+
+    public function getEquipImages(Request $request)
+    {
+
+        $recv = $request->all();
+        $equip_id = $recv['equip_id'];
+        $equip_image = DB::table('equipmentsimages')
+            ->select('equipmentsimages.Image_id', 'equipmentsimages.Equipment_id', 'equipmentsimages.Image_path')
+            ->where('equipmentsimages.Equipment_id', $equip_id)
+            ->first();
+        // if ($equip_image == null) {
+        //     return json_decode(FALSE);
+        // }
+        return json_encode($equip_image);
+    }
 }
