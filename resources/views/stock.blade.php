@@ -80,6 +80,9 @@
                                         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr>
                                             <th scope="col" class="py-3 px-6">
+                                                ลูกค้า
+                                            </th>
+                                            <th scope="col" class="py-3 px-6">
                                                 หมายเลข ออเดอร์
                                             </th>
                                             <th scope="col" class="py-3 px-6">
@@ -301,7 +304,10 @@
                     console.log(response.orders.data)
                     response.orders.data.forEach(function(item) {
                         html_oder += `
-                        <tr class="table-tr bg-white border-b dark:bg-gray-800 dark:border-gray-700 clickable-row cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600" data-href='/Onprocess/${item.Order_id}'>
+                        <tr class="table-tr bg-white border-b dark:bg-gray-800 dark:border-gray-700 clickable-row cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600" data-href='/stock/${item.Order_id}'>
+                            <td class="py-4 px-6">
+                                ${item.Customer_name}
+                            </td>
                             <th scope="row"
                                 class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 ${item.Order_id}
@@ -325,10 +331,10 @@
                                 ${item.Create_at}
                             </td>
                             <td class="py-4 px-6">
-                                ${item.userUpdate}
+                                ${(item.userUpdate == null ? '-' : item.userUpdate)}
                             </td>
                             <td class="py-4 px-6">
-                                ${item.Update_at}
+                                ${(item.Update_at == null ? '-' : item.Update_at)}
                             </td>
                         </tr>
                         `

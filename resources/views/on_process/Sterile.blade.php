@@ -177,20 +177,19 @@
                                         </svg>
                                         <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
                                                 class="font-semibold">Click to upload</span> or drag and drop</p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF
-                                            (MAX. 800x400px)</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF</p>
                                     </div>
-                                    <input id="Input_Image_Sterile" type="file" class="hidden" />
+                                    <input id="Input_Image_Sterile" type="file" class="hidden" accept="image/png, image/gif, image/jpeg" />
                                     <input id="id_Sterile_modal" type="text" class="hidden" />
                                 </label>
                             </div>
 
                             <div class="flex p-2 space-x-4 flex justify-center">
-                                <img id="Sterile_img_preview" src="" alt="">
+                                <img id="Sterile_img_preview" src="" alt="" style="object-fit:contain !important;">
                             </div>
 
                             <div class="flex p-2 space-x-4 flex justify-center">
-                                <button type="button" id="add_img_pakcing"
+                                <button type="button" id="add_img_sterile"
                                     class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
                                     เพื่มรูป
                                 </button>

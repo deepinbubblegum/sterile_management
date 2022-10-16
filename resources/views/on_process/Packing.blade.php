@@ -293,16 +293,15 @@
                                             </svg>
                                             <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
                                                     class="font-semibold">Click to upload</span> or drag and drop</p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF
-                                                (MAX. 800x400px)</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF</p>
                                         </div>
-                                        <input id="Input_Image_packing" type="file" class="hidden" />
+                                        <input id="Input_Image_packing" type="file" class="hidden" accept="image/png, image/gif, image/jpeg" />
                                         <input id="id_packing_modal" type="text" class="hidden" />
                                     </label>
                                 </div>
 
                                 <div class="flex p-2 space-x-4 flex justify-center">
-                                    <img id="packing_img_preview" src="" alt="">
+                                    <img id="packing_img_preview" src="" alt="" style="object-fit:contain !important;">
                                 </div>
 
                                 <div class="flex p-2 space-x-4 flex justify-center">

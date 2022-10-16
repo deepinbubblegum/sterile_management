@@ -893,7 +893,7 @@
             reader.onload = function() {
                 let output = document.getElementById('packing_img_preview');
                 output.src = reader.result;
-                output.style.height = "50%";
+                output.style.height = "20rem";
                 output.style.width = "auto";
             };
             reader.readAsDataURL(event.target.files[0]);
@@ -936,7 +936,7 @@
         })
 
 
-        function GetPacking_Img_list(packing_id){
+        function GetPacking_Img_list(packing_id) {
             $.ajax({
                 type: "POST",
                 url: `/Onprocess/GetPacking_Img_list`,
@@ -950,13 +950,15 @@
                     for (let item of response.packing_img) {
 
                         html_list += `
+                        <a class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                             <div class="relative" height="40px" width="auto">
-                                <img class="w-full" src="{{ asset('assets/image/packing/${item.image}') }}"
+                                <img class="w-full" style="height: 15rem; object-fit: contain;" src="{{ asset('assets/image/packing/${item.image}') }}"
                                     alt="dummy-image">
                                 <button id="btn_remove_img" data-ID_img="${item.image_id}" data-PackingID="${item.packing_id}" data-image="${item.image}"
                                     class="absolute top-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
                                     remove </button>
                             </div>
+                        </a>
                         `
                         // <td class="py-4 px-6" value="${(item.Item_status == null ? '' : item.Item_status)}"> ${item.Item_status} </td>
                     }
@@ -967,8 +969,8 @@
         }
 
 
-        $(document).on('click', '#btn_remove_img', function(){
-            let image_id =  $(this).attr('data-ID_img')
+        $(document).on('click', '#btn_remove_img', function() {
+            let image_id = $(this).attr('data-ID_img')
             let packing_id = $(this).attr('data-PackingID')
             let image = $(this).attr('data-image')
 
@@ -1014,7 +1016,7 @@
 
                         html_list += `
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <td class="py-4 px-6"> <input id="WS_Check" type="checkbox" ${(item.PassStatus == 'false' ? '' : 'Checked')}
+                                <td class="py-4 px-6"> <input id="ST_Check" type="checkbox" ${(item.PassStatus == 'false' ? '' : 'Checked')}
                                         class="${(item.PassStatus == 'false' ? 'check_OnProcess_sterile' : '')} w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light"  ${(item.PassStatus == 'true' ? 'disabled' : '' )}>
                                 </td>
                                 <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -1068,7 +1070,7 @@
                     return {
                         check: $('td input#ST_Check', this).prop('checked'),
                         item_id: $td.eq(3).attr('value'),
-                        sterile_qc_id: $td.eq(1).attr('value'),
+                        sterile_qc_id: $td.eq(2).attr('value'),
                     }
                 }
             }).get();
@@ -1100,7 +1102,7 @@
             $('#id_Sterile_modal').val($(this).attr('data-SterileId'))
             $('#Modal_Img_Sterile').removeClass('invisible');
 
-            // GetSterile_Img_list($(this).attr('data-SterileId'))
+            GetSterile_Img_list($(this).attr('data-SterileId'))
         })
 
 
@@ -1123,11 +1125,97 @@
             reader.onload = function() {
                 let output = document.getElementById('Sterile_img_preview');
                 output.src = reader.result;
-                output.style.height = "50%";
+                output.style.height = "20rem";
                 output.style.width = "auto";
             };
             reader.readAsDataURL(event.target.files[0]);
         })
+
+
+        $('#add_img_sterile').on('click', function() {
+            let files = document.getElementById("Input_Image_Sterile").files;
+            let sterile_qc_id = $('#id_Sterile_modal').val()
+            if (files[0] == undefined) return 0;
+
+            var Formdata = new FormData();
+
+            Formdata.append('sterile_qc_id', sterile_qc_id);
+            Formdata.append('files', files[0]);
+
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/New_ImageSterile`,
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: Formdata,
+                dataType: "json",
+                success: function(response) {
+                    document.getElementById("Input_Image_Sterile").value = null;
+                    let output = document.getElementById('Sterile_img_preview');
+                    output.src = null;
+                    output.style.height = "0px";
+                    output.style.width = "auto";
+
+                    GetSterile_Img_list(sterile_qc_id)
+                }
+            });
+        })
+
+
+        function GetSterile_Img_list(sterile_qc_id) {
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/GetSterile_Img_list`,
+                data: {
+                    sterile_qc_id: sterile_qc_id
+                },
+                success: function(response) {
+                    // console.log(response)
+
+                    html_list = '';
+                    for (let item of response.sterile_img) {
+
+                        html_list += `
+                        <a class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                            <div class="relative" height="40px" width="auto">
+                                <img class="w-full" style="height: 15rem; object-fit: contain;" src="{{ asset('assets/image/sterile/${item.image}') }}"
+                                    alt="dummy-image">
+                                <button id="btn_remove_img_sterlie" data-ID_img="${item.image_id}" data-SterileID="${item.sterile_qc_id}" data-image="${item.image}"
+                                    class="absolute top-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
+                                    remove </button>
+                            </div>
+                        </a>
+                        `
+                        // <td class="py-4 px-6" value="${(item.Item_status == null ? '' : item.Item_status)}"> ${item.Item_status} </td>
+                    }
+                    $('#list_img_Sterile').html(html_list)
+                }
+            });
+
+        }
+
+
+        $(document).on('click', '#btn_remove_img_sterlie', function() {
+            let image_id = $(this).attr('data-ID_img')
+            let sterile_qc_id = $(this).attr('data-SterileID')
+            let image = $(this).attr('data-image')
+
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/Delete_Img_list_Sterile`,
+                data: {
+                    sterile_qc_id: sterile_qc_id,
+                    image_id: image_id,
+                    image: image
+                },
+                success: function(response) {
+                    // console.log(response)
+                    GetSterile_Img_list(sterile_qc_id)
+                }
+            });
+
+        });
 
 
     });

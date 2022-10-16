@@ -62,7 +62,7 @@
 
             <div class="body">
 
-                <img class="img_QR_top" src="data:image/png;base64, {{ $items->qr_code }}" width="30px"
+                <img class="img_QR_top" src="data:image/png;base64, {{ $items->qr_code }}" width="25px"
                     height="auto">
 
                 <div class="textBody">
@@ -103,7 +103,7 @@
 
             <div class="footer">
 
-                <img class="img_QR_buttom" src="data:image/png;base64, {{ $items->qr_code }}" width="30px"
+                <img class="img_QR_buttom" src="data:image/png;base64, {{ $items->qr_code }}" width="25px"
                     height="auto">
 
                 <div class="textfooter">
