@@ -216,11 +216,11 @@
          </div> --}}
 
 
-         <!-- Oders links -->
+         <!-- Orders links -->
          <div x-data="{ isActive: false, open: false }">
              <!-- active classes 'bg-primary-100 dark:bg-primary' -->
-             {{-- <a href="/oders" @click="$event.preventDefault(); open = !open" --}}
-             <a href="/oders"
+             {{-- <a href="/orders" @click="$event.preventDefault(); open = !open" --}}
+             <a href="/orders"
                  class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
                  :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
                  :aria-expanded="(open || isActive) ? 'true' : 'false'">
@@ -231,7 +231,7 @@
                              d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                      </svg>
                  </span>
-                 <span class="ml-2 text-sm"> Oders </span>
+                 <span class="ml-2 text-sm"> Orders </span>
              </a>
          </div>
 
@@ -252,6 +252,23 @@
                  <span class="ml-2 text-sm">Process</span>
              </a>
          </div>
+
+         {{-- Stock --}}
+         <div x-data="{ isActive: false, open: false }">
+            <a href="/stock"
+                class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
+                :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
+                :aria-expanded="(open || isActive) ? 'true' : 'false'">
+                <span aria-hidden="true">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                </span>
+                <span class="ml-2 text-sm">Stock</span>
+            </a>
+        </div>
 
          <!-- Reports links -->
          <div x-data="{ isActive: false, open: false }">
@@ -393,18 +410,22 @@
              <div x-show="open" class="mt-2 space-y-2 px-7" role="menu" aria-label="Layouts">
                  <!-- active & hover classes 'text-gray-700 dark:text-light' -->
                  <!-- inActive classes 'text-gray-400 dark:text-gray-400' -->
-                 <a href="two-columns-sidebar.html" role="menuitem"
-                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                     Customers
-                 </a>
-                 {{-- <a href="two-columns-sidebar.html" role="menuitem"
-                     class="block p-2 text-sm text-gray-700 transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700">
-                     Mini + One Columns Sidebar
-                 </a>
-                 <a href="mini-column-sidebar.html" role="menuitem"
-                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                     Mini Column Sidebar
-                 </a> --}}
+                <a href="/settings/customers" role="menuitem"
+                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                    Customers
+                </a>
+                <a href="/settings/equipments" role="menuitem"
+                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                    Equipments
+                </a>
+                <a href="#" role="menuitem"
+                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                    Groups
+                </a>
+                <a href="/settings/users" role="menuitem"
+                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                    Users
+                </a>
              </div>
          </div>
      </nav>
