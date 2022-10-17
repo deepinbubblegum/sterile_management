@@ -329,6 +329,11 @@
                         `
                     }
                     $('#tb_list_washing').html(html_list)
+
+                    // <td class="py-4 px-6" value=""> ${(item.Item_status == 'Washing' || item.Item_status == 'Washing Finish')
+                    //                 ? '<button type="button" id="item_Remove_washing_Database" class="py-2 px-3 text-xs font-medium text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"> x </button>'
+                    //                 : '-'} </td>
+
                 }
             });
         }
@@ -419,6 +424,10 @@
             $(this).closest("tr").remove();
         });
 
+
+        // $("#tb_list_washing").on('click', '#item_Remove_washing_Database', function(){
+        //     alert('456')
+        // })
 
         $('#washing_all_check').change(function() {
             if ($(this).prop('checked')) {

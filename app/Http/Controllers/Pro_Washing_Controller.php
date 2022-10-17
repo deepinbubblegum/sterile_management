@@ -64,7 +64,7 @@ class Pro_Washing_Controller extends BaseController
             $data = $request->all();
 
             $items = DB::table('washing')
-                ->select('washing.*', 'equipments.Name', 'machineswashing.MachinesWashingName')
+                ->select('washing.*', 'equipments.Name', 'machineswashing.MachinesWashingName', 'items.Item_status')
                 ->leftjoin('items', 'items.item_id', '=', 'washing.item_id')
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
                 ->leftjoin('machineswashing', 'machineswashing.MachinesWashing_id', '=', 'washing.MachinesWashing_id')
@@ -135,25 +135,31 @@ class Pro_Washing_Controller extends BaseController
                 ->get();
             // dd($Cycle_Customer[0]->maxCycle);
 
-            $index = (int)$Cycle_Customer[0]->maxCycle;
-            // $mach_cycle = array();
+            // $index = (int)$Cycle_Customer[0]->maxCycle;
             $new_mach_cycle = collect([]);
             $Cycle_ma = $this->unique_multidim_array($data['WashingItem'], 'Machines_id');
+
             foreach ($Cycle_ma as $item_Cycle) {
-                // $item_Cycle->name = "My name";
-                $index++;
-                // $mach_cycle->Machines_id = $item_Cycle['Machines_id'];
-                // $mach_cycle->Cycle = $index;
-                // $mach_cycle[] = Collection::make([
-                //     'Machines_id' => $item_Cycle['Machines_id'],
-                //     'cycle' => $index
-                // ]);
+
+                // $index++;
+
+                $Cycle_Customer = DB::table('washing')
+                    ->selectRaw('max(Cycle) as maxCycle')
+                    ->leftjoin('orders', 'washing.Order_id', '=', 'orders.Order_id')
+                    ->where('orders.Customer_id', $CUS_ID[0]->Customer_id)
+                    ->where('MachinesWashing_id', $item_Cycle['Machines_id'])
+                    ->whereMonth('washing.Create_at', '=', now()->month)
+                    ->get();
+
+                // dd($Cycle_Customer[0]->maxCycle);
+                $index = (int)($Cycle_Customer[0]->maxCycle) + 1;
+
                 $new_mach_cycle->push([
                     'Machines_id' => $item_Cycle['Machines_id'],
                     'cycle' => $index
                 ]);
             }
-            // dd($mach_cycle);
+            // dd($new_mach_cycle);
 
             $check_Order = DB::table('orders')
                 ->select('StatusOrder')
@@ -182,13 +188,10 @@ class Pro_Washing_Controller extends BaseController
                 }
                 // dd($washing_id);
 
-                $num_cycle = 0;
+                $num_cycle = $item['Cycle'];
                 if ($item['Cycle'] == null || $item['Cycle'] == 'null' || $item['Cycle'] == '') {
 
                     $num_cycle = $new_mach_cycle->where('Machines_id', '==', $item['Machines_id'])->values()[0]['cycle'];
-                } else {
-
-                    $num_cycle = $item['Cycle'];
                 }
                 // dd($item['Cycle']);
 
