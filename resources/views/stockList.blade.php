@@ -104,6 +104,26 @@
                             </table>
                         </div>
 
+                        <div class="text-center mt-3">
+                            <div class="lg:grid-cols-1 md:grid-cols-1 mt-1">
+                                <div>
+
+                                    <button type="a" id="btn_save_deliver"
+                                        class="my-2 w-80 text-white bg-orange-700 hover:bg-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-2 mb-2 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">
+                                        Deliver
+                                    </button>
+
+                                    <a type="button" id="btn_pdf_deliver" href="/stock/deliver_pdf/{{ $oder_id }}"
+                                        target="_blank"
+                                        class="my-2 w-80 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                        พิมพ์ใบ Deliver
+                                    </a>
+
+
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </main>
@@ -181,6 +201,11 @@
         }
 
         Get_Oder_item()
+
+
+        // $('#btn_pdf_deliver').on('click', function(){
+
+        // })
 
     })
 </script>

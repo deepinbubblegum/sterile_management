@@ -49,12 +49,17 @@ class Pro_Sterile_Controller extends BaseController
             $data = $request->all();
 
             $items = DB::table('sterile_qc')
-                ->select('sterile_qc.*', 'equipments.Name', 'machine.Machine_name', 'machine_programs.Program_name', 'machine_programs.Program_id', 'users.Name as UserName_QC', 'items.Quantity', 'items.Item_status', 'packing.Exp_date', 'packing.Cycle')
+                ->select('sterile_qc.*', 'equipments.Name', 'machine.Machine_name', 'programs.Program_name', 'machine_programs.Program_id', 'users.Name as UserName_QC', 'items.Quantity', 'items.Item_status', 'packing.Exp_date', 'packing.Cycle')
                 ->leftjoin('packing', 'sterile_qc.item_id', '=', 'packing.item_id')
                 ->leftjoin('items', 'items.item_id', '=', 'packing.item_id')
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
                 ->leftjoin('machine', 'packing.Machine_id', '=', 'machine.Machine_id')
-                ->leftjoin('machine_programs', 'machine.Machine_id', '=', 'machine_programs.Machine_id')
+                // ->leftjoin('machine_programs', 'machine.Machine_id', '=', 'machine_programs.Machine_id')
+                ->leftJoin('machine_programs', function ($join) {
+                    $join->on('machine.Machine_id', '=', 'machine_programs.Machine_id');
+                    $join->on('packing.Program_id', '=', 'machine_programs.Program_id');
+                })
+                ->leftjoin('programs', 'machine_programs.Program_id', '=', 'programs.Program_id')
                 ->leftjoin('users', 'packing.Qc_by', '=', 'users.User_id')
                 ->where('sterile_qc.Order_id', $data['OrderId'])
                 ->orderBy('sterile_qc_id')

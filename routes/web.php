@@ -20,6 +20,8 @@ use App\Http\Controllers\Pro_Sterile_Controller;
 
 use App\Http\Controllers\Stock_Controller;
 use App\Http\Controllers\StockList_Controller;
+use App\Http\Controllers\Stock_Deliver_Controller;
+
 
 
 /*
@@ -101,17 +103,22 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/Onprocess/Delete_Img_list_Sterile', [Pro_Sterile_Controller::class, 'Delete_Img_list_Sterile']);
 
 
+
     // Stock
     Route::get('/stock', function () {
         return view('stock');
     });
     Route::post('/Get_Stock', [Stock_Controller::class, 'Get_Stock']);
-
-
     Route::get('/stock/{oder_id}', function ($oder_id) {
         return view('stockList', ['oder_id' => $oder_id]);
     });
     Route::post('/stock/GetStockItem', [StockList_Controller::class, 'Get_StockList_Item']);
+
+
+
+    // Deliver
+    Route::get('/stock/deliver_pdf/{oder_id}', [Stock_Deliver_Controller::class, 'Deliver_pdf']);
+
 
 
     // Create Order Page use here

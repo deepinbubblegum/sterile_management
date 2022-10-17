@@ -63,7 +63,8 @@ class Pro_Packing_Controller extends BaseController
                 ->get();
 
             $items_program = DB::table('machine_programs')
-                ->select('machine_programs.*')
+                ->select('machine_programs.*', 'programs.Program_name')
+                ->leftjoin('programs', 'machine_programs.Program_id', '=', 'programs.Program_id')
                 ->get();
 
             $items_process = DB::table('machine')
@@ -97,11 +98,16 @@ class Pro_Packing_Controller extends BaseController
             $data = $request->all();
 
             $items = DB::table('packing')
-                ->select('packing.*', 'equipments.Name', 'machine.Machine_name', 'machine_programs.Program_name', 'machine_programs.Program_id', 'users.Name as UserName_QC', 'items.Quantity', 'items.Item_status')
+                ->select('packing.*', 'equipments.Name', 'machine.Machine_name', 'programs.Program_name', 'machine_programs.Program_id', 'users.Name as UserName_QC', 'items.Quantity', 'items.Item_status')
                 ->leftjoin('items', 'items.item_id', '=', 'packing.item_id')
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
                 ->leftjoin('machine', 'packing.Machine_id', '=', 'machine.Machine_id')
-                ->leftjoin('machine_programs', 'machine.Machine_id', '=', 'machine_programs.Machine_id')
+                // ->leftjoin('machine_programs', 'machine.Machine_id', '=', 'machine_programs.Machine_id')
+                ->leftJoin('machine_programs', function ($join) {
+                    $join->on('machine.Machine_id', '=', 'machine_programs.Machine_id');
+                    $join->on('packing.Program_id', '=', 'machine_programs.Program_id');
+                })
+                ->leftjoin('programs', 'machine_programs.Program_id', '=', 'programs.Program_id')
                 ->leftjoin('users', 'packing.Qc_by', '=', 'users.User_id')
                 ->where('packing.Order_id', $data['OrderId'])
                 ->orderBy('packing_id')
@@ -159,21 +165,27 @@ class Pro_Packing_Controller extends BaseController
                 ->get();
             // dd($CUS_ID[0]->Customer_id);
 
-            $Cycle_Customer = DB::table('packing')
-                ->selectRaw('max(Cycle) as maxCycle')
-                ->leftjoin('orders', 'packing.Order_id', '=', 'orders.Order_id')
-                ->where('orders.Customer_id', $CUS_ID[0]->Customer_id)
-                ->whereMonth('packing.Create_at', '=', now()->month)
-                ->get();
+
             // dd($Cycle_Customer[0]->maxCycle);
 
-            $index = (int)$Cycle_Customer[0]->maxCycle;
+            // $index = (int)$Cycle_Customer[0]->maxCycle;
             // $mach_cycle = array();
             $new_mach_cycle = collect([]);
             $Cycle_ma = $this->unique_multidim_array($data['PackingItem'], 'Machines_id');
             foreach ($Cycle_ma as $item_Cycle) {
                 // $item_Cycle->name = "My name";
-                $index++;
+                // $index++;
+
+                $Cycle_Customer = DB::table('packing')
+                    ->selectRaw('max(Cycle) as maxCycle')
+                    ->leftjoin('orders', 'packing.Order_id', '=', 'orders.Order_id')
+                    ->where('orders.Customer_id', $CUS_ID[0]->Customer_id)
+                    ->where('Machine_id', $item_Cycle['Machines_id'])
+                    ->whereMonth('packing.Create_at', '=', now()->month)
+                    ->get();
+
+                $index = (int)($Cycle_Customer[0]->maxCycle) + 1;
+
                 $new_mach_cycle->push([
                     'Machines_id' => $item_Cycle['Machines_id'],
                     'cycle' => $index
@@ -199,13 +211,10 @@ class Pro_Packing_Controller extends BaseController
                 }
                 // dd($dateNow);
 
-                $num_cycle = 0;
+                $num_cycle =  $item['Cycle'];
                 if ($item['Cycle'] == null || $item['Cycle'] == 'null' || $item['Cycle'] == '') {
 
                     $num_cycle = $new_mach_cycle->where('Machines_id', '==', $item['Machines_id'])->values()[0]['cycle'];
-                } else {
-
-                    $num_cycle = $item['Cycle'];
                 }
                 // dd($item['Cycle']);
 
@@ -360,7 +369,6 @@ class Pro_Packing_Controller extends BaseController
 
             return $return_data;
         }
-
     }
 
 
@@ -387,14 +395,12 @@ class Pro_Packing_Controller extends BaseController
 
             $return_data->code = '1000';
             return $return_data;
-
         } catch (Exception $e) {
 
             $return_data->code = '0200';
             $return_data->message =  $e->getMessage();
 
             return $return_data;
-
         }
     }
 
@@ -411,8 +417,8 @@ class Pro_Packing_Controller extends BaseController
             // $data['files']->move(public_path('assets/image/packing'), $imageName);
             // dd($data['packing_id']);
 
-            if (File::exists(public_path('assets/image/packing/'.$data['image']))) {
-                File::delete(public_path('assets/image/packing/'.$data['image']));
+            if (File::exists(public_path('assets/image/packing/' . $data['image']))) {
+                File::delete(public_path('assets/image/packing/' . $data['image']));
             }
 
             DB::table('packing_img')
@@ -422,14 +428,12 @@ class Pro_Packing_Controller extends BaseController
 
             $return_data->code = '1000';
             return $return_data;
-
         } catch (Exception $e) {
 
             $return_data->code = '0200';
             $return_data->message =  $e->getMessage();
 
             return $return_data;
-
         }
     }
 
@@ -448,7 +452,7 @@ class Pro_Packing_Controller extends BaseController
                 'packing.*',
                 'equipments.Name',
                 'machine.Machine_name',
-                'machine_programs.Program_name',
+                'programs.Program_name',
                 'machine_programs.Program_id',
                 'user_QC.Name as UserName_QC',
                 'items.Quantity',
@@ -466,7 +470,12 @@ class Pro_Packing_Controller extends BaseController
             ->leftjoin('customers', 'orders.Customer_id', '=', 'customers.Customer_id')
             ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
             ->leftjoin('machine', 'packing.Machine_id', '=', 'machine.Machine_id')
-            ->leftjoin('machine_programs', 'machine.Machine_id', '=', 'machine_programs.Machine_id')
+            // ->leftjoin('machine_programs', 'machine.Machine_id', '=', 'machine_programs.Machine_id')
+            ->leftJoin('machine_programs', function ($join) {
+                $join->on('machine.Machine_id', '=', 'machine_programs.Machine_id');
+                $join->on('packing.Program_id', '=', 'machine_programs.Program_id');
+            })
+            ->leftjoin('programs', 'machine_programs.Program_id', '=', 'programs.Program_id')
             ->leftjoin('users as user_QC', 'packing.Qc_by', '=', 'user_QC.User_id')
             ->leftjoin('users as user_create', 'packing.Create_by', '=', 'user_create.User_id')
             ->where('packing.Order_id', $oder_id)
@@ -481,10 +490,10 @@ class Pro_Packing_Controller extends BaseController
         // dd($items->toArray());
 
         foreach ($items as $item) {
-            // dd($item->item_id);
+            // dd($item->Machine_name);
             $item->qr_code = base64_encode(QrCode::format('png')->size(200)->errorCorrection('H')->generate($item->item_id));
             $regular_no = preg_match('/\No[.].*$/', $item->Machine_name, $match);
-            $item->txt_processNO = isset($match[0]) ? $match[0] : '';
+            $item->txt_processNO = isset($match[0]) ? $match[0] : $item->Machine_name;
             // dd($item->Machine_name[strlen($txt_process)-1]);
             // dd($match);
         }
