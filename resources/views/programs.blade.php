@@ -7,7 +7,8 @@
 
     @include('component.Tagheader')
 
-    <script src="{{asset('assets/js/equipments.js')}}"></script>
+    <script src="{{asset('assets/js/programs.js')}}"></script>
+
 </head>
 
 <body>
@@ -22,6 +23,7 @@
 
             @include('component.slidebar')
 
+
             <!-- Main content -->
             <main class="flex-1 overflow-x-hidden">
 
@@ -32,7 +34,7 @@
                         <nav class="flex" aria-label="Breadcrumb">
                             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                                 <li class="inline-flex items-center">
-                                    <a href="#"
+                                    <a
                                         class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -40,7 +42,7 @@
                                                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                                             </path>
                                         </svg>
-                                        Equipments
+                                        Programs Management
                                     </a>
                                 </li>
                             </ol>
@@ -53,7 +55,7 @@
                             <button type="button"
                                 class="openAddModal px-4 mr-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                 <i class="fa-solid fa-file-pen mr-2 -ml-1 w-4 h-4 fill-white"></i>
-                                เพิ่มข้อมูลอุปกรณ์
+                                เพิ่มข้อมูลโปรแกรม
                             </button>
                         </div>
 
@@ -85,33 +87,15 @@
                                     <thead
                                         class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr>
-                                            <th scope="col" class="py-2 px-6">
+                                            <th scope="col" class="py-2 px-2">
                                                 Actions
                                             </th>
                                             <th scope="col" class="py-2 px-1">
-                                                ชื่ออุปกรณ์
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
-                                                ราคา
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
-                                                กระบวนการ
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
-                                                จำนวนวันหมดอายุ (วัน)
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
-                                                คำอธิบาย
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
-                                                ประเภทอุปกรณ์
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
-                                                เปิดใช้งาน
+                                                ชื่อโปรแกรม
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody id="equipmentsTable">
+                                    <tbody id="programs-table">
                                     </tbody>
                                 </table>
                             </div>
@@ -167,50 +151,22 @@
                                     </div>
                                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                         <h3 class="text-lg mt-2 leading-6 font-medium bg-white dark:bg-darker dark:text-light" id="modal-title">
-                                        เพิ่มข้อมูลอุปกรณ์
+                                            เพิ่มข้อมูลโปรแกรม
                                         </h3>
                                 </div>
                             </div>
-                            <p class="mt-4">
+                            <p class="mt-2">
                                 <div class="text-sm dark:text-light">
-                                    <div class="flex flex-col flex-wrap">
-                                        <div class="mr-2 ml-2">
-                                            <label for="equip_name" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">ชื่ออุปกรณ์</label>
-                                            <input type="text" id="equip_name" name="equip_name" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        </div>
-                                        <div class="mr-2 ml-2">
-                                            <label for="price" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">ราคา</label>
-                                            <input type="number" id="price" value="0.00" name="price" min="0" step="0.01" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        </div>
-                                        <div class="mr-2 ml-2">
-                                            <label for="expire" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">จำนวนวันหมดอายุ</label>
-                                            <input type="number" id="expire" name="expire" value="0" min="0" step="1" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        </div>
-                                        <div class="mr-2 ml-2">
-                                            <label for="process" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">กระบวนการ</label>
-                                            <select id="process" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <option value="0" disabled selected>เลือก Process Type</option>
-                                                <option value="STEAM">STEAM</option>
-                                                <option value="PLASMA">PLASMA</option>
-                                                <option value="EO">EO</option>
-                                                <option value="Wash&Disinfection">Wash&Disinfection</option>
-                                            </select>
-                                        </div>
-                                        <div class="mr-2 ml-2">
-                                            <label for="item_type" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">ประเภทอุปกรณ์</label>
-                                            <input type="text" id="item_type" name="item_type" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        </div>
-                                        <div class="mr-2 ml-2">
-                                            <label for="descriptions" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">คำอธิบาย</label>
-                                            <textarea id="descriptions" name="descriptions" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>                                            
-                                        </div>
+                                    <div class="w-full mt-3">
+                                        <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">โปรแกรม</label>
+                                        <input type="program_name" data-value="" id="program_name" name="program_name" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     </div>
                                 </div>
                             </p>
                         </div>
                         <div class="bg-white dark:bg-darker dark:text-light px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                            <button type="button" id="add_equip" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                เพื่มอุปกรณ์
+                            <button type="button" id="add_program" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                เพื่มโปรแกรม
                             </button>
                             <button type="button" class="closeModal mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                                 ยกเลิก
@@ -233,50 +189,22 @@
                                     </div>
                                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                         <h3 class="text-lg mt-2 leading-6 font-medium bg-white dark:bg-darker dark:text-light" id="modal-title">
-                                            แก้ไขข้อมูลอุปกรณ์
+                                            แก้ไขข้อมูลโปรแกรม
                                         </h3>
                                 </div>
                             </div>
-                            <p class="mt-4">
+                            <p class="mt-2">
                                 <div class="text-sm dark:text-light">
-                                    <div class="flex flex-col flex-wrap">
-                                        <div class="mr-2 ml-2">
-                                            <label for="edit_equip_name" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">ชื่ออุปกรณ์</label>
-                                            <input type="text" data-value="" id="edit_equip_name" name="edit_equip_name" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        </div>
-                                        <div class="mr-2 ml-2">
-                                            <label for="price" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">ราคา</label>
-                                            <input type="number" id="edit_price" value="0.00" name="edit_price" min="0" step="0.01" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        </div>
-                                        <div class="mr-2 ml-2">
-                                            <label for="edit_expire" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">จำนวนวันหมดอายุ</label>
-                                            <input type="number" id="edit_expire" name="edit_expire" value="0" min="0" step="1" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        </div>
-                                        <div class="mr-2 ml-2">
-                                            <label for="edit_process" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">กระบวนการ</label>
-                                            <select id="edit_process" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <option value="0" disabled selected>เลือก Process Type</option>
-                                                <option value="STEAM">STEAM</option>
-                                                <option value="PLASMA">PLASMA</option>
-                                                <option value="EO">EO</option>
-                                                <option value="Wash&Disinfection">Wash&Disinfection</option>
-                                            </select>
-                                        </div>
-                                        <div class="mr-2 ml-2">
-                                            <label for="edit_item_type" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">ประเภทอุปกรณ์</label>
-                                            <input type="text" id="edit_item_type" name="edit_item_type" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        </div>
-                                        <div class="mr-2 ml-2">
-                                            <label for="edit_descriptions" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">คำอธิบาย</label>
-                                            <textarea id="edit_descriptions" name="edit_descriptions" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>                                            
-                                        </div>
+                                    <div class="w-full mt-3">
+                                        <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">โปรแกรม</label>
+                                        <input type="edit_program_name" data-value="" id="edit_program_name" name="edit_program_name" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     </div>
                                 </div>
                             </p>
                         </div>
                         <div class="bg-white dark:bg-darker dark:text-light px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                            <button type="button" id="save_edit_equip" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                แก้ไขข้อมูล
+                            <button type="button" id="edit_program" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                แก้ไขข้อมูลโปรแกรม
                             </button>
                             <button type="button" class="closeModal mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                                 ยกเลิก
@@ -285,10 +213,9 @@
                     </div>
                 </div>
             </div>
-            </main>
+        </main>
         </div>
     </div>
-
 </body>
 
 </html>

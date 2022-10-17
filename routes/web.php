@@ -13,6 +13,9 @@ use App\Http\Controllers\Departments_Controller;
 use App\Http\Controllers\DeptEquip_Controller;
 use App\Http\Controllers\Equipments_Controller;
 use App\Http\Controllers\Users_Controller;
+use App\Http\Controllers\Groups_Controller;
+use App\Http\Controllers\MachinesSterile_Controller;
+use App\Http\Controllers\Programs_Controller;
 
 use App\Http\Controllers\Pro_Washing_Controller;
 use App\Http\Controllers\Pro_Packing_Controller;
@@ -189,6 +192,32 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/users/toggleactivateusers', [Users_Controller::class, 'setActivate']);
     Route::post('/settings/users/createusers', [Users_Controller::class, 'createUsers']);
     Route::post('/settings/users/editusers', [Users_Controller::class, 'updateUsers']);
+
+    // Settings Groups Page use here
+    Route::get('/settings/groups', function () {
+        return view('groups');
+    });
+    Route::get('/settings/groups/getlistgroups', [Groups_Controller::class, 'getListGroups']);
+
+    // Settings Machines Page use here
+    Route::get('/settings/machinessterile', function () {
+        return view('machinessterile');
+    });
+    Route::get('/settings/machinessterile/getlistmachines', [MachinesSterile_Controller::class, 'getListMachinesSterile']);
+    Route::get('/settings/machinessterile/getmachinesdetail', [MachinesSterile_Controller::class, 'getMachinesSterileDetail']);
+    Route::post('/settings/machinessterile/createmachines', [MachinesSterile_Controller::class, 'createMachinesSterile']);
+    Route::post('/settings/machinessterile/updatemachines', [MachinesSterile_Controller::class, 'updateMachinesSterile']);
+    Route::post('/settings/machinessterile/deletemachines', [MachinesSterile_Controller::class, 'deleteMachinesSterile']);
+
+    // Settings Programes Sterile Page use here
+    Route::get('/settings/programs', function () {
+        return view('programs');
+    });
+    Route::get('/settings/programs/getlistprograms', [Programs_Controller::class, 'getListPrograms']);
+    Route::get('/settings/programs/getprogramsdetail', [Programs_Controller::class, 'getProgramsDetail']);
+    Route::post('/settings/programs/createprograms', [Programs_Controller::class, 'createPrograms']);
+    Route::post('/settings/programs/updateprograms', [Programs_Controller::class, 'updatePrograms']);
+    Route::post('/settings/programs/deleteprograms', [Programs_Controller::class, 'deletePrograms']);
 
 });
 
