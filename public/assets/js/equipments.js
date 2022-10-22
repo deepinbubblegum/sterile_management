@@ -261,7 +261,7 @@ $(document).ready(function () {
                     $('#edit_expire').val(response.equipment.Expire);
                     $('#edit_item_type').val(response.equipment.Item_Type);
                     $('#edit_descriptions').val(response.equipment.Descriptions);
-                    $("#edit_process").val(response.equipment.Process.toUpperCase()).change();
+                    $("#edit_process").val(response.equipment.Process).change();
                     $('#editModal').removeClass('invisible');
                 }
             });
