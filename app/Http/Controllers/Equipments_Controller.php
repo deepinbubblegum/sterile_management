@@ -76,6 +76,13 @@ class Equipments_Controller extends BaseController
         $_equipment_process = $recv['equipment_process'];
         $_equipment_item_type = $recv['equipment_item_type'];
         $_equipment_descriptions = $recv['equipment_descriptions'];
+        $_equipment_sud = $recv['equipment_sud'];
+        $_equipment_limit = $recv['equipment_limit'];
+
+        $sud = 0;
+        if ($_equipment_sud == true) {
+            $sud = 1;
+        }
 
         DB::table('equipments')->insert([
             'Equipment_id' => $this->getAutoEquipmentsID(),
@@ -86,6 +93,8 @@ class Equipments_Controller extends BaseController
             'Descriptions' => $_equipment_descriptions,
             'Item_Type' => $_equipment_item_type,
             'Activate' => 'A',
+            'SUD' => $sud,
+            'SUD_Limit' => $_equipment_limit,
         ]);
         return json_encode(TRUE);
     }
@@ -123,6 +132,14 @@ class Equipments_Controller extends BaseController
         $_equipment_process = $recv['equipment_process'];
         $_equipment_item_type = $recv['equipment_item_type'];
         $_equipment_descriptions = $recv['equipment_descriptions'];
+        $_equipment_sud = $recv['equipment_sud'];
+        $_equipment_limit = $recv['equipment_limit'];
+
+        $sud = 0;
+        if ($_equipment_sud == true) {
+            $sud = 1;
+        }
+
         DB::table('equipments')
             ->where('Equipment_id', $_equipment_id)
             ->update([
@@ -132,6 +149,8 @@ class Equipments_Controller extends BaseController
                 'Expire' => $_equipment_expire,
                 'Descriptions' => $_equipment_descriptions,
                 'Item_Type' => $_equipment_item_type,
+                'SUD' => $sud,
+                'SUD_Limit' => $_equipment_limit
             ]);
         return json_encode(TRUE);
     }

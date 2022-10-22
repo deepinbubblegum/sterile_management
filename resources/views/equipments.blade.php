@@ -202,7 +202,15 @@
                                         </div>
                                         <div class="mr-2 ml-2">
                                             <label for="descriptions" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">คำอธิบาย</label>
-                                            <textarea id="descriptions" name="descriptions" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>                                            
+                                            <textarea id="descriptions" name="descriptions" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>                                            
+                                        </div>
+                                        <div class="flex items-center mr-3 ml-3 mt-2">
+                                            <input id="SUD_Check" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="SUD_Check" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">อุปกรณ์ SUD</label>
+                                        </div>
+                                        <div class="mr-2 ml-2" hidden id="input_div_limit">
+                                            <label for="limit" class="block mt-1 mb-1 text-sm font-medium text-gray-900 dark:text-gray-400">จำนวนรอบสูงสุด</label>
+                                            <input type="number" id="limit" value="0" name="limit" min="0" step="0" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                     </div>
                                 </div>
@@ -268,7 +276,15 @@
                                         </div>
                                         <div class="mr-2 ml-2">
                                             <label for="edit_descriptions" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">คำอธิบาย</label>
-                                            <textarea id="edit_descriptions" name="edit_descriptions" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>                                            
+                                            <textarea id="edit_descriptions" name="edit_descriptions" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>                                            
+                                        </div>
+                                        <div class="flex items-center mr-3 ml-3 mt-2">
+                                            <input id="edit_SUD_Check" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="edit_SUD_Check" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">อุปกรณ์ SUD</label>
+                                        </div>
+                                        <div class="mr-2 ml-2" id="edit_input_div_limit" hidden>
+                                            <label for="edit_limit" class="block mt-1 mb-1 text-sm font-medium text-gray-900 dark:text-gray-400">จำนวนรอบสูงสุด</label>
+                                            <input type="number" id="edit_limit" value="0" name="edit_price" min="0" step="0" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                     </div>
                                 </div>
