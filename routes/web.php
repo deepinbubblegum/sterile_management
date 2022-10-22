@@ -15,6 +15,7 @@ use App\Http\Controllers\Equipments_Controller;
 use App\Http\Controllers\Users_Controller;
 use App\Http\Controllers\Groups_Controller;
 use App\Http\Controllers\MachinesSterile_Controller;
+use App\Http\Controllers\MachinesWashings_Controller;
 use App\Http\Controllers\Programs_Controller;
 
 use App\Http\Controllers\Pro_Washing_Controller;
@@ -206,7 +207,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     });
     Route::get('/settings/groups/getlistgroups', [Groups_Controller::class, 'getListGroups']);
 
-    // Settings Machines Page use here
+    // Settings Machines sterile Page use here
     Route::get('/settings/machinessterile', function () {
         return view('machinessterile');
     });
@@ -225,6 +226,16 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/programs/createprograms', [Programs_Controller::class, 'createPrograms']);
     Route::post('/settings/programs/updateprograms', [Programs_Controller::class, 'updatePrograms']);
     Route::post('/settings/programs/deleteprograms', [Programs_Controller::class, 'deletePrograms']);
+
+    // Settings Machines washings Page use here
+    Route::get('/settings/machineswashings', function () {
+        return view('machineswashings');
+    });
+    Route::get('/settings/machineswashings/getlistmachines', [MachinesWashings_Controller::class, 'getListMachinesWashings']);
+    Route::get('/settings/machineswashings/getmachinesdetail', [MachinesWashings_Controller::class, 'getMachinesWashingsDetail']);
+    Route::post('/settings/machineswashings/createmachines', [MachinesWashings_Controller::class, 'createMachinesWashings']);
+    Route::post('/settings/machineswashings/updatemachines', [MachinesWashings_Controller::class, 'updateMachinesWashings']);
+    Route::post('/settings/machineswashings/deletemachines', [MachinesWashings_Controller::class, 'deleteMachinesWashings']);
 
 });
 
