@@ -12,7 +12,7 @@ body {
 
 /** Define now the real margins of every page in the PDF **/
 body {
-    margin-top: 5.5cm;
+    margin-top: 5.9cm;
     margin-left: 1cm;
     margin-right: 1cm;
     margin-bottom: 1cm;
@@ -31,7 +31,6 @@ header {
     /* background-color: #03a9f4; */
     /* color: white; */
     /* text-align: center; */
-    /* line-height: 1.5cm; */
 }
 
 /** Define the footer rules **/
