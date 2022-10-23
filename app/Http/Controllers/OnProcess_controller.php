@@ -24,14 +24,50 @@ class OnProcess_controller extends BaseController
             $data = $request->all();
 
             $items = DB::table('items')
-                ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name', 'washing.washing_id' , 'equipments.Item_Type')
+                ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name', 'equipments.Item_Type')
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
                 ->leftjoin('situations', 'items.Situation_id', '=', 'situations.Situation_id')
-                ->leftjoin('washing', 'items.item_id', '=', 'washing.item_id')
+                // ->leftjoin('washing', 'items.item_id', '=', 'washing.item_id')
                 ->where('items.Order_id', $data['OrderId'])
                 // ->orderBy('items.item_id')
+                ->distinct()
                 ->orderByRaw('LENGTH(items.item_id)')
                 ->get();
+
+            foreach ($items as $val) {
+                $wh = DB::table('washing')
+                    ->select('washing.*')
+                    ->where('item_id', $val->Item_id)
+                    ->where('Order_id', $data['OrderId'])
+                    // ->where(function($query) {
+                    //     $query->whereNull('PassStatus');
+                    //     $query->where('PassStatus' , '!=' , 'Pass');
+                    // })
+                    ->orderBy('washing_id')
+                    ->get();
+
+                if (count($wh) == 0) {
+                    $val->washing_stete = null;
+                } else {
+                    $whnull = DB::table('washing')
+                        ->select('washing.*')
+                        ->where('item_id', $val->Item_id)
+                        ->where('Order_id', $data['OrderId'])
+                        ->where(function ($query) {
+                            $query->whereNull('PassStatus');
+                            $query->orWhere('PassStatus', '=', 'Pass');
+                        })
+                        ->orderBy('washing_id')
+                        ->get();
+
+                    if( count($whnull) == 0 ){
+                        $val->washing_stete = null;
+                    }else{
+                        $val->washing_stete = 'list';
+                    }
+                }
+                // $items->washing_stete = ''
+            }
 
             $return_data->code = '1000';
             $return_data->items = $items;
@@ -46,6 +82,12 @@ class OnProcess_controller extends BaseController
 
             return $return_data;
         }
+    }
+
+
+    public function myfilter($row)
+    {
+        return ($row['PassStatus'] == null || $row['type'] == 'education');
     }
 
 

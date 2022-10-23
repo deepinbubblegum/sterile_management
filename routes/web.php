@@ -83,6 +83,10 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/Onprocess/GetWashing_machine', [Pro_Washing_Controller::class, 'OnProcess_GetWashing_machine']);
     Route::post('/Onprocess/GetWashing_List', [Pro_Washing_Controller::class, 'OnProcess_GetWashing_List']);
     Route::post('/Onprocess/New_WashingList', [Pro_Washing_Controller::class, 'OnProcess_Washing_newItem']);
+    Route::post('/Onprocess/New_ImageWashing', [Pro_Washing_Controller::class, 'OnProcess_New_ImageWashing']);
+    Route::post('/Onprocess/GetWashing_Img_list', [Pro_Washing_Controller::class, 'OnProcess_GetWashing_Img_list']);
+    Route::post('/Onprocess/Delete_Img_list_washing', [Pro_Washing_Controller::class, 'OnProcess_Delete_Img_Washing_list']);
+
 
     // Process Packing
     Route::post('/Onprocess/Getsterile_machine', [Pro_Packing_Controller::class, 'OnProcess_Getsterile_machine']);
@@ -95,7 +99,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/Onprocess/Delete_Img_list', [Pro_Packing_Controller::class, 'OnProcess_Delete_Img_list']);
 
     Route::get('/Onprocess/pdf/{oder_id}', [Pro_Packing_Controller::class, 'getPackingPDF']);
-    Route::get('/Onprocess/pdf/{oder_id}/{item_id}', [Pro_Packing_Controller::class, 'getPackingPDF']);
+    Route::get('/Onprocess/pdf/{oder_id}/{item_id}/{packing_id}', [Pro_Packing_Controller::class, 'getPackingPDF']);
 
 
     // Process sterile

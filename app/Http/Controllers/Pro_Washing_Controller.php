@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Cookie;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 
 use App\Http\Controllers\OnProcess_controller;
 
@@ -64,7 +65,7 @@ class Pro_Washing_Controller extends BaseController
             $data = $request->all();
 
             $items = DB::table('washing')
-                ->select('washing.*', 'equipments.Name', 'machineswashing.MachinesWashingName', 'items.Item_status')
+                ->select('washing.*', 'equipments.Name', 'machineswashing.MachinesWashingName', 'items.Item_status', 'items.SUD')
                 ->leftjoin('items', 'items.item_id', '=', 'washing.item_id')
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
                 ->leftjoin('machineswashing', 'machineswashing.MachinesWashing_id', '=', 'washing.MachinesWashing_id')
@@ -127,12 +128,13 @@ class Pro_Washing_Controller extends BaseController
                 ->get();
             // dd($CUS_ID[0]->Customer_id);
 
-            $Cycle_Customer = DB::table('washing')
-                ->selectRaw('max(Cycle) as maxCycle')
-                ->leftjoin('orders', 'washing.Order_id', '=', 'orders.Order_id')
-                ->where('orders.Customer_id', $CUS_ID[0]->Customer_id)
-                ->whereMonth('washing.Create_at', '=', now()->month)
-                ->get();
+            // $Cycle_Customer = DB::table('washing')
+            //     ->selectRaw('max(Cycle) as maxCycle')
+            //     ->leftjoin('orders', 'washing.Order_id', '=', 'orders.Order_id')
+            //     ->where('orders.Customer_id', $CUS_ID[0]->Customer_id)
+            //     // ->whereMonth('washing.Create_at', '=', now()->month)
+            //     ->whereDate('washing.Create_at', Carbon::today())
+            //     ->get();
             // dd($Cycle_Customer[0]->maxCycle);
 
             // $index = (int)$Cycle_Customer[0]->maxCycle;
@@ -148,8 +150,13 @@ class Pro_Washing_Controller extends BaseController
                     ->leftjoin('orders', 'washing.Order_id', '=', 'orders.Order_id')
                     ->where('orders.Customer_id', $CUS_ID[0]->Customer_id)
                     ->where('MachinesWashing_id', $item_Cycle['Machines_id'])
-                    ->whereMonth('washing.Create_at', '=', now()->month)
+                    ->whereDate('washing.Create_at', Carbon::today())
                     ->get();
+
+                // $query = str_replace(array('?'), array('\'%s\''), $Cycle_Customer->toSql());
+                // $query = vsprintf($query, $Cycle_Customer->getBindings());
+                // dump($query);
+                // $result = $Cycle_Customer->get();
 
                 // dd($Cycle_Customer[0]->maxCycle);
                 $index = (int)($Cycle_Customer[0]->maxCycle) + 1;
@@ -174,8 +181,6 @@ class Pro_Washing_Controller extends BaseController
                         'StatusOrder' => 'On Process',
                     ]);
             }
-
-
 
 
             foreach ($data['WashingItem'] as $item) {
@@ -208,7 +213,7 @@ class Pro_Washing_Controller extends BaseController
                         'MachinesWashing_id' => $item['Machines_id'],
                         'Cycle' => $num_cycle,
                         'QTY' => $item['QTY'],
-                        'PassStatus' => $item['check'] ?: 'false',
+                        'PassStatus' => $item['status'] == 'null' ? null : $item['status'],
                         'Create_at' => $dateNow,
                     ]
                 );
@@ -221,21 +226,29 @@ class Pro_Washing_Controller extends BaseController
                     ->where('washing.item_id', $item['item_id'])
                     ->where('washing.washing_id', $washing_id)
                     ->get();
-                // dd($Item_status);
 
-                if ($item['check'] == 'true' && $Item_status[0]->Item_status == 'Washing') {
+                if ($item['status'] == 'Pass' && $Item_status[0]->Item_status == 'Washing') {
                     DB::table('items')
                         ->where('Item_id', $item['item_id'])
                         ->where('Order_id', $data['OrderId'])
                         ->update([
                             'Item_status' => 'Washing Finish',
                         ]);
-                } elseif ($item['check'] != 'true' && ($Item_status[0]->Item_status == '' || $Item_status[0]->Item_status == '-' || $Item_status[0]->Item_status == null)) {
+                } else if ($item['status'] == 'NG' && $Item_status[0]->Item_status == 'Washing') {
+                    DB::table('items')
+                        ->where('Item_id', $item['item_id'])
+                        ->where('Order_id', $data['OrderId'])
+                        ->update([
+                            'Item_status' => null,
+                            'SUD' => null,
+                        ]);
+                } else if (($item['status'] == null || $item['status'] == '') && ($Item_status[0]->Item_status == null)) {
                     DB::table('items')
                         ->where('Item_id', $item['item_id'])
                         ->where('Order_id', $data['OrderId'])
                         ->update([
                             'Item_status' => 'Washing',
+                            'SUD' => $item['SUD'],
                         ]);
                 }
             }
@@ -256,4 +269,109 @@ class Pro_Washing_Controller extends BaseController
             return $return_data;
         }
     }
+
+
+
+    public function OnProcess_GetWashing_Img_list(Request $request)
+    {
+
+        try {
+
+            $return_data = new \stdClass();
+            $data = $request->all();
+
+            $washing_img = DB::table('washing_image')
+                ->select('*')
+                ->where('washing_id', $data['washing_id'])
+                ->get();
+
+            $return_data->code = '1000';
+            $return_data->washing_img = $washing_img;
+
+            return $return_data;
+        } catch (Exception $e) {
+
+            $return_data = new \stdClass();
+
+            $return_data->code = '0200';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+        }
+    }
+
+
+
+    private function AutuIDImg_Washing()
+    {
+        $oid = DB::select(
+            'SELECT CONCAT("IMG_WAS-",LPAD(SUBSTRING(IFNULL(MAX(washing_image.image_id), "0"), 9,6)+1, 6,"0")) as auto_id FROM washing_image'
+        );
+        return $oid[0]->auto_id;
+    }
+
+
+
+    public function OnProcess_New_ImageWashing(Request $request)
+    {
+
+        $data = $request->all();
+        $return_data = new \stdClass();
+
+        try {
+
+            // dd($data['files']->getClientOriginalExtension());
+
+            $image_id = $this->AutuIDImg_Washing();
+
+            $imageName = $image_id . '.' . $data['files']->getClientOriginalExtension();
+            $data['files']->move(public_path('assets/image/washing'), $imageName);
+            // dd($data['packing_id']);
+
+            DB::table('washing_image')->insert([
+                'washing_id' => $data['washing_id'],
+                'image_id' => $image_id,
+                'image' =>  $imageName,
+            ]);
+
+            $return_data->code = '1000';
+            return $return_data;
+        } catch (Exception $e) {
+
+            $return_data->code = '0200';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+        }
+
+    }
+
+
+    public function OnProcess_Delete_Img_Washing_list(Request $request)
+    {
+        $data = $request->all();
+        $return_data = new \stdClass();
+
+        try {
+
+            if (File::exists(public_path('assets/image/washing/' . $data['image']))) {
+                File::delete(public_path('assets/image/washing/' . $data['image']));
+            }
+
+            DB::table('washing_image')
+                ->where('washing_id', $data['washing_id'])
+                ->where('image_id', $data['image_id'])
+                ->delete();
+
+            $return_data->code = '1000';
+            return $return_data;
+        } catch (Exception $e) {
+
+            $return_data->code = '0200';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+        }
+    }
+
 }

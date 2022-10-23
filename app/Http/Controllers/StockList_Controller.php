@@ -29,8 +29,10 @@ class StockList_Controller extends BaseController
                 ->leftjoin('situations', 'items.Situation_id', '=', 'situations.Situation_id')
                 ->leftjoin('washing', 'items.item_id', '=', 'washing.item_id')
                 ->where('items.Order_id', $data['OrderId'])
-                ->where('items.Item_status', 'Stock')
+                // ->where('items.Item_status', 'Stock')
+                // ->where('washing.PassStatus', 'Pass')
                 // ->orderBy('items.item_id')
+                ->groupBy('items.item_id')
                 ->orderByRaw('LENGTH(items.item_id)')
                 ->get();
 

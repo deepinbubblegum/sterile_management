@@ -28,10 +28,10 @@
             <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="py-3 px-6 text-center">
-                        <input type="checkbox" id="all_check_sterile"
+                        {{-- <input type="checkbox" id="all_check_sterile"
                             class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" />
-                        <br>
-                        <label class="">เสร็จ</label>
+                        <br> --}}
+                        <label class="">ผลการ Sterile</label>
                     </th>
                     <th scope="col" class="py-3 px-6">
                         Action
@@ -118,7 +118,7 @@
             <div>
                 <button type="button" id="btn_save_sterile"
                     class="my-2 text-white bg-orange-700 hover:bg-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-2 mb-2 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">
-                    Sterile Finish
+                    บันทึกผล Sterile
                 </button>
             </div>
         </div>
