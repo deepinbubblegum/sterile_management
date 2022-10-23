@@ -7,8 +7,7 @@
 
     @include('component.Tagheader')
 
-    <script src="{{asset('assets/js/programs.js')}}"></script>
-
+    <script src="{{asset('assets/js/machines_washing.js')}}"></script>
 </head>
 
 <body>
@@ -42,7 +41,7 @@
                                                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                                             </path>
                                         </svg>
-                                        Programs Management
+                                        Machines Washings Management
                                     </a>
                                 </li>
                             </ol>
@@ -55,7 +54,7 @@
                             <button type="button"
                                 class="openAddModal px-4 mr-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                 <i class="fa-solid fa-file-pen mr-2 -ml-1 w-4 h-4 fill-white"></i>
-                                เพิ่มข้อมูลโปรแกรม
+                                เพิ่มข้อมูลเครื่อง Washings
                             </button>
                         </div>
 
@@ -91,11 +90,11 @@
                                                 Actions
                                             </th>
                                             <th scope="col" class="py-2 px-1">
-                                                ชื่อโปรแกรม
+                                                ชื่อเครื่อง
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody id="programs-table">
+                                    <tbody id="machineswashing-table">
                                     </tbody>
                                 </table>
                             </div>
@@ -151,22 +150,22 @@
                                     </div>
                                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                         <h3 class="text-lg mt-2 leading-6 font-medium bg-white dark:bg-darker dark:text-light" id="modal-title">
-                                            เพิ่มข้อมูลโปรแกรม
+                                        เพิ่มข้อมูลเครื่อง Washings
                                         </h3>
                                 </div>
                             </div>
                             <p class="mt-2">
                                 <div class="text-sm dark:text-light">
                                     <div class="w-full mt-3">
-                                        <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">โปรแกรม</label>
-                                        <input type="program_name" data-value="" id="program_name" name="program_name" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <label for="machine_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">ชื่อเครื่อง</label>
+                                        <input type="machine_name" id="machine_name" name="machine_name" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     </div>
                                 </div>
                             </p>
                         </div>
                         <div class="bg-white dark:bg-darker dark:text-light px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                            <button type="button" id="add_program" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                เพื่มโปรแกรม
+                            <button type="button" id="add_machine" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                เพื่มเครื่อง
                             </button>
                             <button type="button" class="closeModal mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                                 ยกเลิก
@@ -177,7 +176,7 @@
             </div>
 
             {{-- edit --}}
-            <div class="fixed z-10 inset-0 w-full invisible overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="editModal">
+            <div class="fixed z-10 inset-0 w-full invisible overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="editMachineWashingModal">
                 <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
                         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
@@ -189,22 +188,22 @@
                                     </div>
                                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                         <h3 class="text-lg mt-2 leading-6 font-medium bg-white dark:bg-darker dark:text-light" id="modal-title">
-                                            แก้ไขข้อมูลโปรแกรม
+                                        แก้ไขข้อมูลเครื่อง Washings
                                         </h3>
                                 </div>
                             </div>
                             <p class="mt-2">
                                 <div class="text-sm dark:text-light">
                                     <div class="w-full mt-3">
-                                        <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">โปรแกรม</label>
-                                        <input type="edit_program_name" data-value="" id="edit_program_name" name="edit_program_name" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <label for="machine_name_edit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">ชื่อเครื่อง</label>
+                                        <input type="machine_name_edit" data-value="" id="machine_name_edit" name="machine_name_edit" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     </div>
                                 </div>
                             </p>
                         </div>
                         <div class="bg-white dark:bg-darker dark:text-light px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                            <button type="button" id="edit_program" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                แก้ไขข้อมูลโปรแกรม
+                            <button type="button" id="edit_machine" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                แก้ไขข้อมูลเครื่อง
                             </button>
                             <button type="button" class="closeModal mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                                 ยกเลิก

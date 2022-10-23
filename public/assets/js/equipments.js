@@ -161,6 +161,24 @@ $(document).ready(function () {
         $('#interestModal').addClass('invisible');
     });
 
+    $('#SUD_Check').click(function(){
+        if($(this).prop("checked") == true){
+            $('#input_div_limit').show();
+        }
+        else if($(this).prop("checked") == false){
+            $('#input_div_limit').hide();
+        }
+    });
+
+    $('#edit_SUD_Check').click(function(){
+        if($(this).prop("checked") == true){
+            $('#edit_input_div_limit').show();
+        }
+        else if($(this).prop("checked") == false){
+            $('#edit_input_div_limit').hide();
+        }
+    });
+
     $('#add_equip').click(function (e) { 
         e.preventDefault();
         let equip_name = $('#equip_name').val();
@@ -169,9 +187,22 @@ $(document).ready(function () {
         let process = $("#process option:selected").val();
         let item_type = $('#item_type').val();
         let descriptions = $('#descriptions').val();
+        let sud_checked = $('#SUD_Check').not(this).prop('checked', this.checked);
+        let limit = $('#limit').val();
+        
         if (process == '0') {
             alert('กรุณาเลือกกระบวนการ');
             return false;
+        }
+
+        if (sud_checked.is(":checked")) {
+            if (limit <= 0) {
+                alert('กรุณากำหนดจำนวนรอบการใช้งานสูงสุด');
+                return false;
+            }
+            sud = true;
+        }else{
+            sud = false;
         }
 
         $.ajax({
@@ -183,16 +214,22 @@ $(document).ready(function () {
                 equipment_expire: expire,
                 equipment_process: process,
                 equipment_item_type: item_type,
-                equipment_descriptions: descriptions
+                equipment_descriptions: descriptions,
+                equipment_sud: sud,
+                equipment_limit: limit
             },
             dataType: "json",
             success: function (response) {
                 $('#interestModal').addClass('invisible');
                 $('#equip_name').val('');
-                $('#price').val('');
-                $('#expire').val('');
+                $('#price').val('0.00');
+                $('#expire').val(0);
+                $("#process").val(0).change();
                 $('#item_type').val('');
                 $('#descriptions').val('');
+                $('#SUD_Check').prop('checked', false);
+                $('#limit').val('');
+                $('#input_div_limit').hide();
 
                 let page = $('#page_input').val();
                 let txt_search = $("#search").val();
@@ -254,15 +291,24 @@ $(document).ready(function () {
                 },
                 dataType: "json",
                 success: function (response) {
-                    // console.log(response);
+                    console.log(response);
                     $('#edit_equip_name').attr('data-value', equip_id);
                     $('#edit_equip_name').val(response.equipment.Name);
                     $('#edit_price').val(response.equipment.Price);
                     $('#edit_expire').val(response.equipment.Expire);
                     $('#edit_item_type').val(response.equipment.Item_Type);
                     $('#edit_descriptions').val(response.equipment.Descriptions);
-                    $("#edit_process").val(response.equipment.Process.toUpperCase()).change();
+                    $("#edit_process").val(response.equipment.Process).change();
                     $('#editModal').removeClass('invisible');
+                    if (response.equipment.SUD == 1) {
+                        $('#edit_SUD_Check').prop('checked', true);
+                        $('#edit_input_div_limit').show();
+                        $('#edit_limit').val(response.equipment.SUD_Limit);
+                    }else{
+                        $('#edit_SUD_Check').prop('checked', false);
+                        $('#edit_input_div_limit').hide();
+                        $('#edit_limit').val('');
+                    }
                 }
             });
 
@@ -281,9 +327,23 @@ $(document).ready(function () {
             let edit_process = $("#edit_process option:selected").val();
             let edit_item_type = $('#edit_item_type').val();
             let edit_descriptions = $('#edit_descriptions').val();
+            let edit_sud_checked = $('#edit_SUD_Check').not(this).prop('checked', this.checked);
+            let edit_limit = $('#edit_limit').val();
+
             if (edit_process == '0') {
                 alert('กรุณาเลือกกระบวนการ');
                 return false;
+            }
+
+            let edit_sud = false;
+            if (edit_sud_checked.is(":checked")) {
+                if (edit_limit <= 0) {
+                    alert('กรุณากำหนดจำนวนรอบการใช้งานสูงสุด');
+                    return false;
+                }
+                edit_sud = true;
+            }else{
+                edit_sud = false;
             }
 
             $.ajax({
@@ -296,7 +356,9 @@ $(document).ready(function () {
                     equipment_expire: edit_expire,
                     equipment_process: edit_process,
                     equipment_item_type: edit_item_type,
-                    equipment_descriptions: edit_descriptions
+                    equipment_descriptions: edit_descriptions,
+                    equipment_sud: edit_sud,
+                    equipment_limit: edit_limit
                 },
                 dataType: "json",
                 success: function (response) {

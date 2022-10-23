@@ -4,9 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Sterile traceability</title>
+
     @include('component.Tagheader')
-    <script src="{{asset('assets/js/orderPage.js')}}"></script>
+
+    <script src="{{asset('assets/js/linkmachines.js')}}"></script>
 </head>
 
 <body>
@@ -18,18 +19,20 @@
                 class="fixed inset-0 z-50 flex items-center justify-center text-2xl font-semibold text-white bg-primary-darker">
                 Loading.....
             </div>
+
             @include('component.slidebar')
+
             <!-- Main content -->
             <main class="flex-1 overflow-x-hidden">
-                {{-- Breadcrumb --}}
-                <div class="h-full min-w-screen p-4 overflow-x-hidden overflow-y-auto">
-                @include('component.ribbon')
 
+                <div class="flex flex-col flex-1 h-full min-h-screen p-4 overflow-x-hidden overflow-y-auto">
+                    @include('component.ribbon')
+                    {{-- Breadcrumb --}}
                     <div class="mx-auto rounded-md w-full bg-white dark:bg-darker dark:text-light p-4 mb-4 leading-6 ">
                         <nav class="flex" aria-label="Breadcrumb">
                             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                                 <li class="inline-flex items-center">
-                                    <a
+                                    <a href="#"
                                         class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -37,28 +40,24 @@
                                                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                                             </path>
                                         </svg>
-                                        Orders
+                                        <div class="inline-flex">
+                                            <a class="hover:underline" href="/settings/machinessterile">Machines Sterile Management</a>
+                                            <i class="fa-solid fa-angle-right inline-flex ml-1 mr-1 mt-1 align-middle"></i>
+                                            <a class="">Programs</a>
+                                        </div>
                                     </a>
                                 </li>
                             </ol>
                         </nav>
                     </div>
                     {{-- Breadcrumb end --}}
-
                     <div
                         class="mx-auto h-auto w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6">
                         <div class="flex justify-end">
-                            <a href="{{url('/orders/create')}}"
-                                class="px-4 mr-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                            <button type="button"
+                                class="openAddModal px-4 mr-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                 <i class="fa-solid fa-file-pen mr-2 -ml-1 w-4 h-4 fill-white"></i>
-                                สร้าง ออเดอร์
-                            </a>
-
-                            <button type="button" id="btnApprove"
-                                class="px-4 mr-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white darker:focus:ring-offset-dark">
-
-                                <i class="fa-solid fa-file-export mr-2 -ml-1 w-4 h-4 fill-white"></i>
-                                รับ ออเดอร์
+                                เพิ่มข้อมูลเครื่อง
                             </button>
                         </div>
 
@@ -90,39 +89,15 @@
                                     <thead
                                         class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr>
-                                            <th scope="col" class="py-2 px-6">
-                                                #
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
+                                            <th scope="col" class="py-2 px-2">
                                                 Actions
                                             </th>
                                             <th scope="col" class="py-2 px-1">
-                                                หมายเลข ออเดอร์
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
-                                                ลูกค้า
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
-                                                หน่วยงาน
-                                            </th>
-                                            <th scope="col" class="truncate w-64 py-2 px-1">
-                                                หมายเหตุ
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
-                                                สร้างโดย
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
-                                                วันที่สร้าง
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
-                                                ผู้รับ ออเดอร์
-                                            </th>
-                                            <th scope="col" class="py-2 px-1">
-                                                วันที่รับ ออเดอร์
+                                                โปรแกรม
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody id="orderTable">
+                                    <tbody id="machineprograme-table">
                                     </tbody>
                                 </table>
                             </div>
@@ -164,10 +139,50 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="fixed z-10 inset-0 w-full invisible overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="interestModal">
+                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
+                        <div class="inline-block align-bottom bg-white dark:bg-darker dark:text-light rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-top sm:max-w-2xl w-full">
+                            <div class="bg-white dark:bg-darker dark:text-light px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                        <i class="fa-regular fa-building text-gray-700"></i>
+                                    </div>
+                                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                        <h3 class="text-lg mt-2 leading-6 font-medium bg-white dark:bg-darker dark:text-light" id="modal-title">
+                                        เพิ่มข้อมูลเครื่อง Sterile
+                                        </h3>
+                                </div>
+                            </div>
+                            <p class="mt-2">
+                                <div class="text-sm dark:text-light">
+                                    <div class="w-full mt-3">
+                                        <label for="select_program" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">ประเภท</label>
+                                        <select id="select_program" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <option value="0" disabled selected>เลือก โปรแกรม</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </p>
+                        </div>
+                        <div class="bg-white dark:bg-darker dark:text-light px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <button type="button" id="add_program_machine" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                เพื่มโปรแกรม
+                            </button>
+                            <button type="button" class="closeModal mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                ยกเลิก
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </main>
         </div>
     </div>
-    <!-- All javascript code in this project for now is just for demo DON'T RELY ON IT  -->
+
 </body>
 
 </html>

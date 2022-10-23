@@ -1,23 +1,19 @@
 $(document).ready(function () {
     // set tables
     function setTable(data) {
-        console.log(data);
-        $("#machinesterile-table").empty();
+        // console.log(data);
+        $("#machineswashing-table").empty();
         data.forEach((element) => {
             const rowHtml = `
                 <tr>
                     <td class="border-dashed border-t border-gray-200 action">
                         <span
                             class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
-                            <a href="/settings/machinessterile/${element.Machine_id}/programes" type="button" value="${element.Machine_id}"
-                                class="mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                <i class="fa-solid fa-screwdriver-wrench fa-xl mx-auto"></i>
-                            </a>
-                            <button type="button" value="${element.Machine_id}"
+                            <button type="button" value="${element.MachinesWashing_id}"
                                 class="openEditModal mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                 <i class="fa-regular fa-pen-to-square fa-xl mx-auto"></i>
                             </button>
-                            <button type="button" value="${element.Machine_id}"
+                            <button type="button" value="${element.MachinesWashing_id}"
                                 class="delete_data mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                 <i class="fa-solid fa-trash fa-xl mx-auto"></i>
                             </button>
@@ -27,28 +23,21 @@ $(document).ready(function () {
                         class="border-dashed border-t border-gray-200 Order_id">
                         <span
                             class="text-nowrap text-gray-700 dark:text-light px-1 py-2 flex items-center">
-                            ${element.Machine_name}
-                        </span>
-                    </td>
-                    <td
-                        class="border-dashed border-t border-gray-200 Order_id">
-                        <span
-                            class="text-nowrap text-gray-700 dark:text-light px-1 py-2 flex items-center">
-                            ${element.Machine_type}
+                            ${element.MachinesWashingName}
                         </span>
                     </td>
                 </tr>
             `;
-            $("#machinesterile-table").append(rowHtml);
+            $("#machineswashing-table").append(rowHtml);
         });
         initLoaded();
     }
 
-    // get list machines
-    function getListMachines(page = 1, txt_search = "") {
+    // get list machines washing
+    function getListMachinesWashing(page = 1, txt_search = "") {
         $.ajax({
             type: "GET",
-            url: "/settings/machinessterile/getlistmachines",
+            url: "/settings/machineswashings/getlistmachines",
             data: {
                 page: page,
                 txt_search: txt_search
@@ -91,8 +80,9 @@ $(document).ready(function () {
         });
     }
 
-    // init funtions
-    getListMachines();
+
+    // init function
+    getListMachinesWashing();
     function getParameterByName(name, url) {
         name = name.replace(/[\[\]]/g, "\\$&");
         let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
@@ -110,13 +100,13 @@ $(document).ready(function () {
 
         let txt_search = $("#search").val();
 
-        getListMachines(page, txt_search);
+        getListMachinesWashing(page, txt_search);
     });
 
     $("#search").keydown(function (e) {
         if (e.keyCode == 13) {
             let txt_search = $("#search").val();
-            getListMachines(null, txt_search);
+            getListMachinesWashing(null, txt_search);
         }
     });
 
@@ -128,46 +118,16 @@ $(document).ready(function () {
         $('#interestModal').addClass('invisible');
     });
 
-    $('#add_machine').on('click', function(e){
-        e.preventDefault();
-        let Machine_name = $('#machine_name').val();
-        let Machine_type = $('#machine_type option:selected').val();
-        if (Machine_name == '') {
-            $('#machine_name').addClass('border-red-500');
-            $('#machine_name').focus();
-            return false;
-        }
-        if (Machine_type == '0') {
-            $('#machine_type').addClass('border-red-500');
-            $('#machine_type').focus();
-            return false;
-        }
 
-        $.ajax({
-            type: "POST",
-            url: "/settings/machinessterile/createmachines",
-            data: {
-                machines_name: Machine_name,
-                machines_type: Machine_type
-            },
-            dataType: "json",
-            success: function (response) {
-                let page = $('#page_input').val();
-                let txt_search = $("#search").val();
-                getListMachines(page, txt_search);
-                $('#interestModal').addClass('invisible');
-            }
-        });
-    });
-    
+    // init loaded
     function initLoaded(){
-        $('.delete_data').click(function (e) { 
+        $('.delete_data').click(function (e) {
             e.preventDefault();
             let machine_id = $(this).val();
-            if (confirm('Are you sure you want to delete this item?')) {
+            if (confirm('Are you sure you want to delete this machines?')) {
                 $.ajax({
                     type: "POST",
-                    url: "/settings/machinessterile/deletemachines",
+                    url: "/settings/machineswashings/deletemachines",
                     data: {
                         machine_id: machine_id
                     },
@@ -175,7 +135,7 @@ $(document).ready(function () {
                     success: function (response) {
                         let page = $('#page_input').val();
                         let txt_search = $("#search").val();
-                        getListMachines(page, txt_search);
+                        getListMachinesWashing(page, txt_search);
                     }
                 });
             }
@@ -186,60 +146,66 @@ $(document).ready(function () {
             let machine_id = $(this).val();
             $.ajax({
                 type: "GET",
-                url: "/settings/machinessterile/getmachinesdetail",
+                url: "/settings/machineswashings/getmachinesdetail",
                 data: {
                     machine_id: machine_id
                 },
                 dataType: "json",
                 success: function (response) {
-                    $('#machine_name_edit').attr('data-value', response.Machine_id);
-                    $('#machine_name_edit').val(response.Machine_name);
-                    $("#machine_type_edit").val(response.Machine_type).change();
-                    $('#ModalEdit').removeClass('invisible');
-                    console.log(response);
-
+                    // console.log(response);
+                    $('#machine_name_edit').val(response.MachinesWashingName);
+                    $('#machine_name_edit').attr('data-value', response.MachinesWashing_id);
+                    $('#editMachineWashingModal').removeClass('invisible');
                 }
             });
         });
 
         $('.closeModal').on('click', function(e){
-            $('#ModalEdit').addClass('invisible');
+            $('#editMachineWashingModal').addClass('invisible');
         });
     }
 
-    $('#edit_machine').click(function (e) { 
-        e.preventDefault();
-        let Machine_id = $('#machine_name_edit').attr('data-value');
-        let Machine_name = $('#machine_name_edit').val();
-        let Machine_type = $('#machine_type_edit option:selected').val();
-        if (Machine_name == '') {
-            $('#machine_name_edit').addClass('border-red-500');
-            $('#machine_name_edit').focus();
-            return false;
-        }
-        if (Machine_type == '0') {
-            $('#machine_type_edit').addClass('border-red-500');
-            $('#machine_type_edit').focus();
-            return false;
-        }
 
+    // create machines washing
+    $('#add_machine').click(function (e) {
+        e.preventDefault();
+        let machine_name = $('#machine_name').val();
         $.ajax({
             type: "POST",
-            url: "/settings/machinessterile/updatemachines",
+            url: "/settings/machineswashings/createmachines",
             data: {
-                machine_id: Machine_id,
-                machine_name: Machine_name,
-                machine_type: Machine_type
+                machine_name: machine_name
             },
             dataType: "json",
             success: function (response) {
-                console.log(response);
                 let page = $('#page_input').val();
                 let txt_search = $("#search").val();
-                getListMachines(page, txt_search);
-                $('#ModalEdit').addClass('invisible');
+                getListMachinesWashing(page, txt_search);
+                $('#interestModal').addClass('invisible');
+                $('#machine_name').val('');
             }
         });
-        
+    });
+
+    // edit machines washing
+    $('#edit_machine').click(function (e) {
+        e.preventDefault();
+        let machine_id = $('#machine_name_edit').attr('data-value');
+        let machine_name = $('#machine_name_edit').val();
+        $.ajax({
+            type: "POST",
+            url: "/settings/machineswashings/updatemachines",
+            data: {
+                machine_id: machine_id,
+                machine_name: machine_name
+            },
+            dataType: "json",
+            success: function (response) {
+                let page = $('#page_input').val();
+                let txt_search = $("#search").val();
+                getListMachinesWashing(page, txt_search);
+                $('#editMachineWashingModal').addClass('invisible');
+            }
+        });
     });
 });
