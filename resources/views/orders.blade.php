@@ -21,9 +21,9 @@
             @include('component.slidebar')
             <!-- Main content -->
             <main class="flex-1 overflow-x-hidden">
-
                 {{-- Breadcrumb --}}
                 <div class="h-full min-w-screen p-4 overflow-x-hidden overflow-y-auto">
+                @include('component.ribbon')
 
                     <div class="mx-auto rounded-md w-full bg-white dark:bg-darker dark:text-light p-4 mb-4 leading-6 ">
                         <nav class="flex" aria-label="Breadcrumb">

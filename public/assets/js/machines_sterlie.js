@@ -11,7 +11,7 @@ $(document).ready(function () {
                             class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                             <a href="/settings/machinessterile/${element.Machine_id}/programes" type="button" value="${element.Machine_id}"
                                 class="mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
-                                <i class="fa-regular fa-building fa-xl mx-auto"></i>
+                                <i class="fa-solid fa-screwdriver-wrench fa-xl mx-auto"></i>
                             </a>
                             <button type="button" value="${element.Machine_id}"
                                 class="openEditModal mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
