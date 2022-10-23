@@ -50,8 +50,8 @@ class Pro_Sterile_Controller extends BaseController
 
             $items = DB::table('sterile_qc')
                 ->select('sterile_qc.*', 'equipments.Name', 'machine.Machine_name', 'programs.Program_name', 'machine_programs.Program_id', 'users.Name as UserName_QC', 'items.Quantity', 'items.Item_status', 'packing.Exp_date', 'packing.Cycle')
+                ->leftjoin('items', 'items.item_id', '=', 'sterile_qc.item_id')
                 ->leftjoin('packing', 'sterile_qc.item_id', '=', 'packing.item_id')
-                ->leftjoin('items', 'items.item_id', '=', 'packing.item_id')
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
                 ->leftjoin('machine', 'packing.Machine_id', '=', 'machine.Machine_id')
                 // ->leftjoin('machine_programs', 'machine.Machine_id', '=', 'machine_programs.Machine_id')
@@ -62,8 +62,10 @@ class Pro_Sterile_Controller extends BaseController
                 ->leftjoin('programs', 'machine_programs.Program_id', '=', 'programs.Program_id')
                 ->leftjoin('users', 'packing.Qc_by', '=', 'users.User_id')
                 ->where('sterile_qc.Order_id', $data['OrderId'])
-                ->orderBy('sterile_qc_id')
+                ->groupBy('sterile_qc_id')
+                // ->orderBy('sterile_qc.sterile_qc_id')
                 ->get();
+
 
             $return_data->code = '0000';
             $return_data->sterile_List = $items;
@@ -101,7 +103,7 @@ class Pro_Sterile_Controller extends BaseController
 
                 // dd($Item_status);
 
-                if ($Item_status[0]->Item_status == 'On sterile') {
+                if ($Item_status[0]->Item_status == 'On sterile' && $item['status'] == 'Pass') {
 
                     DB::table('items')
                         ->where('Item_id', $item['item_id'])
@@ -116,7 +118,7 @@ class Pro_Sterile_Controller extends BaseController
                         ->where('Order_id', $data['OrderId'])
                         ->where('sterile_qc_id', $item['sterile_qc_id'])
                         ->update([
-                            'PassStatus' => 'true',
+                            'PassStatus' => 'Pass',
                             'Update_by' => $request->cookie('Username_server_User_id'),
                             'Update_at' => $dateNow
 
@@ -131,6 +133,25 @@ class Pro_Sterile_Controller extends BaseController
                         'PDF' => null,
                         'Signature_custumer' => null,
                     ]);
+                } elseif ($Item_status[0]->Item_status == 'On sterile' && $item['status'] == 'NG') {
+
+                    DB::table('sterile_qc')
+                        ->where('Item_id', $item['item_id'])
+                        ->where('Order_id', $data['OrderId'])
+                        ->where('sterile_qc_id', $item['sterile_qc_id'])
+                        ->update([
+                            'PassStatus' => 'NG',
+                            'Update_by' => $request->cookie('Username_server_User_id'),
+                            'Update_at' => $dateNow
+
+                        ]);
+
+                    DB::table('items')
+                        ->where('Item_id', $item['item_id'])
+                        ->where('Order_id', $data['OrderId'])
+                        ->update([
+                            'Item_status' => 'Washing Finish',
+                        ]);
                 }
             }
 
@@ -146,7 +167,12 @@ class Pro_Sterile_Controller extends BaseController
                 ->where('Order_id', $data['OrderId'])
                 ->count();
 
-            if ($check_state_AllItem == $Count_AllItem) {
+            $check_oder = DB::table('orders')
+                ->select('StatusOrder')
+                ->where('Order_id', $data['OrderId'])
+                ->get();
+
+            if ($check_state_AllItem == $Count_AllItem && $check_oder[0]->StatusOrder == 'On Process') {
                 DB::table('orders')
                     ->where('Order_id', $data['OrderId'])
                     ->update([
@@ -196,7 +222,6 @@ class Pro_Sterile_Controller extends BaseController
 
             return $return_data;
         }
-
     }
 
 
@@ -224,16 +249,13 @@ class Pro_Sterile_Controller extends BaseController
 
             $return_data->code = '1000';
             return $return_data;
-
         } catch (Exception $e) {
 
             $return_data->code = '0200';
             $return_data->message =  $e->getMessage();
 
             return $return_data;
-
         }
-
     }
 
 
@@ -244,8 +266,8 @@ class Pro_Sterile_Controller extends BaseController
 
         try {
 
-            if (File::exists(public_path('assets/image/sterile/'.$data['image']))) {
-                File::delete(public_path('assets/image/sterile/'.$data['image']));
+            if (File::exists(public_path('assets/image/sterile/' . $data['image']))) {
+                File::delete(public_path('assets/image/sterile/' . $data['image']));
             }
 
             DB::table('sterile_qc_image')
@@ -255,15 +277,12 @@ class Pro_Sterile_Controller extends BaseController
 
             $return_data->code = '1000';
             return $return_data;
-
         } catch (Exception $e) {
 
             $return_data->code = '0200';
             $return_data->message =  $e->getMessage();
 
             return $return_data;
-
         }
     }
-
 }

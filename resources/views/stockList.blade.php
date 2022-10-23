@@ -108,7 +108,7 @@
                             <div class="lg:grid-cols-1 md:grid-cols-1 mt-1">
                                 <div>
 
-                                    <button type="a" id="btn_save_deliver"
+                                    <button type="a" id="btn_save_deliver" data-modal-toggle="Deliver_Modal"
                                         class="my-2 w-80 text-white bg-orange-700 hover:bg-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-2 mb-2 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">
                                         Deliver
                                     </button>
@@ -129,6 +129,50 @@
             </main>
         </div>
     </div>
+
+
+    <!-- Main modal -->
+
+
+    <!-- Main modal -->
+    <div class="fixed z-10 inset-0 w-full invisible overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="Modal_Deliver">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
+                <div class="inline-block align-bottom bg-white dark:bg-darker dark:text-light rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-top sm:max-w-2xl w-full">
+                    <div class="bg-white dark:bg-darker dark:text-light px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:mt-0">
+                                <h3 class="text-lg mt-2 leading-6 font-medium bg-white dark:bg-darker dark:text-light" id="modal-title">
+                                  <b>ส่งมอบอุปกรณ์ </b>
+                                </h3>
+                        </div>
+                    </div>
+                    <p class="mt-2">
+                        <div class="text-sm dark:text-light">
+                            <div class="w-full mt-3">
+                                <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">ชื่อลูกค้า</label>
+                                <input type="text" data-id="" id="txt_customer_name" name="txt_customer_name" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                            <div class="w-full mt-3">
+                                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">ที่อยู่ หรือ รายละเอียดติดต่อ</label>
+                                <textarea id="txt_address" name="txt_address" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+                <div class="bg-white dark:bg-darker dark:text-light px-4 py-3 sm:px-6 text-center">
+                    <button type="button" id="update_customer" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        อัปเดตข้อมูลูกค้า
+                    </button>
+                    <button type="button" id="modal_deliver_close" class="closeModal mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        ปิด
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- All javascript code in this project for now is just for demo DON'T RELY ON IT  -->
 
@@ -203,9 +247,21 @@
         Get_Oder_item()
 
 
-        // $('#btn_pdf_deliver').on('click', function(){
-
+        // $('#btn_save_deliver').on('click', function() {
+        //     var modal_id = $('#Deliver_Modal').data("modal-toggle");
+        //     if ($('#Deliver_Modal').hasClass("hidden")) {
+        //         $('[modal-backdrop]').remove();
+        //     }
         // })
+
+
+        $(document).on('click', '#btn_save_deliver', function() {
+            $('#Modal_Deliver').removeClass('invisible');
+        })
+
+        $(document).on('click', '#modal_deliver_close', function() {
+            $('#Modal_Deliver').addClass('invisible');
+        })
 
     })
 </script>

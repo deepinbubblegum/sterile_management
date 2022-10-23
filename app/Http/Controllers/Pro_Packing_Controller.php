@@ -181,7 +181,8 @@ class Pro_Packing_Controller extends BaseController
                     ->leftjoin('orders', 'packing.Order_id', '=', 'orders.Order_id')
                     ->where('orders.Customer_id', $CUS_ID[0]->Customer_id)
                     ->where('Machine_id', $item_Cycle['Machines_id'])
-                    ->whereMonth('packing.Create_at', '=', now()->month)
+                    // ->whereMonth('packing.Create_at', '=', now()->month)
+                    ->whereDate('packing.Create_at', Carbon::today())
                     ->get();
 
                 $index = (int)($Cycle_Customer[0]->maxCycle) + 1;
@@ -244,7 +245,7 @@ class Pro_Packing_Controller extends BaseController
                         'Create_by' => $request->cookie('Username_server_User_id'),
                         'Create_at' => $dateNow,
                         // 'PassStatus' => $item['check'],
-                        // 'PassStatus' => 'true',
+                        'PassStatus' => 'true',
                         'Note' => $item['Note'],
                     ]
                 );
@@ -269,7 +270,7 @@ class Pro_Packing_Controller extends BaseController
                         'Order_id' => $data['OrderId'],
                         'item_id' => $item['item_id'],
                         'sterile_qc_id' =>  $this->AutuIDsterile(),
-                        'PassStatus' => 'false',
+                        'PassStatus' => null,
                         'Create_by' => $request->cookie('Username_server_User_id'),
                         'Create_at' => $dateNow,
                         // 'Update_at' => null,
@@ -445,6 +446,7 @@ class Pro_Packing_Controller extends BaseController
         $dateNow = Carbon::now();
         $oder_id = $request->route('oder_id');
         $item_id = $request->route('item_id');
+        $packing_id = $request->route('packing_id');
 
         // dd($oder_id);
         $items = DB::table('packing')
@@ -484,6 +486,7 @@ class Pro_Packing_Controller extends BaseController
                     $query->where('items.item_id', $item_id);
                 }
             })
+            ->where('packing.packing_id', $packing_id)
             ->orderBy('packing_id')
             ->get();
         // dd($items);
