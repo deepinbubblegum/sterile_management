@@ -17,6 +17,7 @@ use App\Http\Controllers\Groups_Controller;
 use App\Http\Controllers\MachinesSterile_Controller;
 use App\Http\Controllers\MachinesWashings_Controller;
 use App\Http\Controllers\Programs_Controller;
+use App\Http\Controllers\LinkMachines_Controller;
 
 use App\Http\Controllers\Pro_Washing_Controller;
 use App\Http\Controllers\Pro_Packing_Controller;
@@ -207,15 +208,6 @@ Route::group(['middleware' => ['authLogin']], function () {
     });
     Route::get('/settings/groups/getlistgroups', [Groups_Controller::class, 'getListGroups']);
 
-    // Settings Machines sterile Page use here
-    Route::get('/settings/machinessterile', function () {
-        return view('machinessterile');
-    });
-    Route::get('/settings/machinessterile/getlistmachines', [MachinesSterile_Controller::class, 'getListMachinesSterile']);
-    Route::get('/settings/machinessterile/getmachinesdetail', [MachinesSterile_Controller::class, 'getMachinesSterileDetail']);
-    Route::post('/settings/machinessterile/createmachines', [MachinesSterile_Controller::class, 'createMachinesSterile']);
-    Route::post('/settings/machinessterile/updatemachines', [MachinesSterile_Controller::class, 'updateMachinesSterile']);
-    Route::post('/settings/machinessterile/deletemachines', [MachinesSterile_Controller::class, 'deleteMachinesSterile']);
 
     // Settings Programes Sterile Page use here
     Route::get('/settings/programs', function () {
@@ -226,6 +218,26 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/programs/createprograms', [Programs_Controller::class, 'createPrograms']);
     Route::post('/settings/programs/updateprograms', [Programs_Controller::class, 'updatePrograms']);
     Route::post('/settings/programs/deleteprograms', [Programs_Controller::class, 'deletePrograms']);
+
+    // Settings Machines sterile Page use here
+    Route::get('/settings/machinessterile', function () {
+        return view('machinessterile');
+    });
+    Route::get('/settings/machinessterile/getlistmachines', [MachinesSterile_Controller::class, 'getListMachinesSterile']);
+    Route::get('/settings/machinessterile/getmachinesdetail', [MachinesSterile_Controller::class, 'getMachinesSterileDetail']);
+    Route::post('/settings/machinessterile/createmachines', [MachinesSterile_Controller::class, 'createMachinesSterile']);
+    Route::post('/settings/machinessterile/updatemachines', [MachinesSterile_Controller::class, 'updateMachinesSterile']);
+    Route::post('/settings/machinessterile/deletemachines', [MachinesSterile_Controller::class, 'deleteMachinesSterile']);
+
+    // Settings Link Machines Programes Sterile Page use here
+    Route::get('/settings/machinessterile/{machine_id}/programes', function () {
+        return view('linkmachines');
+    });
+    Route::get('/settings/machinessterile/{machine_id}/programes/getlistlinkmachines', [LinkMachines_Controller::class, 'getListPrograme']);
+    Route::get('/settings/machinessterile/{machine_id}/programes/getprogram', [LinkMachines_Controller::class, 'getPrograme']);
+    Route::post('/settings/machinessterile/{machine_id}/programes/deletelink', [LinkMachines_Controller::class, 'deleteLinkPrograme']);
+    Route::post('/settings/machinessterile/{machine_id}/programes/addlink', [LinkMachines_Controller::class, 'addLinkPrograme']);
+
 
     // Settings Machines washings Page use here
     Route::get('/settings/machineswashings', function () {

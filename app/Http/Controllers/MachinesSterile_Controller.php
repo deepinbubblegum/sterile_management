@@ -27,12 +27,11 @@ class MachinesSterile_Controller extends BaseController
                 ->select('machine.*')
                 ->where(function ($query) use ($data) {
                     if ($data['txt_search'] != '') {
-                        $query->where('machines.Machine_name', 'like', '%' . $data['txt_search'] . '%');
+                        $query->where('machine.Machine_name', 'like', '%' . $data['txt_search'] . '%');
                     }
                 })
-                ->orderBy('machine_id', 'desc')
+                ->orderBy('machine.Machine_id', 'desc')
                 ->paginate(8);
-            
             $return_data->machines = $machines;
             return $return_data;
 
