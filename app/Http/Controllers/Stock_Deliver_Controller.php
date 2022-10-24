@@ -190,5 +190,7 @@ class Stock_Deliver_Controller extends BaseController
         $pdf->setPaper('A4');
 
         return @$pdf->stream();
+
+        // return view('pdf.Deliver')->with(compact('List_data'));
     }
 }

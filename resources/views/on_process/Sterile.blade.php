@@ -179,13 +179,15 @@
                                                 class="font-semibold">Click to upload</span> or drag and drop</p>
                                         <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF</p>
                                     </div>
-                                    <input id="Input_Image_Sterile" type="file" class="hidden" accept="image/png, image/gif, image/jpeg" />
+                                    <input id="Input_Image_Sterile" type="file" class="hidden"
+                                        accept="image/png, image/gif, image/jpeg" />
                                     <input id="id_Sterile_modal" type="text" class="hidden" />
                                 </label>
                             </div>
 
                             <div class="flex p-2 space-x-4 flex justify-center">
-                                <img id="Sterile_img_preview" src="" alt="" style="object-fit:contain !important;">
+                                <img id="Sterile_img_preview" src="" alt=""
+                                    style="object-fit:contain !important;">
                             </div>
 
                             <div class="flex p-2 space-x-4 flex justify-center">
@@ -223,6 +225,19 @@
                 </div>
             </div>
         </div>
+    </div>
+
+
+    {{-- Modal Show Images --}}
+    <div id="modal_show_image_sterile"
+        class="z-50 hidden fixed top-0 left-0 w-screen h-screen bg-black/70 flex justify-center items-center overflow-auto">
+
+        <!-- The close button -->
+        <a class="fixed z-50 top-6 right-8 text-white text-5xl font-bold cursor-pointer text-orange-500"
+            id="Close_show_image_sterile">&times;</a>
+
+        <!-- A big image will be displayed here -->
+        <img id="modal_Fullimg_sterile" class="flex flex-col h-auto max-h-full" src="" />
     </div>
 
 

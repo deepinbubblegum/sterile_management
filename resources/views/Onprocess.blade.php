@@ -328,7 +328,7 @@
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                             <option value="" disabled selected>-เลือกสถานะ-</option>
                                             <option value="Pass"> Pass </option>
-                                            <option value="NG"> NG</option>
+                                            <option value="Fail"> Fail</option>
                                         </select>
                                         `
                                         : item.PassStatus
@@ -443,6 +443,8 @@
             row.append(col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11).prependTo(
                 "#tb_list_washing");
 
+            $('#SUD').val('');
+
         })
 
 
@@ -484,7 +486,7 @@
             var tb_list_washing = $('#tb_list_washing tr:has(td)').map(function(index, cell) {
                 var $td = $('td', this);
 
-                if ($td.eq(7).attr('value') != 'NG') {
+                if ($td.eq(7).attr('value') != 'Fail') {
                     return {
                         // check: $('td input#WS_Check', this).prop('checked') || null,
                         status: $('td select#Status_washing', this).find(":selected").val() ||
@@ -619,12 +621,20 @@
 
                         html_list += `
                         <a class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                            <div class="relative" height="40px" width="auto">
+                            <div class="relative" height="40px" width="auto" id="list_image_washing">
                                 <img class="w-full" style="height: 15rem; object-fit: contain;" src="{{ asset('assets/image/washing/${item.image}') }}"
                                     alt="dummy-image">
+
+                                <button id="btn_View_img_washing" src-data='${item.image}'
+                                    class="absolute top-1 right-1 bg-green-500 text-white p-2 rounded hover:bg-green-800">
+                                    view
+                                </button>
+
                                 <button id="btn_remove_img_washing" data-ID_img="${item.image_id}" data-washingID="${item.washing_id}" data-image="${item.image}"
-                                    class="absolute top-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
-                                    remove </button>
+                                    class="absolute bottom-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
+                                    remove
+                                </button>
+
                             </div>
                         </a>
                         `
@@ -657,6 +667,18 @@
                 }
             });
         });
+
+
+        $(document).on('click', '#btn_View_img_washing', function() {
+            let src_img = $(this).attr('src-data')
+            $('#modal_show_image_washing').removeClass('hidden')
+            $('#modal_Fullimg_Wahsing').attr('src', `{{ asset('assets/image/washing/${src_img}') }}`)
+        })
+
+        $(document).on('click', '#Close_show_image_washing', function() {
+            $('#modal_Fullimg_Wahsing').attr('src', '');
+            $('#modal_show_image_washing').addClass('hidden')
+        })
 
 
 
@@ -784,10 +806,17 @@
                 },
                 dataType: "json",
                 success: function(response) {
+                    console.log(response)
+
+                    // alert($('#option_machine_sterile').attr('data-type'))
 
                     let item_process = $('#item_packing').find(":selected").data("process")
                     // alert($('#item_packing').find(":selected").data("process"))
                     html_list_machine_sterile = ''
+
+                    if (item_process == $('#option_machine_sterile').attr('data-type')) {
+                        return 0;
+                    }
 
                     for (let item of response.items_machine) {
                         if (item.Machine_type == item_process) {
@@ -800,6 +829,7 @@
                     $('#name_process_machine_sterile').val($('#option_machine_sterile').find(
                         ":selected").data("process"))
 
+                    $('#option_machine_sterile').attr('data-type', item_process)
 
                     // console.log(response.items_process)
                     html_list_process_sterile = ''
@@ -1134,9 +1164,16 @@
                             <div class="relative" height="40px" width="auto">
                                 <img class="w-full" style="height: 15rem; object-fit: contain;" src="{{ asset('assets/image/packing/${item.image}') }}"
                                     alt="dummy-image">
-                                <button id="btn_remove_img" data-ID_img="${item.image_id}" data-PackingID="${item.packing_id}" data-image="${item.image}"
-                                    class="absolute top-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
-                                    remove </button>
+
+                                    <button id="btn_View_img_packing" src-data="${item.image}"
+                                    class="absolute top-1 right-1 bg-green-500 text-white p-2 rounded hover:bg-green-800">
+                                        view
+                                    </button>
+
+                                <button id="btn_remove_img_packing" data-ID_img="${item.image_id}" data-PackingID="${item.packing_id}" data-image="${item.image}"
+                                    class="absolute bottom-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
+                                    remove
+                                </button>
                             </div>
                         </a>
                         `
@@ -1149,7 +1186,7 @@
         }
 
 
-        $(document).on('click', '#btn_remove_img', function() {
+        $(document).on('click', '#btn_remove_img_packing', function() {
             let image_id = $(this).attr('data-ID_img')
             let packing_id = $(this).attr('data-PackingID')
             let image = $(this).attr('data-image')
@@ -1169,6 +1206,18 @@
             });
 
         });
+
+
+        $(document).on('click', '#btn_View_img_packing', function() {
+            let src_img = $(this).attr('src-data')
+            $('#modal_show_image_packing').removeClass('hidden')
+            $('#modal_Fullimg_packing').attr('src', `{{ asset('assets/image/packing/${src_img}') }}`)
+        })
+
+        $(document).on('click', '#Close_show_image_packing', function() {
+            $('#modal_Fullimg_packing').attr('src', '');
+            $('#modal_show_image_packing').addClass('hidden')
+        })
 
         //----------------------------------------- END Packing -------------------------------------//
         //----------------------------------------- ------- -----------------------------------------//
@@ -1203,7 +1252,7 @@
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="" disabled selected>-เลือกสถานะ-</option>
                                         <option value="Pass"> Pass </option>
-                                        <option value="NG"> NG</option>
+                                        <option value="Fail"> Fail</option>
                                     </select>
                                     `
                                     : item.PassStatus
@@ -1254,10 +1303,11 @@
         $('#btn_save_sterile').on('click', function() {
             var tb_list_sterile = $('#tb_list_sterile tr:has(td)').map(function(index, cell) {
                 var $td = $('td', this);
-                if ($td.eq(10).attr('value') != 'NG') {
+                if ($td.eq(10).attr('value') != 'Fail') {
                     return {
                         // check: $('td input#ST_Check', this).prop('checked'),
-                        status: $('td select#Status_Sterile', this).find(":selected").val() || $td.eq(10).attr('value') || null,
+                        status: $('td select#Status_Sterile', this).find(":selected").val() ||
+                            $td.eq(10).attr('value') || null,
                         item_id: $td.eq(3).attr('value'),
                         sterile_qc_id: $td.eq(2).attr('value'),
                     }
@@ -1267,6 +1317,8 @@
             console.log(tb_list_sterile)
 
             if (tb_list_sterile.length == 0) return false
+
+            $('#option_machine_sterile').attr('data-type', '')
 
             $.ajax({
                 type: "POST",
@@ -1371,9 +1423,16 @@
                             <div class="relative" height="40px" width="auto">
                                 <img class="w-full" style="height: 15rem; object-fit: contain;" src="{{ asset('assets/image/sterile/${item.image}') }}"
                                     alt="dummy-image">
+
+                                <button id="btn_View_img_sterile" src-data="${item.image}"
+                                class="absolute top-1 right-1 bg-green-500 text-white p-2 rounded hover:bg-green-800">
+                                    view
+                                </button>
+
                                 <button id="btn_remove_img_sterlie" data-ID_img="${item.image_id}" data-SterileID="${item.sterile_qc_id}" data-image="${item.image}"
-                                    class="absolute top-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
-                                    remove </button>
+                                    class="absolute bottom-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
+                                    remove
+                                </button>
                             </div>
                         </a>
                         `
@@ -1406,6 +1465,18 @@
             });
 
         });
+
+
+        $(document).on('click', '#btn_View_img_sterile', function() {
+            let src_img = $(this).attr('src-data')
+            $('#modal_show_image_sterile').removeClass('hidden')
+            $('#modal_Fullimg_sterile').attr('src', `{{ asset('assets/image/sterile/${src_img}') }}`)
+        })
+
+        $(document).on('click', '#Close_show_image_sterile', function() {
+            $('#modal_Fullimg_sterile').attr('src', '');
+            $('#modal_show_image_sterile').addClass('hidden')
+        })
 
 
     });
