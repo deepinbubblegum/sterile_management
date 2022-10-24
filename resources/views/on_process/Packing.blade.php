@@ -58,7 +58,7 @@
                     <label for="option_machine_sterile"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เลือกเครื่อง
                         Sterile</label>
-                    <select id="option_machine_sterile"
+                    <select id="option_machine_sterile" data-type=""
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         {{-- <option>Sterile 01</option>
                         <option>Sterile 02</option>
@@ -264,7 +264,8 @@
                             </div>
                         </div>
 
-                        <button id="modal_Packing_close" type="button" style="position: fixed; top: 1rem; right: 1rem;"
+                        <button id="modal_Packing_close" type="button"
+                            style="position: fixed; top: 1rem; right: 1rem;"
                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                             data-modal-toggle="Modal_Img_Packing">
                             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
@@ -293,15 +294,18 @@
                                             </svg>
                                             <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
                                                     class="font-semibold">Click to upload</span> or drag and drop</p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF
+                                            </p>
                                         </div>
-                                        <input id="Input_Image_packing" type="file" class="hidden" accept="image/png, image/gif, image/jpeg" />
+                                        <input id="Input_Image_packing" type="file" class="hidden"
+                                            accept="image/png, image/gif, image/jpeg" />
                                         <input id="id_packing_modal" type="text" class="hidden" />
                                     </label>
                                 </div>
 
                                 <div class="flex p-2 space-x-4 flex justify-center">
-                                    <img id="packing_img_preview" src="" alt="" style="object-fit:contain !important;">
+                                    <img id="packing_img_preview" src="" alt=""
+                                        style="object-fit:contain !important;">
                                 </div>
 
                                 <div class="flex p-2 space-x-4 flex justify-center">
@@ -341,6 +345,18 @@
             </div>
         </div>
 
+    </div>
+
+    {{-- Modal Show Images --}}
+    <div id="modal_show_image_packing"
+        class="z-50 hidden fixed top-0 left-0 w-screen h-screen bg-black/70 flex justify-center items-center overflow-auto">
+
+        <!-- The close button -->
+        <a class="fixed z-50 top-6 right-8 text-white text-5xl font-bold cursor-pointer text-orange-500"
+            id="Close_show_image_packing">&times;</a>
+
+        <!-- A big image will be displayed here -->
+        <img id="modal_Fullimg_packing" class="flex flex-col h-auto max-h-full" src="" />
     </div>
 
 </section>

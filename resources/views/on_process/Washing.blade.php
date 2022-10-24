@@ -266,4 +266,18 @@
         </div>
     </div>
 
+
+    {{-- Modal Show Images --}}
+    <div id="modal_show_image_washing"
+        class="z-50 hidden fixed top-0 left-0 w-screen h-screen bg-black/70 flex justify-center items-center overflow-auto">
+
+        <!-- The close button -->
+        <a class="fixed z-50 top-6 right-8 text-white text-5xl font-bold cursor-pointer text-orange-500" id="Close_show_image_washing">&times;</a>
+
+        <!-- A big image will be displayed here -->
+        <img id="modal_Fullimg_Wahsing" class="flex flex-col h-auto max-h-full" src="" />
+    </div>
+
+
+
 </section>

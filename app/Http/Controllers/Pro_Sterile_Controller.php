@@ -133,14 +133,14 @@ class Pro_Sterile_Controller extends BaseController
                         'PDF' => null,
                         'Signature_custumer' => null,
                     ]);
-                } elseif ($Item_status[0]->Item_status == 'On sterile' && $item['status'] == 'NG') {
+                } elseif ($Item_status[0]->Item_status == 'On sterile' && $item['status'] == 'Fail') {
 
                     DB::table('sterile_qc')
                         ->where('Item_id', $item['item_id'])
                         ->where('Order_id', $data['OrderId'])
                         ->where('sterile_qc_id', $item['sterile_qc_id'])
                         ->update([
-                            'PassStatus' => 'NG',
+                            'PassStatus' => 'Fail',
                             'Update_by' => $request->cookie('Username_server_User_id'),
                             'Update_at' => $dateNow
 

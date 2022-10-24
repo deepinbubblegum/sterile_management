@@ -234,7 +234,7 @@ class Pro_Washing_Controller extends BaseController
                         ->update([
                             'Item_status' => 'Washing Finish',
                         ]);
-                } else if ($item['status'] == 'NG' && $Item_status[0]->Item_status == 'Washing') {
+                } else if ($item['status'] == 'Fail' && $Item_status[0]->Item_status == 'Washing') {
                     DB::table('items')
                         ->where('Item_id', $item['item_id'])
                         ->where('Order_id', $data['OrderId'])
