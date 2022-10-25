@@ -119,7 +119,7 @@
                         <th class="text-right px-2 py-1">ราคา/หน่วย</th>
                         <th class="text-right px-2 py-1">ยอดรวม</th>
                         <th class="text-center px-2 py-1">กระบวนการ</th>
-                        <th class="text-center px-2 py-1">สถานะ</th>
+                        {{-- <th class="text-center px-2 py-1">สถานะ</th> --}}
                     </tr>
                 </thead>
                 <tbody class="border-bottom">
@@ -138,7 +138,7 @@
                                 $item->Item_status == "W" ? "Washing" : ($item->Item_status == "P" ? "Packing" : ($item->Item_status == "S" ? "sterile" : "-" ))
                             }}
                         </td> --}}
-                            <td class="text-center px-2 py-1 uppercase">{{ $item->Item_status }}</td>
+                            {{-- <td class="text-center px-2 py-1 uppercase">{{ $item->Item_status }}</td> --}}
                         </tr>
                     @endforeach
                     <tr>
@@ -166,6 +166,36 @@
                 </div>
                 </p>
             </div>
+
+            <table class="w-full px-2 mt-4">
+                <tbody class="">
+                    <tr class="">
+                        <td></td>
+                        <td class="text-left px-1" style="width: 30%;">
+                            <div class="border p-2 rounded-lg min-h-60 text-center">
+                                <p>
+                                    ...................................................................
+                                </p>
+                                ...................../....................../......................
+                                <br>
+                                ลงชื่อผู้ส่ง
+                            </div>
+                        </td>
+                        <td></td>
+                        <td class="text-left px-1" style="width: 30%;">
+                            <div class="border p-2 rounded-lg min-h-60 text-center">
+                                <p>
+                                    ...................................................................
+                                </p>
+                                ...................../....................../......................
+                                <br>
+                                ลงชื่อผู้รับ
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
 
         </span>
 

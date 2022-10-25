@@ -399,18 +399,23 @@
 
         $('#item_add_washing').on('click', function() {
 
-
             let machines_id = $('#option_machineswashing').find(":selected").val();
             let machines_name = $('#option_machineswashing').find(":selected").text();
             let item_washing = $('#option_item_washing').find(":selected").val();
             let SUD = $('#SUD').val();
+            let Washing_cycle = $('#Washing_cycle').val();
 
-            $(`#option_item_washing option[value='${item_washing}']`).remove();
+
 
             if (item_washing == null) {
                 alert('ไม่มี item')
                 return false;
+            }else if(Washing_cycle == ''){
+                alert('กรุณากรอก cycle')
+                return false;
             }
+
+            $(`#option_item_washing option[value='${item_washing}']`).remove();
 
             let _Item = Oder_item.filter(v => v.Item_id == item_washing);
 
@@ -430,7 +435,7 @@
             col3 = $(` <td class="py-4 px-6" value=""> - </td> `);
             col4 = $(`<td class="py-4 px-6" value="${_Item[0].Item_id}" >${_Item[0].Name}</td>`);
             col5 = $(`<td class="py-4 px-6" value="${machines_id}" >${machines_name}</td>`);
-            col6 = $(`<td class="py-4 px-6" value=""> - </td>`);
+            col6 = $(`<td class="py-4 px-6" value="${Washing_cycle}"> ${Washing_cycle} </td>`);
             col7 = $(`<td class="py-4 px-6" value="${_Item[0].Quantity}" >${_Item[0].Quantity}</td>`);
             col8 = $(
                 `<td class="py-4 px-6" value="${_Item[0].Item_status}" >${_Item[0].Item_status}</td>`
@@ -497,6 +502,7 @@
                         Cycle: $td.eq(5).attr('value'),
                         QTY: $td.eq(6).attr('value'),
                         SUD: $td.eq(9).attr('value'),
+                        Cycle: $td.eq(5).attr('value'),
                     }
                 }
                 // if ($('td input', this).prop('checked')) {
@@ -926,7 +932,7 @@
 
             let item_packing = $('#item_packing').find(":selected").val();
 
-            $(`#item_packing option[value='${item_packing}']`).remove();
+            let Cycle = $('#packing_cycle').val();
 
             let userQC_id = $('#option_userQC').find(":selected").val();
             let userQC_name = $('#option_userQC').find(":selected").text();
@@ -936,7 +942,12 @@
             if (item_packing == null) {
                 alert('ไม่มี item')
                 return false;
+            }else if(Cycle == ''){
+                alert('กรุณากรอก cycle')
+                return false;
             }
+
+            $(`#item_packing option[value='${item_packing}']`).remove();
 
             let _Item = Oder_item.filter(v => v.Item_id == item_packing);
             // resultChk = item_packing_checkDup(_Item[0].Item_id)
@@ -982,7 +993,7 @@
             );
             col6 = $(`<td class="py-4 px-6" value="${machines_id}"> ${machines_name} </td>`);
             col7 = $(`<td class="py-4 px-6" value="${program_id}"> ${program_name} </td>`);
-            col8 = $(`<td class="py-4 px-6" value=""> - </td>`);
+            col8 = $(`<td class="py-4 px-6" value="${Cycle}"> ${Cycle} </td>`);
             col10 = $(`<td class="py-4 px-6" value="${userQC_id}"> ${userQC_name} </td>`);
             col11 = $(`<td class="py-4 px-6" value="${_Item[0].Quantity}"> ${_Item[0].Quantity} </td>`);
             col12 = $(

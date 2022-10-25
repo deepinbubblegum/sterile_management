@@ -143,8 +143,6 @@ class Pro_Washing_Controller extends BaseController
 
             foreach ($Cycle_ma as $item_Cycle) {
 
-                // $index++;
-
                 $Cycle_Customer = DB::table('washing')
                     ->selectRaw('max(Cycle) as maxCycle')
                     ->leftjoin('orders', 'washing.Order_id', '=', 'orders.Order_id')
@@ -153,12 +151,6 @@ class Pro_Washing_Controller extends BaseController
                     ->whereDate('washing.Create_at', Carbon::today())
                     ->get();
 
-                // $query = str_replace(array('?'), array('\'%s\''), $Cycle_Customer->toSql());
-                // $query = vsprintf($query, $Cycle_Customer->getBindings());
-                // dump($query);
-                // $result = $Cycle_Customer->get();
-
-                // dd($Cycle_Customer[0]->maxCycle);
                 $index = (int)($Cycle_Customer[0]->maxCycle) + 1;
 
                 $new_mach_cycle->push([
@@ -211,12 +203,21 @@ class Pro_Washing_Controller extends BaseController
                         'Order_id' => $data['OrderId'],
                         'item_id' => $item['item_id'],
                         'MachinesWashing_id' => $item['Machines_id'],
-                        'Cycle' => $num_cycle,
+                        'Cycle' => $item['Cycle'],
                         'QTY' => $item['QTY'],
                         'PassStatus' => $item['status'] == 'null' ? null : $item['status'],
-                        'Create_at' => $dateNow,
+                        // 'Create_at' => $dateNow,
                     ]
                 );
+
+
+                if ($item['washing_id'] == 'null' || $item['washing_id'] == null || $item['washing_id'] == '' || $item['washing_id'] == '-') {
+                    DB::table('washing')
+                        ->where('washing_id', $washing_id)
+                        ->update([
+                            'Create_at' => $dateNow,
+                        ]);
+                }
 
 
                 $Item_status = DB::table('washing')
@@ -343,7 +344,6 @@ class Pro_Washing_Controller extends BaseController
 
             return $return_data;
         }
-
     }
 
 
@@ -373,5 +373,4 @@ class Pro_Washing_Controller extends BaseController
             return $return_data;
         }
     }
-
 }

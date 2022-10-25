@@ -239,16 +239,27 @@ class Pro_Packing_Controller extends BaseController
                         'Program_id' => $item['program_id'],
                         'packing_id' => $packing_id,
                         'SUD' => '',
-                        'Cycle' => $num_cycle,
+                        // 'Cycle' => $num_cycle,
+                        'Cycle' => $item['Cycle'],
                         'Qc_by' => $item['user_QC'],
                         'Exp_date' => $Exp_date,
                         'Create_by' => $request->cookie('Username_server_User_id'),
-                        'Create_at' => $dateNow,
+                        // 'Create_at' => $dateNow,
                         // 'PassStatus' => $item['check'],
                         'PassStatus' => 'true',
                         'Note' => $item['Note'],
                     ]
                 );
+
+
+                if ($item['packing_id'] == 'null' || $item['packing_id'] == null || $item['packing_id'] == '' || $item['packing_id'] == '-') {
+                    DB::table('packing')
+                        ->where('packing_id', $packing_id)
+                        ->update([
+                            'Create_at' => $dateNow,
+                        ]);
+                }
+
 
                 $Item_status = DB::table('packing')
                     ->select('items.Item_status')
@@ -276,6 +287,7 @@ class Pro_Packing_Controller extends BaseController
                         // 'Update_at' => null,
                     ]);
                 }
+
 
                 // if($item['check'] == 'true'){
 
