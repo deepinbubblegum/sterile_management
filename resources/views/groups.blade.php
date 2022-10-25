@@ -226,12 +226,13 @@
                                     </div>
                                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                         <h3 class="text-lg mt-2 leading-6 font-medium bg-white dark:bg-darker dark:text-light" id="modal-title">
-                                        ตั้งค่าสิทธิ์กรุ๊ป
+                                        ตั้งค่าสิทธิ์การเข้าถึงกรุ๊ป
                                         </h3>
                                 </div>
                             </div>
                             <p class="mt-2">
-                                <div class="grid gap-x-8 gap-y-4 grid-cols-3" id="SettingPermissions">
+                                <br>
+                                <div class="grid gap-x-4 gap-y-4 grid-cols-2 justify-center mx-4" id="SettingPermissions">
                                     {{-- setting data --}}
                                 </div>
                             </p>
