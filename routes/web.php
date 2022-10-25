@@ -211,7 +211,12 @@ Route::group(['middleware' => ['authLogin']], function () {
         return view('groups');
     });
     Route::get('/settings/groups/getlistgroups', [Groups_Controller::class, 'getListGroups']);
-
+    Route::get('/settings/groups/getgroupsdetail', [Groups_Controller::class, 'getGroupsDetail']);
+    Route::post('/settings/groups/creategroups', [Groups_Controller::class, 'createGroups']);
+    Route::post('/settings/groups/updategroups', [Groups_Controller::class, 'updateGroups']);
+    Route::post('/settings/groups/deletegroups', [Groups_Controller::class, 'deleteGroups']);
+    Route::get('/settings/groups/getpermissionsgroup', [Groups_Controller::class, 'getPermissionsGroup']);
+    Route::post('/settings/groups/updatepermissionsgroup', [Groups_Controller::class, 'updatePermissionsGroup']);
 
     // Settings Programes Sterile Page use here
     Route::get('/settings/programs', function () {
