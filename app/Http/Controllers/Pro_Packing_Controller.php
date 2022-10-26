@@ -471,6 +471,7 @@ class Pro_Packing_Controller extends BaseController
                 'user_QC.Name as UserName_QC',
                 'items.Quantity',
                 'items.Item_status',
+                'items.SUD',
                 'orders.Department_id',
                 'departments.Department_name',
                 'customers.Customer_name',

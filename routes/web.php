@@ -127,6 +127,7 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Deliver
     Route::get('/stock/deliver_pdf/{oder_id}', [Stock_Deliver_Controller::class, 'Deliver_pdf']);
+    Route::post('/stock/deliver_pdf/Save_Deliver', [Stock_Deliver_Controller::class, 'Save_Deliver']);
 
 
 

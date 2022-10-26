@@ -25,7 +25,8 @@ class Stock_Controller extends BaseController
 
             $list_Stock = DB::table('items')
             ->select('order_id')
-            ->where('Item_status', 'Stock')
+            // ->where('Item_status', 'Stock')
+            ->whereIn('Item_status', ['Stock', 'Deliver'])
             ->distinct('order_id')
             ->get()
             ->toArray();
