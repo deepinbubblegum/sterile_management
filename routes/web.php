@@ -18,6 +18,7 @@ use App\Http\Controllers\MachinesSterile_Controller;
 use App\Http\Controllers\MachinesWashings_Controller;
 use App\Http\Controllers\Programs_Controller;
 use App\Http\Controllers\LinkMachines_Controller;
+use App\Http\Controllers\UsersDepartment_Controller;
 
 use App\Http\Controllers\Pro_Washing_Controller;
 use App\Http\Controllers\Pro_Packing_Controller;
@@ -175,6 +176,13 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/customers/departments/{customer_id}/createdepartments', [Departments_Controller::class, 'createDepartments']);
     Route::post('/settings/customers/departments/{customer_id}/updatedepartments', [Departments_Controller::class, 'updateDepartments']);
     Route::post('/settings/customers/departments/{customer_id}/deletedepartments', [Departments_Controller::class, 'deleteDepartments']);
+
+    // Settings User Department Page use here
+    // Route::get('/settings/customers/departments/{customer_id}/users/{department_id}', function () {
+
+    //     return view('usersdepartment');
+    // });
+    Route::get('/settings/customers/departments/{customer_id}/users/{department_id}', [UsersDepartment_Controller::class, 'UsersDepartment']);
 
     // Settings Equipment in Department Page use here
     Route::get('/settings/customers/departments/{customer_id}/{department_id}', [DeptEquip_Controller::class, 'viewDeptEquip']);
