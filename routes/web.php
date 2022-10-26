@@ -237,6 +237,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/machinessterile/createmachines', [MachinesSterile_Controller::class, 'createMachinesSterile']);
     Route::post('/settings/machinessterile/updatemachines', [MachinesSterile_Controller::class, 'updateMachinesSterile']);
     Route::post('/settings/machinessterile/deletemachines', [MachinesSterile_Controller::class, 'deleteMachinesSterile']);
+    Route::post('/settings/machinessterile/activatemachines', [MachinesSterile_Controller::class, 'toggleActivate']);
 
     // Settings Link Machines Programes Sterile Page use here
     Route::get('/settings/machinessterile/{machine_id}/programes', function () {
@@ -257,6 +258,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/machineswashings/createmachines', [MachinesWashings_Controller::class, 'createMachinesWashings']);
     Route::post('/settings/machineswashings/updatemachines', [MachinesWashings_Controller::class, 'updateMachinesWashings']);
     Route::post('/settings/machineswashings/deletemachines', [MachinesWashings_Controller::class, 'deleteMachinesWashings']);
+    Route::post('/settings/machineswashings/activate', [MachinesWashings_Controller::class, 'toggleActive']);
 
 });
 
