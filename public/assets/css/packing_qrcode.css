@@ -26,20 +26,20 @@ body {
     position: fixed;
     height: 2cm;
     width: 100%;
-    top: -0.1cm;
+    top: -0.2cm;
     /* line-height: 1rem; */
     /* background-color: #53b0dc */
 }
 
 .textHeader {
     text-align: right;
-    margin-right: 0.3cm;
+    margin-right: 0.4cm;
     margin-top: 0cm;
 }
 
 .txt_customer {
     margin-top: 0.0cm;
-    /* margin-right: 0.3cm; */
+    margin-right: 0.1cm;
     font-size: 17px;
     line-height: 0.5rem;
 }
@@ -62,7 +62,7 @@ body {
 
 .img_QR_top {
     position: fixed;
-    right: 0.3cm;
+    right: 0.4cm;
     margin-top: 3.5cm;
 }
 
@@ -107,7 +107,7 @@ body {
 
 .img_QR_buttom {
     position: fixed;
-    right: 0.3cm;
+    right: 0.4cm;
     margin-top: 5cm;
 }
 
