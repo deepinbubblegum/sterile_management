@@ -1,3 +1,8 @@
+@php
+    use App\Http\Controllers\UsersPermission_Controller;
+    $users_permit = new UsersPermission_Controller();
+    $permissions = $users_permit->UserPermit();
+@endphp
  <!-- Sidebar -->
  <!-- Backdrop -->
  <div x-show="isSidebarOpen" @click="isSidebarOpen = false" class="fixed inset-0 z-10 bg-primary-darker lg:hidden"
@@ -146,61 +151,67 @@
              </div> --}}
          </div>
 
+         
          <!-- Orders links -->
-         <div x-data="{ isActive: false, open: false }">
-             <!-- active classes 'bg-primary-100 dark:bg-primary' -->
-             {{-- <a href="/orders" @click="$event.preventDefault(); open = !open" --}}
-             <a href="/orders"
-                 class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
-                 :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
-                 :aria-expanded="(open || isActive) ? 'true' : 'false'">
-                 <span aria-hidden="true">
-                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor">
-                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                             d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                     </svg>
-                 </span>
-                 <span class="ml-2 text-sm"> Orders </span>
-             </a>
-         </div>
+         @if ($permissions->Orders == 1)
+            <div x-data="{ isActive: false, open: false }">
+                <a href="/orders"
+                    class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
+                    :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
+                    :aria-expanded="(open || isActive) ? 'true' : 'false'">
+                    <span aria-hidden="true">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                    </span>
+                    <span class="ml-2 text-sm"> Orders </span>
+                </a>
+            </div>
+         @endif
 
-         <div x-data="{ isActive: false, open: false }">
-             <!-- active classes 'bg-primary-100 dark:bg-primary' -->
-             {{-- <a href="#" @click="$event.preventDefault(); open = !open" --}}
-             <a href="/process"
-                 class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
-                 :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
-                 :aria-expanded="(open || isActive) ? 'true' : 'false'">
-                 <span aria-hidden="true">
-                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor">
-                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                             d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                     </svg>
-                 </span>
-                 <span class="ml-2 text-sm">Process</span>
-             </a>
-         </div>
+         @if ($permissions->Process == 1)
+            <div x-data="{ isActive: false, open: false }">
+                <!-- active classes 'bg-primary-100 dark:bg-primary' -->
+                {{-- <a href="#" @click="$event.preventDefault(); open = !open" --}}
+                <a href="/process"
+                    class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
+                    :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
+                    :aria-expanded="(open || isActive) ? 'true' : 'false'">
+                    <span aria-hidden="true">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                    </span>
+                    <span class="ml-2 text-sm">Process</span>
+                </a>
+            </div>
+         @endif
 
          {{-- Stock --}}
-         <div x-data="{ isActive: false, open: false }">
-            <a href="/stock"
-                class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
-                :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
-                :aria-expanded="(open || isActive) ? 'true' : 'false'">
-                <span aria-hidden="true">
-                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>
-                </span>
-                <span class="ml-2 text-sm">Stock</span>
-            </a>
-        </div>
+        @if ($permissions->Stock == 1)
+            <div x-data="{ isActive: false, open: false }">
+                <a href="/stock"
+                    class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
+                    :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
+                    :aria-expanded="(open || isActive) ? 'true' : 'false'">
+                    <span aria-hidden="true">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                    </span>
+                    <span class="ml-2 text-sm">Stock</span>
+                </a>
+            </div>
+        @endif
 
          <!-- Reports links -->
+        @if ($permissions->Reports == 1)
          <div x-data="{ isActive: false, open: false }">
              <!-- active classes 'bg-primary-100 dark:bg-primary' -->
              <a href="#" @click="$event.preventDefault(); open = !open"
@@ -231,34 +242,12 @@
                      class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
                      Blank
                  </a>
-                 {{-- <a href="../pages/404.html" role="menuitem"
-                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                     404
-                 </a>
-                 <a href="../pages/500.html" role="menuitem"
-                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                     500
-                 </a>
-                 <a href="#" role="menuitem"
-                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                     Profile (soon)
-                 </a>
-                 <a href="#" role="menuitem"
-                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:hover:text-light hover:text-gray-700">
-                     Pricing (soon)
-                 </a>
-                 <a href="#" role="menuitem"
-                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:hover:text-light hover:text-gray-700">
-                     Kanban (soon)
-                 </a>
-                 <a href="#" role="menuitem"
-                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:hover:text-light hover:text-gray-700">
-                     Feed (soon)
-                 </a> --}}
              </div>
          </div>
+        @endif
 
          <!-- Setting links -->
+        @if ($permissions->Settings == 1)
          <div x-data="{ isActive: false, open: false }">
              <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
              <a href="#" @click="$event.preventDefault(); open = !open"
@@ -294,36 +283,51 @@
              <div x-show="open" class="mt-2 space-y-2 px-7" role="menu" aria-label="Layouts">
                  <!-- active & hover classes 'text-gray-700 dark:text-light' -->
                  <!-- inActive classes 'text-gray-400 dark:text-gray-400' -->
-                <a href="/settings/customers" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Customers
-                </a>
-                <a href="/settings/equipments" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Equipments
-                </a>
-                <a href="/settings/machineswashings" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Machines Washings
-                </a>
-                <a href="/settings/machinessterile" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Machines Sterlie
-                </a>
-                <a href="/settings/programs" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Programs Sterlie
-                </a>
-                <a href="/settings/groups" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Groups
-                </a>
-                <a href="/settings/users" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Users
-                </a>
+                @if ($permissions->Customers == 1)
+                    <a href="/settings/customers" role="menuitem"
+                        class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                        Customers
+                    </a>
+                @endif
+                @if ($permissions->Equipments == 1)
+                    <a href="/settings/equipments" role="menuitem"
+                        class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                        Equipments
+                    </a>
+                @endif
+                @if ($permissions->{'Machines Washings'} == 1)
+                    <a href="/settings/machineswashings" role="menuitem"
+                        class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                        Machines Washings
+                    </a>
+                @endif
+                @if ($permissions->{'Machines Sterlie'} == 1)
+                    <a href="/settings/machinessterile" role="menuitem"
+                        class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                        Machines Sterlie
+                    </a>
+                @endif
+                @if ($permissions->{'Programs Sterlie'} == 1)
+                    <a href="/settings/programs" role="menuitem"
+                        class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                        Programs Sterlie
+                    </a>
+                @endif
+                @if ($permissions->Groups == 1)
+                    <a href="/settings/groups" role="menuitem"
+                        class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                        Groups
+                    </a>
+                @endif
+                @if ($permissions->Users == 1)
+                    <a href="/settings/users" role="menuitem"
+                        class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                        Users
+                    </a>
+                @endif
              </div>
          </div>
+        @endif
      </nav>
  </aside>
 
