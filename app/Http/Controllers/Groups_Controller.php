@@ -125,6 +125,7 @@ class Groups_Controller extends BaseController
             ->select('permissions_group.*', 'permissions.Permission_Allow')
             ->leftjoin('permissions', 'permissions.Permission_ID', '=', 'permissions_group.Permission_id')
             ->where('permissions_group.Group_id', $group_id)
+            ->orderBy('permissions.Permission_Allow', 'ASC')
             ->get();
         return $permissions;
     }
