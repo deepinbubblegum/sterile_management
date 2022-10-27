@@ -178,11 +178,11 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/customers/departments/{customer_id}/deletedepartments', [Departments_Controller::class, 'deleteDepartments']);
 
     // Settings User Department Page use here
-    // Route::get('/settings/customers/departments/{customer_id}/users/{department_id}', function () {
-
-    //     return view('usersdepartment');
-    // });
     Route::get('/settings/customers/departments/{customer_id}/users/{department_id}', [UsersDepartment_Controller::class, 'UsersDepartment']);
+    Route::get('/settings/customers/departments/{customer_id}/users/{department_id}/getlistusersdepartment', [UsersDepartment_Controller::class, 'getListUsersDepartment']);
+    Route::get('/settings/customers/departments/{customer_id}/users/{department_id}/getlistusers', [UsersDepartment_Controller::class, 'getUsers']);
+    Route::post('/settings/customers/departments/{customer_id}/users/{department_id}/createusersdepartment', [UsersDepartment_Controller::class, 'createUsersDepartment']);
+    Route::post('/settings/customers/departments/{customer_id}/users/{department_id}/deleteusersdepartment', [UsersDepartment_Controller::class, 'deleteUsersDepartment']);
 
     // Settings Equipment in Department Page use here
     Route::get('/settings/customers/departments/{customer_id}/{department_id}', [DeptEquip_Controller::class, 'viewDeptEquip']);
