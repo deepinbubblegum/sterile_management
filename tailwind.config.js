@@ -8,6 +8,7 @@ module.exports = {
         "./resources/**/*.blade.php",
         "./resources/**/*.js",
         "./resources/**/*.vue",
+        "./resources/**/component/checkbox.blade.php",
     ],
     darkMode: 'class', // or 'media' or false
     theme: {

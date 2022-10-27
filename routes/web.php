@@ -18,6 +18,7 @@ use App\Http\Controllers\MachinesSterile_Controller;
 use App\Http\Controllers\MachinesWashings_Controller;
 use App\Http\Controllers\Programs_Controller;
 use App\Http\Controllers\LinkMachines_Controller;
+use App\Http\Controllers\UsersDepartment_Controller;
 
 use App\Http\Controllers\Pro_Washing_Controller;
 use App\Http\Controllers\Pro_Packing_Controller;
@@ -177,6 +178,13 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/customers/departments/{customer_id}/updatedepartments', [Departments_Controller::class, 'updateDepartments']);
     Route::post('/settings/customers/departments/{customer_id}/deletedepartments', [Departments_Controller::class, 'deleteDepartments']);
 
+    // Settings User Department Page use here
+    Route::get('/settings/customers/departments/{customer_id}/users/{department_id}', [UsersDepartment_Controller::class, 'UsersDepartment']);
+    Route::get('/settings/customers/departments/{customer_id}/users/{department_id}/getlistusersdepartment', [UsersDepartment_Controller::class, 'getListUsersDepartment']);
+    Route::get('/settings/customers/departments/{customer_id}/users/{department_id}/getlistusers', [UsersDepartment_Controller::class, 'getUsers']);
+    Route::post('/settings/customers/departments/{customer_id}/users/{department_id}/createusersdepartment', [UsersDepartment_Controller::class, 'createUsersDepartment']);
+    Route::post('/settings/customers/departments/{customer_id}/users/{department_id}/deleteusersdepartment', [UsersDepartment_Controller::class, 'deleteUsersDepartment']);
+
     // Settings Equipment in Department Page use here
     Route::get('/settings/customers/departments/{customer_id}/{department_id}', [DeptEquip_Controller::class, 'viewDeptEquip']);
     Route::get('/settings/customers/departments/{customer_id}/{department_id}/getlistequip', [DeptEquip_Controller::class, 'getlistequip']);
@@ -212,7 +220,12 @@ Route::group(['middleware' => ['authLogin']], function () {
         return view('groups');
     });
     Route::get('/settings/groups/getlistgroups', [Groups_Controller::class, 'getListGroups']);
-
+    Route::get('/settings/groups/getgroupsdetail', [Groups_Controller::class, 'getGroupsDetail']);
+    Route::post('/settings/groups/creategroups', [Groups_Controller::class, 'createGroups']);
+    Route::post('/settings/groups/updategroups', [Groups_Controller::class, 'updateGroups']);
+    Route::post('/settings/groups/deletegroups', [Groups_Controller::class, 'deleteGroups']);
+    Route::get('/settings/groups/getpermissionsgroup', [Groups_Controller::class, 'getPermissionsGroup']);
+    Route::post('/settings/groups/updatepermissionsgroup', [Groups_Controller::class, 'updatePermissionsGroup']);
 
     // Settings Programes Sterile Page use here
     Route::get('/settings/programs', function () {
@@ -233,6 +246,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/machinessterile/createmachines', [MachinesSterile_Controller::class, 'createMachinesSterile']);
     Route::post('/settings/machinessterile/updatemachines', [MachinesSterile_Controller::class, 'updateMachinesSterile']);
     Route::post('/settings/machinessterile/deletemachines', [MachinesSterile_Controller::class, 'deleteMachinesSterile']);
+    Route::post('/settings/machinessterile/activatemachines', [MachinesSterile_Controller::class, 'toggleActivate']);
 
     // Settings Link Machines Programes Sterile Page use here
     Route::get('/settings/machinessterile/{machine_id}/programes', function () {
@@ -253,6 +267,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/machineswashings/createmachines', [MachinesWashings_Controller::class, 'createMachinesWashings']);
     Route::post('/settings/machineswashings/updatemachines', [MachinesWashings_Controller::class, 'updateMachinesWashings']);
     Route::post('/settings/machineswashings/deletemachines', [MachinesWashings_Controller::class, 'deleteMachinesWashings']);
+    Route::post('/settings/machineswashings/activate', [MachinesWashings_Controller::class, 'toggleActive']);
 
 });
 
