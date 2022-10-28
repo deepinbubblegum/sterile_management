@@ -12,6 +12,10 @@ $(document).ready(function () {
                             class="openEditModal mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-regular fa-pen-to-square fa-xl mx-auto"></i>
                         </button>
+                        <button type="button" value="${element.Equipment_id}"
+                            class="openImageModal mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                            <i class="fa-solid fa-image fa-xl mx-auto"></i>
+                        </button>
                         <button type="button" data-value="${element.Activate == 'A' ? 'I': 'A'}" value="${element.Equipment_id}"
                             class="toggle_activate_equipments mr-1 w-10 h-10 px-2 py-2 text-base text-white ${element.Activate == 'A' ? 'bg-success hover:bg-success-dark focus:ring-success' : 'bg-warning hover:bg-warning-dark focus:ring-warning'} rounded-md inline-flex items-center focus:outline-none focus:ring  focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             ${element.Activate == 'A' ? '<i class="fa-solid fa-check fa-xl mx-auto"></i>' : '<i class="fa-solid fa-x fa-xl mx-auto"></i>'}
@@ -316,6 +320,17 @@ $(document).ready(function () {
 
         $('.closeModal').on('click', function(e){
             $('#editModal').addClass('invisible');
+            $('#modal_images').addClass('invisible');
+        });
+
+
+        $('.openImageModal').click(function (e) { 
+            e.preventDefault();
+            let equip_id = $(this).val();
+            // console.log(equip_id);
+            $('#label_tag').attr('data-value', equip_id);
+            showImages();
+            $('#modal_images').removeClass('invisible');
         });
     }
 
@@ -377,5 +392,168 @@ $(document).ready(function () {
             let txt_search = $("#search").val();
             getEquipments(page, txt_search);
         }
+    });
+
+    $('.dropzone-file').on('dragenter', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('dragenter');
+    });
+
+    $('.dropzone-file').on('dragover', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('dragover');
+    });
+
+    function showImages(){
+        let equip_id = $('#label_tag').attr('data-value');
+        $.ajax({
+            type: "GET",
+            url: "/settings/equipments/getequipmentsimages",
+            data: {
+                equipment_id: equip_id
+            },
+            dataType: "json",
+            success: function (response) {
+                $('#list_img').empty();
+                response.forEach(element => {
+                    const html = `
+                        <a class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                            <div class="relative" height="40px" width="auto">
+                                <img class="w-full" style="height: 15rem; object-fit: contain;" src="/assets/image/equipments/${element.Image_path}" alt="dummy-image">
+                                <button src-data="${element.Image_path}" class="btn_View_img absolute top-1 right-1 bg-green-500 text-white p-2 rounded hover:bg-green-800">
+                                    View
+                                </button>
+                                <button data-id_img="${element.Image_id}" data-equipmentid="${element.Equipment_id}" data-image="${element.Image_path}" class="btn_remove_img absolute bottom-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
+                                    Remove
+                                </button>
+                            </div>
+                        </a>
+                    `;
+                    $('#list_img').append(html);
+                });
+                loadedshow();
+            }
+        });
+    }
+
+    function loadedshow(){
+        $('.btn_remove_img').click(function (e) { 
+            e.preventDefault();
+            let image_id = $(this).attr('data-id_img');
+            let equipment_id = $(this).attr('data-equipmentid');
+            let image_path = $(this).attr('data-image');
+            $.ajax({
+                type: "POST",
+                url: "/settings/equipments/deleteimageequpment",
+                data: {
+                    image_id: image_id,
+                    equipment_id: equipment_id,
+                    image_path: image_path
+                },
+                dataType: "json",
+                success: function (response) {
+                    showImages();
+                }
+            });
+        });
+
+        $('.btn_View_img').click(function (e) {
+            e.preventDefault();
+            let src = $(this).attr('src-data');
+            $('#modal_Fullimg_packing').attr('src', `/assets/image/equipments/${src}`);
+            $('#modal_show_image_packing').removeClass('invisible');
+        });
+    
+        $('#Close_show_image_packing').click(function (e) {
+            e.preventDefault();
+            $('#modal_show_image_packing').addClass('invisible');
+        });
+    }
+
+    $('.dropzone-file').on('drop', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        let files = e.originalEvent.dataTransfer.files;
+        let imageType = /^image\//;
+        if (files.length > 0) {
+            if (!imageType.test(files[0].type)) {
+                alert('กรุณาเลือกไฟล์รูปภาพ');
+                return false;
+            }
+        }
+        console.log(files);
+        let equip_id = $('#label_tag').attr('data-value');
+        let formData = new FormData();
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append('file[]', files[i]);
+        }
+        formData.append('equipment_id', equip_id);
+
+        sendformData(formData);
+    });
+
+    function sendformData(formData){
+        $.ajax({
+            xhr: function () {
+                let xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener('progress', function (e) {
+                    if (e.lengthComputable) {
+                        let percentComplete = e.loaded / e.total;
+                        percentComplete = parseInt(percentComplete * 100);
+                        percentDecimal = percentComplete * 100;
+                        $('.percent_upload_bar').removeClass('invisible');
+                        $('.percent_upload').width(`${percentDecimal}%`);
+                        console.log(percentComplete);
+                        if (percentComplete === 100) {
+                            console.log('upload completed');
+                            $('.percent_upload_bar').addClass('invisible');
+                            $('.percent_upload').width(`100%`);
+                        }
+                    }
+                }, false);
+                return xhr;
+            },
+            type: "POST",
+            url: "/settings/equipments/imagesuploadequpment",
+            data: formData,
+            contentType: false,
+            cache: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                console.log('uploading...');
+            },
+            error: function (response) {
+                console.log('error');
+            },
+            success: function (response) {
+                // console.log(response);
+                showImages();
+            }
+        });
+    }
+
+    $('#dropzone-file').change(function (e) { 
+        e.preventDefault();
+        let files = e.target.files;
+        let imageType = /^image\//;
+        if (files.length > 0) {
+            if (!imageType.test(files[0].type)) {
+                alert('กรุณาเลือกไฟล์รูปภาพ');
+                return false;
+            }
+        }
+        console.log(files);
+        let equip_id = $('#label_tag').attr('data-value');
+        let formData = new FormData();
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append('file[]', files[i]);
+        }
+        formData.append('equipment_id', equip_id);
+        sendformData(formData);
     });
 });
