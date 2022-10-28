@@ -25,12 +25,17 @@
              <button
                  class="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
                  <span class="sr-only">Open ScanQR panel</span>
-                 <svg class="w-6 h-6" width="24px" height="24px" stroke="currentColor" aria-hidden="true" fill="none" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                 <svg class="w-6 h-6" width="24px" height="24px" stroke="currentColor" aria-hidden="true"
+                     fill="none" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                      {{-- <title>ionicons-v5-k</title> --}}
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="55" d="M342,444h46a56,56,0,0,0,56-56V342" />
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="55" d="M444,170V124a56,56,0,0,0-56-56H342"/>
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="55" d="M170,444H124a56,56,0,0,1-56-56V342"/>
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="55" d="M68,170V124a56,56,0,0,1,56-56h46"/>
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="55"
+                         d="M342,444h46a56,56,0,0,0,56-56V342" />
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="55"
+                         d="M444,170V124a56,56,0,0,0-56-56H342" />
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="55"
+                         d="M170,444H124a56,56,0,0,1-56-56V342" />
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="55"
+                         d="M68,170V124a56,56,0,0,1,56-56h46" />
                  </svg>
              </button>
 
@@ -253,22 +258,40 @@
              </a>
          </div>
 
+         {{-- COA Report --}}
+         <div x-data="{ isActive: false, open: false }">
+             <a href="/coa_report"
+                 class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
+                 :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
+                 :aria-expanded="(open || isActive) ? 'true' : 'false'">
+                 <span aria-hidden="true">
+                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                             d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                     </svg>
+                 </span>
+                 <span class="ml-2 text-sm">COA Report</span>
+             </a>
+         </div>
+
+
          {{-- Stock --}}
          <div x-data="{ isActive: false, open: false }">
-            <a href="/stock"
-                class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
-                :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
-                :aria-expanded="(open || isActive) ? 'true' : 'false'">
-                <span aria-hidden="true">
-                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>
-                </span>
-                <span class="ml-2 text-sm">Stock</span>
-            </a>
-        </div>
+             <a href="/stock"
+                 class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
+                 :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
+                 :aria-expanded="(open || isActive) ? 'true' : 'false'">
+                 <span aria-hidden="true">
+                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                             d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                     </svg>
+                 </span>
+                 <span class="ml-2 text-sm">Stock</span>
+             </a>
+         </div>
 
          <!-- Reports links -->
          <div x-data="{ isActive: false, open: false }">
@@ -410,34 +433,34 @@
              <div x-show="open" class="mt-2 space-y-2 px-7" role="menu" aria-label="Layouts">
                  <!-- active & hover classes 'text-gray-700 dark:text-light' -->
                  <!-- inActive classes 'text-gray-400 dark:text-gray-400' -->
-                <a href="/settings/customers" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Customers
-                </a>
-                <a href="/settings/equipments" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Equipments
-                </a>
-                <a href="/settings/machineswashings" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Machines Washings
-                </a>
-                <a href="/settings/machinessterile" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Machines Sterlie
-                </a>
-                <a href="/settings/programs" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Programs Sterlie
-                </a>
-                <a href="/settings/groups" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Groups
-                </a>
-                <a href="/settings/users" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Users
-                </a>
+                 <a href="/settings/customers" role="menuitem"
+                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                     Customers
+                 </a>
+                 <a href="/settings/equipments" role="menuitem"
+                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                     Equipments
+                 </a>
+                 <a href="/settings/machineswashings" role="menuitem"
+                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                     Machines Washings
+                 </a>
+                 <a href="/settings/machinessterile" role="menuitem"
+                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                     Machines Sterlie
+                 </a>
+                 <a href="/settings/programs" role="menuitem"
+                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                     Programs Sterlie
+                 </a>
+                 <a href="/settings/groups" role="menuitem"
+                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                     Groups
+                 </a>
+                 <a href="/settings/users" role="menuitem"
+                     class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
+                     Users
+                 </a>
              </div>
          </div>
      </nav>

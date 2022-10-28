@@ -113,6 +113,12 @@ Route::group(['middleware' => ['authLogin']], function () {
 
 
 
+    // COA Report
+    Route::get('/coa_report', function () {
+        return view('coa_report');
+    });
+
+
     // Stock
     Route::get('/stock', function () {
         return view('stock');
