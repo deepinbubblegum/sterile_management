@@ -28,7 +28,7 @@ use App\Http\Controllers\Stock_Controller;
 use App\Http\Controllers\StockList_Controller;
 use App\Http\Controllers\Stock_Deliver_Controller;
 use App\Http\Controllers\UsersPermission_Controller;
-
+use App\Http\Controllers\Reports_Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -276,6 +276,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/reports', function () {
         return view('reports');
     });
+    Route::get('/reports/export/excel/washing', [Reports_Controller::class, 'ExportExcelWashingCycle']);
 
     // UsersPermission_Controller
     Route::get('/settings/permitt', [UsersPermission_Controller::class, 'UserPermit']);
