@@ -215,11 +215,12 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (response) {
+                console.log(response);
                 if (response == null) {
                     $("#img_item").attr("src", `/assets/image/image_preview.jpg`);
                 }else{
                     // console.log(response);
-                    $("#img_item").attr("src", `/assets/${response.Image_path}/${response.Image_id}.jpg`);
+                    $("#img_item").attr("src", `/assets/image/equipments/${response[0]['Image_path']}`);
                 }
             }
         });
@@ -302,5 +303,16 @@ $(document).ready(function () {
         }).get();
         // console.log(tbl);
         CreateOrders(notes_messages, tbl, customers_id, departments_id);
+    });
+
+
+    $('.show-image').click(function (e) { 
+        e.preventDefault();
+        $('#modal_show_image_packing').removeClass('invisible');
+    });
+
+    $('#Close_show_image_packing').click(function (e) { 
+        e.preventDefault();
+        $('#modal_show_image_packing').addClass('invisible');
     });
 });
