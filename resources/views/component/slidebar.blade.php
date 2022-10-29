@@ -82,8 +82,10 @@
                      aria-haspopup="true" :aria-expanded="open ? 'true' : 'false'"
                      class="block transition-opacity duration-200 rounded-full dark:opacity-75 dark:hover:opacity-100 focus:outline-none focus:ring dark:focus:opacity-100">
                      <span class="sr-only">User menu</span>
-                     <img class="w-10 h-10 rounded-full" src="{{ asset('assets/image/users.png') }}" alt="Users" />
-                 </button>
+                     <div class="overflow-hidden relative w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
+                        <svg class="absolute -left-1 w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    </div>
+                </button>
 
                  <!-- User dropdown menu -->
                  <div x-show="open" x-ref="userMenu" x-transition:enter="transition-all transform ease-out"
@@ -99,10 +101,10 @@
                          class="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                          Your Profile
                      </a> --}}
-                     <a href="#" role="menuitem"
+                     {{-- <a href="#" role="menuitem"
                          class="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                          Settings
-                     </a>
+                     </a> --}}
                      <a href="{{ url('/logout') }}" role="menuitem"
                          class="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                          Logout
