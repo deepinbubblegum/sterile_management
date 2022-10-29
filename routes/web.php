@@ -26,7 +26,7 @@ use App\Http\Controllers\Pro_Sterile_Controller;
 use App\Http\Controllers\Stock_Controller;
 use App\Http\Controllers\StockList_Controller;
 use App\Http\Controllers\Stock_Deliver_Controller;
-
+use App\Http\Controllers\COA_Controller;
 
 
 /*
@@ -117,6 +117,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/coa_report', function () {
         return view('coa_report');
     });
+    Route::post('/coa/Get_mechine', [COA_Controller::class, 'Get_machine']);
+    Route::post('/coa/Get_COA', [COA_Controller::class, 'Get_COA']);
+    Route::post('/coa/New_COA_report', [COA_Controller::class, 'New_COA_report']);
 
 
     // Stock
@@ -259,7 +262,6 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/machineswashings/createmachines', [MachinesWashings_Controller::class, 'createMachinesWashings']);
     Route::post('/settings/machineswashings/updatemachines', [MachinesWashings_Controller::class, 'updateMachinesWashings']);
     Route::post('/settings/machineswashings/deletemachines', [MachinesWashings_Controller::class, 'deleteMachinesWashings']);
-
 });
 
 Route::get('/logout', function () {
