@@ -51,6 +51,7 @@
 
                     <div
                         class="mx-auto h-auto w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6">
+                        {{-- <div class="permits" data-value="{{json_encode($permissions)}}"></div> --}}
                         <div class="flex justify-end">
                             <a href="{{url('/orders/create')}}"
                                 class="px-4 mr-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">

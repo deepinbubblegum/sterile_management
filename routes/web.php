@@ -27,7 +27,7 @@ use App\Http\Controllers\Pro_Sterile_Controller;
 use App\Http\Controllers\Stock_Controller;
 use App\Http\Controllers\StockList_Controller;
 use App\Http\Controllers\Stock_Deliver_Controller;
-
+use App\Http\Controllers\UsersPermission_Controller;
 
 
 /*
@@ -272,6 +272,8 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/machineswashings/deletemachines', [MachinesWashings_Controller::class, 'deleteMachinesWashings']);
     Route::post('/settings/machineswashings/activate', [MachinesWashings_Controller::class, 'toggleActive']);
 
+    // UsersPermission_Controller
+    Route::get('/settings/permitt', [UsersPermission_Controller::class, 'UserPermit']);
 });
 
 Route::get('/logout', function () {
