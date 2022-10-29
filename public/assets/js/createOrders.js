@@ -215,13 +215,50 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (response) {
+                let length = response.length;
                 console.log(response);
-                if (response == null) {
-                    $("#img_item").attr("src", `/assets/image/image_preview.jpg`);
-                }else{
-                    // console.log(response);
+                $('.images-slides-show').empty();
+                $('.thumbnail-images').empty();
+                
+                if (length >= 1){
                     $("#img_item").attr("src", `/assets/image/equipments/${response[0]['Image_path']}`);
+                    response.forEach((val, index) => {
+                        const html_txt = `
+                            <div class="mySlides p-1">
+                                <div class="numbertext">${index+1} / ${length}</div>
+                                <img class="max-w-full h-auto rounded-md object-center" src="/assets/image/equipments/${val['Image_path']}">
+                            </div>
+                        `;
+                        $('.images-slides-show').append(html_txt);
+                        const html_txt2 = `
+                            <div class="column p-1">
+                                <img class="demo cursor max-w-full h-auto" src="/assets/image/equipments/${val['Image_path']}" 
+                                data-currentSlide="${index+1}" alt="${val['Image_path']}">
+                            </div>
+                        `;
+                        $('.thumbnail-images').append(html_txt2);
+                    });
+                }else{
+                    $("#img_item").attr("src", `/assets/image/image_preview.jpg`);
+                    const html_txt = `
+                        <div class="images-slides-show grid justify-items-center">
+                            <!-- Full-width images with number text -->
+                            <div class="mySlides p-1">
+                                <div class="numbertext">1 / 1</div>
+                                <img class="max-w-full h-auto rounded-md object-center" src="/assets/image/image_preview.jpg">
+                            </div>
+                        </div>
+                    `;
+                    $('.images-slides-show').append(html_txt);
+                    const html_txt2 = `
+                        <div class="column p-1">
+                            <img class="demo cursor max-w-full h-auto" src="/assets/image/image_preview.jpg"
+                                data-currentSlide="1" alt="image_preview">
+                        </div>
+                    `;
+                    $('.thumbnail-images').append(html_txt2);
                 }
+                image_slider_init();
             }
         });
     });
@@ -315,4 +352,55 @@ $(document).ready(function () {
         e.preventDefault();
         $('#modal_show_image_packing').addClass('invisible');
     });
+
+    image_slider_init();
+    function image_slider_init(){
+        // images slider
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        // Next/previous controls
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        // Thumbnail image controls
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        $('.demo.cursor').click(function (e) { 
+            e.preventDefault();
+            let currentIndex = $(this).attr('data-currentSlide');
+            currentSlide(currentIndex);
+        });
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("demo");
+            // let captionText = document.getElementById("caption");
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex-1].style.display = "block";
+            dots[slideIndex-1].className += "active";
+            // captionText.innerHTML = dots[slideIndex-1].alt;
+        }
+
+        $('.next').click(function (e) { 
+            e.preventDefault();
+            plusSlides(1)
+        });
+        $('.prev').click(function (e) { 
+            e.preventDefault();
+            plusSlides(-1)
+        });
+    }
 });

@@ -9,6 +9,7 @@
     @include('component.Tagheader')
 
     <script src="{{ asset('assets/js/createOrders.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/imageslides.css') }}">
 </head>
 
 <body>
@@ -82,17 +83,19 @@
                                                     class="block text-base font-medium dark:bg-darker dark:text-light mb-2">หมายเหตุ</label>
                                                 <textarea id="notes_messages" name="notes_messages" rows="4"
                                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    placeholder="ข้อความหมายเหตุ..." value="" ></textarea>
+                                                    placeholder="ข้อความหมายเหตุ..." value=""></textarea>
                                             </div>
                                             <div class="col-span-6 sm:col-span-6">
                                                 <hr class="mt-2">
                                             </div>
                                             <div class="col-span-6 sm:col-span-1">
                                                 <label for="item_name"
-                                                    class="block text-base font-medium dark:bg-darker dark:text-light mb-2">Item name</label>
+                                                    class="block text-base font-medium dark:bg-darker dark:text-light mb-2">Item
+                                                    name</label>
                                                 <select disabled autocomplete="" id="item_name" name="item_name"
                                                     class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    <option value="" disabled selected>--- โปรดเลือกอุปการณ์  ---</option>
+                                                    <option value="" disabled selected>--- โปรดเลือกอุปการณ์ ---
+                                                    </option>
                                                 </select>
                                             </div>
 
@@ -110,7 +113,7 @@
                                                     class="block text-base font-medium dark:bg-darker dark:text-light mb-2">Situation</label>
                                                 <select disabled autocomplete="" id="Situation" name="Situation"
                                                     class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    <option value="" disabled selected>--- โปรดเลือก  ---</option>
+                                                    <option value="" disabled selected>--- โปรดเลือก ---</option>
                                                 </select>
                                             </div>
 
@@ -153,7 +156,8 @@
                                             </button>
                                         </div>
 
-                                        <div hidden id="div_tablefrom" class="overflow-x-auto text-base rounded-lg mt-4 relative">
+                                        <div hidden id="div_tablefrom"
+                                            class="overflow-x-auto text-base rounded-lg mt-4 relative">
                                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                                 <thead
                                                     class="text-sm text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -196,16 +200,43 @@
                     </div>
                 </div>
 
-                <div id="modal_show_image_packing" class="invisible z-50 fixed top-0 left-0 w-screen h-screen bg-black/70 flex justify-center items-center overflow-auto">
+                <div id="modal_show_image_packing"
+                    class="invisible z-50 fixed top-0 left-0 w-screen h-screen bg-black/70 flex justify-center items-center overflow-auto">
 
                     <!-- The close button -->
-                    <a class="fixed z-50 top-6 right-8 text-5xl font-bold cursor-pointer text-orange-500" id="Close_show_image_packing">×</a>
-            
+                    <a class="fixed z-50 top-6 right-8 text-5xl font-bold cursor-pointer text-orange-500"
+                        id="Close_show_image_packing">×</a>
+
                     <!-- A big image will be displayed here -->
                     {{-- <img id="modal_Fullimg_packing" class="flex flex-col h-auto max-h-full" src="{{ asset('assets/image/image_preview.jpg') }}"> --}}
 
-                    
+                    <!-- Container for the image gallery -->
+                    <div class="container h-screen">
+                        <div class="images-slides-show grid justify-items-center">
+                            <!-- Full-width images with number text -->
+                            <div class="mySlides">
+                                <div class="numbertext">1 / 1</div>
+                                <img class="max-w-full h-auto rounded-md object-center" src="{{ asset('assets/image/image_preview.jpg') }}">
+                            </div>
+                        </div>
 
+                        <!-- Next and previous buttons -->
+                        <a class="prev">&#10094;</a>
+                        <a class="next">&#10095;</a>
+
+                        <!-- Image text -->
+                        {{-- <div class="caption-container">
+                            <p id="caption"></p>
+                        </div> --}}
+
+                        <!-- Thumbnail images -->
+                        <div class="thumbnail-images row">
+                            <div class="column">
+                                <img class="demo cursor" src="{{ asset('assets/image/image_preview.jpg') }}"
+                                    data-currentSlide="1" alt="image_preview">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
