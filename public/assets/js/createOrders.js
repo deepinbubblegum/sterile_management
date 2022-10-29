@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $(".select2").select2({});
-
+    var formDataImage = new FormData();
     //Functions
     // function getcustomers() {
     function getcustomers() {
@@ -109,16 +109,22 @@ $(document).ready(function () {
 
     // function CreateOrders()
     function CreateOrders(notes_messages, items, customers_id, departments_id) {
+        var form = new FormData();
+        formDataImage.forEach((value, key) => {
+            form.append('file[]', value);
+        });
+        form.append("notes_messages", notes_messages);
+        form.append("items", JSON.stringify(items));
+        form.append("customers_id", customers_id);
+        form.append("departments_id", departments_id);
         $.ajax({
             type: "POST",
             url: "/orders/create/createorders",
-            data: {
-                customers_id: customers_id,
-                departments_id: departments_id,
-                notes_messages: notes_messages,
-                items: items,
-            },
+            data: form,
             dataType: "json",
+            contentType: false,
+            cache: false,
+            processData: false,
             success: function (response) {
                 console.log(response);
                 if (response == true) {
@@ -322,7 +328,7 @@ $(document).ready(function () {
         }
     }
 
-    $("#div_btn_save").click(function (e) {
+    $("#create_orders_save").click(function (e) {
         e.preventDefault();
         notes_messages = $("#notes_messages").val();
         customers_id = $("#customers").find(":selected").val();
@@ -403,4 +409,91 @@ $(document).ready(function () {
             plusSlides(-1)
         });
     }
+
+    function showImages(formDataImage){
+        $('#list_img').empty();
+        let index = 0;
+        formDataImage.forEach((value, key, fD) => {
+            // console.log(value.name);
+            // const [file] = value;
+            const html = `
+                <a class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                    <div class="relative" height="40px" width="auto">
+                        <img class="w-full" style="height: 15rem; object-fit: contain;" src="${URL.createObjectURL(value)}" alt="dummy-image">
+                        <button data-key="${key}" data-index="${index}" class="btn_remove_img absolute bottom-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
+                            Remove
+                        </button>
+                    </div>
+                </a>
+            `;
+            index++;
+            $('#list_img').append(html);
+        });
+
+
+        $('.btn_remove_img').click(function (e) {
+            e.preventDefault();
+            let key = $(this).attr('data-key');
+            formDataImage.delete(key);
+            showImages(formDataImage);
+        });
+    }
+
+    $('.closeModal').on('click', function(e){
+        $('#modal_images').addClass('invisible');
+    });
+
+    $('.openImageModal').click(function (e) { 
+        e.preventDefault();
+        $('#modal_images').removeClass('invisible');
+    });
+
+    $('.dropzone-file').on('drop', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        let files = e.originalEvent.dataTransfer.files;
+        let imageType = /^image\//;
+        if (files.length > 0) {
+            if (!imageType.test(files[0].type)) {
+                alert('กรุณาเลือกไฟล์รูปภาพ');
+                return false;
+            }
+        }
+        console.log(files);
+        let equip_id = $('#label_tag').attr('data-value');
+
+        for (let i = 0; i < files.length; i++) {
+            formDataImage.append(i, files[i]);
+        }
+        showImages(formDataImage);
+    });
+
+    $('.dropzone-file').on('dragenter', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('dragenter');
+    });
+
+    $('.dropzone-file').on('dragover', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('dragover');
+    });
+
+    $('#dropzone-file').change(function (e) { 
+        e.preventDefault();
+        let files = e.target.files;
+        let imageType = /^image\//;
+        if (files.length > 0) {
+            if (!imageType.test(files[0].type)) {
+                alert('กรุณาเลือกไฟล์รูปภาพ');
+                return false;
+            }
+        }
+
+        for (let i = 0; i < files.length; i++) {
+            formDataImage.append(i, files[i]);
+        }
+        showImages(formDataImage);
+    });
 });

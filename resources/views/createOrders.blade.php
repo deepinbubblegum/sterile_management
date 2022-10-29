@@ -143,8 +143,8 @@
 
                                         <hr class="mt-2">
                                         <div class="px-4 py-3 dark:bg-darker dark:text-light text-right sm:px-6">
-                                            <button disabled
-                                                class="px-4 mr-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                                            <button
+                                                class="openImageModal px-4 mr-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                                 <i class="fa-solid fa-camera fa-xl mr-2"></i>
                                                 แนบรูปภาพ
                                             </button>
@@ -200,15 +200,66 @@
                     </div>
                 </div>
 
+                <div class="fixed z-10 inset-0 w-full invisible overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modal_images">
+                    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
+                            <div class="inline-block align-bottom bg-white dark:bg-darker dark:text-light rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-top sm:max-w-2xl w-full">
+                                <div class="bg-white dark:bg-darker dark:text-light px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                    <div class="sm:flex sm:items-start">
+                                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                            {{-- <i class="fa-regular fa-building text-gray-700"></i> --}}
+                                            <i class="fa-solid fa-image fa-lg text-gray-700"></i>
+                                        </div>
+                                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                            <h3 class="text-lg mt-2 leading-6 font-medium bg-white dark:bg-darker dark:text-light" id="modal-title">
+                                                เพิ่มรูปภาพ
+                                            </h3>
+                                    </div>
+                                </div>
+                                <p class="mt-4">
+                                    <div class="text-sm dark:text-light">
+                                        <div class="flex flex-col flex-wrap">
+                                            <div class="flex justify-center items-center w-full">
+                                                <label for="dropzone-file" id="label_tag" data-value="" class="dropzone-file flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                                    <div class="flex flex-col justify-center items-center pt-5 pb-6">
+                                                        <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF</p>
+                                                    </div>
+                                                    <input id="dropzone-file" type="file" accept="image/svg, image/png, image/gif, image/jpeg" class="hidden" multiple>
+                                                </label>
+                                            </div> 
+                                            <div class="py-2">
+                                                <span>
+                                                    <h3 class="text-lg"><hr></h3> 
+                                                    <div class="mb-1 text-base font-medium dark:text-white"></div>
+                                                        <div class="percent_upload_bar w-full invisible bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
+                                                        <div class="percent_upload bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 0%"></div>
+                                                    </div>
+                                                </span>
+                                                <div class="grid gap-6 mb-6 lg:grid-cols-2 md:grid-cols-2" id="list_img">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p>
+                            </div>
+                            <div class="bg-white dark:bg-darker dark:text-light px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                <button type="button" class="closeModal mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                    ปิด
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="modal_show_image_packing"
                     class="invisible z-50 fixed top-0 left-0 w-screen h-screen bg-black/70 flex justify-center items-center overflow-auto">
 
                     <!-- The close button -->
                     <a class="fixed z-50 top-6 right-8 text-5xl font-bold cursor-pointer text-orange-500"
                         id="Close_show_image_packing">×</a>
-
-                    <!-- A big image will be displayed here -->
-                    {{-- <img id="modal_Fullimg_packing" class="flex flex-col h-auto max-h-full" src="{{ asset('assets/image/image_preview.jpg') }}"> --}}
 
                     <!-- Container for the image gallery -->
                     <div class="container h-screen">
