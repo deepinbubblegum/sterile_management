@@ -138,7 +138,7 @@ class CreateOrder_Controller extends BaseController
         $equip_image = DB::table('equipmentsimages')
             ->select('equipmentsimages.Image_id', 'equipmentsimages.Equipment_id', 'equipmentsimages.Image_path')
             ->where('equipmentsimages.Equipment_id', $equip_id)
-            ->first();
-        return json_encode($equip_image);
+            ->get();
+        return $equip_image;
     }
 }

@@ -130,7 +130,7 @@
                                             </div>
 
                                             <div class="col-span-6 sm:col-span-2">
-                                                <figure class="max-w-lg">
+                                                <figure class="max-w-lg cursor-pointer show-image">
                                                     <img class="max-w-full h-auto rounded-md" id="img_item"
                                                         src="{{ asset('assets/image/image_preview.jpg') }}"
                                                         alt="image description">
@@ -194,6 +194,18 @@
                             </form>
                         </div>
                     </div>
+                </div>
+
+                <div id="modal_show_image_packing" class="invisible z-50 fixed top-0 left-0 w-screen h-screen bg-black/70 flex justify-center items-center overflow-auto">
+
+                    <!-- The close button -->
+                    <a class="fixed z-50 top-6 right-8 text-5xl font-bold cursor-pointer text-orange-500" id="Close_show_image_packing">×</a>
+            
+                    <!-- A big image will be displayed here -->
+                    {{-- <img id="modal_Fullimg_packing" class="flex flex-col h-auto max-h-full" src="{{ asset('assets/image/image_preview.jpg') }}"> --}}
+
+                    
+
                 </div>
             </main>
         </div>
