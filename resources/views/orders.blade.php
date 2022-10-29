@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
+@php
+    use App\Http\Controllers\UsersPermission_Controller;
+    $users_permit = new UsersPermission_Controller();
+    $permissions = $users_permit->UserPermit();
+@endphp
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -54,12 +58,14 @@
                                 สร้าง ออเดอร์
                             </a>
 
+                            @if ($permissions->{'Receive Orders'} == 1)
                             <button type="button" id="btnApprove"
                                 class="px-4 mr-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white darker:focus:ring-offset-dark">
 
                                 <i class="fa-solid fa-file-export mr-2 -ml-1 w-4 h-4 fill-white"></i>
                                 รับ ออเดอร์
                             </button>
+                            @endif
                         </div>
 
                         <div class="mb-4 mt-4 flex justify-between items-center">
@@ -167,7 +173,6 @@
             </main>
         </div>
     </div>
-    <!-- All javascript code in this project for now is just for demo DON'T RELY ON IT  -->
 </body>
 
 </html>
