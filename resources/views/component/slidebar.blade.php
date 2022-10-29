@@ -215,7 +215,18 @@
 
          <!-- Reports links -->
         @if ($permissions->Reports == 1)
-         <div x-data="{ isActive: false, open: false }">
+        <div x-data="{ isActive: false, open: false }">
+            <a href="/reports"
+                class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
+                :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
+                :aria-expanded="(open || isActive) ? 'true' : 'false'">
+                <span aria-hidden="true">
+                    <i class="fa-regular fa-file-lines fa-lg"></i>
+                </span>
+                <span class="ml-2 text-sm">Reports</span>
+            </a>
+        </div>
+         {{-- <div x-data="{ isActive: false, open: false }">
              <!-- active classes 'bg-primary-100 dark:bg-primary' -->
              <a href="#" @click="$event.preventDefault(); open = !open"
                  class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
@@ -237,10 +248,10 @@
              <div x-show="open" class="mt-2 space-y-2 px-7" role="menu" arial-label="Pages">
                  <a href="../pages/blank.html" role="menuitem"
                      class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                     Blank
+                     Report
                  </a>
              </div>
-         </div>
+         </div> --}}
         @endif
 
          <!-- Setting links -->
