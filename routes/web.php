@@ -272,6 +272,11 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/machineswashings/deletemachines', [MachinesWashings_Controller::class, 'deleteMachinesWashings']);
     Route::post('/settings/machineswashings/activate', [MachinesWashings_Controller::class, 'toggleActive']);
 
+    // Reports Page use here
+    Route::get('/reports', function () {
+        return view('reports');
+    });
+
     // UsersPermission_Controller
     Route::get('/settings/permitt', [UsersPermission_Controller::class, 'UserPermit']);
 });

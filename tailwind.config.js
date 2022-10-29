@@ -9,6 +9,7 @@ module.exports = {
         "./resources/**/*.js",
         "./resources/**/*.vue",
         "./resources/**/component/checkbox.blade.php",
+        "./node_modules/flowbite/**/*.js",
     ],
     darkMode: 'class', // or 'media' or false
     theme: {
@@ -84,5 +85,7 @@ module.exports = {
             overflow: ['hover'],
         },
     },
-    plugins: [],
+    plugins: [
+        require('flowbite/plugin')
+    ],
 };
