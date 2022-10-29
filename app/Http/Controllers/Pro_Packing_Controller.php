@@ -60,15 +60,18 @@ class Pro_Packing_Controller extends BaseController
 
             $items_machine = DB::table('machine')
                 ->select('machine.*')
+                ->where('Active', '1')
                 ->get();
 
             $items_program = DB::table('machine_programs')
                 ->select('machine_programs.*', 'programs.Program_name')
                 ->leftjoin('programs', 'machine_programs.Program_id', '=', 'programs.Program_id')
+                ->where('Active', '1')
                 ->get();
 
             $items_process = DB::table('machine')
                 ->select('machine.Machine_type')
+                ->where('Active', '1')
                 ->distinct('machine.Machine_type')
                 ->get();
 

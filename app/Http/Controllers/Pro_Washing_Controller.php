@@ -39,6 +39,7 @@ class Pro_Washing_Controller extends BaseController
 
             $items = DB::table('machineswashing')
                 ->select('machineswashing.*')
+                ->where('Active', '1')
                 ->get();
 
             $return_data->code = '0000';
