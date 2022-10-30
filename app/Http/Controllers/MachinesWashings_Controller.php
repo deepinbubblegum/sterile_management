@@ -31,7 +31,7 @@ class MachinesWashings_Controller extends BaseController
                 })
                 ->orderBy('MachinesWashing_id', 'desc')
                 ->paginate(8);
-            
+
             $return_data->machines = $machines;
             return $return_data;
 

@@ -42,6 +42,7 @@
             right: 1.3cm;
             content: counter(page);
         }
+
     </style>
     <link rel="stylesheet" href="{{ public_path('assets/css/deliver_pdf.css') }}">
 </head>
@@ -60,7 +61,8 @@
             {{-- <img class="logo-img" src="{{ public_path('assets/image/medihealth_solutions.png') }}" alt="Logo"> --}}
             <div class="row bg-black">
                 <div class="column-2 inline">
-                    {{-- <img class="logo-img inline logo-header" src="{{ public_path('assets/image/medihealth_solutions.png') }}" alt="Logo"> --}}
+                    {{-- <img class="logo-img inline logo-header" src="{{ public_path('assets/image/medihealth_solutions.png') }}"
+                    alt="Logo"> --}}
                     <p class="text-2xl -mt-5">
                         <b> Medihealth solution co,.ltd</b>
                     </p>
@@ -124,22 +126,22 @@
                 </thead>
                 <tbody class="border-bottom">
                     @foreach ($List_data->items as $key => $item)
-                        {{-- {{dd($item)}} --}}
-                        <tr class="border-bottom">
-                            <td class="text-center px-2 py-1">{{ $key + 1 }}</td>
-                            <td class="text-left px-2 py-1">{{ $item->Name }}</td>
-                            <td class="text-center px-2 py-1">{{ $item->Quantity }}</td>
-                            <td class="text-right px-2 py-1">{{ number_format((float) $item->Price, 2, '.', '') }}</td>
-                            <td class="text-right px-2 py-1">
-                                {{ number_format((float) $item->Price * $item->Quantity, 2, '.', '') }}</td>
-                            <td class="text-center px-2 py-1 uppercase">{{ $item->Process }}</td>
-                            {{-- <td class="text-center px-2 py-1">
+                    {{-- {{dd($item)}} --}}
+                    <tr class="border-bottom">
+                        <td class="text-center px-2 py-1">{{ $key + 1 }}</td>
+                        <td class="text-left px-2 py-1">{{ $item->Name }}</td>
+                        <td class="text-center px-2 py-1">{{ $item->Quantity }}</td>
+                        <td class="text-right px-2 py-1">{{ number_format((float) $item->Price, 2, '.', '') }}</td>
+                        <td class="text-right px-2 py-1">
+                            {{ number_format((float) $item->Price * $item->Quantity, 2, '.', '') }}</td>
+                        <td class="text-center px-2 py-1 uppercase">{{ $item->Process }}</td>
+                        {{-- <td class="text-center px-2 py-1">
                             {{
                                 $item->Item_status == "W" ? "Washing" : ($item->Item_status == "P" ? "Packing" : ($item->Item_status == "S" ? "sterile" : "-" ))
                             }}
                         </td> --}}
-                            {{-- <td class="text-center px-2 py-1 uppercase">{{ $item->Item_status }}</td> --}}
-                        </tr>
+                        {{-- <td class="text-center px-2 py-1 uppercase">{{ $item->Item_status }}</td> --}}
+                    </tr>
                     @endforeach
                     <tr>
                         <td colspan="6" class="text-right px-2 py-1">รวมเป็นเงิน</td>
@@ -161,9 +163,9 @@
             <div class="mt-1 ml-1 remark text-base">
                 <p>
                     <b>หมายเหตุ : </b>
-                <div class="text-base border p-2 rounded-lg min-h-85">
-                    {{ $List_data->orders->Notes ?: '' }}
-                </div>
+                    <div class="text-base border p-2 rounded-lg min-h-85">
+                        {{ $List_data->orders->Notes ?: '' }}
+                    </div>
                 </p>
             </div>
 
