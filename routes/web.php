@@ -27,6 +27,8 @@ use App\Http\Controllers\Pro_Sterile_Controller;
 use App\Http\Controllers\Stock_Controller;
 use App\Http\Controllers\StockList_Controller;
 use App\Http\Controllers\Stock_Deliver_Controller;
+use App\Http\Controllers\UsersPermission_Controller;
+use App\Http\Controllers\Reports_Controller;
 use App\Http\Controllers\COA_Controller;
 
 
@@ -212,6 +214,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/equipments/updateequipments', [Equipments_Controller::class, 'updateEquipments']);
     Route::post('/settings/equipments/deleteequipments', [Equipments_Controller::class, 'deleteEquipments']);
     Route::post('/settings/equipments/activateequipments', [Equipments_Controller::class, 'activateEquipments']);
+    Route::post('/settings/equipments/imagesuploadequpment', [Equipments_Controller::class, 'imagesUploadEquipment']);
+    Route::post('/settings/equipments/deleteimageequpment', [Equipments_Controller::class, 'deleteImageEquipment']);
+    Route::get('/settings/equipments/getequipmentsimages', [Equipments_Controller::class, 'getEquipImages']);
 
     // Settings Users Page use here
     Route::get('/settings/users', function () {
@@ -278,6 +283,15 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/machineswashings/updatemachines', [MachinesWashings_Controller::class, 'updateMachinesWashings']);
     Route::post('/settings/machineswashings/deletemachines', [MachinesWashings_Controller::class, 'deleteMachinesWashings']);
     Route::post('/settings/machineswashings/activate', [MachinesWashings_Controller::class, 'toggleActive']);
+
+    // Reports Page use here
+    Route::get('/reports', function () {
+        return view('reports');
+    });
+    Route::get('/reports/export/excel/washing', [Reports_Controller::class, 'ExportExcelWashingCycle']);
+
+    // UsersPermission_Controller
+    Route::get('/settings/permitt', [UsersPermission_Controller::class, 'UserPermit']);
 });
 
 Route::get('/logout', function () {

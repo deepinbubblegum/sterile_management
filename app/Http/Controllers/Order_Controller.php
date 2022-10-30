@@ -57,6 +57,18 @@ class Order_Controller extends BaseController
     {
         $recv = $request->all();
         $id = $recv['id'];
+
+        $images = DB::table('order_image')
+            ->select('order_image.*')
+            ->where('Order_id', $id)
+            ->get();
+        foreach ($images as $image) {
+            $path = public_path('assets/image/orders/' . $image->Image_name);
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
+
         DB::table('orders')->where('Order_id', $id)->delete();
         return json_encode(true);
     }
