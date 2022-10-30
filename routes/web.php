@@ -27,7 +27,7 @@ use App\Http\Controllers\Pro_Sterile_Controller;
 use App\Http\Controllers\Stock_Controller;
 use App\Http\Controllers\StockList_Controller;
 use App\Http\Controllers\Stock_Deliver_Controller;
-
+use App\Http\Controllers\COA_Controller;
 
 
 /*
@@ -112,6 +112,16 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/Onprocess/GetSterile_Img_list', [Pro_Sterile_Controller::class, 'OnProcess_GetSterile_Img_list']);
     Route::post('/Onprocess/Delete_Img_list_Sterile', [Pro_Sterile_Controller::class, 'Delete_Img_list_Sterile']);
 
+
+
+    // COA Report
+    Route::get('/coa_report', function () {
+        return view('coa_report');
+    });
+    Route::get('/COA_Report_PDF/{coa_id}', [COA_Controller::class, 'COA_Report_pdf']);
+    Route::post('/coa/Get_mechine', [COA_Controller::class, 'Get_machine']);
+    Route::post('/coa/Get_COA', [COA_Controller::class, 'Get_COA']);
+    Route::post('/coa/New_COA_report', [COA_Controller::class, 'New_COA_report']);
 
 
     // Stock
@@ -268,7 +278,6 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/settings/machineswashings/updatemachines', [MachinesWashings_Controller::class, 'updateMachinesWashings']);
     Route::post('/settings/machineswashings/deletemachines', [MachinesWashings_Controller::class, 'deleteMachinesWashings']);
     Route::post('/settings/machineswashings/activate', [MachinesWashings_Controller::class, 'toggleActive']);
-
 });
 
 Route::get('/logout', function () {

@@ -20,6 +20,8 @@
 <script defer src="{{ asset('assets/fontawesome-6.2/js/all.js') }}"></script>
 
 <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
+
+<script src="{{ asset('assets/datepicker.js') }}"></script>
 <style>
     body {
         /* font-family: 'Kanit', sans-serif !important; */

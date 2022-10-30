@@ -19,6 +19,7 @@
             margin-right: auto;
             display: block !important;
         }
+
     </style>
 </head>
 
@@ -134,7 +135,7 @@
 
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         // alert('{{ $oder_id }}')
 
@@ -160,7 +161,7 @@
                     OrderId: '{{ $oder_id }}'
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     Oder_item = response.items
                     all_user = response.user
                     table_listItem()
@@ -218,14 +219,14 @@
 
         }
 
-        $('#all_check').change(function() {
+        $('#all_check').change(function () {
             if ($(this).prop('checked')) {
-                $('tbody tr td input[type="checkbox"]').each(function() {
+                $('tbody tr td input[type="checkbox"]').each(function () {
                     $(this).prop('checked', true);
                     $(this).val('checked')
                 });
             } else {
-                $('tbody tr td input[type="checkbox"]').each(function() {
+                $('tbody tr td input[type="checkbox"]').each(function () {
                     $(this).prop('checked', false);
                     $(this).val('')
                 });
@@ -233,8 +234,8 @@
         });
 
 
-        $('#Get_table').on('click', function() {
-            var tbl = $('#tb_select tr:has(td)').map(function(index, cell) {
+        $('#Get_table').on('click', function () {
+            var tbl = $('#tb_select tr:has(td)').map(function (index, cell) {
                 var $td = $('td', this);
                 if ($('td input', this).prop('checked')) {
                     return {
@@ -261,7 +262,7 @@
         function obj_table_washing() {
             var arrData = [];
             // loop over each table row (tr)
-            $("#tb_list_washing tr").each(function() {
+            $("#tb_list_washing tr").each(function () {
                 var currentRow = $(this);
 
                 var col1_value = currentRow.find("td:eq(2)").text();
@@ -288,7 +289,7 @@
                     OrderId: '{{ $oder_id }}'
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
 
                     html_item_list = ''
 
@@ -312,7 +313,7 @@
                     OrderId: '{{ $oder_id }}'
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     // console.log(response.washing_List)
 
                     html_list = '';
@@ -384,7 +385,7 @@
 
         function item_washing_checkDup(Item_id) {
             let res = true;
-            $("#tb_list_washing tr").each(function() {
+            $("#tb_list_washing tr").each(function () {
                 let currentRow = $(this);
                 let item_list_id = currentRow.find("td:eq(3)").attr('value');
                 let washing_status = currentRow.find("td:eq(7)").attr('value');
@@ -397,7 +398,7 @@
         }
 
 
-        $('#item_add_washing').on('click', function() {
+        $('#item_add_washing').on('click', function () {
 
             let machines_id = $('#option_machineswashing').find(":selected").val();
             let machines_name = $('#option_machineswashing').find(":selected").text();
@@ -410,7 +411,7 @@
             if (item_washing == null) {
                 alert('ไม่มี item')
                 return false;
-            }else if(Washing_cycle == ''){
+            } else if (Washing_cycle == '') {
                 alert('กรุณากรอก cycle')
                 return false;
             }
@@ -454,7 +455,7 @@
 
 
 
-        $("#tb_list_washing").on("click", "#item_Remove_washing", function() {
+        $("#tb_list_washing").on("click", "#item_Remove_washing", function () {
             let currentRow = $(this).closest("tr");
             let item_name = currentRow.find("td:eq(3)").text();
             let item_id = currentRow.find("td:eq(3)").attr('value');
@@ -470,16 +471,16 @@
         //     alert('456')
         // })
 
-        $('#washing_all_check').change(function() {
+        $('#washing_all_check').change(function () {
             if ($(this).prop('checked')) {
                 $(`tbody tr td input[type="checkbox"][class*="check_OnProcess_Washing"]`).each(
-                    function() {
+                    function () {
                         $(this).prop('checked', true);
                         $(this).val('checked')
                     });
             } else {
                 $(`tbody tr td input[type="checkbox"][class*="check_OnProcess_Washing"]`).each(
-                    function() {
+                    function () {
                         $(this).prop('checked', false);
                         $(this).val('')
                     });
@@ -487,8 +488,8 @@
         });
 
 
-        $('#btn_save_washing').on('click', function() {
-            var tb_list_washing = $('#tb_list_washing tr:has(td)').map(function(index, cell) {
+        $('#btn_save_washing').on('click', function () {
+            var tb_list_washing = $('#tb_list_washing tr:has(td)').map(function (index, cell) {
                 var $td = $('td', this);
 
                 if ($td.eq(7).attr('value') != 'Fail') {
@@ -527,7 +528,7 @@
                     OrderId: '{{ $oder_id }}'
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     Oder_item = response.items
                     table_listItem()
                     option_item_washing(response.items);
@@ -542,7 +543,7 @@
 
         // ----------------------------- IMAGES----------------------------------
 
-        $(document).on('click', '#btn_washing_image', function() {
+        $(document).on('click', '#btn_washing_image', function () {
             $('#textIdwashing').text($(this).attr('data-washingId'))
             $('#id_washing_modal').val($(this).attr('data-washingId'))
             $('#Modal_Img_washing').removeClass('invisible');
@@ -551,7 +552,7 @@
         })
 
 
-        $(document).on('click', '#modal_washing_close', function() {
+        $(document).on('click', '#modal_washing_close', function () {
             $('#Modal_Img_washing').addClass('invisible');
             // $('#Input_Image_washing').val()
             document.getElementById("Input_Image_washing").value = null;
@@ -562,12 +563,12 @@
         })
 
 
-        $('#Input_Image_washing').on('change', function() {
+        $('#Input_Image_washing').on('change', function () {
             let files = document.getElementById("Input_Image_washing").files;
 
             reader = new FileReader();
             // console.log(files)
-            reader.onload = function() {
+            reader.onload = function () {
                 let output = document.getElementById('washing_img_preview');
                 output.src = reader.result;
                 output.style.height = "20rem";
@@ -577,7 +578,7 @@
         })
 
 
-        $('#add_img_washing').on('click', function() {
+        $('#add_img_washing').on('click', function () {
             // $('#washing_img_preview').attr('src')
             let files = document.getElementById("Input_Image_washing").files;
             let washing_id = $('#id_washing_modal').val()
@@ -599,7 +600,7 @@
                 processData: false,
                 data: Formdata,
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     document.getElementById("Input_Image_washing").value = null;
                     let output = document.getElementById('washing_img_preview');
                     output.src = null;
@@ -619,7 +620,7 @@
                 data: {
                     washing_id: washing_id
                 },
-                success: function(response) {
+                success: function (response) {
                     // console.log(response)
 
                     html_list = '';
@@ -653,7 +654,7 @@
         }
 
 
-        $(document).on('click', '#btn_remove_img_washing', function(e) {
+        $(document).on('click', '#btn_remove_img_washing', function (e) {
             // e.preventDefault()
             let image_id = $(this).attr('data-ID_img')
             let washing_id = $(this).attr('data-washingID')
@@ -667,7 +668,7 @@
                     image_id: image_id,
                     image: image
                 },
-                success: function(response) {
+                success: function (response) {
                     // console.log(response)
                     Getwashing_Img_list(washing_id)
                 }
@@ -675,13 +676,13 @@
         });
 
 
-        $(document).on('click', '#btn_View_img_washing', function() {
+        $(document).on('click', '#btn_View_img_washing', function () {
             let src_img = $(this).attr('src-data')
             $('#modal_show_image_washing').removeClass('hidden')
             $('#modal_Fullimg_Wahsing').attr('src', `{{ asset('assets/image/washing/${src_img}') }}`)
         })
 
-        $(document).on('click', '#Close_show_image_washing', function() {
+        $(document).on('click', '#Close_show_image_washing', function () {
             $('#modal_Fullimg_Wahsing').attr('src', '');
             $('#modal_show_image_washing').addClass('hidden')
         })
@@ -707,7 +708,7 @@
                     OrderId: '{{ $oder_id }}'
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     // console.log(response.Packing_List)
 
                     html_list = '';
@@ -760,7 +761,7 @@
                     OrderId: '{{ $oder_id }}'
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     html_user_list = ''
 
                     // response.machineswashing
@@ -795,7 +796,7 @@
         }
 
 
-        $('#item_packing').on('change', function() {
+        $('#item_packing').on('change', function () {
             Get_sterile_machine()
         })
 
@@ -811,7 +812,7 @@
                     OrderId: '{{ $oder_id }}'
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     console.log(response)
 
                     // alert($('#option_machine_sterile').attr('data-type'))
@@ -868,7 +869,7 @@
 
 
         // Change Machine
-        $('#option_machine_sterile').on('change', function() {
+        $('#option_machine_sterile').on('change', function () {
             $('#option_Process_sterile').val($(this).find(":selected").data("process"))
             // console.log(program_sterile)
 
@@ -884,7 +885,7 @@
 
 
         // Change Process
-        $('#option_Process_sterile').on('change', function() {
+        $('#option_Process_sterile').on('change', function () {
             // $('#option_machine_sterile').val()
             $(`#option_machine_sterile option[data-process='${($(this).val())}']`).prop("selected",
                 true);
@@ -893,7 +894,7 @@
 
         function item_packing_checkDup(Item_id) {
             let res = true;
-            $("#tb_list_packing tr").each(function() {
+            $("#tb_list_packing tr").each(function () {
                 let currentRow = $(this);
                 let item_list_id = currentRow.find("td:eq(3)").attr('value');
                 let Status = currentRow.find("td:eq(13)").attr('value');
@@ -905,16 +906,16 @@
             return res;
         }
 
-        $('#all_check_Packing').change(function() {
+        $('#all_check_Packing').change(function () {
             if ($(this).prop('checked')) {
                 $(`tbody tr td input[type="checkbox"][class*="check_OnProcess_Packing"]`).each(
-                    function() {
+                    function () {
                         $(this).prop('checked', true);
                         $(this).val('checked')
                     });
             } else {
                 $(`tbody tr td input[type="checkbox"][class*="check_OnProcess_Packing"]`).each(
-                    function() {
+                    function () {
                         $(this).prop('checked', false);
                         $(this).val('')
                     });
@@ -922,7 +923,7 @@
         });
 
 
-        $('#item_add_packing').on('click', function() {
+        $('#item_add_packing').on('click', function () {
 
             let machines_id = $('#option_machine_sterile').find(":selected").val();
             let machines_name = $('#option_machine_sterile').find(":selected").text();
@@ -942,7 +943,7 @@
             if (item_packing == null) {
                 alert('ไม่มี item')
                 return false;
-            }else if(Cycle == ''){
+            } else if (Cycle == '') {
                 alert('กรุณากรอก cycle')
                 return false;
             }
@@ -1012,7 +1013,7 @@
             $('#notes_packing_messages').val('');
         })
 
-        $("#tb_list_packing").on("click", "#item_Remove_Packing", async function() {
+        $("#tb_list_packing").on("click", "#item_Remove_Packing", async function () {
             let currentRow = $(this).closest("tr");
             let item_name = currentRow.find("td:eq(3)").text();
             let item_id = currentRow.find("td:eq(3)").attr('value');
@@ -1027,8 +1028,8 @@
         });
 
 
-        $('#btn_save_packing').on('click', function() {
-            var tb_list_packing = $('#tb_list_packing tr:has(td)').map(function(index, cell) {
+        $('#btn_save_packing').on('click', function () {
+            var tb_list_packing = $('#tb_list_packing tr:has(td)').map(function (index, cell) {
                 var $td = $('td', this);
                 return {
                     // check: $('td input#PK_Check', this).prop('checked') || 'false',
@@ -1057,7 +1058,7 @@
                     OrderId: '{{ $oder_id }}'
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     Oder_item = response.items
                     GetPacking_List()
                     Get_Oder_item();
@@ -1068,8 +1069,8 @@
         })
 
 
-        $('#btn_pdf_packing').on('click', function() {
-            var tb_list_packing = $('#tb_list_packing tr:has(td)').map(function(index, cell) {
+        $('#btn_pdf_packing').on('click', function () {
+            var tb_list_packing = $('#tb_list_packing tr:has(td)').map(function (index, cell) {
                 var $td = $('td', this);
                 return {
                     packing_id: $td.eq(1).attr('value'),
@@ -1085,8 +1086,9 @@
         })
 
 
+        // ----------------------------- Image
 
-        $(document).on('click', '#btn_packing_image', function() {
+        $(document).on('click', '#btn_packing_image', function () {
             $('#textIdpacking').text($(this).attr('data-packingId'))
             $('#id_packing_modal').val($(this).attr('data-packingId'))
             $('#Modal_Img_Packing').removeClass('invisible');
@@ -1095,7 +1097,7 @@
         })
 
 
-        $(document).on('click', '#modal_Packing_close', function() {
+        $(document).on('click', '#modal_Packing_close', function () {
             $('#Modal_Img_Packing').addClass('invisible');
             // $('#Input_Image_packing').val()
             document.getElementById("Input_Image_packing").value = null;
@@ -1106,12 +1108,12 @@
         })
 
 
-        $('#Input_Image_packing').on('change', function() {
+        $('#Input_Image_packing').on('change', function () {
             let files = document.getElementById("Input_Image_packing").files;
 
             reader = new FileReader();
             // console.log(files)
-            reader.onload = function() {
+            reader.onload = function () {
                 let output = document.getElementById('packing_img_preview');
                 output.src = reader.result;
                 output.style.height = "20rem";
@@ -1121,7 +1123,7 @@
         })
 
 
-        $('#add_img_pakcing').on('click', function() {
+        $('#add_img_pakcing').on('click', function () {
             // $('#packing_img_preview').attr('src')
             let files = document.getElementById("Input_Image_packing").files;
             console.log(files[0])
@@ -1144,7 +1146,7 @@
                 processData: false,
                 data: Formdata,
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     document.getElementById("Input_Image_packing").value = null;
                     let output = document.getElementById('packing_img_preview');
                     output.src = null;
@@ -1164,7 +1166,7 @@
                 data: {
                     packing_id: packing_id
                 },
-                success: function(response) {
+                success: function (response) {
                     // console.log(response)
 
                     html_list = '';
@@ -1197,7 +1199,7 @@
         }
 
 
-        $(document).on('click', '#btn_remove_img_packing', function() {
+        $(document).on('click', '#btn_remove_img_packing', function () {
             let image_id = $(this).attr('data-ID_img')
             let packing_id = $(this).attr('data-PackingID')
             let image = $(this).attr('data-image')
@@ -1210,7 +1212,7 @@
                     image_id: image_id,
                     image: image
                 },
-                success: function(response) {
+                success: function (response) {
                     // console.log(response)
                     GetPacking_Img_list(packing_id)
                 }
@@ -1219,13 +1221,13 @@
         });
 
 
-        $(document).on('click', '#btn_View_img_packing', function() {
+        $(document).on('click', '#btn_View_img_packing', function () {
             let src_img = $(this).attr('src-data')
             $('#modal_show_image_packing').removeClass('hidden')
             $('#modal_Fullimg_packing').attr('src', `{{ asset('assets/image/packing/${src_img}') }}`)
         })
 
-        $(document).on('click', '#Close_show_image_packing', function() {
+        $(document).on('click', '#Close_show_image_packing', function () {
             $('#modal_Fullimg_packing').attr('src', '');
             $('#modal_show_image_packing').addClass('hidden')
         })
@@ -1248,7 +1250,7 @@
                     OrderId: '{{ $oder_id }}'
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     // console.log(response.sterile_List)
 
                     html_list = '';
@@ -1295,24 +1297,24 @@
         }
 
 
-        $('#all_check_sterile').change(function() {
+        $('#all_check_sterile').change(function () {
             if ($(this).prop('checked')) {
                 $(`tbody tr td input[type="checkbox"][class*="check_OnProcess_sterile"]`).each(
-                    function() {
+                    function () {
                         $(this).prop('checked', true);
                         $(this).val('checked')
                     });
             } else {
                 $(`tbody tr td input[type="checkbox"][class*="check_OnProcess_sterile"]`).each(
-                    function() {
+                    function () {
                         $(this).prop('checked', false);
                         $(this).val('')
                     });
             }
         });
 
-        $('#btn_save_sterile').on('click', function() {
-            var tb_list_sterile = $('#tb_list_sterile tr:has(td)').map(function(index, cell) {
+        $('#btn_save_sterile').on('click', function () {
+            var tb_list_sterile = $('#tb_list_sterile tr:has(td)').map(function (index, cell) {
                 var $td = $('td', this);
                 if ($td.eq(10).attr('value') != 'Fail') {
                     return {
@@ -1339,7 +1341,7 @@
                     OrderId: '{{ $oder_id }}'
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     Oder_item = response.items
                     Getsterile_List();
                     Get_Oder_item();
@@ -1350,7 +1352,7 @@
         })
 
 
-        $(document).on('click', '#btn_Sterile_image', function() {
+        $(document).on('click', '#btn_Sterile_image', function () {
             $('#textIdSterile').text($(this).attr('data-SterileId'))
             $('#id_Sterile_modal').val($(this).attr('data-SterileId'))
             $('#Modal_Img_Sterile').removeClass('invisible');
@@ -1359,7 +1361,7 @@
         })
 
 
-        $(document).on('click', '#modal_Sterile_close', function() {
+        $(document).on('click', '#modal_Sterile_close', function () {
             $('#Modal_Img_Sterile').addClass('invisible');
             // $('#Input_Image_Sterile').val()
             document.getElementById("Input_Image_Sterile").value = null;
@@ -1370,12 +1372,12 @@
         })
 
 
-        $('#Input_Image_Sterile').on('change', function() {
+        $('#Input_Image_Sterile').on('change', function () {
             let files = document.getElementById("Input_Image_Sterile").files;
 
             reader = new FileReader();
             // console.log(files)
-            reader.onload = function() {
+            reader.onload = function () {
                 let output = document.getElementById('Sterile_img_preview');
                 output.src = reader.result;
                 output.style.height = "20rem";
@@ -1385,7 +1387,7 @@
         })
 
 
-        $('#add_img_sterile').on('click', function() {
+        $('#add_img_sterile').on('click', function () {
             let files = document.getElementById("Input_Image_Sterile").files;
             let sterile_qc_id = $('#id_Sterile_modal').val()
             if (files[0] == undefined) return 0;
@@ -1403,7 +1405,7 @@
                 processData: false,
                 data: Formdata,
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     document.getElementById("Input_Image_Sterile").value = null;
                     let output = document.getElementById('Sterile_img_preview');
                     output.src = null;
@@ -1423,7 +1425,7 @@
                 data: {
                     sterile_qc_id: sterile_qc_id
                 },
-                success: function(response) {
+                success: function (response) {
                     // console.log(response)
 
                     html_list = '';
@@ -1456,7 +1458,7 @@
         }
 
 
-        $(document).on('click', '#btn_remove_img_sterlie', function() {
+        $(document).on('click', '#btn_remove_img_sterlie', function () {
             let image_id = $(this).attr('data-ID_img')
             let sterile_qc_id = $(this).attr('data-SterileID')
             let image = $(this).attr('data-image')
@@ -1469,7 +1471,7 @@
                     image_id: image_id,
                     image: image
                 },
-                success: function(response) {
+                success: function (response) {
                     // console.log(response)
                     GetSterile_Img_list(sterile_qc_id)
                 }
@@ -1478,19 +1480,20 @@
         });
 
 
-        $(document).on('click', '#btn_View_img_sterile', function() {
+        $(document).on('click', '#btn_View_img_sterile', function () {
             let src_img = $(this).attr('src-data')
             $('#modal_show_image_sterile').removeClass('hidden')
             $('#modal_Fullimg_sterile').attr('src', `{{ asset('assets/image/sterile/${src_img}') }}`)
         })
 
-        $(document).on('click', '#Close_show_image_sterile', function() {
+        $(document).on('click', '#Close_show_image_sterile', function () {
             $('#modal_Fullimg_sterile').attr('src', '');
             $('#modal_show_image_sterile').addClass('hidden')
         })
 
 
     });
+
 </script>
 
 </html>
