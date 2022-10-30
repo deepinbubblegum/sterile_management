@@ -179,6 +179,7 @@ $permissions = $users_permit->UserPermit();
         @endif
 
         {{-- COA Report --}}
+        @if ($permissions->{'COA Report'} == 1)
         <div x-data="{ isActive: false, open: false }">
             <a href="/coa_report"
                 class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
@@ -194,7 +195,7 @@ $permissions = $users_permit->UserPermit();
                 <span class="ml-2 text-sm">COA Report</span>
             </a>
         </div>
-
+        @endif
 
         {{-- Stock --}}
         @if ($permissions->Stock == 1)
@@ -213,35 +214,6 @@ $permissions = $users_permit->UserPermit();
                 </span>
                 <span class="ml-2 text-sm">Stock</span>
             </a>
-        </div>
-        @endif
-
-        <!-- Reports links -->
-        @if ($permissions->Reports == 1)
-        <div x-data="{ isActive: false, open: false }">
-            <!-- active classes 'bg-primary-100 dark:bg-primary' -->
-            <a href="#" @click="$event.preventDefault(); open = !open"
-                class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
-                :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
-                :aria-expanded="(open || isActive) ? 'true' : 'false'">
-                <span aria-hidden="true">
-                    <i class="fa-regular fa-file-lines fa-lg"></i>
-                </span>
-                <span class="ml-2 text-sm"> Reports </span>
-                <span aria-hidden="true" class="ml-auto">
-                    <!-- active class 'rotate-180' -->
-                    <svg class="w-4 h-4 transition-transform transform" :class="{ 'rotate-180': open }"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </span>
-            </a>
-            <div x-show="open" class="mt-2 space-y-2 px-7" role="menu" arial-label="Pages">
-                <a href="../pages/blank.html" role="menuitem"
-                    class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Blank
-                </a>
-            </div>
         </div>
         @endif
 

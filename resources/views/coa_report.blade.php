@@ -20,8 +20,8 @@
 
     </style>
 
-    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.3/dist/flowbite.min.css" />
-    <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
+    {{-- <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.3/dist/flowbite.min.css" /> --}}
+    {{-- <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script> --}}
 
 </head>
 
@@ -215,7 +215,7 @@
                                         <div class="relative" height="12rem" width="auto" id="list_image_Bowie">
                                             <div class="flex p-2 space-x-4 flex justify-center">
                                                 <img class="w-auto" style="height: 12rem; object-fit: contain;" src=""
-                                                    id="View_img_Bowie" alt="dummy-image" style="">
+                                                    id="View_img_Bowie" style="">
                                             </div>
 
 
@@ -237,7 +237,7 @@
                                         <div class="relative" height="12rem" width="auto" id="list_image_Physicak">
                                             <div class="flex p-2 space-x-4 flex justify-center">
                                                 <img class="w-auto" style="height: 12rem; object-fit: contain;" src=""
-                                                    id="View_img_Physicak" alt="dummy-image" style="">
+                                                    id="View_img_Physicak" style="">
                                             </div>
                                             <button id="btn_View_img_Full" src-data=''
                                                 class="absolute top-1 right-1 bg-green-500 text-white p-2 rounded hover:bg-green-800">
@@ -264,7 +264,7 @@
                                         <div class="relative" height="12rem" width="auto" id="list_image_Chemical_Pre">
                                             <div class="flex p-2 space-x-4 flex justify-center">
                                                 <img class="w-auto" style="height: 12rem; object-fit: contain;" src=""
-                                                    id="View_img_Chemical_Pre" alt="dummy-image" style="">
+                                                    id="View_img_Chemical_Pre" style="">
                                             </div>
                                             <button id="btn_View_img_Full" src-data=''
                                                 class="absolute top-1 right-1 bg-green-500 text-white p-2 rounded hover:bg-green-800">
@@ -284,7 +284,7 @@
                                         <div class="relative" height="12rem" width="auto" id="list_image_Chemical_Post">
                                             <div class="flex p-2 space-x-4 flex justify-center">
                                                 <img class="w-auto" style="height: 12rem; object-fit: contain;" src=""
-                                                    id="View_img_Chemical_Post" alt="dummy-image" style="">
+                                                    id="View_img_Chemical_Post" style="">
                                             </div>
                                             <button id="btn_View_img_Full" src-data=''
                                                 class="absolute top-1 right-1 bg-green-500 text-white p-2 rounded hover:bg-green-800">
@@ -311,7 +311,7 @@
                                             id="list_image_Biological_Pre">
                                             <div class="flex p-2 space-x-4 flex justify-center">
                                                 <img class="w-auto" style="height: 12rem; object-fit: contain;" src=""
-                                                    id="View_img_Biological_Pre" alt="dummy-image" style="">
+                                                    id="View_img_Biological_Pre" style="">
                                             </div>
                                             <button id="btn_View_img_Full" src-data=''
                                                 class="absolute top-1 right-1 bg-green-500 text-white p-2 rounded hover:bg-green-800">
@@ -332,7 +332,7 @@
                                             id="list_image_Biological_Post">
                                             <div class="flex p-2 space-x-4 flex justify-center">
                                                 <img class="w-auto" style="height: 12rem; object-fit: contain;" src=""
-                                                    id="View_img_Biological_Post" alt="dummy-image" style="">
+                                                    id="View_img_Biological_Post" style="">
                                             </div>
                                             <button id="btn_View_img_Full" src-data=''
                                                 class="absolute top-1 right-1 bg-green-500 text-white p-2 rounded hover:bg-green-800">
