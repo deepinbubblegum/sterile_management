@@ -117,6 +117,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/coa_report', function () {
         return view('coa_report');
     });
+    Route::get('/COA_Report_PDF/{coa_id}', [COA_Controller::class, 'COA_Report_pdf']);
     Route::post('/coa/Get_mechine', [COA_Controller::class, 'Get_machine']);
     Route::post('/coa/Get_COA', [COA_Controller::class, 'Get_COA']);
     Route::post('/coa/New_COA_report', [COA_Controller::class, 'New_COA_report']);

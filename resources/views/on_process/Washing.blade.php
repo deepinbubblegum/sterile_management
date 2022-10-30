@@ -226,7 +226,7 @@
                                         </p>
                                     </div>
                                     <input id="Input_Image_washing" type="file" class="hidden"
-                                        accept="image/png, image/gif, image/jpeg" />
+                                        accept="image/png,  image/jpeg" />
                                     <input id="id_washing_modal" type="text" class="hidden" />
                                 </label>
                             </div>

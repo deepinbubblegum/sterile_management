@@ -305,7 +305,7 @@
                                             </p>
                                         </div>
                                         <input id="Input_Image_packing" type="file" class="hidden"
-                                            accept="image/png, image/gif, image/jpeg" />
+                                            accept="image/png,  image/jpeg" />
                                         <input id="id_packing_modal" type="text" class="hidden" />
                                     </label>
                                 </div>

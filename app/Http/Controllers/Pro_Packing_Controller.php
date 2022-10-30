@@ -66,7 +66,7 @@ class Pro_Packing_Controller extends BaseController
             $items_program = DB::table('machine_programs')
                 ->select('machine_programs.*', 'programs.Program_name')
                 ->leftjoin('programs', 'machine_programs.Program_id', '=', 'programs.Program_id')
-                ->where('Active', '1')
+                // ->where('Active', '1')
                 ->get();
 
             $items_process = DB::table('machine')

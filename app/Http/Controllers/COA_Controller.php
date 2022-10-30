@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Cookie;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
+use PDF;
+use QrCode;
+
+
+use Illuminate\Support\Facades\File;
+
 class COA_Controller extends BaseController
 {
 
@@ -107,14 +113,48 @@ class COA_Controller extends BaseController
     {
         $req = $request->all();
 
-        $coa_id = $req['coa_id'];
+        $date = Carbon::parse($req['date']);
+
+
+        $coa_ = DB::table('coa_report')
+            ->select('coa_id')
+            ->where('machine_id', $req['item_machines'])
+            ->where('cycle', $req['input_Cycle'])
+            ->where('date', $date)
+            ->get();
+
+        // Delete All Image Old
+        if (count($coa_) != 0) {
+
+            $image_Old = DB::table('coa_report_image')
+                ->select('coa_report_image.*')
+                ->where('coa_id', $coa_[0]->coa_id)
+                ->get();
+
+            foreach ($image_Old as $key => $value) {
+                // dd($value->image);
+
+                if (File::exists(public_path('assets/image/COA_Report/' . $value->image))) {
+                    File::delete(public_path('assets/image/COA_Report/' . $value->image));
+                }
+            }
+
+            DB::table('coa_report_image')->where('coa_id', $coa_[0]->coa_id)->delete();
+        }
+
+
+        if (count($coa_) != 0) {
+            $coa_id = $coa_[0]->coa_id;
+        } else {
+            $coa_id = $req['coa_id'];
+        }
+
 
 
         if ($coa_id == 'null' || $coa_id == null || $coa_id == '') {
             $coa_id = $this->AutuID();
         }
 
-        $date = Carbon::parse($req['date']);
 
         DB::table('coa_report')->updateOrInsert(
             [
@@ -130,12 +170,19 @@ class COA_Controller extends BaseController
             ]
         );
 
+
         foreach ($req['img'] as $key => $value) {
 
-            $img_id = $req['img_id'][$key];
 
+            if (isset($image_Old)  && count($image_Old) != 0) {
+                $img_id = $image_Old[$key]->image_id;
+            } else {
+                $img_id = $req['img_id'][$key];
+            }
 
-            if ($img_id == 'null' || $img_id == null || $img_id == '' || $img_id == '-') {
+            // dd($image_Old[$key]->image_id);
+
+            if ($img_id == 'null' || $img_id == null || $img_id == '') {
                 $img_id = $this->AutuIDImg();
             }
 
@@ -159,5 +206,86 @@ class COA_Controller extends BaseController
         }
 
         return true;
+    }
+
+
+    public function COA_Report_pdf(Request $request)
+    {
+        $dateNow = Carbon::now();
+        $coa_id = $request->route('coa_id');
+
+        $coa_report = DB::table('coa_report')
+            ->select('*')
+            ->leftjoin('machine', 'coa_report.Machine_id', '=', 'machine.Machine_id')
+            ->where('coa_id', $coa_id)
+            ->orderBy('coa_id', 'DESC')
+            ->get();
+        // dd($coa_report);
+        $packing = DB::table('packing')
+            ->select('packing.*', 'user_QC.Name as UserName_QC', 'user_create.Name as UserCreate', 'sterile_qc.Update_at as Update_Sterile')
+            ->leftjoin('users as user_QC', 'packing.Qc_by', '=', 'user_QC.User_id')
+            ->leftjoin('users as user_create', 'packing.Create_by', '=', 'user_create.User_id')
+            ->leftJoin('sterile_qc', function ($join) {
+                $join->on('packing.Order_id', '=', 'sterile_qc.Order_id');
+                $join->on('packing.item_id', '=', 'sterile_qc.item_id');
+            })
+            ->where('Machine_id', $coa_report[0]->machine_id)
+            ->where('Cycle', $coa_report[0]->cycle)
+            ->whereDate('packing.Create_at', $coa_report[0]->date)
+            ->orderBy('packing_id', 'DESC')
+            ->first();
+
+
+        $user_DB = DB::table('users')
+            ->select('*')
+            ->where('User_id', $request->cookie('Username_server_User_id'))
+            ->first();
+
+        // dd($packing);
+        foreach ($coa_report as $item) {
+
+            $image = DB::table('coa_report_image')
+                ->select('coa_report_image.*')
+                ->where('coa_id', $coa_id)
+                ->get();
+
+            $item->image = $image;
+        }
+
+        foreach ($item->image as $item) {
+            // dd($item->image);
+            $item->pathfile = public_path('assets/image/COA_Report/' . $item->image . '');
+        }
+
+
+        $coa_report[0]->Sterile_date_create = $packing->Create_at;
+        $coa_report[0]->Sterile_date_Update = $packing->Update_Sterile;
+        $coa_report[0]->UserCreate = $user_DB->Username;
+        $coa_report[0]->UserName_QC = $packing->UserName_QC;
+
+        $list_item = DB::table('items')
+            ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name', 'equipments.Item_Type')
+            ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
+            ->leftjoin('situations', 'items.Situation_id', '=', 'situations.Situation_id')
+            ->leftJoin('packing', 'items.Item_id', '=', 'packing.item_id')
+            // ->leftjoin('washing', 'items.item_id', '=', 'washing.item_id')
+            ->where('packing.Machine_id', $coa_report[0]->machine_id)
+            ->where('packing.Cycle', $coa_report[0]->cycle)
+            ->whereDate('packing.Create_at', $coa_report[0]->date)
+            ->distinct()
+            ->orderBy('items.Order_id')
+            ->orderByRaw('LENGTH(items.item_id)')
+            ->get();
+        // dd($list_item);
+        // $item = $coa_report[0];
+
+        $List_data = new \stdClass();
+        $List_data->item = $coa_report[0];
+        $List_data->list = $list_item;
+
+        $pdf = PDF::loadView('pdf.COA_Report', compact('List_data'));
+        $pdf->setPaper('A4');
+
+        return @$pdf->stream();
     }
 }

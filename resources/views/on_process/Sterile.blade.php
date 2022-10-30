@@ -180,7 +180,7 @@
                                         <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF</p>
                                     </div>
                                     <input id="Input_Image_Sterile" type="file" class="hidden"
-                                        accept="image/png, image/gif, image/jpeg" />
+                                        accept="image/png,  image/jpeg" />
                                     <input id="id_Sterile_modal" type="text" class="hidden" />
                                 </label>
                             </div>

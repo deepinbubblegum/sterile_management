@@ -50,11 +50,15 @@ footer {
 }
 
 .w-16 {
-    width: 4rem/* 64px */;
+    width: 4rem
+        /* 64px */
+    ;
 }
 
 .w-96 {
-    width: 24rem/* 384px */;
+    width: 24rem
+        /* 384px */
+    ;
 }
 
 .remark {
@@ -66,11 +70,15 @@ footer {
 }
 
 .rounded {
-    border-radius: 0.25rem/* 4px */;
+    border-radius: 0.25rem
+        /* 4px */
+    ;
 }
 
 .rounded-lg {
-    border-radius: 0.5rem/* 8px */;
+    border-radius: 0.5rem
+        /* 8px */
+    ;
 }
 
 .min-h-85 {
@@ -79,11 +87,15 @@ footer {
 
 
 .p-1 {
-    padding: 0.25rem/* 4px */;
+    padding: 0.25rem
+        /* 4px */
+    ;
 }
 
 .p-2 {
-    padding: 0.5rem/* 8px */;
+    padding: 0.5rem
+        /* 8px */
+    ;
 }
 
 p {

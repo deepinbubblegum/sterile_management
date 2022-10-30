@@ -71,6 +71,100 @@
 
                         <div class="mt-5 mb-5">
 
+
+                            <div class="mt-5">
+                                <form>
+                                    <div class="grid gap-6 mb-6 md:grid-cols-2">
+
+                                        <div>
+                                            <label for="option_machine_sterile_search"
+                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                                                ค้นหาโดย เครื่องSterile
+                                            </label>
+                                            <select id="option_machine_sterile_search" data-type=""
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                {{-- <option>Sterile 01</option>
+                                                <option>Sterile 02</option>
+                                                <option>Sterile 03</option> --}}
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <button type="button" id="btn_search"
+                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">ค้นหา
+                                    </button>
+                                    <button type="button" id="btn_clear_search"
+                                        class="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">ล้างการค้นหา
+                                    </button>
+                                </form>
+                            </div>
+
+                            <section id="section_table">
+
+                                <div class="overflow-x-auto relative shadow-md sm:rounded-lg mt-5">
+                                    <table
+                                        class="w-full text-sm text-center text-gray-900 dark:text-gray-100 table-auto">
+                                        <thead
+                                            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            <tr>
+                                                <th scope="col" class="py-3 px-6">
+                                                    Action
+                                                </th>
+                                                <th scope="col" class="py-3 px-6">
+                                                    Machine
+                                                </th>
+                                                <th scope="col" class="py-3 px-6">
+                                                    Cycle
+                                                </th>
+                                                <th scope="col" class="py-3 px-6">
+                                                    รอบวันที่
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="COA_TBody">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {{-- {{ $users->links('pagination::tailwind') }} --}}
+
+
+                                <div class="mt-3">
+
+                                    <div class="text-end text-slate-600 mr-2">
+                                        View <span id="txt_firstItem"></span> - <span id="txt_lastItem"></span> of <span
+                                            id="txt_total"></span>
+                                    </div>
+
+                                    <div class="text-center w-full">
+                                        <button
+                                            class="btn_first_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                            type="button" id="select_page" url_data="">
+                                            << </button> <button
+                                                class="btn_prev_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                                type="button" id="select_page" url_data="">
+                                                < </button> Page <input type="text" id="page_input" value=""
+                                                    class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 p-[7px] w-20 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    required>
+                                                    of <span id="lastPage"></span>
+                                                    <button
+                                                        class="btn_next_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                                        type="button" id="select_page" url_data="nextPageUrl">
+                                                        >
+                                                    </button>
+                                                    <button
+                                                        class="btn_last_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                                        type="button" id="select_page" url_data="lastPage">
+                                                        >>
+                                                    </button>
+                                    </div>
+                                </div>
+
+                            </section>
+
+                            <hr class="my-4">
+
+
                             <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
                                 <div>
                                     <label for="option_machine_sterile"
@@ -114,7 +208,7 @@
                             </div>
 
                             <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
-                                <div>
+                                <div class="div_img">
                                     <p class="text-orange-600 text-xl mb-2"> <b><u> Bowie Dick Test </u></b> </p>
                                     <a
                                         class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -131,12 +225,12 @@
                                             </button>
                                         </div>
                                     </a>
-                                    <input
+                                    <input accept="image/png, image/jpeg"
                                         class="mt-2 w-min-[-webkit-fill-available] block text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                         id="file_input_Bowie" type="file" data-type="A001">
                                 </div>
 
-                                <div>
+                                <div class="div_img">
                                     <p class="text-orange-600 text-xl mb-2"> <b><u> Physicak Monitoring </u></b> </p>
                                     <a
                                         class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -151,7 +245,7 @@
                                             </button>
                                         </div>
                                     </a>
-                                    <input
+                                    <input accept="image/png, image/jpeg"
                                         class="mt-2 w-min-[-webkit-fill-available] block text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                         id="file_input_Physicak" type="file" data-type="A002">
                                 </div>
@@ -159,11 +253,11 @@
 
 
                             <div class="mt-[3rem] mb-2">
-                                <p class="text-orange-600 text-xl"> <b><u> Chemical Monitoring </u></b> </p>
+                                <p class="text-orange-600 text-xl"> <b><u> Chemical Monotoring </u></b> </p>
                             </div>
                             <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
 
-                                <div class="">
+                                <div class="div_img">
                                     <p class="mb-1 text-green-400"> Pre-Test </p>
                                     <a
                                         class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -178,12 +272,12 @@
                                             </button>
                                         </div>
                                     </a>
-                                    <input
+                                    <input accept="image/png, image/jpeg"
                                         class="mt-2 w-min-[-webkit-fill-available] block text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                         id="file_input_Chemical_Pre" type="file" data-type="A003">
                                 </div>
 
-                                <div>
+                                <div class="div_img">
                                     <p class="mb-1 text-green-400"> Post-Test </p>
                                     <a
                                         class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -198,18 +292,18 @@
                                             </button>
                                         </div>
                                     </a>
-                                    <input
+                                    <input accept="image/png, image/jpeg"
                                         class="mt-2 w-min-[-webkit-fill-available] block text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                         id="file_input_Chemical_Post" type="file" data-type="A004">
                                 </div>
                             </div>
 
                             <div class="mt-[3rem] mb-2">
-                                <p class="text-orange-600 text-xl"> <b><u> Biological Monitoring </u></b> </p>
+                                <p class="text-orange-600 text-xl"> <b><u> Biological Monotoring </u></b> </p>
                             </div>
                             <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
 
-                                <div class="">
+                                <div class="div_img">
                                     <p class="mb-1 text-green-400"> Pre-Test </p>
                                     <a
                                         class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -225,12 +319,12 @@
                                             </button>
                                         </div>
                                     </a>
-                                    <input
+                                    <input accept="image/png, image/jpeg"
                                         class="mt-2 w-min-[-webkit-fill-available] block text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                         id="file_input_Biological_Pre" type="file" data-type="A005">
                                 </div>
 
-                                <div>
+                                <div class="div_img">
                                     <p class="mb-1 text-green-400"> Post-Test </p>
                                     <a
                                         class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -246,7 +340,7 @@
                                             </button>
                                         </div>
                                     </a>
-                                    <input
+                                    <input accept="image/png, image/jpeg"
                                         class="mt-2 w-min-[-webkit-fill-available] block text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                         id="file_input_Biological_Post" type="file" data-type="A006">
                                 </div>
@@ -262,99 +356,6 @@
                             </div>
 
                         </div>
-
-                        <hr>
-
-
-                        <div class="mt-5">
-                            <form>
-                                <div class="grid gap-6 mb-6 md:grid-cols-2">
-
-                                    <div>
-                                        <label for="option_machine_sterile_search"
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
-                                            ค้นหาโดย เครื่องSterile
-                                        </label>
-                                        <select id="option_machine_sterile_search" data-type=""
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                            {{-- <option>Sterile 01</option>
-                                            <option>Sterile 02</option>
-                                            <option>Sterile 03</option> --}}
-                                        </select>
-                                    </div>
-
-                                </div>
-                                <button type="button" id="btn_search"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">ค้นหา
-                                </button>
-                                <button type="button" id="btn_clear_search"
-                                    class="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">ล้างการค้นหา
-                                </button>
-                            </form>
-                        </div>
-
-                        <section id="section_table">
-
-                            <div class="overflow-x-auto relative shadow-md sm:rounded-lg mt-5">
-                                <table class="w-full text-sm text-center text-gray-900 dark:text-gray-100 table-auto">
-                                    <thead
-                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                        <tr>
-                                            <th scope="col" class="py-3 px-6">
-                                                Action
-                                            </th>
-                                            <th scope="col" class="py-3 px-6">
-                                                Machine
-                                            </th>
-                                            <th scope="col" class="py-3 px-6">
-                                                Cycle
-                                            </th>
-                                            <th scope="col" class="py-3 px-6">
-                                                รอบวันที่
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="COA_TBody">
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            {{-- {{ $users->links('pagination::tailwind') }} --}}
-
-
-                            <div class="mt-3">
-
-                                <div class="text-end text-slate-600 mr-2">
-                                    View <span id="txt_firstItem"></span> - <span id="txt_lastItem"></span> of <span
-                                        id="txt_total"></span>
-                                </div>
-
-                                <div class="text-center w-full">
-                                    <button
-                                        class="btn_first_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
-                                        type="button" id="select_page" url_data="">
-                                        << </button> <button
-                                            class="btn_prev_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
-                                            type="button" id="select_page" url_data="">
-                                            < </button> Page <input type="text" id="page_input" value=""
-                                                class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 p-[7px] w-20 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                required>
-                                                of <span id="lastPage"></span>
-                                                <button
-                                                    class="btn_next_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
-                                                    type="button" id="select_page" url_data="nextPageUrl">
-                                                    >
-                                                </button>
-                                                <button
-                                                    class="btn_last_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
-                                                    type="button" id="select_page" url_data="lastPage">
-                                                    >>
-                                                </button>
-                                </div>
-                            </div>
-
-                        </section>
-
 
                     </div>
                 </div>
@@ -459,7 +460,7 @@
                         html_list += `
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    <a type="button" href="/coa/pdf/${item.coa_id}" target="_blank"
+                                    <a type="button" href="/COA_Report_PDF/${item.coa_id}" target="_blank"
                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         <i class="fa-solid fa-print fa-lg fill-white icon_center"></i>
                                     </a>
@@ -493,20 +494,6 @@
             });
         }
 
-        $('#Input_Image_packing').on('change', function () {
-            let files = document.getElementById("Input_Image_packing").files;
-
-            reader = new FileReader();
-            // console.log(files)
-            reader.onload = function () {
-                let output = document.getElementById('packing_img_preview');
-                output.src = reader.result;
-                output.style.height = "20rem";
-                output.style.width = "auto";
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        })
-
         // list_img = ['file_input_Bowie', 'file_input_Physicak', 'file_input_Chemical_Pre',
         //         'file_input_Chemical_Post', 'file_input_Biological_Pre',
         //         'file_input_Biological_Post'
@@ -515,31 +502,37 @@
 
         $(document).on('change', '#file_input_Bowie', function () {
             let files = $(this).prop('files');
+            $('#View_img_Bowie').attr('src', '')
             preview_img(files, 'View_img_Bowie')
         })
 
         $(document).on('change', '#file_input_Physicak', function () {
             let files = $(this).prop('files');
+            $('#View_img_Physicak').attr('src', '')
             preview_img(files, 'View_img_Physicak')
         })
 
         $(document).on('change', '#file_input_Chemical_Pre', function () {
             let files = $(this).prop('files');
+            $('#View_img_Chemical_Pre').attr('src', '')
             preview_img(files, 'View_img_Chemical_Pre')
         })
 
         $(document).on('change', '#file_input_Chemical_Post', function () {
             let files = $(this).prop('files');
+            $('#View_img_Chemical_Post').attr('src', '')
             preview_img(files, 'View_img_Chemical_Post')
         })
 
         $(document).on('change', '#file_input_Biological_Pre', function () {
             let files = $(this).prop('files');
+            $('#View_img_Biological_Pre').attr('src', '')
             preview_img(files, 'View_img_Biological_Pre')
         })
 
         $(document).on('change', '#file_input_Biological_Post', function () {
             let files = $(this).prop('files');
+            $('#View_img_Biological_Post').attr('src', '')
             preview_img(files, 'View_img_Biological_Post')
         })
 
@@ -558,16 +551,10 @@
                     .result)
                 // $('#' + id_modal_preview).attr('src-data', reader.result)
             };
+
             reader.readAsDataURL(event.target.files[0]);
         }
 
-
-        function view_full_img(files, id_modal_preview) {
-            reader = new FileReader();
-            reader.onload = function () {
-                $('#' + id_modal_preview).attr('src-data', reader.result)
-            };
-        }
 
         $(document).on('click', '#btn_View_img_Full', function () {
             let src_img = $(this).attr('src-data')
@@ -579,16 +566,24 @@
             $('#modal_Fullimg').attr('src', src_img)
         })
 
+
+
         $(document).on('click', '#Close_show_image', function () {
             $('#modal_Fullimg').attr('src', '');
             $('#modal_show_image_full').addClass('hidden')
         })
+
+
 
         $('#btn_save_coa').on('click', function () {
             let item_machines = $('#option_machine_sterile').find(":selected").val();
             let input_Cycle = $('#input_Cycle').val();
             let date = $('#datepickerId').val();
 
+            if (item_machines == '') {
+                alert('กรุณาระบุเครื่อง Sterile')
+                return false
+            }
 
             if (input_Cycle == '') {
                 alert('กรุณาระบุ Cycle')
@@ -608,7 +603,7 @@
             let Formdata = new FormData();
             for (const [index, element] of list_img.entries()) {
                 let files = document.getElementById(element).files;
-
+                // console.log(files)
                 if (files.length == 0 || files[0] == undefined) {
                     alert('กรุณาอัปโหลดรูปให้ครบถ้วน')
                     return false;
@@ -653,26 +648,101 @@
         })
 
 
+
         $(document).on('click', '#btn_edit', function () {
             let coa_id = $(this).attr('data-coa_id')
 
 
             let _Item = Data_COA.filter(v => v.coa_id == coa_id);
 
-            // console.log(_Item[0]['Machine_id'])
+            // console.log(_Item[0])
 
             $('#option_machine_sterile').val(_Item[0]['Machine_id'])
+            $('#input_Cycle').val(_Item[0]['cycle']);
+            $('#datepickerId').val(_Item[0]['date']);
 
             list_img = ['file_input_Bowie', 'file_input_Physicak', 'file_input_Chemical_Pre',
                 'file_input_Chemical_Post', 'file_input_Biological_Pre',
                 'file_input_Biological_Post'
             ];
 
+            _Item[0].image.forEach((element, index) => {
+                let view_img = element['image']
+                $('input[data-type="' + element['coa_type'] + '"]').parent().children(
+                    "a").children("div").children("div").children("img").attr('src',
+                    `{{ asset('assets/image/COA_Report/${view_img}') }}`);
+
+                let fileInput = document.querySelector('input[data-type="' + element[
+                    'coa_type'] + '"]');
+
+                // Create a new File object
+                let Url_img = `{{ asset('assets/image/COA_Report/${view_img}') }}`
+
+                let type = Url_img.split(".").slice(-1)[0];
+                let name_file = Url_img.split("/").slice(-1)[0];
+
+                let img_type = 'image/png'
+                if (type == 'jpg') {
+                    img_type = 'image/jpeg'
+                } else {
+                    img_type = 'image/png'
+                }
+
+                fetch(Url_img)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        // const file = new File([blob], blob.name);
+                        let myFile = new File([blob], name_file, {
+                            type: img_type,
+                            lastModified: new Date(),
+                        });
+                        // console.log(myFile)
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(myFile);
+                        fileInput.files = dataTransfer.files;
+                    });
+
+                getBase64Image(`{{ asset('assets/image/COA_Report/${view_img}') }}`,
+                    function (base64image) {
+                        // console.log(base64image);
+                        let aa = $('input[data-type="' + element['coa_type'] + '"]')
+                            .parent()
+                            .children(
+                                "a").children("div").children('#btn_View_img_Full').attr(
+                                'src-data', base64image)
+                    });
+            });
+
             document.getElementById('option_machine_sterile').focus();
-            // let item_machines = $('#option_machine_sterile').find(":selected").val();
-            // let input_Cycle = $('#input_Cycle').val();
-            // let date = $('#datepickerId').val();
         })
+
+
+
+        function getBase64Image(imgUrl, callback) {
+
+            var img = new Image();
+
+            // onload fires when the image is fully loadded, and has width and height
+
+            img.onload = function () {
+
+                var canvas = document.createElement("canvas");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+                var dataURL = canvas.toDataURL("image/png");
+                // dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
+                callback(dataURL); // the base64 string
+
+            };
+
+            // set attributes and src
+            img.setAttribute('crossOrigin', 'anonymous'); //
+            img.src = imgUrl;
+
+        }
 
 
 
