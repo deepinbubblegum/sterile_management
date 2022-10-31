@@ -181,14 +181,14 @@ $(document).ready(function () {
 
     $('#add_equip').click(function (e) { 
         e.preventDefault();
-        let equip_name = $('#equip_name').val();
-        let price = $('#price').val();
-        let expire = $('#expire').val();
-        let process = $("#process option:selected").val();
-        let item_type = $('#item_type').val();
-        let descriptions = $('#descriptions').val();
-        let sud_checked = $('#SUD_Check').not(this).prop('checked', this.checked);
-        let limit = $('#limit').val();
+        const equip_name = $('#equip_name').val();
+        const price = $('#price').val();
+        const expire = $('#expire').val();
+        const process = $("#process option:selected").val();
+        const item_type = $('#item_type').val();
+        const descriptions = $('#descriptions').val();
+        const sud_checked = $('#SUD_Check').not(this).prop('checked', this.checked);
+        const limit = $('#limit').val();
         
         if (process == '0') {
             alert('กรุณาเลือกกระบวนการ');
@@ -200,9 +200,9 @@ $(document).ready(function () {
                 alert('กรุณากำหนดจำนวนรอบการใช้งานสูงสุด');
                 return false;
             }
-            sud = true;
+            sud = 1;
         }else{
-            sud = false;
+            sud = 0;
         }
 
         $.ajax({
@@ -317,65 +317,65 @@ $(document).ready(function () {
         $('.closeModal').on('click', function(e){
             $('#editModal').addClass('invisible');
         });
+    }
 
-        $('#save_edit_equip').click(function (e) {
-            e.preventDefault();
-            let equip_id = $('#edit_equip_name').attr('data-value');
-            let edit_equip_name = $('#edit_equip_name').val();
-            let edit_price = $('#edit_price').val();
-            let edit_expire = $('#edit_expire').val();
-            let edit_process = $("#edit_process option:selected").val();
-            let edit_item_type = $('#edit_item_type').val();
-            let edit_descriptions = $('#edit_descriptions').val();
-            let edit_sud_checked = $('#edit_SUD_Check').not(this).prop('checked', this.checked);
-            let edit_limit = $('#edit_limit').val();
+    $('#save_edit_equip').click(function (e) {
+        e.preventDefault();
+        let equip_id = $('#edit_equip_name').attr('data-value');
+        let edit_equip_name = $('#edit_equip_name').val();
+        let edit_price = $('#edit_price').val();
+        let edit_expire = $('#edit_expire').val();
+        let edit_process = $("#edit_process option:selected").val();
+        let edit_item_type = $('#edit_item_type').val();
+        let edit_descriptions = $('#edit_descriptions').val();
+        let edit_sud_checked = $('#edit_SUD_Check').not(this).prop('checked', this.checked);
+        let edit_limit = $('#edit_limit').val();
 
-            if (edit_process == '0') {
-                alert('กรุณาเลือกกระบวนการ');
+        if (edit_process == '0') {
+            alert('กรุณาเลือกกระบวนการ');
+            return false;
+        }
+
+        let edit_sud = false;
+        if (edit_sud_checked.is(":checked")) {
+            if (edit_limit <= 0) {
+                alert('กรุณากำหนดจำนวนรอบการใช้งานสูงสุด');
                 return false;
             }
+            edit_sud = 1;
+        }else{
+            edit_sud = 0;
+        }
 
-            let edit_sud = false;
-            if (edit_sud_checked.is(":checked")) {
-                if (edit_limit <= 0) {
-                    alert('กรุณากำหนดจำนวนรอบการใช้งานสูงสุด');
-                    return false;
-                }
-                edit_sud = true;
-            }else{
-                edit_sud = false;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "/settings/equipments/updateequipments",
-                data: {
-                    equipment_id: equip_id,
-                    equipment_name: edit_equip_name,
-                    equipment_price: edit_price,
-                    equipment_expire: edit_expire,
-                    equipment_process: edit_process,
-                    equipment_item_type: edit_item_type,
-                    equipment_descriptions: edit_descriptions,
-                    equipment_sud: edit_sud,
-                    equipment_limit: edit_limit
-                },
-                dataType: "json",
-                success: function (response) {
-                    let page = $('#page_input').val();
-                    let txt_search = $("#search").val();
-                    getEquipments(page, txt_search);
-                    $('#editModal').addClass('invisible');
-                }
-            });
-        });
-
-        $('#page_input').keydown(function (e) {
-            if (e.keyCode == 13) {
+        $.ajax({
+            type: "POST",
+            url: "/settings/equipments/updateequipments",
+            data: {
+                equipment_id: equip_id,
+                equipment_name: edit_equip_name,
+                equipment_price: edit_price,
+                equipment_expire: edit_expire,
+                equipment_process: edit_process,
+                equipment_item_type: edit_item_type,
+                equipment_descriptions: edit_descriptions,
+                equipment_sud: edit_sud,
+                equipment_limit: edit_limit
+            },
+            dataType: "json",
+            success: function (response) {
                 let page = $('#page_input').val();
                 let txt_search = $("#search").val();
                 getEquipments(page, txt_search);
+                $('#editModal').addClass('invisible');
             }
         });
-    }
+    });
+
+    $('#page_input').keydown(function (e) {
+        if (e.keyCode == 13) {
+            let page = $('#page_input').val();
+            let txt_search = $("#search").val();
+            getEquipments(page, txt_search);
+        }
+    });
 });

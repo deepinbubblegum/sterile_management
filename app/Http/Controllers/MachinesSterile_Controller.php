@@ -103,4 +103,16 @@ class MachinesSterile_Controller extends BaseController
             ->delete();
         return $machines_status;
     }
+
+    public function toggleActivate(Request $request)
+    {
+        $recv = $request->all();
+        $machine_id = $recv['machine_id'];
+        $machines_status = DB::table('machine')
+            ->where('Machine_id', $machine_id)
+            ->update([
+                'Active' => $recv['Active'],
+            ]);
+        return json_encode(TRUE);
+    }
 }

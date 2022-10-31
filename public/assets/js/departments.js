@@ -15,6 +15,10 @@ $(document).ready(function () {
                             class="mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-solid fa-toolbox fa-xl mx-auto"></i>
                         </a>
+                        <a href="/settings/customers/departments/${element.Customer_id.toLowerCase()}/users/${element.Department_id.toLowerCase()}" value="${element.Department_id}"
+                            class="mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                            <i class="fa-solid fa-user fa-xl mx-auto"></i>
+                        </a>
                         <button type="button" value="${element.Department_id}"
                             class="openEditModal mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-regular fa-pen-to-square fa-xl mx-auto"></i>

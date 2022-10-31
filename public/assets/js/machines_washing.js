@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // set tables
     function setTable(data) {
-        // console.log(data);
+        console.log(data);
         $("#machineswashing-table").empty();
         data.forEach((element) => {
             const rowHtml = `
@@ -12,6 +12,10 @@ $(document).ready(function () {
                             <button type="button" value="${element.MachinesWashing_id}"
                                 class="openEditModal mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                 <i class="fa-regular fa-pen-to-square fa-xl mx-auto"></i>
+                            </button>
+                            <button type="button" data-value="${element.Active == '1' ? '0': '1'}" value="${element.MachinesWashing_id}"
+                                class="toggle_activate_equipments mr-1 w-10 h-10 px-2 py-2 text-base text-white ${element.Active == '1' ? 'bg-success hover:bg-success-dark focus:ring-success' : 'bg-warning hover:bg-warning-dark focus:ring-warning'} rounded-md inline-flex items-center focus:outline-none focus:ring  focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                                ${element.Active == '1' ? '<i class="fa-solid fa-check fa-xl mx-auto"></i>' : '<i class="fa-solid fa-x fa-xl mx-auto"></i>'}
                             </button>
                             <button type="button" value="${element.MachinesWashing_id}"
                                 class="delete_data mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
@@ -162,6 +166,26 @@ $(document).ready(function () {
 
         $('.closeModal').on('click', function(e){
             $('#editMachineWashingModal').addClass('invisible');
+        });
+
+        $('.toggle_activate_equipments').click(function (e) { 
+            e.preventDefault();
+            let machine_id = $(this).val();
+            let Active = $(this).attr('data-value');
+            $.ajax({
+                type: "POST",
+                url: "/settings/machineswashings/activate",
+                data: {
+                    machine_id: machine_id,
+                    Active: Active
+                },
+                dataType: "json",
+                success: function (response) {
+                    let page = $('#page_input').val();
+                    let txt_search = $("#search").val();
+                    getListMachinesWashing(page, txt_search);
+                }
+            });
         });
     }
 

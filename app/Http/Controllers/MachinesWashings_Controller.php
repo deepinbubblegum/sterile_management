@@ -93,4 +93,15 @@ class MachinesWashings_Controller extends BaseController
             ]);
         return $machines;
     }
+
+    public function toggleActive(Request $request)
+    {
+        $recv = $request->all();
+        $machines = DB::table('machineswashing')
+            ->where('machineswashing.MachinesWashing_id', $recv['machine_id'])
+            ->update([
+                'Active' => $recv['Active'],
+            ]);
+        return json_encode(TRUE);
+    }
 }
