@@ -1,9 +1,9 @@
 <div class='background_loading'>
-    <div class='demo'>
-        <div class='circle'>
+    <div class='demo_page_loading'>
+        <div class='circle_page_loading'>
             <div class='inner'></div>
         </div>
-        <div class='circle'>
+        <div class='circle_page_loading'>
             <div class='inner'></div>
         </div>
     </div>

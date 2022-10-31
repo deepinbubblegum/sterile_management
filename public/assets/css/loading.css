@@ -153,7 +153,7 @@
     background: -webkit-radial-gradient(rgba(20, 20, 20, .8), rgba(0, 0, 0, .8));
 }
 
-.demo {
+.demo_page_loading {
     position: fixed;
     z-index: 999;
     height: 12em;
@@ -181,13 +181,13 @@
     color: #00dbff;
 }
 
-.circle {
+.circle_page_loading {
     width: 100%;
     height: 100%;
     position: absolute;
 }
 
-.circle .inner {
+.circle_page_loading .inner {
     width: 100%;
     height: 100%;
     border-radius: 100%;
@@ -217,34 +217,34 @@
     }
 }
 
-.circle:nth-of-type(0) {
+.circle_page_loading:nth-of-type(0) {
     transform: rotate(0deg);
 }
 
-.circle:nth-of-type(0) .inner {
+.circle_page_loading:nth-of-type(0) .inner {
     -webkit-animation: spin 2s infinite linear;
     animation: spin 2s infinite linear;
 }
 
-.circle:nth-of-type(1) {
+.circle_page_loading:nth-of-type(1) {
     transform: rotate(70deg);
 }
 
-.circle:nth-of-type(1) .inner {
+.circle_page_loading:nth-of-type(1) .inner {
     -webkit-animation: spin 2s infinite linear;
     animation: spin 2s infinite linear;
 }
 
-.circle:nth-of-type(2) {
+.circle_page_loading:nth-of-type(2) {
     transform: rotate(140deg);
 }
 
-.circle:nth-of-type(2) .inner {
+.circle_page_loading:nth-of-type(2) .inner {
     -webkit-animation: spin 2s infinite linear;
     animation: spin 2s infinite linear;
 }
 
-.demo {
+.demo_page_loading {
     -webkit-animation: spin 5s infinite linear;
     animation: spin 5s infinite linear;
 }
