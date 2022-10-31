@@ -27,7 +27,10 @@
         /* font-family: 'Kanit', sans-serif !important; */
         font-family: 'Bai Jamjuree', sans-serif !important;
     }
+
 </style>
+
+<link href="{{ asset('assets/css/loading.css') }}" rel="stylesheet" />
 
 @vite('resources/js/app.js')
 @vite('resources/css/app.css')
@@ -38,4 +41,5 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
 </script>
