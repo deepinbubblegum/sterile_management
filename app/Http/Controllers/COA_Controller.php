@@ -235,6 +235,9 @@ class COA_Controller extends BaseController
             ->orderBy('packing_id', 'DESC')
             ->first();
 
+        if ($packing == null) {
+            return 'ไม่พบข้อมูลในระบบ';
+        }
 
         $user_DB = DB::table('users')
             ->select('*')
@@ -258,7 +261,7 @@ class COA_Controller extends BaseController
         }
 
 
-        $coa_report[0]->Sterile_date_create = $packing->Create_at;
+        $coa_report[0]->Sterile_date_create = $packing->Create_at ?: null;
         $coa_report[0]->Sterile_date_Update = $packing->Update_Sterile;
         $coa_report[0]->UserCreate = $user_DB->Username;
         $coa_report[0]->UserName_QC = $packing->UserName_QC;
@@ -276,6 +279,11 @@ class COA_Controller extends BaseController
             ->orderBy('items.Order_id')
             ->orderByRaw('LENGTH(items.item_id)')
             ->get();
+
+
+        if (count($list_item) == 0) {
+            return 'ไม่พบข้อมูลในระบบ';
+        }
         // dd($list_item);
         // $item = $coa_report[0];
 
