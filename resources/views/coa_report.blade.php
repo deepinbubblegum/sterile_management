@@ -37,6 +37,8 @@
 
             @include('component.slidebar')
 
+            @include('component.Loading')
+
 
             <!-- Main content -->
             <main class="flex-1 overflow-x-hidden">
@@ -424,6 +426,8 @@
 
         function get_COA(page = 1, txt_search = '') {
 
+            $(".background_loading").css("display", "block");
+
             $.ajax({
                 type: "POST",
                 url: `/coa/Get_COA?page=${page}`,
@@ -478,6 +482,8 @@
                         `
                     }
                     $('#COA_TBody').html(html_list)
+
+                    $(".background_loading").css("display", "none");
 
 
                     document.querySelector('#page_input').addEventListener('keypress', function (
@@ -576,6 +582,9 @@
 
 
         $('#btn_save_coa').on('click', function () {
+
+            $(".background_loading").css("display", "block");
+
             let item_machines = $('#option_machine_sterile').find(":selected").val();
             let input_Cycle = $('#input_Cycle').val();
             let date = $('#datepickerId').val();
