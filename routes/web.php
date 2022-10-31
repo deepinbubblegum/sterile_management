@@ -124,6 +124,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/coa/Get_mechine', [COA_Controller::class, 'Get_machine']);
     Route::post('/coa/Get_COA', [COA_Controller::class, 'Get_COA']);
     Route::post('/coa/New_COA_report', [COA_Controller::class, 'New_COA_report']);
+    Route::post('/coa/Delete_COA', [COA_Controller::class, 'Delete_COA']);
 
 
     // Stock

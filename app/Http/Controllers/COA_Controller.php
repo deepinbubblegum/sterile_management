@@ -296,4 +296,32 @@ class COA_Controller extends BaseController
 
         return @$pdf->stream();
     }
+
+    public function Delete_COA(Request $request)
+    {
+
+        $req = $request->all();
+
+        $image = DB::table('coa_report_image')
+            ->select('coa_report_image.*')
+            ->where('coa_id', $req['coa_id'])
+            ->get();
+        // dd($image);
+
+        foreach ($image as $item) {
+            // dd($item->image);
+            File::delete(public_path('assets/image/COA_Report/' . $item->image));
+        }
+
+
+        DB::table('coa_report_image')
+            ->where('coa_id', $req['coa_id'])
+            ->delete();
+
+        DB::table('coa_report')
+            ->where('coa_id', $req['coa_id'])
+            ->delete();
+
+        return true;
+    }
 }

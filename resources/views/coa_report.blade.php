@@ -465,13 +465,18 @@
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <a type="button" href="/COA_Report_PDF/${item.coa_id}" target="_blank"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                                         <i class="fa-solid fa-print fa-lg fill-white icon_center"></i>
                                     </a>
 
                                     <button type="button" id="btn_edit" data-coa_id="${item.coa_id}"
-                                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         <i class="fa-solid fa-wrench fa-lg fill-white icon_center"></i>
+                                    </button>
+
+                                    <button type="button" id="btn_Delete" data-coa_id="${item.coa_id}"
+                                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                        <i class="fa-solid fa-trash fa-lg fill-white icon_center"></i>
                                     </button>
 
                                 </td>
@@ -723,6 +728,30 @@
             });
 
             document.getElementById('option_machine_sterile').focus();
+        })
+
+
+        $(document).on('click', '#btn_Delete', function () {
+
+            if (!confirm('ยืนยันการลบช้อมูล')) {
+                return false;
+            }
+
+            $(".background_loading").css("display", "block");
+
+            let coa_id = $(this).attr('data-coa_id')
+            $.ajax({
+                type: "POST",
+                url: `/coa/Delete_COA`,
+                data: {
+                    coa_id: coa_id
+                },
+                dataType: "json",
+                success: function (response) {
+                    // $(".background_loading").css("display", "none");
+                    get_COA();
+                }
+            });
         })
 
 
