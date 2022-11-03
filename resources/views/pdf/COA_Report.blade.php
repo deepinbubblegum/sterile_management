@@ -49,7 +49,6 @@
 
 <body>
     {{-- {{var_dump($item)}} --}}
-    {{-- {{dd($List_data)}} --}}
 
     <!-- Define header and footer blocks before your content -->
 
@@ -159,14 +158,14 @@
             <tr style="font-size: 25px;">
                 <th>
                     <p>Bowie Dick Test</p>
-                    <img class="logo-img inline logo-header" style="max-height:250px" height="auto"
+                    <img class="logo-img inline logo-header" style="max-height:250px; max-width:350px"
                         src="{{ collect($List_data->item->image)->where('coa_type', 'A001')->take(1)->first()->pathfile }}"
                         alt="Logo">
                 </th>
 
                 <th>
                     <p>Physicak Monitoring</p>
-                    <img class="logo-img inline logo-header" style="max-height:250px" height="auto"
+                    <img class="logo-img inline logo-header" style="max-height:250px; max-width:350px"
                         src="{{ collect($List_data->item->image)->where('coa_type', 'A002')->take(1)->first()->pathfile }}"
                         alt="Logo">
                 </th>
@@ -185,9 +184,11 @@
     {{-- ------------------------------------------------NEW PAGE----------------------------------------------------- --}}
 
 
-    <div class="page_break"></div>
-
     {{-- {{dd($List_data)}} --}}
+
+    @if (count($List_data->list) != 0)
+
+    <div class="page_break"></div>
 
     <div class="text-center" style="font-size: 25px;">
         <p><b>รายการอุปกรณ์</b></p>
@@ -221,6 +222,9 @@
             </tbody>
         </table>
     </div>
+
+    @endif
+
 
 </body>
 

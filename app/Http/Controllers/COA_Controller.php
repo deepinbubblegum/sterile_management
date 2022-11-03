@@ -134,8 +134,12 @@ class COA_Controller extends BaseController
             foreach ($image_Old as $key => $value) {
                 // dd($value->image);
 
-                if (File::exists(public_path('assets/image/COA_Report/' . $value->image))) {
-                    File::delete(public_path('assets/image/COA_Report/' . $value->image));
+                // if (File::exists(public_path('assets/image/COA_Report/' . $value->image))) {
+                //     File::delete(public_path('assets/image/COA_Report/' . $value->image));
+                // }
+                $path = public_path('assets/image/COA_Report/' . $value->image);
+                if (file_exists($path)) {
+                    unlink($path);
                 }
             }
 
@@ -236,7 +240,7 @@ class COA_Controller extends BaseController
             ->first();
 
         if ($packing == null) {
-            return 'ไม่พบข้อมูลในระบบ';
+            // return 'ไม่พบข้อมูลในระบบ';
         }
 
         $user_DB = DB::table('users')
@@ -261,10 +265,10 @@ class COA_Controller extends BaseController
         }
 
 
-        $coa_report[0]->Sterile_date_create = $packing->Create_at ?: null;
-        $coa_report[0]->Sterile_date_Update = $packing->Update_Sterile;
-        $coa_report[0]->UserCreate = $user_DB->Username;
-        $coa_report[0]->UserName_QC = $packing->UserName_QC;
+        $coa_report[0]->Sterile_date_create = isset($packing->Create_at) ? $packing->Create_at : null;
+        $coa_report[0]->Sterile_date_Update = isset($packing->Update_Sterile) ? $packing->Update_Sterile : null;
+        $coa_report[0]->UserCreate = isset($user_DB->Username) ? $user_DB->Username : null;
+        $coa_report[0]->UserName_QC = isset($packing->UserName_QC) ? $packing->UserName_QC : null;
 
         $list_item = DB::table('items')
             ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name', 'equipments.Item_Type')
@@ -282,7 +286,7 @@ class COA_Controller extends BaseController
 
 
         if (count($list_item) == 0) {
-            return 'ไม่พบข้อมูลในระบบ';
+            // return 'ไม่พบข้อมูลในระบบ';
         }
         // dd($list_item);
         // $item = $coa_report[0];
