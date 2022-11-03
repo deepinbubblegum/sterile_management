@@ -30,6 +30,8 @@ use App\Http\Controllers\Stock_Deliver_Controller;
 use App\Http\Controllers\UsersPermission_Controller;
 use App\Http\Controllers\Reports_Controller;
 use App\Http\Controllers\COA_Controller;
+use App\Http\Controllers\Dashboard_Controller;
+
 
 
 /*
@@ -69,6 +71,8 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/', function () {
         return view('welcome');
     })->name('welcome');
+    Route::post('/dashboard/Get_Data', [Dashboard_Controller::class, 'Get_Data']);
+
 
 
     Route::get('/process', function () {

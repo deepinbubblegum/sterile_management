@@ -38,6 +38,7 @@
             top: 0;
             background-color: white;
         }
+
     </style>
 </head>
 
@@ -170,27 +171,48 @@
                             </h3>
                         </div>
                     </div>
+
+                    <div class="div_img justify-center">
+                        <p class="mb-1 text-black-400"> รูปภาพ </p>
+                        <a
+                            class="block p-1 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                            <div class="relative" height="12rem" width="auto" id="list_image">
+                                <div class="flex p-2 space-x-4 flex justify-center">
+                                    <img class="w-auto" style="height: 12rem; object-fit: contain;" src="" id="View_img"
+                                        style="">
+                                </div>
+                                <button id="btn_View_img_Full" src-data=''
+                                    class="absolute top-1 right-1 bg-green-500 text-white p-2 rounded hover:bg-green-800">
+                                    view
+                                </button>
+                            </div>
+                        </a>
+                        <input accept="image/png, image/jpeg"
+                            class="mt-2 w-min-[-webkit-fill-available] w-full block text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                            id="file_input_img" type="file" data-type="A005">
+                    </div>
+
                     <p class="mt-2">
-                    <div class="text-sm dark:text-light">
-                        {{-- <div class="w-full mt-3">
+                        <div class="text-sm dark:text-light">
+                            {{-- <div class="w-full mt-3">
                             <label for="small-input"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">ชื่อลูกค้า</label>
                             <input type="text" data-id="" id="txt_customer_name" name="txt_customer_name"
                                 class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div> --}}
-                        <div class="w-full mt-3">
-                            <label for="message"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">ลายเซ็นลูกค้า</label>
-                            <div class="wrapper w-full">
-                                <canvas id="signature-pad" class="signature-pad w-full h-[250px]"></canvas>
-                            </div>
+                            <div class="w-full mt-3">
+                                <label for="message"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">ลายเซ็นลูกค้า</label>
+                                <div class="wrapper w-full">
+                                    <canvas id="signature-pad" class="signature-pad w-full h-[250px]"></canvas>
+                                </div>
 
-                            <button type="button" id="clear"
-                                class="py-2.5 px-5 mr-2 mt-3 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                Clear
-                            </button>
+                                <button type="button" id="clear"
+                                    class="py-2.5 px-5 mr-2 mt-3 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                    Clear
+                                </button>
+                            </div>
                         </div>
-                    </div>
                     </p>
                 </div>
                 <div class="bg-white dark:bg-darker dark:text-light px-4 py-3 sm:px-6 text-center">
@@ -208,12 +230,26 @@
     </div>
 
 
+
+    {{-- Modal Show Images --}}
+    <div id="modal_show_image_full"
+        class="z-50 hidden fixed top-0 left-0 w-screen h-screen bg-black/90 flex justify-center items-center overflow-auto">
+
+        <!-- The close button -->
+        <a class="fixed z-50 top-6 right-8 text-white text-5xl font-bold cursor-pointer text-orange-500"
+            id="Close_show_image">&times;</a>
+
+        <!-- A big image will be displayed here -->
+        <img id="modal_Fullimg" class="flex flex-col h-auto max-h-[80%] max-w-[80%]" src="" />
+    </div>
+
+
     <!-- All javascript code in this project for now is just for demo DON'T RELY ON IT  -->
 
 </body>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         function DateNowDay() {
             var today = new Date();
@@ -233,7 +269,7 @@
                     OrderId: '{{ $oder_id }}'
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
 
 
                     html_item_list = ''
@@ -289,22 +325,58 @@
         // })
 
 
-        $(document).on('click', '#btn_save_deliver', function() {
+        $('#file_input_img').on('change', function () {
+            let files = $(this).prop('files');
+            $('#View_img').attr('src', '')
+            preview_img(files)
+        })
+
+        $(document).on('click', '#btn_View_img_Full', function () {
+            let src_img = $(this).attr('src-data')
+            if (src_img == '' | src_img == null) {
+                alert('ไม่มีรูปภาพ')
+                return false
+            }
+            $('#modal_show_image_full').removeClass('hidden')
+            $('#modal_Fullimg').attr('src', src_img)
+        })
+
+
+        $(document).on('click', '#Close_show_image', function () {
+            $('#modal_Fullimg').attr('src', '');
+            $('#modal_show_image_full').addClass('hidden')
+        })
+
+        function preview_img(files) {
+
+            reader = new FileReader();
+            // console.log(files)
+            reader.onload = function () {
+                let output = document.getElementById('View_img');
+                output.src = reader.result;
+                output.style.height = "12rem";
+                output.style.width = "auto";
+                $("#btn_View_img_Full").attr('src-data', reader.result)
+                // $('#' + id_modal_preview).attr('src-data', reader.result)
+            };
+
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+
+        $(document).on('click', '#btn_save_deliver', function () {
             $('#Modal_Deliver').removeClass('invisible');
         })
 
-        $(document).on('click', '#modal_deliver_close', function() {
+        $(document).on('click', '#modal_deliver_close', function () {
             $('#Modal_Deliver').addClass('invisible');
         })
 
 
         // Save Deliver
-        $('#btn_SaveDeliver').on('click', function() {
-            if (signaturePad.isEmpty()) {
-                alert("กรูณาเซ็นรับอุปกรณ์");
-            }
+        $('#btn_SaveDeliver').on('click', function () {
 
-            var tb_list_Stock = $('#list_item_id tr:has(td)').map(function(index, cell) {
+            let tb_list_Stock = $('#list_item_id tr:has(td)').map(function (index, cell) {
                 var $td = $('td', this);
                 if ($td.eq(3).attr('value') == 'Stock') {
                     return {
@@ -313,17 +385,33 @@
                 }
             }).get();
 
-            if (tb_list_Stock.length == 0) return false
 
-            var data = signaturePad.toDataURL('image/jpeg');
-            console.log(data);
+            if (tb_list_Stock.length == 0) {
+                alert("ไม่มีอุปกรณ์ในสถานะ Stock");
+                return false
+            }
+
+            let file_input_img = document.getElementById("file_input_img").files;
+
+            if (file_input_img[0] == undefined) {
+                alert("กรูณาอัปโหลดรูปภาพ");
+                return false
+            }
+
+            if (signaturePad.isEmpty()) {
+                alert("กรูณาเซ็นรับอุปกรณ์");
+                return false
+            }
+
+            let data_signature = signaturePad.toDataURL('image/jpeg');
 
             //Usage example:
-            var file = dataURLtoFile(data, 'Signature_{{ $oder_id }}.jpg');
+            let file_signature = dataURLtoFile(data_signature, 'Signature_{{ $oder_id }}.jpg');
             // console.log(file);
 
-            var Formdata = new FormData();
-            Formdata.append('files', file);
+            let Formdata = new FormData();
+            Formdata.append('file_signature', file_signature);
+            Formdata.append('file_input_img', file_input_img[0]);
             Formdata.append('OrderId', '{{ $oder_id }}');
 
 
@@ -335,11 +423,11 @@
                 processData: false,
                 data: Formdata,
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
 
                     $('#Modal_Deliver').addClass('invisible');
 
-                    if( response.code != '1000' ){
+                    if (response.code != '1000') {
                         alert('ไม่สามารถบันทึกข้อมูลได้')
                     }
 
@@ -390,7 +478,7 @@
             backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
         });
 
-        $('#clear').on('click', function() {
+        $('#clear').on('click', function () {
             signaturePad.clear();
         })
 
@@ -419,4 +507,5 @@
         // });
 
     })
+
 </script>

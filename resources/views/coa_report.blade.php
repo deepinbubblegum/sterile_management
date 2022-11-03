@@ -588,8 +588,6 @@
 
         $('#btn_save_coa').on('click', function () {
 
-            $(".background_loading").css("display", "block");
-
             let item_machines = $('#option_machine_sterile').find(":selected").val();
             let input_Cycle = $('#input_Cycle').val();
             let date = $('#datepickerId').val();
@@ -629,6 +627,8 @@
                 Formdata.append('type[' + index + ']', type);
                 Formdata.append('img_id[' + index + ']', null);
             }
+
+            $(".background_loading").css("display", "block");
 
             Formdata.append('item_machines', item_machines);
             Formdata.append('input_Cycle', input_Cycle);

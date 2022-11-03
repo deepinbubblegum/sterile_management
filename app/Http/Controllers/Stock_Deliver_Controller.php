@@ -122,6 +122,15 @@ class Stock_Deliver_Controller extends BaseController
     }
 
 
+    private function AutuIDImg()
+    {
+        $oid = DB::select(
+            'SELECT CONCAT("IMG_DLV-",LPAD(SUBSTRING(IFNULL(MAX(image_id), "0"), 9,6)+1, 6,"0")) as auto_id FROM stock_deliver_img'
+        );
+        return $oid[0]->auto_id;
+    }
+
+
 
     public function Save_Deliver(Request $request)
     {
@@ -130,12 +139,19 @@ class Stock_Deliver_Controller extends BaseController
 
         try {
 
+            // dd($data);
+
             $dateNow = Carbon::now();
 
-            $imageName = $data['files']->getClientOriginalName();
+            $imageName = $data['file_signature']->getClientOriginalName();
             $current_timestamp = Carbon::now()->timestamp;
+
             $file_name = $current_timestamp . '_' . $imageName;
-            $data['files']->move(public_path('assets/image/Signature'), $file_name);
+            $data['file_signature']->move(public_path('assets/image/Signature'), $file_name);
+
+            $imageName_img = $data['file_input_img']->getClientOriginalName();
+            $file_name_img = $current_timestamp . '_' . $imageName_img;
+            $data['file_input_img']->move(public_path('assets/image/Deliver'), $file_name_img);
 
             DB::table('items')
                 ->where('Order_id', $data['OrderId'])
@@ -145,6 +161,21 @@ class Stock_Deliver_Controller extends BaseController
                     'Delivery_date' =>  $dateNow,
                     'Signature' => $file_name
                 ]);
+
+            DB::table('stock')
+                ->where('Order_id', $data['OrderId'])
+                ->whereNull('date_out_stock')
+                ->update([
+                    'date_out_stock' =>  $dateNow,
+                    'Signature_custumer' => $file_name
+                ]);
+
+
+            DB::table('stock_deliver_img')->insert([
+                'Order_id' => $data['OrderId'],
+                'image_id' => $this->AutuIDImg(),
+                'image' => $file_name_img,
+            ]);
 
             $Count_AllItem = DB::table('items')
                 ->select('Item_status')
@@ -191,7 +222,11 @@ class Stock_Deliver_Controller extends BaseController
             ->leftjoin('washing', 'items.item_id', '=', 'washing.item_id')
             ->leftjoin('orders', 'items.Order_id', '=', 'orders.Order_id')
             ->where('items.Order_id', $orders_id)
-            ->where('items.Item_status', 'Stock')
+            // ->where('items.Item_status', 'Stock')
+            ->where(function ($query) {
+                $query->where('items.Item_status', 'Stock');
+                $query->orWhere('items.Item_status', 'Deliver');
+            })
             ->where('washing.PassStatus', 'Pass')
             // ->orderBy('items.item_id')
             // ->groupBy('items.item_id')
