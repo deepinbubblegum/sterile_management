@@ -294,6 +294,10 @@ class COA_Controller extends BaseController
             $item->image = $image;
         }
 
+        if (count($item->image) == 0) {
+            return 'ไม่พบข้อมูลในระบบ';
+        }
+
         foreach ($item->image as $item) {
             // dd($item->image);
             $item->pathfile = public_path('assets/image/COA_Report/' . $item->image . '');
