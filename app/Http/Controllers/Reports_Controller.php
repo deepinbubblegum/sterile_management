@@ -32,6 +32,8 @@ class Reports_Controller extends BaseController
         $date_end = $request->date_end;
         $onlyapprove = $request->onlyapprove;
 
+        // dd(date('Y-m-d', strtotime('+1 day', strtotime($date_end))));
+
         $spreadsheet = new Spreadsheet();
         
         $customer = DB::table('customers')->where('Customer_id', $customer_id)->first();
@@ -53,7 +55,7 @@ class Reports_Controller extends BaseController
                 ->leftJoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
                 ->leftJoin('customers', 'orders.Customer_id', '=', 'customers.Customer_id')
                 ->where('customers.Customer_id', $customer_id)
-                ->whereBetween('orders.Create_at', [$date_start, $date_end])
+                ->whereBetween('orders.Create_at', [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end)))])
                 ->where(function ($query) use ($onlyapprove, $department) {
                     if ($onlyapprove == '1') {
                         $query->where('orders.StatusApprove', '=', '1');
@@ -66,7 +68,6 @@ class Reports_Controller extends BaseController
                 ->orderBy('departments.Department_name', 'asc')
                 ->orderBy('orders.Create_at', 'asc')
                 ->get();
-        // dd($dpartment_sum);
         $dpartment_sum = json_decode(json_encode($dpartment_sum), true);
         $sum_headers = [
             'A4' => 'DEPARTMENT',
@@ -109,7 +110,7 @@ class Reports_Controller extends BaseController
         ->leftJoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
         ->leftJoin('customers', 'orders.Customer_id', '=', 'customers.Customer_id')
         ->where('customers.Customer_id', $customer_id)
-        ->whereBetween('orders.Create_at', [$date_start, $date_end])
+        ->whereBetween('orders.Create_at', [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end)))])
         ->where(function ($query) use ($onlyapprove, $department) {
             if ($onlyapprove == '1') {
                 $query->where('orders.StatusApprove', '=', '1');
@@ -122,7 +123,7 @@ class Reports_Controller extends BaseController
         ->orderBy('orders.Create_at', 'ASC')
         ->get();
         $items = json_decode(json_encode($items), true);
-
+        // dd($items);
         // กำหนดให้เป็น Sheet ที่ 1
         $spreadsheet->setActiveSheetIndex(1);
 
@@ -216,5 +217,108 @@ class Reports_Controller extends BaseController
                     ->where('Customer_id', $Customer_id)
                     ->get();
         return $getDepartmentList;
+    }
+
+    public function ExportExcelProcess(Request $request){
+        $recv = $request->all();
+        $customer_id = $request->customer;
+        $department = $request->department;
+        $date_start = $request->date_start;
+        $date_end = $request->date_end;
+        $onlyapprove = $request->onlyapprove;
+
+        // dd($customer_id, $department, $date_start, $date_end, $onlyapprove);
+
+        $items = DB::select(
+        'SELECT 
+            departments.Department_name,
+            SUM(CASE WHEN equipments.Process = "STEAM" THEN 1 ELSE 0 END) AS "STEAM",
+            SUM(CASE WHEN equipments.Process = "plasma" THEN 1 ELSE 0 END) AS "plasma",
+            SUM(CASE WHEN equipments.Process = "eo" THEN 1 ELSE 0 END) AS "eo",
+            SUM(CASE WHEN equipments.Process = "Wash&Disinfection" THEN 1 ELSE 0 END) AS "Wash&Disinfection"
+        FROM items
+        LEFT JOIN equipments ON items.Equipment_id = equipments.Equipment_id
+        LEFT JOIN orders ON orders.Order_id = items.Order_id
+        LEFT JOIN departments ON orders.Department_id = departments.Department_id
+        WHERE orders.Create_at BETWEEN ? AND ?
+        AND orders.Customer_id = ?
+        GROUP BY departments.Department_name', [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id]);
+        
+        $spreadsheet = new Spreadsheet();
+
+        $spreadsheet->setActiveSheetIndex(0); // กำหนดให้เป็น Sheet ที่ 1
+        $spreadsheet->getActiveSheet()->setTitle('WARD QTY'); // ตั้งชื่อ Sheet
+
+        $item_reports_head = [
+            "A1" => "No.",
+            "B1" => "DEPARTMENT",
+            "C1" => "STEAM",
+            "D1" => "PLASMA",
+            "E1" => "EO",
+            "F1" => "WASH & DISINFECTION",
+            "G1" => "GRAND TOTAL"
+        ];
+
+        $spreadsheet->getActiveSheet()->fromArray($item_reports_head, null, 'A1', true, false); // นำข้อมูลมาแสดงใน Excel
+        $spreadsheet->getActiveSheet()->getStyle('A1:G1')->getFont()->setBold(true); //ตั้งค่าตัวหนา
+        $spreadsheet->getActiveSheet()->getStyle('A1:G1')->getFill()->setFillType('solid')->getStartColor()->setARGB('002060'); // ตั้งค่าสีพื้นหลัง
+        $spreadsheet->getActiveSheet()->getStyle('A1:G1')->getFont()->getColor()->setARGB('FFFFFF'); // ตั้งค่าสีตัวอักษร
+        $spreadsheet->getActiveSheet()->getStyle('A1:G1')->getAlignment()->setHorizontal('center'); // ตั้งค่าตำแหน่งให้อยู่ตรงกลาง
+
+        foreach($items as $index => $item_report){
+            $spreadsheet->getActiveSheet()->setCellValue('A'.($index+2), $index+1);
+            $spreadsheet->getActiveSheet()->setCellValue('B'.($index+2), $item_report->Department_name);
+            $spreadsheet->getActiveSheet()->setCellValue('C'.($index+2), $item_report->STEAM);
+            $spreadsheet->getActiveSheet()->setCellValue('D'.($index+2), $item_report->plasma);
+            $spreadsheet->getActiveSheet()->setCellValue('E'.($index+2), $item_report->eo);
+            $spreadsheet->getActiveSheet()->setCellValue('F'.($index+2), $item_report->{'Wash&Disinfection'});
+            $spreadsheet->getActiveSheet()->setCellValue('G'.($index+2), '=SUM(C'.($index+2).':F'.($index+2).')');
+        }
+
+        $spreadsheet->getActiveSheet()->getStyle('A1:G'.(count($items) + 2))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN); // ตั้งค่าเส้นขอบ
+        $spreadsheet->getActiveSheet()->getStyle('A')->getAlignment()->setHorizontal('center'); // ตั้งค่าตำแหน่งให้อยู่ตรงกลาง
+
+        $spreadsheet->getActiveSheet()->setCellValue('A'.(count($items) + 2), 'Grand Total');
+        $spreadsheet->getActiveSheet()->setCellValue('C'.(count($items) + 2), '=SUM(C2:C'.(count($items) + 1).')');
+        $spreadsheet->getActiveSheet()->setCellValue('D'.(count($items) + 2), '=SUM(D2:D'.(count($items) + 1).')');
+        $spreadsheet->getActiveSheet()->setCellValue('E'.(count($items) + 2), '=SUM(E2:E'.(count($items) + 1).')');
+        $spreadsheet->getActiveSheet()->setCellValue('F'.(count($items) + 2), '=SUM(F2:F'.(count($items) + 1).')');
+        $spreadsheet->getActiveSheet()->setCellValue('G'.(count($items) + 2), '=SUM(G2:G'.(count($items) + 1).')');
+
+        $spreadsheet->getActiveSheet()->getStyle('A'.(count($items) + 2).':G'.(count($items) + 2))->getFont()->setBold(true); //ตั้งค่าตัวหนา
+        $spreadsheet->getActiveSheet()->getStyle('A'.(count($items) + 2).':G'.(count($items) + 2))->getFill()->setFillType('solid')->getStartColor()->setARGB('FFC000'); // ตั้งค่าสีพื้นหลัง
+
+        $sheet = $spreadsheet->getActiveSheet();
+        foreach ($sheet->getColumnIterator() as $column) {
+            $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+        }
+
+        // if ($department == "ALL"){
+        //     if ($onlyapprove == '1') {
+        //         $iteme_date = DB::select("CALL items_date_data(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
+        //     } else {
+        //         $iteme_date = DB::select("CALL items_date_data_Approve_Status(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
+        //     }
+        // }else{
+        //     if ($onlyapprove == '1') {
+        //         $iteme_date = DB::select("CALL items_date_data_Approve_Status_department(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
+        //     } else {
+        //         $iteme_date = DB::select("CALL items_date_data_Approve_Status(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
+        //     }
+        // }
+        
+        // dd($iteme_date);
+
+        // เขียนข้อมูลลงไฟล์ 
+        $writer = new Xlsx($spreadsheet);
+
+        // กำหนดชื่อไฟล์ และ ประเภทของไฟล์
+        $file_export= "ReportProcess-". carbon::now()->format('YmdHis');
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="'.$file_export.'.xlsx"');
+        header("Content-Transfer-Encoding: binary ");
+        $writer->save('php://output');
+        exit();
     }
 }
