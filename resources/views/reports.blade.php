@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     @include('component.Tagheader')
+    <script src="{{asset('assets/js/reports.js')}}"></script>
 </head>
 
 <body>
@@ -48,10 +49,24 @@
                     {{-- Breadcrumb end --}}
 
                     <div
-                        class="mx-auto w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-4">
-                        Reports Washing Cycle
+                        class="my-1 mx-auto w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-4">
+                        Reports Orders
                         <hr class="my-2">
-                            <div date-rangepicker="" class="flex justify-between items-center">
+                            <div class="my-2">
+                                <select  id="customers_list" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected value="0">เลือกลูกค้า</option>
+                                </select>
+                            </div>
+                            <div class="my-2">
+                                <select id="departments_list" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected value="0">เลือกแผนก</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center my-2">
+                                <input id="only_Approve" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="only_Approve" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">เฉพาะออร์เดอร์ที่รับแล้ว</label>
+                            </div>
+                            <div date-rangepicker datepicker-format="dd/mm/yyyy" class="flex justify-between items-center">
                                 <div class="relative w-full">
                                     <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                                         <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -62,7 +77,7 @@
                                         </svg>
                                     </div>
                                     <input datepicker name="start" type="text"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 datepicker-input"
+                                        class="date_order_start bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 datepicker-input"
                                         placeholder="Select date start">
                                 </div>
                                 <span class="mx-4 text-gray-500">to</span>
@@ -75,21 +90,76 @@
                                                 clip-rule="evenodd"></path>
                                         </svg>
                                     </div>
-                                    <input id="dateRangePickerId" name="end" type="text"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 datepicker-input"
+                                    <input name="end" type="text"
+                                        class="date_order_end bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 datepicker-input"
                                         placeholder="Select date end">
                                 </div>
                             </div>
-                            <a href="/reports/export/excel/washing" type="button" 
-                                class="cursor-pointer text-white w-full my-2 bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2">
+                            <button type="button" 
+                                class="excel_xlsx_order cursor-pointer text-white w-full my-2 bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2">
                                 <i class="fa-solid fa-file-excel mr-2 -ml-1 fa-xl"></i>
                                 Export to Excel (.xlsx)
-                            </a>
+                            </button>
                     </div>
-                    <div class="mx-auto mt-2 w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6">
+
+                    <div
+                    class="my-1 mx-auto w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-4">
+                    Reports Order Process
+                    <hr class="my-2">
+                        <div class="my-2">
+                            <select  id="customers_list_Detail" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="0">เลือกลูกค้า</option>
+                            </select>
+                        </div>
+                        <div class="my-2">
+                            <select id="departments_list_Detail" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="0">เลือกแผนก</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center my-2">
+                            <input id="Process_only_Approve" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="Process_only_Approve" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">เฉพาะออร์เดอร์ที่รับแล้ว</label>
+                        </div>
+                        <div date-rangepicker datepicker-format="dd/mm/yyyy" class="flex justify-between items-center">
+                            <div class="relative w-full">
+                                <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <input datepicker name="start" type="text"
+                                    class="date_Process_start bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 datepicker-input"
+                                    placeholder="Select date start">
+                            </div>
+                            <span class="mx-4 text-gray-500">to</span>
+                            <div class="relative w-full">
+                                <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <input name="end" type="text"
+                                    class="date_Process_end bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 datepicker-input"
+                                    placeholder="Select date end">
+                            </div>
+                        </div>
+                        <button type="button" 
+                            class="excel_xlsx_Process cursor-pointer text-white w-full my-2 bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2">
+                            <i class="fa-solid fa-file-excel mr-2 -ml-1 fa-xl"></i>
+                            Export to Excel (.xlsx)
+                        </button>
+                </div>
+                    {{-- other --}}
+                    {{-- <div class="mx-auto mt-2 w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6">
                         Reports Sterlie Cycle
                         <hr class="my-2">
-                            <div date-rangepicker="" class="flex items-center">
+                            <div date-rangepicker datepicker-format="dd/mm/yyyy" class="flex items-center">
                                 <div class="relative w-full">
                                     <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                                         <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -113,7 +183,7 @@
                                                 clip-rule="evenodd"></path>
                                         </svg>
                                     </div>
-                                    <input id="dateRangePickerId" name="end" type="text"
+                                    <input name="end" type="text"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 datepicker-input"
                                         placeholder="Select date end">
                                 </div>
@@ -128,7 +198,7 @@
                     <div class="mx-auto mt-2 w-full rounded-md bg-white dark:bg-darker dark:text-light shadow-sm p-4 leading-6">
                         Reports Sterlie Cycle
                         <hr class="my-2">
-                            <div date-rangepicker="" class="flex items-center">
+                            <div date-rangepicker datepicker-format="dd/mm/yyyy" class="flex items-center">
                                 <div class="relative w-full">
                                     <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                                         <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -162,7 +232,7 @@
                                 <i class="fa-solid fa-file-excel mr-2 -ml-1 fa-xl"></i>
                                 Export to Excel (.xlsx)
                             </button>
-                    </div>
+                    </div> --}}
                 </div>
             </main>
         </div>
