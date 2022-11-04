@@ -149,8 +149,7 @@
                     </div>
 
                     <button id="modal_Sterile_close" type="button" style="position: fixed; top: 1rem; right: 1rem;"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-toggle="Modal_Img_Sterile">
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
@@ -161,70 +160,69 @@
                     </button>
 
                     <p class="mt-4">
-                    <div class="text-sm dark:text-light">
+                        <div class="text-sm dark:text-light">
 
-                        <div class="mt-3 mb-3">
-                            <div class="flex justify-center items-center w-full">
-                                <label for="Input_Image_Sterile"
-                                    class="flex flex-col justify-center items-center w-full h-auto bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                    <div class="flex flex-col justify-center items-center pt-5 pb-6">
-                                        <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
-                                            </path>
-                                        </svg>
-                                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
-                                                class="font-semibold">Click to upload</span> or drag and drop</p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF</p>
-                                    </div>
-                                    <input id="Input_Image_Sterile" type="file" class="hidden"
-                                        accept="image/png,  image/jpeg" />
-                                    <input id="id_Sterile_modal" type="text" class="hidden" />
-                                </label>
+                            <div class="mt-3 mb-3">
+                                <div class="flex justify-center items-center w-full">
+                                    <label for="Input_Image_Sterile"
+                                        class="flex flex-col justify-center items-center w-full h-auto bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                        <div class="flex flex-col justify-center items-center pt-5 pb-6">
+                                            <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                                </path>
+                                            </svg>
+                                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
+                                                    class="font-semibold">Click to upload</span> or drag and drop</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF</p>
+                                        </div>
+                                        <input id="Input_Image_Sterile" type="file" class="hidden"
+                                            accept="image/png,  image/jpeg" />
+                                        <input id="id_Sterile_modal" type="text" class="hidden" />
+                                    </label>
+                                </div>
+
+                                <div class="flex p-2 space-x-4 flex justify-center">
+                                    <img id="Sterile_img_preview" src="" alt="" style="object-fit:contain !important;">
+                                </div>
+
+                                <div class="flex p-2 space-x-4 flex justify-center">
+                                    <button type="button" id="add_img_sterile"
+                                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                        เพื่มรูป
+                                    </button>
+                                </div>
+
                             </div>
 
-                            <div class="flex p-2 space-x-4 flex justify-center">
-                                <img id="Sterile_img_preview" src="" alt=""
-                                    style="object-fit:contain !important;">
-                            </div>
+                            <hr class="mb-3">
 
-                            <div class="flex p-2 space-x-4 flex justify-center">
-                                <button type="button" id="add_img_sterile"
-                                    class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                    เพื่มรูป
-                                </button>
-                            </div>
+                            <div class="grid gap-6 mb-6 lg:grid-cols-2 md:grid-cols-2" id="list_img_Sterile">
 
-                        </div>
-
-                        <hr class="mb-3">
-
-                        <div class="grid gap-6 mb-6 lg:grid-cols-2 md:grid-cols-2" id="list_img_Sterile">
-
-                            {{-- <div class="relative" height="40px" width="auto">
+                                {{-- <div class="relative" height="40px" width="auto">
                                     <img class="w-full" src="{{ asset('assets/image/S__40607792.jpg') }}"
-                                        alt="dummy-image">
-                                    <button
-                                        class="absolute top-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
-                                        remove </button>
-                                </div> --}}
+                                alt="dummy-image">
+                                <button
+                                    class="absolute top-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
+                                    remove </button>
+                            </div> --}}
 
                         </div>
 
-                    </div>
-                    </p>
                 </div>
+                </p>
+            </div>
 
-                <div class="bg-white dark:bg-darker dark:text-light px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" id="modal_Sterile_close"
-                        class="closeModal mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        ปิด
-                    </button>
-                </div>
+            <div class="bg-white dark:bg-darker dark:text-light px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" id="modal_Sterile_close"
+                    class="closeModal mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    ปิด
+                </button>
             </div>
         </div>
+    </div>
     </div>
 
 
@@ -243,7 +241,8 @@
 
 </section>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
     })
+
 </script>

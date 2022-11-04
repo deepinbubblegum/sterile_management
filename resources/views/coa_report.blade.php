@@ -210,6 +210,20 @@
                             </div>
 
                             <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
+                                <div>
+                                    <label for="option_user"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                                        ผู้ตรวจสอบ (QC) </label>
+                                    <select id="option_user" data-type=""
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        {{-- <option>Sterile 01</option>
+                                        <option>Sterile 02</option>
+                                        <option>Sterile 03</option> --}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
                                 <div class="div_img">
                                     <p class="text-orange-600 text-xl mb-2"> <b><u> Bowie Dick Test </u></b> </p>
                                     <a
@@ -397,6 +411,7 @@
         // init
         Get_mechine();
         get_COA();
+        Get_User();
 
         let Data_COA;
 
@@ -419,6 +434,27 @@
 
                     $('#option_machine_sterile').html(html_list)
                     $('#option_machine_sterile_search').html(html_list)
+
+                }
+            });
+        }
+
+        function Get_User() {
+            $.ajax({
+                type: "POST",
+                url: `/coa/Get_User`,
+                dataType: "json",
+                success: function (response) {
+                    html_list = ''
+
+                    html_list +=
+                        `<option value="" disabled selected>-เลือกผู้ตรวจสอบ-</option>`
+                    for (let item of response.user) {
+                        html_list +=
+                            `<option value='${item.User_id}' >${item.Name}</option>`
+                    }
+
+                    $('#option_user').html(html_list)
 
                 }
             });
@@ -505,6 +541,8 @@
             });
         }
 
+
+
         // list_img = ['file_input_Bowie', 'file_input_Physicak', 'file_input_Chemical_Pre',
         //         'file_input_Chemical_Post', 'file_input_Biological_Pre',
         //         'file_input_Biological_Post'
@@ -589,11 +627,17 @@
         $('#btn_save_coa').on('click', function () {
 
             let item_machines = $('#option_machine_sterile').find(":selected").val();
+            let user_qc = $('#option_user').find(":selected").val();
             let input_Cycle = $('#input_Cycle').val();
             let date = $('#datepickerId').val();
 
             if (item_machines == '') {
                 alert('กรุณาระบุเครื่อง Sterile')
+                return false
+            }
+
+            if (user_qc == '') {
+                alert('กรุณาระบุผู้ตรวจสอบ')
                 return false
             }
 
@@ -633,6 +677,7 @@
             Formdata.append('item_machines', item_machines);
             Formdata.append('input_Cycle', input_Cycle);
             Formdata.append('date', date);
+            Formdata.append('user_qc', user_qc);
 
             Formdata.append('coa_id', null);
 
@@ -647,6 +692,10 @@
                 success: function (response) {
                     $("#option_machine_sterile").val($(
                         "#option_machine_sterile option:first").val());
+
+                    $("#option_user").val($(
+                        "#option_user option:first").val());
+
                     $('#input_Cycle').val('');
                     $('#datepickerId').val();
 
@@ -669,9 +718,10 @@
 
             let _Item = Data_COA.filter(v => v.coa_id == coa_id);
 
-            // console.log(_Item[0])
+            // console.log(_Item[0]['Machine_id'])
 
             $('#option_machine_sterile').val(_Item[0]['Machine_id'])
+            $('#option_user').val(_Item[0]['user_qc']).change();
             $('#input_Cycle').val(_Item[0]['cycle']);
             $('#datepickerId').val(_Item[0]['date']);
 

@@ -57,7 +57,7 @@
     <div class="header">
 
         <b class="text-xl">
-            Medihealth solution co,.ltd
+            Medihealth Solution Co,.Ltd
         </b>
 
         <div class="text-center">
@@ -73,7 +73,7 @@
         {{-- <img class="logo-img inline logo-header" src="{{ public_path('assets/image/medihealth_solutions.png') }}"
         alt="Logo"> --}}
         <b style="font-size: 25px;">
-            <span style="color: red;"> {{$List_data->item->Machine_name}} </span> Sterilizer
+            <span> {{$List_data->item->Machine_name}} </span> Sterilizer
         </b>
         Cycle <b> {{$List_data->item->cycle}} </b>
         </b>
@@ -92,7 +92,7 @@
                     ผู้ทำการตรวจสอบ <b class="dot"> {{$List_data->item->UserCreate}} </b>
                 </td>
                 <td>
-                    ลงชื่อผู้ตรวจสอบ <b> .........................................</b>
+                    ลงชื่อผู้ตรวจสอบ <b class="dot"> {{$List_data->item->COA_USER_QC}} </b>
                 </td>
             </tr>
         </table>
@@ -106,7 +106,7 @@
     <table class="mt-1 table_img">
         <tr>
             <th>
-                <u><b style="font-size: 25px;"> Chemical Monotoring </b></u>
+                <b style="font-size: 25px;"> Chemical Monitoring </b>
                 <table class="text-center table_img">
                     <tr>
                         <td>
@@ -128,7 +128,7 @@
             </th>
             {{-- {{dd('456')}} --}}
             <th>
-                <u><b style="font-size: 25px;"> Biological Monotoring </b></u>
+                <b style="font-size: 25px;"> Biological Monitoring </b>
                 <table class="text-center table_img">
                     <tr>
                         <td>
@@ -164,7 +164,7 @@
                 </th>
 
                 <th>
-                    <p>Physicak Monitoring</p>
+                    <p>Physical Monitoring</p>
                     <img class="logo-img inline logo-header" style="max-height:250px; max-width:350px"
                         src="{{ collect($List_data->item->image)->where('coa_type', 'A002')->take(1)->first()->pathfile }}"
                         alt="Logo">

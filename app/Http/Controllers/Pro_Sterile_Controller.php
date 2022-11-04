@@ -132,6 +132,7 @@ class Pro_Sterile_Controller extends BaseController
                         'date_out_stock' => null,
                         'PDF' => null,
                         'Signature_custumer' => null,
+                        'img_deliver' => null,
                     ]);
                 } elseif ($Item_status[0]->Item_status == 'On sterile' && $item['status'] == 'Fail') {
 

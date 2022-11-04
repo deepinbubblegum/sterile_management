@@ -66,6 +66,33 @@ class COA_Controller extends BaseController
         }
     }
 
+
+    public function Get_User()
+    {
+        try {
+
+            $return_data = new \stdClass();
+
+            $user = DB::table('users')
+                ->select('*')
+                ->get();
+
+            $return_data->code = '0000';
+            $return_data->user = $user;
+
+
+            return $return_data;
+        } catch (Exception $e) {
+
+            $return_data = new \stdClass();
+
+            $return_data->code = '1000';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+        }
+    }
+
     public function Get_COA(Request $request)
     {
         try {
@@ -171,6 +198,7 @@ class COA_Controller extends BaseController
                 'machine_id' => $req['item_machines'],
                 'cycle' => $req['input_Cycle'],
                 'date' => $date,
+                'user_qc' => $req['user_qc']
             ]
         );
 
@@ -219,12 +247,19 @@ class COA_Controller extends BaseController
         $coa_id = $request->route('coa_id');
 
         $coa_report = DB::table('coa_report')
-            ->select('*')
+            ->select('coa_report.*', 'users.Name As COA_USER_QC', 'machine.*')
             ->leftjoin('machine', 'coa_report.Machine_id', '=', 'machine.Machine_id')
+            ->leftjoin('users', 'coa_report.user_qc', '=', 'users.User_id')
             ->where('coa_id', $coa_id)
             ->orderBy('coa_id', 'DESC')
             ->get();
-        // dd($coa_report);
+
+        if (count($coa_report) == 0) {
+            return 'ไม่พบข้อมูลในระบบ';
+        }
+
+        // dd($coa_id);
+        // dd($coa_report[0]->COA_USER_QC);
         $packing = DB::table('packing')
             ->select('packing.*', 'user_QC.Name as UserName_QC', 'user_create.Name as UserCreate', 'sterile_qc.Update_at as Update_Sterile')
             ->leftjoin('users as user_QC', 'packing.Qc_by', '=', 'user_QC.User_id')
@@ -248,7 +283,7 @@ class COA_Controller extends BaseController
             ->where('User_id', $request->cookie('Username_server_User_id'))
             ->first();
 
-        // dd($packing);
+        // dd($user_DB);
         foreach ($coa_report as $item) {
 
             $image = DB::table('coa_report_image')
@@ -267,8 +302,9 @@ class COA_Controller extends BaseController
 
         $coa_report[0]->Sterile_date_create = isset($packing->Create_at) ? $packing->Create_at : null;
         $coa_report[0]->Sterile_date_Update = isset($packing->Update_Sterile) ? $packing->Update_Sterile : null;
-        $coa_report[0]->UserCreate = isset($user_DB->Username) ? $user_DB->Username : null;
-        $coa_report[0]->UserName_QC = isset($packing->UserName_QC) ? $packing->UserName_QC : null;
+        $coa_report[0]->UserCreate = isset($user_DB->Name) ? $user_DB->Name : null;
+        // $coa_report[0]->UserName_QC = isset($packing->UserName_QC) ? $packing->UserName_QC : null;
+        $coa_report[0]->COA_USER_QC = isset($coa_report[0]->COA_USER_QC) ? $coa_report[0]->COA_USER_QC : null;
 
         $list_item = DB::table('items')
             ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name', 'equipments.Item_Type')
@@ -279,11 +315,12 @@ class COA_Controller extends BaseController
             ->where('packing.Machine_id', $coa_report[0]->machine_id)
             ->where('packing.Cycle', $coa_report[0]->cycle)
             ->whereDate('packing.Create_at', $coa_report[0]->date)
+            // ->whereIn('items.Item_id', [$list_item])
             ->distinct()
             ->orderBy('items.Order_id')
             ->orderByRaw('LENGTH(items.item_id)')
             ->get();
-
+        // dd($list_item);
 
         if (count($list_item) == 0) {
             // return 'ไม่พบข้อมูลในระบบ';
