@@ -24,10 +24,11 @@ class StockList_Controller extends BaseController
             $data = $request->all();
 
             $items = DB::table('items')
-                ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name', 'washing.washing_id', 'equipments.Item_Type')
+                ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name', 'washing.washing_id', 'equipments.Item_Type', 'stock.Stock_id')
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
                 ->leftjoin('situations', 'items.Situation_id', '=', 'situations.Situation_id')
                 ->leftjoin('washing', 'items.item_id', '=', 'washing.item_id')
+                ->leftjoin('stock', 'items.Item_id', '=', 'stock.Item_id')
                 ->where('items.Order_id', $data['OrderId'])
                 // ->where('items.Item_status', 'Stock')
                 // ->where('washing.PassStatus', 'Pass')

@@ -54,6 +54,8 @@
 
             @include('component.slidebar')
 
+            @include('component.Loading')
+
 
             <!-- Main content -->
             <main class="flex-1 overflow-x-hidden">
@@ -91,6 +93,10 @@
                                 <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
                                         <th scope="col" class="py-3 px-6">
+                                            <input type="checkbox" id="washing_all_check"
+                                                class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" />
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
                                             หมายเลขอุปกรณ์
                                         </th>
                                         <th scope="col" class="py-3 px-6">
@@ -124,24 +130,52 @@
                             </table>
                         </div>
 
-                        <div class="text-center mt-3">
+                        <div class="text-center mt-3 mb-4">
                             <div class="lg:grid-cols-1 md:grid-cols-1 mt-1">
                                 <div>
 
-                                    <button type="a" id="btn_save_deliver" data-modal-toggle="Deliver_Modal"
+                                    <button type="button" id="btn_save_deliver" data-modal-toggle="Deliver_Modal"
                                         class="my-2 w-80 text-white bg-orange-700 hover:bg-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-2 mb-2 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">
                                         Deliver
                                     </button>
 
-                                    <a type="button" id="btn_pdf_deliver" href="/stock/deliver_pdf/{{ $oder_id }}"
-                                        target="_blank"
+                                    <button type="button" id="btn_pdf_deliver" href="/stock/deliver_pdf/{{ $oder_id }}"
                                         class="my-2 w-80 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                                         พิมพ์ใบ Deliver
-                                    </a>
+                                    </button>
 
 
                                 </div>
                             </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="overflow-x-auto table-list-item mt-5 mb-5">
+                            ประวัติการส่งมอบ
+                            <table class="mt-3 w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="py-3 px-6">
+                                            #
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            วันนำเข้าสต็อก
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            วันจัดส่ง
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            รูปนำส่ง
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            รูปลายเซ็นผู้รับ
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="list_his_deliver">
+                                </tbody>
+                            </table>
                         </div>
 
                     </div>
@@ -251,6 +285,9 @@
 <script>
     $(document).ready(function () {
 
+        $(".background_loading").css("display", "block");
+
+
         function DateNowDay() {
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0');
@@ -262,6 +299,7 @@
         }
 
         const Get_Oder_item = async () => {
+
             $.ajax({
                 type: "POST",
                 url: `/stock/GetStockItem`,
@@ -277,6 +315,10 @@
                     for (let item of response.items) {
                         html_item_list += `
                         <tr>
+                            <td class="py-4 px-6">
+                                <input id="WS_Check" type="checkbox" ${(item.Item_status == 'Deliver' ? 'Checked' : '')}
+                                        class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light ${( (item.Item_status == 'Stock' || item.Item_status == 'Deliver') ? '' : 'hidden' )}"  ${(item.Item_status == 'Stock' ? '' : 'disabled' )}>
+                                </td>
                             <td scope="col" class="py-3 px-6" value="${item.Item_id}">
                                 ${item.Item_id}
                             </td>
@@ -304,18 +346,102 @@
                             <td scope="col" class="py-3 px-6">
                                 ${item.Situation_name}
                             </td>
+                            <td scope="col" class="hidden" value="${item.Stock_id}">
+                            </td>
                         </tr>
                         `
                     };
 
                     $('#list_item_id').html(html_item_list)
+                    $(".background_loading").css("display", "none");
+                }
+            });
 
+
+        }
+
+        Get_Oder_item()
+        list_Deliver();
+
+        $('#washing_all_check').change(function () {
+            if ($(this).prop('checked')) {
+                $(`tbody tr td input[type="checkbox"]`).each(
+                    function () {
+                        $(this).prop('checked', true);
+                        $(this).val('checked')
+                    });
+            } else {
+                $(`tbody tr td input[type="checkbox"]`).each(
+                    function () {
+                        $(this).prop('checked', false);
+                        $(this).val('')
+                    });
+            }
+        });
+
+
+        function list_Deliver() {
+            $.ajax({
+                type: "POST",
+                url: `/stock/Get_list_deliver`,
+                data: {
+                    OrderId: '{{ $oder_id }}'
+                },
+                dataType: "json",
+                success: function (response) {
+
+
+                    html_item_list = ''
+                    // Oder_item.forEach(function(item) {
+                    let count = 1;
+                    for (let item of response.list) {
+                        html_item_list += `
+                        <tr>
+                            <td scope="col" class="py-3 px-6">
+                                ${count}
+                            </td>
+                            <td scope="col" class="py-3 px-6">
+                                ${item.date_in_stock}
+                            </td>
+                            <td scope="col" class="py-3 px-6">
+                                ${item.date_out_stock}
+                            </td>
+                            <td scope="col" class="py-3 px-6">
+                                <button id="btn_view_deliver"  type="button" data-img="${item.img_deliver}"
+                                    class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-success inline-flex items-center hover:bg-success-dark focus:outline-none focus:ring focus:ring-success focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                                    <i class="fa-solid fa-image fa-lg fill-white icon_center"></i>
+                                </button>
+                            </td>
+                            <td scope="col" class="py-3 px-6">
+                                <button id="btn_view_Signature"  type="button" data-img="${item.Signature_custumer}"
+                                    class="text-center w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-success inline-flex items-center hover:bg-success-dark focus:outline-none focus:ring focus:ring-success focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                                    <i class="fa-solid fa-image fa-lg fill-white icon_center"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        `
+                        count++
+                    };
+
+                    $('#list_his_deliver').html(html_item_list)
                 }
             });
         }
 
-        Get_Oder_item()
 
+        $(document).on('click', '#btn_view_deliver', function () {
+            let path = $(this).attr('data-img');
+            let src_img = `{{ asset('assets/image/Deliver/${path}') }}`
+            $('#modal_show_image_full').removeClass('hidden')
+            $('#modal_Fullimg').attr('src', src_img)
+        })
+
+        $(document).on('click', '#btn_view_Signature', function () {
+            let path = $(this).attr('data-img');
+            let src_img = `{{ asset('assets/image/Signature/${path}') }}`
+            $('#modal_show_image_full').removeClass('hidden')
+            $('#modal_Fullimg').attr('src', src_img)
+        })
 
         // $('#btn_save_deliver').on('click', function() {
         //     var modal_id = $('#Deliver_Modal').data("modal-toggle");
@@ -365,10 +491,16 @@
 
 
         $(document).on('click', '#btn_save_deliver', function () {
+            signaturePad.clear();
+            $('#file_input_img').val('');
+            $('#View_img').attr('src', '')
             $('#Modal_Deliver').removeClass('invisible');
         })
 
         $(document).on('click', '#modal_deliver_close', function () {
+            signaturePad.clear();
+            $('#file_input_img').val('');
+            $('#View_img').attr('src', '')
             $('#Modal_Deliver').addClass('invisible');
         })
 
@@ -378,16 +510,18 @@
 
             let tb_list_Stock = $('#list_item_id tr:has(td)').map(function (index, cell) {
                 var $td = $('td', this);
-                if ($td.eq(3).attr('value') == 'Stock') {
+                if (($td.eq(4).attr('value') == 'Stock') && $('td input', this).prop(
+                        'checked')) {
                     return {
-                        item_id: $td.eq(0).attr('value'),
+                        item_id: $td.eq(1).attr('value'),
+                        stock_id: $td.eq(10).attr('value'),
                     }
                 }
             }).get();
 
 
             if (tb_list_Stock.length == 0) {
-                alert("ไม่มีอุปกรณ์ในสถานะ Stock");
+                alert("ไม่มีอุปกรณ์ที่จะส่ง");
                 return false
             }
 
@@ -413,7 +547,9 @@
             Formdata.append('file_signature', file_signature);
             Formdata.append('file_input_img', file_input_img[0]);
             Formdata.append('OrderId', '{{ $oder_id }}');
+            Formdata.append('list_deliver', JSON.stringify(tb_list_Stock));
 
+            $(".background_loading").css("display", "block");
 
             $.ajax({
                 type: "POST",
@@ -431,9 +567,41 @@
                         alert('ไม่สามารถบันทึกข้อมูลได้')
                     }
 
+                    tb_list_Stock = [];
+                    signaturePad.clear();
+                    $('#file_input_img').val();
+                    $('#View_img').attr('src', '')
+
                     Get_Oder_item()
+                    list_Deliver()
                 }
             });
+
+        })
+
+
+        $('#btn_pdf_deliver').on('click', function () {
+
+            let tb_list_Stock = $('#list_item_id tr:has(td)').map(function (index, cell) {
+                let $td = $('td', this);
+                if (($td.eq(4).attr('value') == 'Stock') && $('td input', this).prop(
+                        'checked')) {
+                    return {
+                        item_id: $td.eq(1).attr('value'),
+                        stock_id: $td.eq(10).attr('value'),
+                    }
+                }
+            }).get();
+
+            if (tb_list_Stock.length == 0) {
+                alert("กรุณาเลือกอุปกรณ์");
+                return false
+            }
+
+            var str = JSON.stringify(tb_list_Stock);
+            const u = new URLSearchParams(str).toString();
+            const url_path = window.location.pathname;
+            window.open(`/stock/deliver_pdf/{{ $oder_id }}?list=${str}`, '_blank');
 
         })
 

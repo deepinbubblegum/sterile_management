@@ -30,10 +30,12 @@ class Stock_Deliver_Controller extends BaseController
                 'situations.Situation_name',
                 'equipments.Name',
                 'equipments.Price',
-                'equipments.Process'
+                'equipments.Process',
+                'stock.Stock_id'
             )
             ->leftjoin('situations', 'items.Situation_id', '=', 'situations.Situation_id')
             ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
+            ->leftjoin('stock', 'items.Item_id', '=', 'stock.Item_id')
             ->where('items.Order_id', $order_id)
             ->get();
         return $order_item;
@@ -125,12 +127,37 @@ class Stock_Deliver_Controller extends BaseController
     private function AutuIDImg()
     {
         $oid = DB::select(
-            'SELECT CONCAT("IMG_DLV-",LPAD(SUBSTRING(IFNULL(MAX(image_id), "0"), 9,6)+1, 6,"0")) as auto_id FROM stock_deliver_img'
+            'SELECT CONCAT("UID_DLV-",LPAD(SUBSTRING(IFNULL(MAX(deliver_id), "0"), 9,6)+1, 6,"0")) as auto_id FROM stock'
         );
         return $oid[0]->auto_id;
     }
 
 
+    public function Get_list_deliver(Request $request)
+    {
+
+        $data = $request->all();
+        $return_data = new \stdClass();
+        try {
+
+            $item = DB::table('stock')
+                ->select('*')
+                ->where('Order_id', $data['OrderId'])
+                ->whereNotNull('deliver_id')
+                ->groupBy('deliver_id')
+                ->get();
+
+            $return_data->list = $item;
+            $return_data->code = '1000';
+            return $return_data;
+        } catch (Exception $e) {
+
+            $return_data->code = '0200';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+        }
+    }
 
     public function Save_Deliver(Request $request)
     {
@@ -139,7 +166,11 @@ class Stock_Deliver_Controller extends BaseController
 
         try {
 
-            // dd($data);
+            // dd(json_decode($data['list_deliver']));
+
+            $new_image_id = $this->AutuIDImg();
+
+            $list_stock = json_decode($data['list_deliver']);
 
             $dateNow = Carbon::now();
 
@@ -149,33 +180,40 @@ class Stock_Deliver_Controller extends BaseController
             $file_name = $current_timestamp . '_' . $imageName;
             $data['file_signature']->move(public_path('assets/image/Signature'), $file_name);
 
-            $imageName_img = $data['file_input_img']->getClientOriginalName();
-            $file_name_img = $current_timestamp . '_' . $imageName_img;
+            $file_name_img = $current_timestamp . '_' . $new_image_id . '.' . $data['file_input_img']->getClientOriginalExtension();
             $data['file_input_img']->move(public_path('assets/image/Deliver'), $file_name_img);
 
-            DB::table('items')
-                ->where('Order_id', $data['OrderId'])
-                ->where('Item_status', 'Stock')
-                ->update([
-                    'Item_status' => 'Deliver',
-                    'Delivery_date' =>  $dateNow,
-                    'Signature' => $file_name
-                ]);
+            foreach ($list_stock as $item) {
 
-            DB::table('stock')
-                ->where('Order_id', $data['OrderId'])
-                ->whereNull('date_out_stock')
-                ->update([
-                    'date_out_stock' =>  $dateNow,
-                    'Signature_custumer' => $file_name
-                ]);
+                DB::table('items')
+                    ->where('Order_id', $data['OrderId'])
+                    ->where('Item_status', 'Stock')
+                    ->where('Item_id', $item->item_id)
+                    ->update([
+                        'Item_status' => 'Deliver',
+                        'Delivery_date' =>  $dateNow,
+                        'Signature' => $file_name
+                    ]);
+
+                DB::table('stock')
+                    ->where('Order_id', $data['OrderId'])
+                    ->where('Item_id', $item->item_id)
+                    ->where('Stock_id', $item->stock_id)
+                    ->whereNull('date_out_stock')
+                    ->update([
+                        'date_out_stock' =>  $dateNow,
+                        'Signature_custumer' => $file_name,
+                        'img_deliver' => $file_name_img,
+                        'deliver_id' => $new_image_id
+                    ]);
+            }
 
 
-            DB::table('stock_deliver_img')->insert([
-                'Order_id' => $data['OrderId'],
-                'image_id' => $this->AutuIDImg(),
-                'image' => $file_name_img,
-            ]);
+            // DB::table('stock_deliver_img')->insert([
+            //     'Order_id' => $data['OrderId'],
+            //     'image_id' => $new_image_id,
+            //     'image' => $file_name_img,
+            // ]);
 
             $Count_AllItem = DB::table('items')
                 ->select('Item_status')
@@ -215,6 +253,18 @@ class Stock_Deliver_Controller extends BaseController
         $dateNow = Carbon::now();
         $orders_id = $request->route('oder_id');
 
+        $req = $request->all();
+
+        $req_list = json_decode($req['list']);
+
+        $list_item = array();
+        foreach ($req_list as $key => $value) {
+            // dd($value['item_id']);
+            array_push($list_item, $value->item_id);
+        }
+
+        // dd($list_item);
+
         $items = DB::table('items')
             ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name', 'washing.washing_id', 'orders.Create_at')
             ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
@@ -228,17 +278,16 @@ class Stock_Deliver_Controller extends BaseController
                 $query->orWhere('items.Item_status', 'Deliver');
             })
             ->where('washing.PassStatus', 'Pass')
-            // ->orderBy('items.item_id')
-            // ->groupBy('items.item_id')
+            ->whereIn('items.item_id', $list_item)
             ->orderByRaw('LENGTH(items.item_id)')
             ->get();
-
+        // dd($items);
         if (count($items) == 0) {
             return 'ไม่มีอุปกรณ์อยู่ในสถานะ Stock';
         }
 
         $orders = DB::table('orders')
-            ->select('orders.*', 'customers.*', 'departments.*', 'userCreate.Username as userCreate', 'userUpdate.Username as userUpdate',  'userApprove.Username as userApprove')
+            ->select('orders.*', 'customers.*', 'departments.*', 'userCreate.Name as userCreate', 'userUpdate.Name as userUpdate',  'userApprove.Name as userApprove')
             ->leftJoin('customers', 'orders.Customer_id', '=', 'customers.Customer_id')
             ->leftJoin('departments', 'orders.Department_id', '=', 'departments.Department_id')
             ->leftjoin('users AS userCreate', 'orders.Create_by', '=', 'userCreate.user_id')

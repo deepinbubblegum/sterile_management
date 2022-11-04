@@ -126,6 +126,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     });
     Route::get('/COA_Report_PDF/{coa_id}', [COA_Controller::class, 'COA_Report_pdf']);
     Route::post('/coa/Get_mechine', [COA_Controller::class, 'Get_machine']);
+    Route::post('/coa/Get_User', [COA_Controller::class, 'Get_User']);
     Route::post('/coa/Get_COA', [COA_Controller::class, 'Get_COA']);
     Route::post('/coa/New_COA_report', [COA_Controller::class, 'New_COA_report']);
     Route::post('/coa/Delete_COA', [COA_Controller::class, 'Delete_COA']);
@@ -141,11 +142,11 @@ Route::group(['middleware' => ['authLogin']], function () {
     });
     Route::post('/stock/GetStockItem', [StockList_Controller::class, 'Get_StockList_Item']);
 
-
-
     // Deliver
     Route::get('/stock/deliver_pdf/{oder_id}', [Stock_Deliver_Controller::class, 'Deliver_pdf']);
     Route::post('/stock/deliver_pdf/Save_Deliver', [Stock_Deliver_Controller::class, 'Save_Deliver']);
+    Route::post('/stock/Get_list_deliver', [Stock_Deliver_Controller::class, 'Get_list_deliver']);
+
 
 
 
