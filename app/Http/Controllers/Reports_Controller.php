@@ -293,21 +293,67 @@ class Reports_Controller extends BaseController
             $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
         }
 
-        // if ($department == "ALL"){
-        //     if ($onlyapprove == '1') {
-        //         $iteme_date = DB::select("CALL items_date_data(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
-        //     } else {
-        //         $iteme_date = DB::select("CALL items_date_data_Approve_Status(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
-        //     }
-        // }else{
-        //     if ($onlyapprove == '1') {
-        //         $iteme_date = DB::select("CALL items_date_data_Approve_Status_department(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
-        //     } else {
-        //         $iteme_date = DB::select("CALL items_date_data_Approve_Status(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
-        //     }
-        // }
+        if ($department == "ALL"){
+            if ($onlyapprove == '1') {
+                $iteme_date = DB::select("CALL items_date_data(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
+            } else {
+                $iteme_date = DB::select("CALL items_date_data_Approve_Status(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
+            }
+        }else{
+            if ($onlyapprove == '1') {
+                $iteme_date = DB::select("CALL items_date_data_Approve_Status_department(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
+            } else {
+                $iteme_date = DB::select("CALL items_date_data_department(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
+            }
+        }
+
         
-        // dd($iteme_date);
+        // สร้างหน้าใหม่
+        $spreadsheet->createSheet();
+        $spreadsheet->setActiveSheetIndex(1);
+        $spreadsheet->getActiveSheet()->setTitle('ITEMS QTY');
+        
+        $iteme_date = json_decode(json_encode($iteme_date), true);
+        $header_qty = array();
+        foreach ($iteme_date[0] as $key => $value) {
+            array_push($header_qty, $key);
+        }
+        array_push($header_qty, 'Grand Total');
+        $spreadsheet->getActiveSheet()->fromArray($header_qty, null, 'A1');
+        $spreadsheet->getActiveSheet()->fromArray($iteme_date, null, 'A2', false, false);
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $column_qty = "A";
+        $column_qty_array = array();
+        foreach ($sheet->getColumnIterator() as $column) {
+            $column_qty = $column->getColumnIndex();
+            array_push($column_qty_array, $column_qty);
+        }
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$column_qty.'1')->getFill()->setFillType('solid')->getStartColor()->setARGB('002060');
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$column_qty.'1')->getFont()->getColor()->setARGB('FFFFFF');
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$column_qty.'1')->getFont()->setBold(true);
+
+        for ($i = 2; $i <= count($iteme_date) + 1; $i++) {
+            $spreadsheet->getActiveSheet()->setCellValue($column_qty.$i, '=SUM(B'.$i.':'.($column_qty_array[count($column_qty_array) - 2]).$i.')');
+            $spreadsheet->getActiveSheet()->getStyle($column_qty.$i)->getNumberFormat()->setFormatCode('#,##0');
+        }
+
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$column_qty.(count($iteme_date) + 2))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN); // ตั้งค่าเส้นขอบ
+
+        foreach ($sheet->getColumnIterator() as $column) {
+            if ($column->getColumnIndex() != 'A') {
+                $spreadsheet->getActiveSheet()->setCellValue($column->getColumnIndex().(count($iteme_date) + 2), '=SUM('.$column->getColumnIndex().'2:'.$column->getColumnIndex().(count($iteme_date) + 1).')');
+                $spreadsheet->getActiveSheet()->getStyle($column->getColumnIndex().(count($iteme_date) + 2))->getNumberFormat()->setFormatCode('#,##0');
+            }
+        }
+        $spreadsheet->getActiveSheet()->setCellValue('A'.(count($iteme_date) + 2), 'Grand Total');
+        $spreadsheet->getActiveSheet()->getStyle('A'.(count($iteme_date) + 2).':'.$column_qty.(count($iteme_date) + 2))->getFont()->setBold(true); //ตั้งค่าตัวหนา
+        $spreadsheet->getActiveSheet()->getStyle('A'.(count($iteme_date) + 2).':'.$column_qty.(count($iteme_date) + 2))->getFill()->setFillType('solid')->getStartColor()->setARGB('FFC000'); // ตั้งค่าสีพื้นหลัง
+
+        $sheet = $spreadsheet->getActiveSheet();
+        foreach ($sheet->getColumnIterator() as $column) {
+            $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+        }
 
         // เขียนข้อมูลลงไฟล์ 
         $writer = new Xlsx($spreadsheet);
