@@ -355,6 +355,93 @@ class Reports_Controller extends BaseController
             $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
         }
 
+        // สร้างหน้าใหม่
+        $spreadsheet->createSheet();
+        $spreadsheet->setActiveSheetIndex(2);
+        $spreadsheet->getActiveSheet()->setTitle('REPORT Washing Cycle');
+
+        if ($department == "ALL"){
+            $report_cycle = DB::select("CALL report_cycle_customer(?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department]);
+        }else{
+            $report_cycle = DB::select("CALL report_cycle_customer_department(?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department]);
+        }
+
+        $report_cycle = json_decode(json_encode($report_cycle), true);
+        $report_cycle_header = array();
+        foreach ($report_cycle[0] as $key => $value) {
+            array_push($report_cycle_header, $key);
+        }
+        array_push($report_cycle_header, 'Cycle Total');
+        $spreadsheet->getActiveSheet()->fromArray($report_cycle_header, null, 'A1');
+        $spreadsheet->getActiveSheet()->fromArray($report_cycle, null, 'A2', false, false);
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $column_cycle = "A";
+        $column_cycle_array = array();
+        foreach ($sheet->getColumnIterator() as $column) {
+            $column_cycle = $column->getColumnIndex();
+            array_push($column_cycle_array, $column_cycle);
+        }
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$column_cycle.'1')->getFill()->setFillType('solid')->getStartColor()->setARGB('002060');
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$column_cycle.'1')->getFont()->getColor()->setARGB('FFFFFF');
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$column_cycle.'1')->getFont()->setBold(true);
+
+        for ($i = 2; $i <= count($report_cycle) + 1; $i++) {
+            $spreadsheet->getActiveSheet()->setCellValue($column_cycle.$i, '=SUM(B'.$i.':'.($column_cycle_array[count($column_cycle_array) - 2]).$i.')');
+            $spreadsheet->getActiveSheet()->getStyle($column_cycle.$i)->getNumberFormat()->setFormatCode('#,##0');
+        }
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$column_cycle.(count($report_cycle) + 2))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN); // ตั้งค่าเส้นขอบ
+
+        $sheet = $spreadsheet->getActiveSheet();
+        foreach ($sheet->getColumnIterator() as $column) {
+            $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+        }
+        // dd($column_qty_array);
+
+        // สร้างหน้าใหม่
+        $spreadsheet->createSheet();
+        $spreadsheet->setActiveSheetIndex(3);
+        $spreadsheet->getActiveSheet()->setTitle('REPORT Sterile Cycle');
+
+        if ($department == "ALL"){
+            $sterile_cycle = DB::select("CALL sterile_machine_cycle(?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department]);
+        }else{
+            $sterile_cycle = DB::select("CALL sterile_machine_cycle_department(?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department]);
+        }
+
+        $sterile_cycle = json_decode(json_encode($sterile_cycle), true);
+        $sterile_cycle_header = array();
+        foreach ($sterile_cycle[0] as $key => $value) {
+            array_push($sterile_cycle_header, $key);
+        }
+        array_push($sterile_cycle_header, 'Cycle Total');
+        $spreadsheet->getActiveSheet()->fromArray($sterile_cycle_header, null, 'A1');
+        $spreadsheet->getActiveSheet()->fromArray($sterile_cycle, null, 'A2', false, false);
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $column_cycle = "A";
+        $column_cycle_array = array();
+        foreach ($sheet->getColumnIterator() as $column) {
+            $column_cycle = $column->getColumnIndex();
+            array_push($column_cycle_array, $column_cycle);
+        }
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$column_cycle.'1')->getFill()->setFillType('solid')->getStartColor()->setARGB('002060');
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$column_cycle.'1')->getFont()->getColor()->setARGB('FFFFFF');
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$column_cycle.'1')->getFont()->setBold(true);
+
+        for ($i = 2; $i <= count($sterile_cycle) + 1; $i++) {
+            $spreadsheet->getActiveSheet()->setCellValue($column_cycle.$i, '=SUM(B'.$i.':'.($column_cycle_array[count($column_cycle_array) - 2]).$i.')');
+            $spreadsheet->getActiveSheet()->getStyle($column_cycle.$i)->getNumberFormat()->setFormatCode('#,##0');
+        }
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$column_cycle.(count($sterile_cycle) + 2))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN); // ตั้งค่าเส้นขอบ
+
+        $sheet = $spreadsheet->getActiveSheet();
+        foreach ($sheet->getColumnIterator() as $column) {
+            $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+        }
+
+
+        $spreadsheet->setActiveSheetIndex(0);
         // เขียนข้อมูลลงไฟล์ 
         $writer = new Xlsx($spreadsheet);
 
