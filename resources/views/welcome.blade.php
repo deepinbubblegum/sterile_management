@@ -220,7 +220,6 @@
                             <span class="text-sm">KPI Ontime Delivery Target</span>
                             <div class="div_chart_kpi_Delivery_Target">
                                 <canvas width="auto" height="300" id="chart_kpi_Delivery_Target"></canvas>
-                                div_chart_kpi_Delivery_Target
                             </div>
 
                         </div>
