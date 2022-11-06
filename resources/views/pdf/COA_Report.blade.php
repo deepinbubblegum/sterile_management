@@ -176,8 +176,10 @@
     <div class="text-center" style="font-size: 25px;">
         <b>ผลตรวจสอบ</b> &nbsp; &nbsp;
         <br>
-        <b>ผ่าน</b> <input type="checkbox" style="padding-top: 5px; padding-left: 3px" class="largerCheckbox">
-        &nbsp; <b>ไม่ผ่าน</b> <input type="checkbox" style="padding-top: 5px; padding-left: 3px" class="largerCheckbox">
+        <b>ผ่าน</b> <input type="checkbox" style="padding-top: 5px; padding-left: 3px" class="largerCheckbox"
+            {{$List_data->item->status == '1' ? 'checked' : ''}}>
+        &nbsp; <b>ไม่ผ่าน</b> <input type="checkbox" style="padding-top: 5px; padding-left: 3px" class="largerCheckbox"
+            {{$List_data->item->status == '0' ? 'checked' : ''}}>
     </div>
 
 
