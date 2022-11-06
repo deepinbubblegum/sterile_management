@@ -88,59 +88,60 @@
                                             <div class="col-span-6 sm:col-span-6">
                                                 <hr class="mt-2">
                                             </div>
-                                            <div class="col-span-6 sm:col-span-1">
-                                                <label for="item_name"
-                                                    class="block text-base font-medium dark:bg-darker dark:text-light mb-2">Item
-                                                    name</label>
-                                                <select disabled autocomplete="" id="item_name" name="item_name"
-                                                    class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    <option value="" disabled selected>--- โปรดเลือกอุปการณ์ ---
-                                                    </option>
-                                                </select>
-                                            </div>
+                                        </div>
+                                    
 
-                                            <div class="col-span-6 sm:col-span-1">
-                                                <label for="request_reason"
+                                            <div class="mt-2 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-3">
+                                                <div class="row-span-6">
+                                                    <figure class="w-full cursor-pointer show-image">
+                                                        <img class="w-full h-auto rounded-md" id="img_item"
+                                                            src="{{ asset('assets/image/image_preview.jpg') }}"
+                                                            alt="image description">
+                                                    </figure>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <label for="item_name"
+                                                        class="block text-base font-medium dark:bg-darker dark:text-light mb-1">Item
+                                                        name</label>
+                                                    <select disabled autocomplete="" id="item_name" name="item_name"
+                                                        class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                        <option value="" disabled selected>--- โปรดเลือกอุปการณ์ ---
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <label for="request_reason"
                                                     class="block text-base font-medium dark:bg-darker dark:text-light mb-2">Request
                                                     reason</label>
-                                                <input disabled type="text" id="request_reason" name="request_reason"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    value="" disabled>
-                                            </div>
-
-                                            <div class="col-span-6 sm:col-span-1">
-                                                <label for="Situation"
+                                                    <input disabled type="text" id="request_reason" name="request_reason"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        value="" disabled>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <label for="Situation"
                                                     class="block text-base font-medium dark:bg-darker dark:text-light mb-2">Situation</label>
-                                                <select disabled autocomplete="" id="Situation" name="Situation"
-                                                    class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    <option value="" disabled selected>--- โปรดเลือก ---</option>
-                                                </select>
+                                                    <select disabled autocomplete="" id="Situation" name="Situation"
+                                                        class="select2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                        <option value="" disabled selected>--- โปรดเลือก ---</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <div class="col-span-6 sm:col-span-1">
+                                                        <label for="qty"
+                                                            class="block text-base font-medium dark:bg-darker dark:text-light mb-2">Qty.</label>
+                                                        <input disabled type="number" id="qty" name="qty"
+                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                            placeholder="จำนวน" value="1" min="1" required>
+        
+                                                        <label for="total_price"
+                                                            class="mt-4 block text-base font-medium dark:bg-darker dark:text-light mb-2">Total
+                                                            Price</label>
+                                                        <input type="number" id="total_price" name="total_price"
+                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                            value="0" disabled>
+                                                    </div>
+                                                </div>
                                             </div>
-
-                                            <div class="col-span-6 sm:col-span-1">
-                                                <label for="qty"
-                                                    class="block text-base font-medium dark:bg-darker dark:text-light mb-2">Qty.</label>
-                                                <input disabled type="number" id="qty" name="qty"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    placeholder="จำนวน" value="1" min="1" required>
-
-                                                <label for="total_price"
-                                                    class="mt-4 block text-base font-medium dark:bg-darker dark:text-light mb-2">Total
-                                                    Price</label>
-                                                <input type="number" id="total_price" name="total_price"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    value="0" disabled>
-                                            </div>
-
-                                            <div class="col-span-6 sm:col-span-2">
-                                                <figure class="max-w-lg cursor-pointer show-image">
-                                                    <img class="max-w-full h-auto rounded-md" id="img_item"
-                                                        src="{{ asset('assets/image/image_preview.jpg') }}"
-                                                        alt="image description">
-                                                </figure>
-                                            </div>
-                                        </div>
-
                                         <hr class="mt-2">
                                         <div class="px-4 py-3 dark:bg-darker dark:text-light text-right sm:px-6">
                                             <button
