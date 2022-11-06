@@ -221,6 +221,18 @@
                                         <option>Sterile 03</option> --}}
                                     </select>
                                 </div>
+
+                                <div>
+                                    <label for="option_pass_status"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                                        ผลการตรวจสอบ </label>
+                                    <select id="option_pass_status" data-type=""
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="" disabled="" selected="">-เลือกสถานะตรวจสอบ-</option>
+                                        <option value="1">ผ่าน</option>
+                                        <option value="0">ไม่ผ่าน</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
@@ -627,6 +639,7 @@
         $('#btn_save_coa').on('click', function () {
 
             let item_machines = $('#option_machine_sterile').find(":selected").val();
+            let pass_status = $('#option_pass_status').find(":selected").val();
             let user_qc = $('#option_user').find(":selected").val();
             let input_Cycle = $('#input_Cycle').val();
             let date = $('#datepickerId').val();
@@ -678,6 +691,7 @@
             Formdata.append('input_Cycle', input_Cycle);
             Formdata.append('date', date);
             Formdata.append('user_qc', user_qc);
+            Formdata.append('pass_status', pass_status);
 
             Formdata.append('coa_id', null);
 
@@ -695,6 +709,9 @@
 
                     $("#option_user").val($(
                         "#option_user option:first").val());
+
+                    $("#option_pass_status").val($(
+                        "#option_pass_status option:first").val());
 
                     $('#input_Cycle').val('');
                     $('#datepickerId').val();
@@ -722,6 +739,7 @@
 
             $('#option_machine_sterile').val(_Item[0]['Machine_id'])
             $('#option_user').val(_Item[0]['user_qc']).change();
+            $('#option_pass_status').val(_Item[0]['status']).change();
             $('#input_Cycle').val(_Item[0]['cycle']);
             $('#datepickerId').val(_Item[0]['date']);
 

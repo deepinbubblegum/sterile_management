@@ -15,6 +15,13 @@
 
     <link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet" />
 
+    <style>
+        .ui-datepicker-calendar {
+            display: none !important;
+        }
+
+    </style>
+
 </head>
 
 <body id="body_html">
@@ -31,7 +38,7 @@
 
 
             <!-- Main content -->
-            <main class="flex-1 overflow-x-hidden hidden">
+            <main class="flex-1 overflow-x-hidden">
 
                 <div class="flex flex-col flex-1 h-full min-h-screen p-4 overflow-x-hidden overflow-y-auto">
                     @include('component.ribbon')
@@ -53,57 +60,92 @@
                                 </li>
                             </ol>
                         </nav>
+                        <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-2 xl:grid-cols-6 mt-5">
+                            <div>
+                                <label for="option_machine_sterile_search"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                                    เลือกช่วงเดือน
+                                </label>
+                                <select id="option_month"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="1">มกราคม</option>
+                                    <option value="2">กุมภาพันธ์</option>
+                                    <option value="3">มีนาคม</option>
+                                    <option value="4">เมษายน</option>
+                                    <option value="5">พฤษภาคม</option>
+                                    <option value="6">มิถุนายน</option>
+                                    <option value="7">กรกฎาคม</option>
+                                    <option value="8">สิงหาคม</option>
+                                    <option value="9">กันยายน</option>
+                                    <option value="10">ตุลาคม</option>
+                                    <option value="11">พฤศจิกายน</option>
+                                    <option value="12">ธันวาคม</option>
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
                     {{-- Breadcrumb end --}}
+
+                    <div class="m-auto text-center">
+                        <span class="text-2xl">Dashboard</span>
+                        <hr>
+                        <div class="text-center mt-1 text-2xl">
+                            <h1 id="Dashboard_month"></h1>
+                        </div>
+                    </div>
 
                     <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-2 xl:grid-cols-3">
                         <div class="flex flex-col items-center justify-between">
                             <div class="flex col_fles mb-3 bg-white rounded-md dark:bg-darker w-full h-full p-1">
                                 <div class="m-auto text-center">
-                                    <span class="text-2xl">เครื่องมือ/ปี</span>
+                                    <span class="text-2xl">Equipments/Year</span>
                                     <hr>
                                     <div class="text-center text-6xl">
-                                        <h1>5000</h1>
+                                        <h1 id="item_per_year"></h1>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="flex col_fles bg-white rounded-md dark:bg-darker w-full h-full p-1">
                                 <div class="m-auto text-center">
-                                    <span class="text-2xl">เครื่องมือ/เดือน</span>
+                                    <span class="text-2xl">Equipments/Month</span>
                                     <hr>
                                     <div class="text-center text-6xl">
-                                        <h1>250</h1>
+                                        <h1 id="item_per_month"></h1>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
+                        <div
+                            class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker div_chart_Sterile">
                             <span class="text-sm">การทำ Sterile</span>
                             <div>
-                                <canvas width="472" height="480" id="chart_display"></canvas>
+                                <canvas width="auto" height="200" id="chart_Sterile"></canvas>
                             </div>
                         </div>
 
                         <!-- Orders card -->
-                        <div class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
-                            <span class="text-sm">การทำ Sterile</span>
+                        <div
+                            class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker div_donut_item_backlog">
+                            <span class="text-sm">อุปกรณ์ค้างส่ง</span>
                             <div>
                                 {{-- <canvas width="472" height="236" id="donut_item_customer"></canvas> --}}
-                                <canvas id="donut_item_customer" width="472" height="480"></canvas>
+                                <canvas id="donut_item_backlog" width="auto" height="200"></canvas>
                             </div>
                         </div>
                     </div>
 
 
 
-                    <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-5 xl:grid-cols-5">
-                        <div class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
-                            <span class="text-sm">การทำ Sterile</span>
+                    <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-3 xl:grid-cols-3">
+                        <div
+                            class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker div_donut_item_SUD">
+                            <span class="text-sm">Single Use of device</span>
                             <div>
                                 {{-- <canvas width="472" height="236" id="donut_item_customer"></canvas> --}}
-                                <canvas id="donut_item_customer" width="472" height="480"></canvas>
+                                <canvas id="donut_item_SUD" width="auto" height="200"></canvas>
                             </div>
                         </div>
 
@@ -113,7 +155,7 @@
                                     <span class="text-2xl">Customer</span>
                                     <hr>
                                     <div class="text-center text-6xl">
-                                        <h1>5000</h1>
+                                        <h1 id="txt_Customer"></h1>
                                     </div>
                                 </div>
                             </div>
@@ -123,16 +165,16 @@
                                     <span class="text-2xl">Department</span>
                                     <hr>
                                     <div class="text-center text-6xl">
-                                        <h1>250</h1>
+                                        <h1 id="txt_Department"></h1>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
-                            <span class="text-sm">การทำ Sterile</span>
-                            <div>
-                                <canvas width="472" height="480" id="chart_display"></canvas>
+                            <span class="text-sm">Single Use of device / Month</span>
+                            <div class="div_donut_item_SUD_month">
+                                <canvas width="auto" height="200" id="donut_item_SUD_month"></canvas>
                             </div>
                         </div>
 
@@ -140,44 +182,45 @@
 
 
 
-                    <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-5 xl:grid-cols-5">
+                    <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-1 xl:grid-cols-3">
                         <!-- Value card -->
                         <div class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
-                            <span class="text-sm">การทำ Sterile</span>
-                            <div>
-                                <canvas width="auto" height="250" id="chart_display"></canvas>
+                            <span class="text-sm">KPI Set Accuracy Target</span>
+                            <div class="dev_chart_kpi_Accuracy_Target">
+                                <canvas width="auto" height="250" id="chart_kpi_Accuracy_Target"></canvas>
                             </div>
 
                         </div>
 
                         <div class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
-                            <span class="text-sm">การทำ Sterile</span>
-                            <div>
-                                <canvas width="auto" height="300" id="chart_display"></canvas>
+                            <span class="text-sm">KPI Perfect Sterile Target</span>
+                            <div class="div_chart_kpi_Sterile_Target">
+                                <canvas width="auto" height="300" id="chart_kpi_Sterile_Target"></canvas>
                             </div>
 
                         </div>
 
                         <div class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
-                            <span class="text-sm">การทำ Sterile</span>
-                            <div>
-                                <canvas width="auto" height="300" id="chart_display"></canvas>
+                            <span class="text-sm">KPI Instrument Loss Target</span>
+                            <div class="div_chart_kpi_Loss_Target">
+                                <canvas width="auto" height="300" id="chart_kpi_Loss_Target"></canvas>
                             </div>
 
                         </div>
 
                         <div class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
-                            <span class="text-sm">การทำ Sterile</span>
-                            <div>
-                                <canvas width="auto" height="300" id="chart_display"></canvas>
+                            <span class="text-sm">KPI Instrument Damage Target</span>
+                            <div class="div_chart_kpi_Damage_Target">
+                                <canvas width="auto" height="300" id="chart_kpi_Damage_Target"></canvas>
                             </div>
 
                         </div>
 
                         <div class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
-                            <span class="text-sm">การทำ Sterile</span>
-                            <div>
-                                <canvas width="auto" height="300" id="chart_display"></canvas>
+                            <span class="text-sm">KPI Ontime Delivery Target</span>
+                            <div class="div_chart_kpi_Delivery_Target">
+                                <canvas width="auto" height="300" id="chart_kpi_Delivery_Target"></canvas>
+                                div_chart_kpi_Delivery_Target
                             </div>
 
                         </div>
@@ -203,43 +246,83 @@
 <script>
     $(document).ready(function () {
 
+        var date = new Date(),
+
+            now_month = date.getMonth(),
+
+            now_year = date.getFullYear();
+
+        var months_th = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม",
+            "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม",
+        ];
+        var months_th_mini = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.",
+            "พ.ย.", "ธ.ค.",
+        ];
+
+        $('#option_month').val(now_month + 1).change()
+
         Get_Data();
 
-        function Get_Data() {
+        $('#option_month').on("change", function () {
+            let month = $(this).val()
+            Get_Data(parseInt(month));
+        })
+
+
+
+
+        function Get_Data(month = now_month + 1) {
+            $('#Dashboard_month').text('ประจำเดือน ' + months_th[month])
 
             $.ajax({
                 type: "POST",
                 url: `/dashboard/Get_Data`,
+                data: {
+                    month: month
+                },
                 dataType: "json",
                 success: function (response) {
+                    console.log(response)
+                    // item_per_month item_per_year txt_Customer txt_Department
+                    $('#item_per_month').text(response.item_month)
+                    $('#item_per_year').text(response.item_year)
 
+                    $('#txt_Customer').text(response.customers)
+                    $('#txt_Department').text(response.departments)
+
+                    Chart_item_sterile(response.type_sterile);
+                    donut_item_backlog(response.backlog_item);
+                    donut_item_SUD(response.SUD);
+                    donut_item_SUD_month(response.SUD_Month);
+                    chart_kpi_Accuracy_Target(response.month_Claim, response.month_list_item);
+                    chart_kpi_Sterile_Target(response.Sterile_Fail);
+                    chart_kpi_Loss_Target(response.month_loss, response.month_list_item);
+                    chart_kpi_Damage_Target(response.month_Damage, response.month_list_item);
+                    chart_kpi_Delivery_Target(response.deliver_late)
                 }
             });
         }
 
-        Chart_item_sterile();
 
-        function Chart_item_sterile() {
+        function Chart_item_sterile(list_data) {
 
-            let a = [62, 68, 74, 80, 66, 84]
+            $('#chart_Sterile').remove(); // this is my <canvas> element
+            $('.div_chart_Sterile').append('<canvas width="auto" height="200" id="chart_Sterile"></canvas>');
+
+            let list_datasets = Object.values(list_data)
+            let list_labels = Object.keys(list_data)
 
             const data = {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                labels: list_labels,
                 datasets: [{
-                        label: 'a',
-                        data: a,
-                        backgroundColor: 'rgb(0, 178, 169)',
-                        order: 3,
-                        stack: 'stack1'
-                    },
-                    {
-                        label: 'Expired',
-                        data: [50, 3, 7, 9, 2, 4],
-                        backgroundColor: 'rgb(207, 16, 45)',
-                        order: 3,
-                        stack: 'stack1'
-                    }
-                ]
+                    label: 'QTY',
+                    data: list_datasets,
+                    backgroundColor: ['rgb(255, 99, 132)', 'rgb(220,20,60)', 'rgb(255, 159, 64)',
+                        'rgb(154,205,50)', 'rgb(50,205,50)', 'rgb(100,149,237)'
+                    ],
+                    order: 3,
+                    stack: 'stack1'
+                }]
             }
 
             const config = {
@@ -258,35 +341,41 @@
                         y: {
                             stacked: true
                         }
-                    }
+                    },
+                    aspectRatio: 2
                 },
             };
 
             const reportOutput = new Chart(
-                document.getElementById('chart_display'),
+                document.getElementById('chart_Sterile'),
                 config
             );
+
         }
 
-        donut_item_customer();
-
-        function donut_item_customer() {
+        function donut_item_backlog(list_data) {
             // const reportOutput = new Chart(
             //     document.getElementById('donut_item_customer'),
             //     config
             // );
 
-            var ctx = document.getElementById("donut_item_customer");
+            $('#donut_item_backlog').remove(); // this is my <canvas> element
+            $('.div_donut_item_backlog').append(
+                '<canvas id="donut_item_backlog" width="auto" height="200"> </canvas> ');
+
+            let list_datasets = Object.values(list_data)
+            // let list_labels = Object.keys(list_data)
+            let list_labels = ['ส่งแล้ว', 'ค้าง']
+
+            var ctx = document.getElementById("donut_item_backlog");
             var myChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     datasets: [{
-                        data: [10, 20, 15, 5, 50],
-                        backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)',
-                            'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)',
-                        ],
+                        data: list_datasets,
+                        backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)'],
                     }, ],
-                    labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+                    labels: list_labels,
                 },
                 options: {
                     plugins: {
@@ -295,12 +384,366 @@
                                 return value + '%';
                             }
                         }
-                    }
+                    },
+                    aspectRatio: 2
                 }
             });
         }
 
 
+        function donut_item_SUD(list_data) {
+            let list_datasets = Object.values(list_data)
+            // let list_labels = Object.keys(list_data)
+            let list_labels = ['Other', 'SUD']
+
+
+            $('#donut_item_SUD').remove(); // this is my <canvas> element
+            $('.div_donut_item_SUD').append('<canvas id="donut_item_SUD" width="auto" height="200"></canvas>');
+
+            var ctx = document.getElementById("donut_item_SUD");
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: list_datasets,
+                        backgroundColor: ['rgb(106, 194, 0)', 'rgb(106, 194, 217)'],
+                    }, ],
+                    labels: list_labels,
+                },
+                options: {
+                    plugins: {
+                        datalabels: {
+                            formatter: (value) => {
+                                return value + '%';
+                            }
+                        }
+                    },
+                    aspectRatio: 2
+                }
+            });
+        }
+
+        function donut_item_SUD_month(list_data) {
+            let list_datasets = Object.values(list_data)
+            // let list_labels = Object.keys(list_data)
+            let list_labels = ['Other', 'SUD']
+
+
+            $('#donut_item_SUD_month').remove(); // this is my <canvas> element
+            $('.div_donut_item_SUD_month').append(
+                '<canvas id="donut_item_SUD_month" width="auto" height="200"></canvas>');
+
+            var ctx = document.getElementById("donut_item_SUD_month");
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: list_datasets,
+                        backgroundColor: ['rgb(106, 194, 0)', 'rgb(106, 194, 217)'],
+                    }, ],
+                    labels: list_labels,
+                },
+                options: {
+                    plugins: {
+                        datalabels: {
+                            formatter: (value) => {
+                                return value + '%';
+                            }
+                        }
+                    },
+                    aspectRatio: 2
+                }
+            });
+        }
+
+
+        function chart_kpi_Accuracy_Target(list_data, month_list_item) {
+
+            $('#chart_kpi_Accuracy_Target').remove(); // this is my <canvas> element
+            $('.dev_chart_kpi_Accuracy_Target').append(
+                '<canvas width="auto" height="250" id="chart_kpi_Accuracy_Target"></canvas>');
+
+            let monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+            let list_datasets = []
+            for (const [key, value] of Object.entries(list_data)) {
+                // console.log(key, value);
+                // console.log(month_list_item[key]);
+                let cal = parseInt(((month_list_item[key] - value) * 100) / month_list_item[key]) || 0
+                list_datasets.push(cal)
+            }
+
+            const data = {
+                labels: monthNames,
+                datasets: [{
+                    label: 'percentage',
+                    data: list_datasets,
+                    backgroundColor: 'rgb(0, 178, 169)',
+                    // order: 3,
+                    // stack: 'stack1'
+                }]
+            }
+
+            const config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    plugins: {
+                        tooltip: {
+                            mode: 'index'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    },
+                    aspectRatio: 1.5
+                },
+            };
+
+            const reportOutput = new Chart(
+                document.getElementById('chart_kpi_Accuracy_Target'),
+                config
+            );
+        }
+
+
+        function chart_kpi_Sterile_Target(list_data) {
+
+            $('#chart_kpi_Sterile_Target').remove(); // this is my <canvas> element
+            $('.div_chart_kpi_Sterile_Target').append(
+                '<canvas width="auto" height="300" id="chart_kpi_Sterile_Target"></canvas>');
+
+            let monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+
+            let list_datasets = []
+            for (const [key, value] of Object.entries(list_data.fail)) {
+                // console.log(key, value);
+                // console.log(list_data.fail[key]);
+
+                let cal = parseInt(((list_data.all[key] - value) * 100) / list_data.all[key]) || 0
+                list_datasets.push(cal)
+            }
+
+            const data = {
+                labels: monthNames,
+                datasets: [{
+                    label: 'percentage',
+                    data: list_datasets,
+                    backgroundColor: 'rgb(0, 178, 169)',
+                    order: 3,
+                    stack: 'stack1'
+                }]
+            }
+
+            const config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    plugins: {
+                        tooltip: {
+                            mode: 'index'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    },
+                    aspectRatio: 1.5
+                },
+            };
+
+            const reportOutput = new Chart(
+                document.getElementById('chart_kpi_Sterile_Target'),
+                config
+            );
+        }
+
+
+        function chart_kpi_Loss_Target(list_data, month_list_item) {
+
+            $('#chart_kpi_Loss_Target').remove(); // this is my <canvas> element
+            $('.div_chart_kpi_Loss_Target').append(
+                '<canvas width="auto" height="300" id="chart_kpi_Loss_Target"></canvas>');
+
+            let monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+            let list_datasets = []
+            for (const [key, value] of Object.entries(list_data)) {
+                // console.log(key, value);
+                // console.log(month_list_item[key]);
+                let cal = parseInt(((month_list_item[key] - value) * 100) / month_list_item[key]) || 0
+                list_datasets.push(cal)
+            }
+
+            const data = {
+                labels: monthNames,
+                datasets: [{
+                    label: 'percentage',
+                    data: list_datasets,
+                    backgroundColor: 'rgb(0, 178, 169)',
+                    // order: 3,
+                    // stack: 'stack1'
+                }]
+            }
+
+            const config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    plugins: {
+                        tooltip: {
+                            mode: 'index'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    },
+                    aspectRatio: 1.5
+                },
+            };
+
+            const reportOutput = new Chart(
+                document.getElementById('chart_kpi_Loss_Target'),
+                config
+            );
+        }
+
+
+        function chart_kpi_Damage_Target(list_data, month_list_item) {
+
+            $('#chart_kpi_Damage_Target').remove(); // this is my <canvas> element
+            $('.div_chart_kpi_Damage_Target').append(
+                '<canvas width="auto" height="300" id="chart_kpi_Damage_Target"></canvas>');
+
+            let monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+            let list_datasets = []
+            for (const [key, value] of Object.entries(list_data)) {
+                // console.log(key, value);
+                // console.log(month_list_item[key]);
+                let cal = parseInt(((month_list_item[key] - value) * 100) / month_list_item[key]) || 0
+                list_datasets.push(cal)
+            }
+
+            const data = {
+                labels: monthNames,
+                datasets: [{
+                    label: 'percentage',
+                    data: list_datasets,
+                    backgroundColor: 'rgb(0, 178, 169)',
+                    // order: 3,
+                    // stack: 'stack1'
+                }]
+            }
+
+            const config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    plugins: {
+                        tooltip: {
+                            mode: 'index'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    },
+                    aspectRatio: 1.5
+                },
+            };
+
+            const reportOutput = new Chart(
+                document.getElementById('chart_kpi_Damage_Target'),
+                config
+            );
+        }
+
+
+        function chart_kpi_Delivery_Target(list_data) {
+
+            $('#chart_kpi_Delivery_Target').remove(); // this is my <canvas> element
+            $('.div_chart_kpi_Delivery_Target').append(
+                '<canvas width="auto" height="300" id="chart_kpi_Delivery_Target"></canvas>');
+
+            let monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+
+            let list_datasets = []
+            for (const [key, value] of Object.entries(list_data.late)) {
+                // console.log(key, value);
+                // console.log(list_data.fail[key]);
+
+                let cal = parseInt(((list_data.all[key] - value) * 100) / list_data.all[key]) || 0
+                list_datasets.push(cal)
+            }
+
+            const data = {
+                labels: monthNames,
+                datasets: [{
+                    label: 'percentage',
+                    data: list_datasets,
+                    backgroundColor: 'rgb(0, 178, 169)',
+                    order: 3,
+                    stack: 'stack1'
+                }]
+            }
+
+            const config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    plugins: {
+                        tooltip: {
+                            mode: 'index'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    },
+                    aspectRatio: 1.5
+                },
+            };
+
+            const reportOutput = new Chart(
+                document.getElementById('chart_kpi_Delivery_Target'),
+                config
+            );
+        }
 
     })
 

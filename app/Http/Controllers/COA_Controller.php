@@ -198,7 +198,8 @@ class COA_Controller extends BaseController
                 'machine_id' => $req['item_machines'],
                 'cycle' => $req['input_Cycle'],
                 'date' => $date,
-                'user_qc' => $req['user_qc']
+                'user_qc' => $req['user_qc'],
+                'status' => $req['pass_status']
             ]
         );
 
