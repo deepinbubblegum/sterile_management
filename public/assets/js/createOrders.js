@@ -131,7 +131,7 @@ $(document).ready(function () {
                     window.location.href="/orders";
                 }else{
                     alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
-                    window.location.href="http://localhost/orders/create";
+                    window.location.href="/orders/create";
                 }
             }
         });
