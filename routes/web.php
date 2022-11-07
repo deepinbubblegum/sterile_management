@@ -31,6 +31,7 @@ use App\Http\Controllers\UsersPermission_Controller;
 use App\Http\Controllers\Reports_Controller;
 use App\Http\Controllers\COA_Controller;
 use App\Http\Controllers\Dashboard_Controller;
+use App\Http\Controllers\EditOrder_Controller;
 
 
 
@@ -160,6 +161,12 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/orders/create/getsituations', [CreateOrder_Controller::class, 'getSituations']);
     Route::post('/orders/create/createorders', [CreateOrder_Controller::class, 'createOrders']);
     Route::get('/orders/create/getequipimages', [CreateOrder_Controller::class, 'getEquipImages']);
+
+    Route::get('/orders/edit/getorder', [EditOrder_Controller::class, 'getOrder']);
+    Route::get('/orders/edit/getitemslist', [EditOrder_Controller::class, 'getitemslist']);
+    Route::get('/orders/edit/getitemsimages', [EditOrder_Controller::class, 'getItemsImages']);
+    Route::post('/orders/edit/editorder', [EditOrder_Controller::class, 'editOrder']);
+    Route::post('/orders/edit/approve', [EditOrder_Controller::class, 'approveOrder']);
 
     // Edit Order Page use here
     Route::get('/orders/edit/{order_id}', function () {

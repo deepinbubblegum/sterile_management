@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
+@php
+    use App\Http\Controllers\UsersPermission_Controller;
+    $users_permit = new UsersPermission_Controller();
+    $permissions = $users_permit->UserPermit();
+@endphp
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -41,7 +45,9 @@
                                                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                                             </path>
                                         </svg>
-                                        Edit Orders
+                                        <a class="hover:underline" href="/orders"> Orders </a>
+                                        <i class="fa-solid fa-angle-right inline-flex ml-1 mr-1 mt-1 align-middle"></i>
+                                        <a class="">Edit Orders</a>
                                     </a>
                                 </li>
                             </ol>
@@ -189,10 +195,15 @@
                                         </div>
                                     </div>
                                     <div hidden id="div_btn_save"
-                                        class="px-4 py-3 bg-white dark:bg-darker dark:text-light text-right sm:px-6">
+                                        class="px-4 py-3 bg-white dark:bg-darker dark:text-light text-right sm:px-6 flex justify-between">
+                                        <button type="button" id="btnApprove"
+                                            class="{{$permissions->{'Receive Orders'} == 1 ? '': 'invisible'}} px-4 mr-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white darker:focus:ring-offset-dark">
+                                            <i class="fa-solid fa-file-export mr-2 -ml-1 w-4 h-4 fill-white"></i>
+                                            บันทึกและรับ ออเดอร์
+                                        </button>
                                         <button type="button" id="create_orders_save"
                                             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                            สร้างใบออเดอร์
+                                            บันทึกออเดอร์
                                         </button>
                                     </div>
                                 </div>
@@ -231,15 +242,25 @@
                                                     <input id="dropzone-file" type="file" accept="image/svg, image/png, image/gif, image/jpeg" class="hidden" multiple>
                                                 </label>
                                             </div> 
-                                            <div class="py-2">
+                                            <div class="pt-2">
                                                 <span>
                                                     <h3 class="text-lg"><hr></h3> 
-                                                    <div class="mb-1 text-base font-medium dark:text-white"></div>
+                                                    <div class="text-base font-medium dark:text-white"></div>
                                                         <div class="percent_upload_bar w-full invisible bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
                                                         <div class="percent_upload bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 0%"></div>
                                                     </div>
                                                 </span>
                                                 <div class="grid gap-6 mb-6 lg:grid-cols-2 md:grid-cols-2" id="list_img">
+                                                </div>
+                                            </div>
+                                            <div class="py-0">
+                                                <span>
+                                                    <div class="text-base font-medium dark:text-white"></div>
+                                                        <div class="percent_upload_bar w-full invisible bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
+                                                        <div class="percent_upload bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 0%"></div>
+                                                    </div>
+                                                </span>
+                                                <div class="grid gap-6 mb-6 lg:grid-cols-2 md:grid-cols-2" id="list_img_inserver">
                                                 </div>
                                             </div>
                                         </div>

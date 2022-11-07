@@ -26,10 +26,10 @@ $(document).ready(function () {
                 <td class="border-dashed border-t border-gray-200 action">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
-                        <button disabled type="button" value="${element.Order_id}"
+                        <a type="button" value="${element.Order_id}" href="/orders/edit/${element.Order_id}"
                             class="edit_order mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-regular fa-pen-to-square fa-xl mx-auto"></i>
-                        </button>
+                        </a>
                         <a type="button" value="${element.Order_id}" href="/orders/pdf?orderid=${element.Order_id}" target="_blank"
                             class="print_order mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-solid fa-print fa-xl mx-auto"></i>

@@ -1,4 +1,9 @@
 $(document).ready(function () {
+    var path = window.location.pathname;
+    var order_id = path.split("/").pop();
+    var delete_data = [];
+    var delete_images = [];
+    var delete_images_id = [];
     $(".select2").select2({});
     var formDataImage = new FormData();
     //Functions
@@ -57,6 +62,9 @@ $(document).ready(function () {
                         `<option value="" disabled selected>--- ไม่พบข้อมูล แผนก ภายใต้ สถานพยาบาล หรือ ศูนย์การแพทย์ นี้  ---</option>`
                     );
                 }
+
+                // loadset
+                getOrderItemsList();
             },
         });
     }
@@ -107,8 +115,8 @@ $(document).ready(function () {
         });
     }
 
-    // function CreateOrders()
-    function CreateOrders(notes_messages, items, customers_id, departments_id) {
+    // function EditOrders()
+    function EditOrders(notes_messages, items, customers_id, departments_id, delete_data) {
         var form = new FormData();
         formDataImage.forEach((value, key) => {
             form.append('file[]', value);
@@ -117,9 +125,13 @@ $(document).ready(function () {
         form.append("items", JSON.stringify(items));
         form.append("customers_id", customers_id);
         form.append("departments_id", departments_id);
+        form.append("order_id", order_id);
+        form.append("delete_data", JSON.stringify(delete_data));
+        form.append("delete_images", JSON.stringify(delete_images));
+        form.append("delete_images_id", JSON.stringify(delete_images_id));
         $.ajax({
             type: "POST",
-            url: "/orders/create/createorders",
+            url: "/orders/edit/editorder",
             data: form,
             dataType: "json",
             contentType: false,
@@ -144,7 +156,7 @@ $(document).ready(function () {
                             class="py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         <input type="text" name="Equipment_id"
                             class="${val.Equipment_id} bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value="" data-value="${val.Equipment_id}" disabled>
+                            value="" data-value="${val.Equipment_id}" data-item_id="null" disabled>
                         </td>
                         <td class="py-4 px-1">
                         <input type="text" name="Process" 
@@ -152,10 +164,14 @@ $(document).ready(function () {
                             value="${val.Process}" disabled>
                         </td>
                         <td class="py-4 px-1">
-                        <input type="text" name="Situation_id"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value="${val.Situation_name}" data-value="${val.Situation_id}" disabled>
-                        </td>
+                        <select id="countries" class="Situation_set bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option ${val.Situation_id == 'STT-0001' ? 'selected':''} value="STT-0001">Sterlie</option>
+                            <option ${val.Situation_id == 'STT-0002' ? 'selected':''} value="STT-0002">Re-Sterlie</option>
+                            <option ${val.Situation_id == 'STT-0003' ? 'selected':''} value="STT-0003">Claim</option>>
+                            <option ${val.Situation_id == 'STT-0004' ? 'selected':''} value="STT-0004">Borrow</option>
+                            <option ${val.Situation_id == 'STT-0005' ? 'selected':''} value="STT-0005">Damage</option>
+                            <option ${val.Situation_id == 'STT-0006' ? 'selected':''} value="STT-0006">Loss</option>
+                        </select>
                         <td class="py-4 px-1">
                         <input type="number" name="qty"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -167,7 +183,7 @@ $(document).ready(function () {
                             value="${val.Price * val.qty}" disabled>
                         </td>
                         <td class="py-4 px-1 text-center">
-                            <button type="button"
+                            <button type="button" data-item_id="null"
                                 class="delete-row mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-warning inline-flex items-center hover:bg-warning-dark focus:outline-none focus:ring focus:ring-warning focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                                 <i class="fa-solid fa-xmark fa-2xl mx-auto"></i>
                             </button>
@@ -175,6 +191,98 @@ $(document).ready(function () {
                     </tr>`;
         $("table tbody").prepend(html_txt);
         $("." + val.Equipment_id).val(val.Name);
+    }
+
+    function setItemLoaded(Items){
+        console.log(Items);
+        Items.forEach((element) => {
+            html_txt =`
+                <tr class="row_data bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td scope="row"
+                        class="py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <input type="text" name="Equipment_id"
+                        class="${element.Equipment_id} bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        value="${element.Name}" data-value="${element.Equipment_id}" data-item_id="${element.Item_id}" disabled>
+                    </td>
+                    <td class="py-4 px-1">
+                    <input type="text" name="Process" 
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        value="${element.Process}" disabled>
+                    </td>
+                    <td class="py-4 px-1">
+                        <select id="countries" class="Situation_set bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option ${element.Situation_id == 'STT-0001' ? 'selected':''} value="STT-0001">Sterlie</option>
+                            <option ${element.Situation_id == 'STT-0002' ? 'selected':''} value="STT-0002">Re-Sterlie</option>
+                            <option ${element.Situation_id == 'STT-0003' ? 'selected':''} value="STT-0003">Claim</option>>
+                            <option ${element.Situation_id == 'STT-0004' ? 'selected':''} value="STT-0004">Borrow</option>
+                            <option ${element.Situation_id == 'STT-0005' ? 'selected':''} value="STT-0005">Damage</option>
+                            <option ${element.Situation_id == 'STT-0006' ? 'selected':''} value="STT-0006">Loss</option>
+                        </select>
+                    </td>
+                    <td class="py-4 px-1">
+                    <input type="number" name="qty"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="จำนวน" value="${element.Quantity}">
+                    </td>
+                    <td class="py-4 px-1">
+                    <input type="number"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        value="${element.Price * element.Quantity}" disabled>
+                    </td>
+                    <td class="py-4 px-1 text-center">
+                        <button type="button" data-item_id="${element.Item_id}"
+                            class="delete-row mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-warning inline-flex items-center hover:bg-warning-dark focus:outline-none focus:ring focus:ring-warning focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                            <i class="fa-solid fa-xmark fa-2xl mx-auto"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+            $("table tbody").prepend(html_txt);
+            $("." + element.Equipment_id).val(element.Name);
+            console.log(element.Situation_id);
+        });
+        $(".delete-row").click(function (e) {
+            e.preventDefault();
+            console.log("delete");
+            var item_id = $(this).data("item_id");
+            console.log(item_id);
+            delete_data.push(item_id);
+            console.log(delete_data);
+            $(this).parents("tr").remove();
+            check_disable();
+        });
+    }
+
+    
+    function getOrderItemsList() {
+        $.ajax({
+            type: "GET",
+            url: "/orders/edit/getorder",
+            data: {
+                order_id: order_id,
+            },
+            dataType: "json",
+            success: function (response) {
+                $('#customers').val(response.Customer_id).change();
+                $('#departments').val(response.Department_id).change();
+                getequipments(response.Department_id);
+                $('#notes_messages').val(response.Notes_messages);
+
+                $.ajax({
+                    type: "GET",
+                    url: "/orders/edit/getitemslist",
+                    data: {
+                        order_id: order_id,
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        $("#div_tablefrom").prop("hidden", false);
+                        $("#div_btn_save").prop("hidden", false);
+                        setItemLoaded(response);
+                    }
+                });
+            }
+        });
     }
 
     //Initialize function start here
@@ -339,13 +447,14 @@ $(document).ready(function () {
             var $td = $('td', this);
                 return {
                     // id: ++index,
+                    item_id: $td.eq(0).find('input').data('item_id'),
                     equipment_id: $td.eq(0).find('input').data('value'),
-                    situation: $td.eq(2).find('input').data('value'),
+                    situation: $td.eq(2).find('select').val(),
                     qty: $td.eq(3).find('input').val()
                 }
         }).get();
-        // console.log(tbl);
-        CreateOrders(notes_messages, tbl, customers_id, departments_id);
+        console.log(tbl);
+        EditOrders(notes_messages, tbl, customers_id, departments_id, delete_data);
     });
 
 
@@ -430,7 +539,6 @@ $(document).ready(function () {
             $('#list_img').append(html);
         });
 
-
         $('.btn_remove_img').click(function (e) {
             e.preventDefault();
             let key = $(this).attr('data-key');
@@ -443,9 +551,52 @@ $(document).ready(function () {
         $('#modal_images').addClass('invisible');
     });
 
+    function imagefromserver(images){
+        $('#list_img_inserver').empty();
+        console.log(images);
+        images.forEach((value, key) => {
+        const html = `
+            <a class="${value.Image_id} block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <div class="relative" height="40px" width="auto">
+                    <img class="w-full" style="height: 15rem; object-fit: contain;" src="/assets/image/orders/${value.Image_name}" alt="${value.Image_id}">
+                    <button data-key="${value.Image_id}" data-name="${value.Image_name}" class="btn_remove_img_inserver absolute bottom-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
+                        Remove
+                    </button>
+                </div>
+            </a>
+        `;
+        $('#list_img_inserver').append(html);
+        });
+
+        $('.btn_remove_img_inserver').click(function (e) { 
+            e.preventDefault();
+            remove_img_inserver = $(this).attr('data-key');
+            remove_img_name_inserver = $(this).attr('data-name');
+            delete_images_id.push(remove_img_inserver);
+            delete_images.push(remove_img_name_inserver);
+            $(`.${remove_img_inserver}`).remove();
+        });
+    }
+
+    function loadImages(){
+        $.ajax({
+            type: "GET",
+            url: "/orders/edit/getitemsimages",
+            data: {
+                order_id: order_id
+            },
+            dataType: "json",
+            success: function (response) {
+                // console.log(response);
+                imagefromserver(response);
+                $('#modal_images').removeClass('invisible');
+            }
+        });
+    }
+
     $('.openImageModal').click(function (e) { 
         e.preventDefault();
-        $('#modal_images').removeClass('invisible');
+        loadImages();
     });
 
     $('.dropzone-file').on('drop', function (e) {
@@ -495,5 +646,20 @@ $(document).ready(function () {
             formDataImage.append(i, files[i]);
         }
         showImages(formDataImage);
+    });
+
+    $("#btnApprove").click(function (e) {
+        $.ajax({
+            type: "POST",
+            url: "/orders/edit/approve",
+            data: {
+                order_id: order_id,
+            },
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                $('#create_orders_save').trigger('click');
+            }
+        });
     });
 });
