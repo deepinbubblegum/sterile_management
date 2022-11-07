@@ -119,7 +119,7 @@ $permissions = $users_permit->UserPermit();
          </div>
      </div>
      <!-- Sidebar links -->
-     <nav aria-label="Main" class="flex-1 w-64 px-2 py-4 space-y-2 overflow-y-hidden hover:overflow-y-auto">
+     <nav aria-label="Main" class="flex-1 w-56 px-2 py-4 space-y-2 overflow-y-hidden hover:overflow-y-auto">
          <!-- Dashboards links -->
          <div x-data="{ isActive: false, open: false }">
              <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
