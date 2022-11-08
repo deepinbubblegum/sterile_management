@@ -142,7 +142,7 @@
         // end setup
 
 
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -172,10 +172,11 @@
                     .then((response) => response.json())
                     .then((data) => {
 
-                        if(data.code == '200'){
-                            window.location = '{{ url('/') }}';
-                        }else{
-
+                        if (data.code == '200') {
+                            location.reload();
+                            // window.location = url_path;
+                        } else {
+                            alert('Username or Password Invalid')
                         }
                         // console.log('Success:', data.data.Permission);
                     })
@@ -186,6 +187,7 @@
 
 
         })
+
     </script>
 </body>
 

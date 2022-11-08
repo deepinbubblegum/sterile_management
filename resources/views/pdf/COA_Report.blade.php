@@ -78,7 +78,7 @@
         Cycle <b> {{$List_data->item->cycle}} </b>
         </b>
 
-        <table class="mt-1 table_top">
+        <table class="table_top">
             <tr>
                 <td>
                     วันที่นำเข้าเครื่อง <b class="dot"> {{$List_data->item->Sterile_date_create}} </b>
@@ -101,9 +101,8 @@
 
     <br>
     <hr>
-    <br>
 
-    <table class="mt-1 table_img">
+    <table class="table_img">
         <tr>
             <th>
                 <b style="font-size: 25px;"> Chemical Monitoring </b>
@@ -157,7 +156,8 @@
         <tbody>
             <tr style="font-size: 25px;">
                 <th>
-                    <p>Bowie Dick Test</p>
+                    <p>Bowie dick test <div>(Record AutoclavePrevacuum only)</div>
+                    </p>
                     <img class="logo-img inline logo-header" style="max-height:250px; max-width:350px"
                         src="{{ collect($List_data->item->image)->where('coa_type', 'A001')->take(1)->first()->pathfile }}"
                         alt="Logo">

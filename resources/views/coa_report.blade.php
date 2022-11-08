@@ -237,7 +237,9 @@
 
                             <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
                                 <div class="div_img">
-                                    <p class="text-orange-600 text-xl mb-2"> <b><u> Bowie Dick Test </u></b> </p>
+                                    <p class="text-orange-600 text-xl mb-2"> <b><u>
+                                                Bowie dick test (Record AutoclavePrevacuum only)
+                                            </u></b> </p>
                                     <a
                                         class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                                         <div class="relative" height="12rem" width="auto" id="list_image_Bowie">
@@ -704,6 +706,11 @@
                 data: Formdata,
                 dataType: "json",
                 success: function (response) {
+
+                    if (response.code != '0000') {
+                        alert('ไม่สามารถบันทึกข้อมูลได้ กรุณาลองใหม่อีกครั้ง')
+                    }
+
                     $("#option_machine_sterile").val($(
                         "#option_machine_sterile option:first").val());
 
@@ -741,7 +748,8 @@
             $('#option_user').val(_Item[0]['user_qc']).change();
             $('#option_pass_status').val(_Item[0]['status']).change();
             $('#input_Cycle').val(_Item[0]['cycle']);
-            $('#datepickerId').val(_Item[0]['date']);
+            let date = new Date(_Item[0]['date']);
+            $('#datepickerId').val(date.toLocaleDateString("en-US"));
 
             list_img = ['file_input_Bowie', 'file_input_Physicak', 'file_input_Chemical_Pre',
                 'file_input_Chemical_Post', 'file_input_Biological_Pre',

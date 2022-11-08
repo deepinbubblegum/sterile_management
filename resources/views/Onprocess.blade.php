@@ -256,6 +256,7 @@
 
         Get_Washing_machine();
         GetWashing_List();
+        Get_option_washing_performance();
         // obj_table_washing()
 
 
@@ -278,6 +279,27 @@
             });
 
             console.log(arrData);
+        }
+
+
+        function Get_option_washing_performance() {
+            $.ajax({
+                type: "POST",
+                url: `/Onprocess/Get_option_washing_performance`,
+                dataType: "json",
+                success: function (response) {
+
+                    html_item_list = ''
+
+                    // response.machineswashing
+                    for (let item of response.item) {
+                        html_item_list +=
+                            `<option value='${item.wp_id}'>${item.wp_name}</option>`
+                    }
+
+                    $('#washing_performance').html(html_item_list)
+                }
+            });
         }
 
 
@@ -347,6 +369,7 @@
                                 <td class="py-4 px-6" value="${item.Cycle}"> ${item.Cycle} </td>
                                 <td class="py-4 px-6" value="${(item.QTY == null ? '' : item.QTY)}"> ${item.QTY} </td>
                                 <td class="py-4 px-6" value="${(item.PassStatus == null) ? '' : item.PassStatus}"> ${(item.PassStatus == null || item.PassStatus.length == 0) ? '-' : item.PassStatus} </td>
+                                <td class="py-4 px-6" value="${(item.wp_id == null) ? '' : item.wp_id}"> ${item.wp_name == null  ? '-' : item.wp_name} </td>
                                 <td class="py-4 px-6" value=""> ${item.Create_at} </td>
                                 <td class="py-4 px-6" value="${(item.SUD == null) ? '' : item.SUD}"> ${item.SUD == null  ? '-' : item.SUD} </td>
                                 <td class="py-4 px-6" value=""> - </td>
@@ -403,6 +426,10 @@
             let machines_id = $('#option_machineswashing').find(":selected").val();
             let machines_name = $('#option_machineswashing').find(":selected").text();
             let item_washing = $('#option_item_washing').find(":selected").val();
+
+            let washing_performance = $('#washing_performance').find(":selected").val();
+            let washing_performance_text = $('#washing_performance').find(":selected").text();
+
             let SUD = $('#SUD').val();
             let Washing_cycle = $('#Washing_cycle').val();
 
@@ -441,13 +468,17 @@
             col8 = $(
                 `<td class="py-4 px-6" value="${_Item[0].Item_status}" >${_Item[0].Item_status}</td>`
             );
-            col9 = $(`<td class="py-4 px-6" value="${DateNowDay()}"> ${DateNowDay()} </td>`);
-            col10 = $(`<td class="py-4 px-6" value="${SUD}"> ${SUD} </td>`);
-            col11 = $(
+            col9 = $(
+                `<td class="py-4 px-6" value="${washing_performance}"> ${washing_performance_text} </td>`
+            );
+            col10 = $(`<td class="py-4 px-6" value="${DateNowDay()}"> ${DateNowDay()} </td>`);
+            col11 = $(`<td class="py-4 px-6" value="${SUD}"> ${SUD} </td>`);
+            col12 = $(
                 `<td class="py-4 px-6"> <button type="button" id="item_Remove_washing" class="py-2 px-3 text-xs font-medium text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"> x </button> </td>`
             )
-            row.append(col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11).prependTo(
-                "#tb_list_washing");
+            row.append(col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12)
+                .prependTo(
+                    "#tb_list_washing");
 
             $('#SUD').val('');
 
@@ -502,8 +533,8 @@
                         Machines_id: $td.eq(4).attr('value'),
                         Cycle: $td.eq(5).attr('value'),
                         QTY: $td.eq(6).attr('value'),
-                        SUD: $td.eq(9).attr('value'),
-                        Cycle: $td.eq(5).attr('value'),
+                        SUD: $td.eq(10).attr('value'),
+                        Performance: $td.eq(8).attr('value'),
                     }
                 }
                 // if ($('td input', this).prop('checked')) {
