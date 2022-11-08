@@ -56,7 +56,7 @@ $permissions = $users_permit->UserPermit();
             </button>
 
             <!-- Search button -->
-            <button @click="openSearchPanel"
+            {{-- <button @click="openSearchPanel"
                 class="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
                 <span class="sr-only">Open search panel</span>
                 <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -64,7 +64,7 @@ $permissions = $users_permit->UserPermit();
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-            </button>
+            </button> --}}
 
              <!-- Settings button -->
              <button @click="openSettingsPanel"
