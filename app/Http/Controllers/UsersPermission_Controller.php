@@ -37,7 +37,8 @@ class UsersPermission_Controller extends BaseController
             MAX(CASE WHEN permit_group.Permission_Allow = "All Orders" THEN permit_group.Active END) "All Orders",
             MAX(CASE WHEN permit_group.Permission_Allow = "Receive Orders" THEN permit_group.Active END) "Receive Orders",
             MAX(CASE WHEN permit_group.Permission_Allow = "Force Delete Orders" THEN permit_group.Active END) "Force Delete Orders",
-            MAX(CASE WHEN permit_group.Permission_Allow = "COA Report" THEN permit_group.Active END) "COA Report"
+            MAX(CASE WHEN permit_group.Permission_Allow = "COA Report" THEN permit_group.Active END) "COA Report",
+            MAX(CASE WHEN permit_group.Permission_Allow = "Force Edit Orders" THEN permit_group.Active END) "Force Edit Orders"
             FROM (
                 SELECT users.User_id, users.Name, groups.Group_id, groups.Group_name, permissions.Permission_Allow, permissions_group.Active
                 FROM users
