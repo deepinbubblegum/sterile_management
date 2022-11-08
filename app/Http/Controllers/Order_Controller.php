@@ -24,6 +24,11 @@ class Order_Controller extends BaseController
             $return_data = new \stdClass();
             $data = $request->all();
 
+            $users_permit = new UsersPermission_Controller();
+            $user_id = Cookie::get('Username_server_User_id');
+            $permit = $users_permit->UserPermit();
+            // if($permit->{'All Department'} == "1"){
+
             $users = DB::table('orders')
                 ->select('orders.*',  'userCreate.Username as userCreate', 'userUpdate.Username as userUpdate',  'userApprove.Username as userApprove', 'customers.Customer_name', 'departments.Department_name')
                 ->leftjoin('users AS userCreate', 'orders.Create_by', '=', 'userCreate.user_id')
@@ -31,10 +36,18 @@ class Order_Controller extends BaseController
                 ->leftjoin('users AS userApprove', 'orders.Approve_by', '=', 'userApprove.user_id')
                 ->leftjoin('customers', 'orders.Customer_id', '=', 'customers.Customer_id')
                 ->leftjoin('departments', 'orders.Department_id', '=', 'departments.Department_id')
-                ->where(function ($query) use ($data) {
+                ->where(function ($query) use ($data, $permit, $user_id) {
+                    if ($permit->{'All Orders'} != "1"){
+                        $query->whereIn('orders.Department_id',(function ($query) use ($user_id) {
+                            $query->from('usersdepartments')
+                                ->select('usersdepartments.Department_id')
+                                ->where('usersdepartments.User_id','=', $user_id);
+                        }));
+                    }
                     if ($data['txt_search'] != '') {
                         $query->where('order_id', 'like', '%' . $data['txt_search'] . '%');
                     }
+
                 })
                 ->orderBy('order_id', 'desc')
                 ->paginate(8);
