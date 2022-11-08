@@ -31,6 +31,17 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Doe" value="3" disabled>
                 </div> --}}
+                <div>
+                    <label for="washing_performance"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Washing
+                        Performance</label>
+                    <select id="washing_performance"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        {{-- <option>Hemo check</option>
+                        <option>Pyromal test</option>
+                        <option>Washing 03</option> --}}
+                    </select>
+                </div>
             </div>
 
             <div class="grid gap-6 mb-6 lg:grid-cols-3 md:grid-cols-3">
@@ -114,6 +125,9 @@
                             </th>
                             <th scope="col" class="py-3 px-6">
                                 สถานะ
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                ประสิทธิภาพการล้าง
                             </th>
                             <th scope="col" class="py-3 px-6">
                                 วันที่สร้าง

@@ -317,7 +317,7 @@
                         <tr>
                             <td class="py-4 px-6">
                                 <input id="WS_Check" type="checkbox" ${(item.Item_status == 'Deliver' ? 'Checked' : '')}
-                                        class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light ${( (item.Item_status == 'Stock' || item.Item_status == 'Deliver') ? '' : 'hidden' )}"  ${(item.Item_status == 'Stock' ? '' : 'disabled' )}>
+                                        class="${(item.Item_status == 'Deliver' ? 'Deliver_Success' : '')} w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light ${( (item.Item_status == 'Stock' || item.Item_status == 'Deliver') ? '' : 'hidden' )}"  ${(item.Item_status == 'Stock' ? '' : 'disabled' )}>
                                 </td>
                             <td scope="col" class="py-3 px-6" value="${item.Item_id}">
                                 ${item.Item_id}
@@ -364,17 +364,23 @@
         list_Deliver();
 
         $('#washing_all_check').change(function () {
+
             if ($(this).prop('checked')) {
                 $(`tbody tr td input[type="checkbox"]`).each(
                     function () {
-                        $(this).prop('checked', true);
-                        $(this).val('checked')
+                        if (!$(this).hasClass("Deliver_Success")) {
+                            $(this).prop('checked', true);
+                            $(this).val('checked')
+                        }
+
                     });
             } else {
                 $(`tbody tr td input[type="checkbox"]`).each(
                     function () {
-                        $(this).prop('checked', false);
-                        $(this).val('')
+                        if (!$(this).hasClass("Deliver_Success")) {
+                            $(this).prop('checked', false);
+                            $(this).val('')
+                        }
                     });
             }
         });

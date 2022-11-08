@@ -23,6 +23,19 @@ class Dashboard_Controller extends BaseController
         $dateNow = Carbon::now();
         $req = $request->all();
 
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+
+        $dep_id = null;
+        if ($permissions->{'Dashboard Admin'} == '0') {
+            $departments = DB::table('usersdepartments')
+                ->select('*')
+                ->where('User_id', Cookie::get('Username_server_User_id'))
+                ->get();
+            // dd($departments);
+            $dep_id = $departments[0]->Department_id;
+        }
+
         $month = $req['month'];
         $year = $dateNow->year;
         // dd($month);
@@ -40,17 +53,28 @@ class Dashboard_Controller extends BaseController
             ->leftjoin('orders', 'items.Order_id', '=', 'orders.Order_id')
             ->whereYear('orders.Create_at', $year)
             ->whereMonth('orders.Create_at', $month)
+            ->where(function ($query) use ($dep_id) {
+                if ($dep_id != null) {
+                    $query->where('orders.Department_id', $dep_id);
+                }
+            })
             ->count();
 
         $item_year = DB::table('items')
             ->select('items.*')
             ->leftjoin('orders', 'items.Order_id', '=', 'orders.Order_id')
             ->whereYear('orders.Create_at', $year)
+            ->where(function ($query) use ($dep_id) {
+                if ($dep_id != null) {
+                    $query->where('orders.Department_id', $dep_id);
+                }
+            })
             ->count();
 
         // dd($item_month);
 
-        $type_sterile = DB::select('SELECT SUM(CASE WHEN Situation_id = "STT-0001" THEN 1 ELSE 0 END) AS "Sterlie",
+        if ($permissions->{'Dashboard Admin'} == '1') {
+            $type_sterile = DB::select('SELECT SUM(CASE WHEN Situation_id = "STT-0001" THEN 1 ELSE 0 END) AS "Sterlie",
                 SUM(CASE WHEN Situation_id = "STT-0002" THEN 1 ELSE 0 END) AS "Re-Sterlie",
                 SUM(CASE WHEN Situation_id = "STT-0003" THEN 1 ELSE 0 END) AS "Claim",
                 SUM(CASE WHEN Situation_id = "STT-0004" THEN 1 ELSE 0 END) AS "Borrow",
@@ -61,6 +85,20 @@ class Dashboard_Controller extends BaseController
             WHERE YEAR(orders.Create_at) = "' . $year . '"
             AND MONTH(orders.Create_at) = "' . $month . '"
         ')[0];
+        } else {
+            $type_sterile = DB::select('SELECT SUM(CASE WHEN Situation_id = "STT-0001" THEN 1 ELSE 0 END) AS "Sterlie",
+                SUM(CASE WHEN Situation_id = "STT-0002" THEN 1 ELSE 0 END) AS "Re-Sterlie",
+                SUM(CASE WHEN Situation_id = "STT-0003" THEN 1 ELSE 0 END) AS "Claim",
+                SUM(CASE WHEN Situation_id = "STT-0004" THEN 1 ELSE 0 END) AS "Borrow",
+                SUM(CASE WHEN Situation_id = "STT-0005" THEN 1 ELSE 0 END) AS "Damage",
+                SUM(CASE WHEN Situation_id = "STT-0006" THEN 1 ELSE 0 END) AS "Loss"
+            FROM items
+            LEFT JOIN orders ON orders.Order_id = items.Order_id
+            WHERE YEAR(orders.Create_at) = "' . $year . '"
+            AND MONTH(orders.Create_at) = "' . $month . '"
+            AND orders.Department_id = "' . $dep_id . '"
+        ')[0];
+        }
         // dd($type_sterile);
 
         $month_list_item = DB::select('SELECT SUM(CASE WHEN MONTH(Create_at) = "01" THEN 1 ELSE 0 END) AS "1",
@@ -151,6 +189,11 @@ class Dashboard_Controller extends BaseController
             ->where('Item_status', '!=', 'Deliver')
             ->whereYear('orders.Create_at', $year)
             ->whereMonth('orders.Create_at', $month)
+            ->where(function ($query) use ($dep_id) {
+                if ($dep_id != null) {
+                    $query->where('orders.Department_id', $dep_id);
+                }
+            })
             ->get();
 
         $all_item = DB::table('items')
@@ -158,6 +201,11 @@ class Dashboard_Controller extends BaseController
             ->leftjoin('orders', 'items.Order_id', '=', 'orders.Order_id')
             ->whereYear('orders.Create_at', $year)
             ->whereMonth('orders.Create_at', $month)
+            ->where(function ($query) use ($dep_id) {
+                if ($dep_id != null) {
+                    $query->where('orders.Department_id', $dep_id);
+                }
+            })
             ->get();
 
         $backlog = new \stdClass();

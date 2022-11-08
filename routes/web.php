@@ -90,6 +90,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/Onprocess/GetOderItem', [OnProcess_controller::class, 'OnProcess_GetOderItem']);
 
     // Process Washing
+    Route::post('/Onprocess/Get_option_washing_performance', [Pro_Washing_Controller::class, 'Get_option_washing_performance']);
     Route::post('/Onprocess/GetWashing_machine', [Pro_Washing_Controller::class, 'OnProcess_GetWashing_machine']);
     Route::post('/Onprocess/GetWashing_List', [Pro_Washing_Controller::class, 'OnProcess_GetWashing_List']);
     Route::post('/Onprocess/New_WashingList', [Pro_Washing_Controller::class, 'OnProcess_Washing_newItem']);

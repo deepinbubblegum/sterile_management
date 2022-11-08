@@ -25,6 +25,13 @@
 </head>
 
 <body id="body_html">
+
+    @php
+    use App\Http\Controllers\UsersPermission_Controller;
+    $users_permit = new UsersPermission_Controller();
+    $permissions = $users_permit->UserPermit();
+    @endphp
+
     <div x-data="setup()" x-init="$refs.loading.classList.add('hidden');
     setColors(color);" :class="{ 'dark': isDark }" @resize.window="watchScreen()">
         <div class="flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
@@ -64,22 +71,22 @@
                             <div>
                                 <label for="option_machine_sterile_search"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
-                                    เลือกช่วงเดือน
+                                    Select Month
                                 </label>
                                 <select id="option_month"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="1">มกราคม</option>
-                                    <option value="2">กุมภาพันธ์</option>
-                                    <option value="3">มีนาคม</option>
-                                    <option value="4">เมษายน</option>
-                                    <option value="5">พฤษภาคม</option>
-                                    <option value="6">มิถุนายน</option>
-                                    <option value="7">กรกฎาคม</option>
-                                    <option value="8">สิงหาคม</option>
-                                    <option value="9">กันยายน</option>
-                                    <option value="10">ตุลาคม</option>
-                                    <option value="11">พฤศจิกายน</option>
-                                    <option value="12">ธันวาคม</option>
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
                                 </select>
                             </div>
                         </div>
@@ -87,7 +94,7 @@
                     </div>
                     {{-- Breadcrumb end --}}
 
-                    <div class="m-auto text-center">
+                    <div class="mx-auto text-center">
                         <span class="text-2xl">Dashboard</span>
                         <hr>
                         <div class="text-center mt-1 text-2xl">
@@ -120,7 +127,7 @@
 
                         <div
                             class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker div_chart_Sterile">
-                            <span class="text-sm">การทำ Sterile</span>
+                            <span class="text-sm">Situation Sterile</span>
                             <div>
                                 <canvas width="auto" height="200" id="chart_Sterile"></canvas>
                             </div>
@@ -129,7 +136,7 @@
                         <!-- Orders card -->
                         <div
                             class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker div_donut_item_backlog">
-                            <span class="text-sm">อุปกรณ์ค้างส่ง</span>
+                            <span class="text-sm">Complete / Incomplete</span>
                             <div>
                                 {{-- <canvas width="472" height="236" id="donut_item_customer"></canvas> --}}
                                 <canvas id="donut_item_backlog" width="auto" height="200"></canvas>
@@ -138,7 +145,7 @@
                     </div>
 
 
-
+                    @if ($permissions->{'Dashboard Admin'} == 1)
                     <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-3 xl:grid-cols-3">
                         <div
                             class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker div_donut_item_SUD">
@@ -225,6 +232,7 @@
                         </div>
 
                     </div>
+                    @endif
 
 
 
@@ -258,6 +266,10 @@
             "พ.ย.", "ธ.ค.",
         ];
 
+        var month_EN_Names = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
         $('#option_month').val(now_month + 1).change()
 
         Get_Data();
@@ -267,11 +279,14 @@
             Get_Data(parseInt(month));
         })
 
-
+        var refreshId = setInterval(function () {
+            let month = $('#option_month').val()
+            Get_Data(parseInt(month));
+        }, 1200000);
 
 
         function Get_Data(month = now_month + 1) {
-            $('#Dashboard_month').text('ประจำเดือน ' + months_th[month])
+            $('#Dashboard_month').text((month_EN_Names[month - 1]))
 
             $.ajax({
                 type: "POST",
@@ -353,18 +368,17 @@
         }
 
         function donut_item_backlog(list_data) {
-            // const reportOutput = new Chart(
-            //     document.getElementById('donut_item_customer'),
-            //     config
-            // );
 
             $('#donut_item_backlog').remove(); // this is my <canvas> element
             $('.div_donut_item_backlog').append(
                 '<canvas id="donut_item_backlog" width="auto" height="200"> </canvas> ');
 
-            let list_datasets = Object.values(list_data)
+
+            // let list_datasets = Object.values(list_data)
             // let list_labels = Object.keys(list_data)
-            let list_labels = ['ส่งแล้ว', 'ค้าง']
+            let list_datasets = [];
+            list_datasets.push(list_data['all'] - list_data['backlog'], list_data['backlog']);
+            let list_labels = ['Complete', 'Incomplete']
 
             var ctx = document.getElementById("donut_item_backlog");
             var myChart = new Chart(ctx, {

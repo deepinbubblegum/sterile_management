@@ -66,10 +66,11 @@ class Pro_Washing_Controller extends BaseController
             $data = $request->all();
 
             $items = DB::table('washing')
-                ->select('washing.*', 'equipments.Name', 'machineswashing.MachinesWashingName', 'items.Item_status', 'items.SUD')
+                ->select('washing.*', 'equipments.Name', 'machineswashing.MachinesWashingName', 'items.Item_status', 'items.SUD', 'washing_performance.wp_id', 'washing_performance.wp_name')
                 ->leftjoin('items', 'items.item_id', '=', 'washing.item_id')
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
                 ->leftjoin('machineswashing', 'machineswashing.MachinesWashing_id', '=', 'washing.MachinesWashing_id')
+                ->leftjoin('washing_performance', 'washing.performance', '=', 'washing_performance.wp_id')
                 ->where('washing.Order_id', $data['OrderId'])
                 ->orderBy('washing_id')
                 ->get();
@@ -207,7 +208,7 @@ class Pro_Washing_Controller extends BaseController
                         'Cycle' => $item['Cycle'],
                         'QTY' => $item['QTY'],
                         'PassStatus' => $item['status'] == 'null' ? null : $item['status'],
-                        // 'Create_at' => $dateNow,
+                        'performance' => $item['Performance'],
                     ]
                 );
 
@@ -365,6 +366,30 @@ class Pro_Washing_Controller extends BaseController
                 ->delete();
 
             $return_data->code = '1000';
+            return $return_data;
+        } catch (Exception $e) {
+
+            $return_data->code = '0200';
+            $return_data->message =  $e->getMessage();
+
+            return $return_data;
+        }
+    }
+
+    public function Get_option_washing_performance()
+    {
+        $return_data = new \stdClass();
+
+        try {
+
+            $item = DB::table('washing_performance')
+                ->select('*')
+                ->get();
+
+
+            $return_data->code = '1000';
+            $return_data->item = $item;
+
             return $return_data;
         } catch (Exception $e) {
 
