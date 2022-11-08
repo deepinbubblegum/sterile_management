@@ -265,6 +265,7 @@ $(document).ready(function () {
             success: function (response) {
                 $('#customers').val(response.Customer_id).change();
                 $('#departments').val(response.Department_id).change();
+                $('#departments').prop('disabled', true);
                 getequipments(response.Department_id);
                 $('#notes_messages').val(response.Notes_messages);
 

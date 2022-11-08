@@ -45,7 +45,7 @@ $permissions = $users_permit->UserPermit();
             </button>
 
             <!-- Notification button -->
-            <button @click="openNotificationsPanel"
+            {{-- <button @click="openNotificationsPanel"
                 class="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
                 <span class="sr-only">Open Notification panel</span>
                 <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -53,7 +53,20 @@ $permissions = $users_permit->UserPermit();
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
+            </button> --}}
+
+            
+            <button type="button" @click="openNotificationsPanel"
+                class="inline-flex relative items-center p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
+                <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                <span class="sr-only">Notifications</span>
+                <div class="inline-flex absolute -top-2 -right-2 justify-center items-center w-6 h-6 text-xs font-semibold text-white bg-red-500 rounded-full border-2 border-white dark:border-dark">1</div>
             </button>
+  
 
             <!-- Search button -->
             {{-- <button @click="openSearchPanel"
@@ -483,7 +496,7 @@ $permissions = $users_permit->UserPermit();
                          }">
                         Action
                     </button>
-                    <button @click.prevent="activeTabe = 'user'"
+                    {{-- <button @click.prevent="activeTabe = 'user'"
                         class="px-px pb-4 transition-all duration-200 transform translate-y-px border-b focus:outline-none"
                         :class="{
                              'border-primary-dark dark:border-primary': activeTabe ==
@@ -491,7 +504,7 @@ $permissions = $users_permit->UserPermit();
                              'border-transparent': activeTabe != 'user'
                          }">
                         User
-                    </button>
+                    </button> --}}
                 </div>
             </div>
         </div>
@@ -507,12 +520,12 @@ $permissions = $users_permit->UserPermit();
             </div>
 
             <!-- User tab -->
-            <div class="space-y-4" x-show.transition.in="activeTabe == 'user'">
+            {{-- <div class="space-y-4" x-show.transition.in="activeTabe == 'user'">
                 <p class="px-4">User tab content</p>
                 <!--  -->
                 <!-- User tab content -->
                 <!--  -->
-            </div>
+            </div> --}}
         </div>
     </div>
 </section>
