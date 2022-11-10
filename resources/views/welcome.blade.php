@@ -235,7 +235,8 @@
 
 
                     {{-- <div class="overflow-x-auto relative shadow-md sm:rounded-lg"> --}}
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto"
+                        style="display: none">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="py-3 px-6">
@@ -260,7 +261,7 @@
                         </tbody>
                     </table>
 
-                    <div class="mt-3">
+                    <div class="mt-3" style="display: none">
 
                         <div class="text-end text-slate-600 mr-2">
                             View <span id="txt_firstItem"></span> - <span id="txt_lastItem"></span> of <span
