@@ -55,18 +55,21 @@ $permissions = $users_permit->UserPermit();
                 </svg>
             </button> --}}
 
-            
+
             <button type="button" @click="openNotificationsPanel"
                 class="inline-flex relative items-center p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
                 <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
                 <span class="sr-only">Notifications</span>
-                <div class="inline-flex absolute -top-2 -right-2 justify-center items-center w-6 h-6 text-xs font-semibold text-white bg-red-500 rounded-full border-2 border-white dark:border-dark">1</div>
+                <div id="div_noti" style="display: none"
+                    class="inline-flex absolute -top-2 -right-2 justify-center items-center w-6 h-6 text-xs font-semibold text-white bg-red-500 rounded-full border-2 border-white dark:border-dark">
+                    <span id="num_noti">5</span>
+                </div>
             </button>
-  
+
 
             <!-- Search button -->
             {{-- <button @click="openSearchPanel"
@@ -79,29 +82,33 @@ $permissions = $users_permit->UserPermit();
                 </svg>
             </button> --}}
 
-             <!-- Settings button -->
-             <button @click="openSettingsPanel"
-                 class="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
-                 <span class="sr-only">Open settings panel</span>
-                 <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                     stroke="currentColor" aria-hidden="true">
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                         d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                 </svg>
-             </button>
-         </div>
-         <!-- Mini column footer -->
-         <div class="relative flex items-center justify-center flex-shrink-0">
-             <!-- User avatar button -->
-             <div class="" x-data="{ open: false }">
-                 <button @click="open = !open; $nextTick(() => { if(open){ $refs.userMenu.focus() } })" type="button"
-                     aria-haspopup="true" :aria-expanded="open ? 'true' : 'false'"
-                     class="block transition-opacity duration-200 rounded-full dark:opacity-75 dark:hover:opacity-100 focus:outline-none focus:ring dark:focus:opacity-100">
-                     <span class="sr-only">User menu</span>
-                     <div class="overflow-hidden relative w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
-                        <svg class="absolute -left-1 w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+            <!-- Settings button -->
+            <button @click="openSettingsPanel"
+                class="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
+                <span class="sr-only">Open settings panel</span>
+                <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </button>
+        </div>
+        <!-- Mini column footer -->
+        <div class="relative flex items-center justify-center flex-shrink-0">
+            <!-- User avatar button -->
+            <div class="" x-data="{ open: false }">
+                <button @click="open = !open; $nextTick(() => { if(open){ $refs.userMenu.focus() } })" type="button"
+                    aria-haspopup="true" :aria-expanded="open ? 'true' : 'false'"
+                    class="block transition-opacity duration-200 rounded-full dark:opacity-75 dark:hover:opacity-100 focus:outline-none focus:ring dark:focus:opacity-100">
+                    <span class="sr-only">User menu</span>
+                    <div class="overflow-hidden relative w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
+                        <svg class="absolute -left-1 w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                clip-rule="evenodd"></path>
+                        </svg>
                     </div>
                 </button>
 
@@ -119,36 +126,36 @@ $permissions = $users_permit->UserPermit();
                          class="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                          Your Profile
                      </a> --}}
-                     {{-- <a href="#" role="menuitem"
+                    {{-- <a href="#" role="menuitem"
                          class="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                          Settings
                      </a> --}}
-                     <a href="{{ url('/logout') }}" role="menuitem"
-                         class="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                         Logout
-                     </a>
-                 </div>
-             </div>
-         </div>
-     </div>
-     <!-- Sidebar links -->
-     <nav aria-label="Main" class="flex-1 w-56 px-2 py-4 space-y-2 overflow-y-hidden hover:overflow-y-auto">
-         <!-- Dashboards links -->
-         <div x-data="{ isActive: false, open: false }">
-             <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
-             {{-- <a href="/a" @click="$event.preventDefault(); open = !open" --}}
-             <a href="/"
-                 class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
-                 :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
-                 :aria-expanded="(open || isActive) ? 'true' : 'false'">
-                 <span aria-hidden="true">
-                     <i class="fa-solid fa-gauge fa-lg"></i>
-                 </span>
-                 <span class="ml-2 text-sm"> Dashboards </span>
-                 <span class="ml-auto" aria-hidden="true">
-                 </span>
-             </a>
-         </div>
+                    <a href="{{ url('/logout') }}" role="menuitem"
+                        class="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Sidebar links -->
+    <nav aria-label="Main" class="flex-1 w-56 px-2 py-4 space-y-2 overflow-y-hidden hover:overflow-y-auto">
+        <!-- Dashboards links -->
+        <div x-data="{ isActive: false, open: false }">
+            <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
+            {{-- <a href="/a" @click="$event.preventDefault(); open = !open" --}}
+            <a href="/"
+                class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
+                :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
+                :aria-expanded="(open || isActive) ? 'true' : 'false'">
+                <span aria-hidden="true">
+                    <i class="fa-solid fa-gauge fa-lg"></i>
+                </span>
+                <span class="ml-2 text-sm"> Dashboards </span>
+                <span class="ml-auto" aria-hidden="true">
+                </span>
+            </a>
+        </div>
 
 
         <!-- Orders links -->
@@ -230,7 +237,7 @@ $permissions = $users_permit->UserPermit();
         </div>
         @endif
 
-         <!-- Reports links -->
+        <!-- Reports links -->
         @if ($permissions->Reports == 1)
         <div x-data="{ isActive: false, open: false }">
             <a href="/reports"
@@ -245,7 +252,7 @@ $permissions = $users_permit->UserPermit();
         </div>
         @endif
 
-         <!-- Setting links -->
+        <!-- Setting links -->
         @if ($permissions->Settings == 1)
         <div x-data="{ isActive: false, open: false }">
             <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->

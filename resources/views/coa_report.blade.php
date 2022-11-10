@@ -708,7 +708,8 @@
                 success: function (response) {
 
                     if (response.code != '0000') {
-                        alert('ไม่สามารถบันทึกข้อมูลได้ กรุณาลองใหม่อีกครั้ง')
+                        alert('ไม่สามารถบันทึกข้อมูลได้ กรุณาลองใหม่อีกครั้ง' + ' (' +
+                            response.message + ')')
                     }
 
                     $("#option_machine_sterile").val($(
@@ -861,6 +862,16 @@
 
 
         // -------------------------------Page---------------------------------------//
+
+        function getParameterByName(name, url) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
 
         $(document).on('click', '#select_page', function () {
             let type_btn = $(this).attr("type_btn")

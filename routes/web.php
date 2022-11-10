@@ -73,6 +73,7 @@ Route::group(['middleware' => ['authLogin']], function () {
         return view('welcome');
     })->name('welcome');
     Route::post('/dashboard/Get_Data', [Dashboard_Controller::class, 'Get_Data']);
+    Route::post('/dashboard/Get_Stock_Exp', [Dashboard_Controller::class, 'Get_Stock_Exp']);
 
 
 
