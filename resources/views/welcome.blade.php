@@ -232,6 +232,67 @@
                         </div>
 
                     </div>
+
+
+                    {{-- <div class="overflow-x-auto relative shadow-md sm:rounded-lg"> --}}
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto"
+                        style="display: none">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="py-3 px-6">
+                                    หมายเลข ออเดอร์
+                                </th>
+                                <th scope="col" class="py-3 px-6">
+                                    อุปกรณ์
+                                </th>
+                                <th scope="col" class="py-3 px-6">
+                                    วันเข้า Stock
+                                </th>
+                                <th scope="col" class="py-3 px-6">
+                                    วันออก Stock
+                                </th>
+                                <th scope="col" class="py-3 px-6">
+                                    วันหมดอายุ
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="stock_exp_TBody">
+
+                        </tbody>
+                    </table>
+
+                    <div class="mt-3" style="display: none">
+
+                        <div class="text-end text-slate-600 mr-2">
+                            View <span id="txt_firstItem"></span> - <span id="txt_lastItem"></span> of <span
+                                id="txt_total"></span>
+                        </div>
+
+                        <div class="text-center w-full">
+                            <button
+                                class="btn_first_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                type="button" id="select_page" url_data="">
+                                << </button> <button
+                                    class="btn_prev_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                    type="button" id="select_page" url_data="">
+                                    < </button> Page <input type="text" id="page_input" value=""
+                                        class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 p-[7px] w-20 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required>
+                                        of <span id="lastPage"></span>
+                                        <button
+                                            class="btn_next_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                            type="button" id="select_page" url_data="nextPageUrl">
+                                            >
+                                        </button>
+                                        <button
+                                            class="btn_last_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                            type="button" id="select_page" url_data="lastPage">
+                                            >>
+                                        </button>
+                        </div>
+                    </div>
+                    {{-- </div> --}}
+
                     @endif
 
 
@@ -277,6 +338,7 @@
         $('#option_month').on("change", function () {
             let month = $(this).val()
             Get_Data(parseInt(month));
+            list_Stock(1);
         })
 
         var refreshId = setInterval(function () {
@@ -757,6 +819,99 @@
                 config
             );
         }
+
+        list_Stock();
+
+        function list_Stock(page = 1) {
+            let month = $('#option_month').val()
+
+            $.ajax({
+                type: "POST",
+                url: `/dashboard/Get_Stock_Exp?page=${page}`,
+                data: {
+                    month: month
+                },
+                dataType: "json",
+                success: function (response) {
+
+                    $('#txt_firstItem').text(response.from)
+                    $('#txt_lastItem').text(response.to)
+                    $('#txt_total').text(response.total)
+                    $('#lastPage').text(response.last_page)
+                    $('#page_input').val(response.current_page)
+
+
+                    const btn_first_page = document.querySelector(".btn_first_page");
+                    btn_first_page.setAttribute("url_data", response.first_page_url);
+
+                    const btn_prev_page = document.querySelector(".btn_prev_page");
+                    btn_prev_page.setAttribute("url_data", response.prev_page_url);
+
+                    const btn_next_page = document.querySelector(".btn_next_page");
+                    btn_next_page.setAttribute("url_data", response.next_page_url);
+
+                    const btn_last_page = document.querySelector(".btn_last_page");
+                    btn_last_page.setAttribute("url_data", response.last_page_url);
+
+                    console.log(response.data)
+                    html_oder = ''
+                    response.data.forEach(function (item) {
+                        html_oder += `
+                        <tr class="table-tr bg-white border-b dark:bg-gray-800 dark:border-gray-700 clickable-row cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600" data-href='/Onprocess/${item.Order_id}'>
+                            <th scope="row"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                ${item.Order_id}
+                            </th>
+                            <td class="py-4 px-6">
+                                ${item.Name}
+                            </td>
+                            <td class="py-4 px-6">
+                                ${item.date_in_stock}
+                            </td>
+                            <td class="py-4 px-6">
+                                ${(item.date_out_stock == null ? '-' : item.date_out_stock)}
+                            </td>
+                            <td class="py-4 px-6">
+                                ${item.Exp_date}
+                            </td>
+                        </tr>
+                        `
+                    });
+
+                    $('#stock_exp_TBody').html(html_oder)
+
+
+                    document.querySelector('#page_input').addEventListener('keypress', function (
+                        e) {
+                        if (e.key === 'Enter') {
+                            // code for enter
+                            let input = $('#page_input').val()
+
+                            changPage(input, response.orders.last_page)
+                        }
+                    });
+
+                },
+            });
+        }
+
+        function getParameterByName(name, url) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        $(document).on('click', '#select_page', function () {
+            let type_btn = $(this).attr("type_btn")
+            let url_data = $(this).attr("url_data")
+
+            let page = getParameterByName('page', url_data)
+
+            list_Stock(page);
+        })
 
     })
 

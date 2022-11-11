@@ -17,6 +17,30 @@ use App\Http\Controllers\UsersPermission_Controller;
 
 class Dashboard_Controller extends BaseController
 {
+
+    public function Get_Stock_Exp(Request $request)
+    {
+
+        $dateNow = Carbon::now();
+        $req = $request->all();
+
+        $month = $req['month'];
+        $year = $dateNow->year;
+
+        // stock_exp
+        $stock_exp = DB::table('stock')
+            ->select('stock.*', 'packing.Exp_date', 'equipments.Name')
+            ->leftjoin('packing', 'stock.item_id', '=', 'packing.item_id')
+            ->leftjoin('orders', 'stock.Order_id', '=', 'orders.Order_id')
+            ->leftjoin('items', 'stock.item_id', '=', 'items.item_id')
+            ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
+            ->whereYear('orders.Create_at', $year)
+            ->whereMonth('orders.Create_at', $month)
+            ->paginate(15);
+
+        return $stock_exp;
+    }
+
     public function Get_Data(Request $request)
     {
 
@@ -49,7 +73,7 @@ class Dashboard_Controller extends BaseController
             ->count();
 
         $item_month = DB::table('items')
-            ->select('items.*')
+            ->selectRaw('sum(items.Quantity) as sum')
             ->leftjoin('orders', 'items.Order_id', '=', 'orders.Order_id')
             ->whereYear('orders.Create_at', $year)
             ->whereMonth('orders.Create_at', $month)
@@ -58,10 +82,10 @@ class Dashboard_Controller extends BaseController
                     $query->where('orders.Department_id', $dep_id);
                 }
             })
-            ->count();
+            ->first()->sum;
 
         $item_year = DB::table('items')
-            ->select('items.*')
+            ->selectRaw('sum(items.Quantity) as sum')
             ->leftjoin('orders', 'items.Order_id', '=', 'orders.Order_id')
             ->whereYear('orders.Create_at', $year)
             ->where(function ($query) use ($dep_id) {
@@ -69,35 +93,46 @@ class Dashboard_Controller extends BaseController
                     $query->where('orders.Department_id', $dep_id);
                 }
             })
-            ->count();
+            ->first()->sum;
 
         // dd($item_month);
 
         if ($permissions->{'Dashboard Admin'} == '1') {
-            $type_sterile = DB::select('SELECT SUM(CASE WHEN Situation_id = "STT-0001" THEN 1 ELSE 0 END) AS "Sterlie",
-                SUM(CASE WHEN Situation_id = "STT-0002" THEN 1 ELSE 0 END) AS "Re-Sterlie",
-                SUM(CASE WHEN Situation_id = "STT-0003" THEN 1 ELSE 0 END) AS "Claim",
-                SUM(CASE WHEN Situation_id = "STT-0004" THEN 1 ELSE 0 END) AS "Borrow",
-                SUM(CASE WHEN Situation_id = "STT-0005" THEN 1 ELSE 0 END) AS "Damage",
-                SUM(CASE WHEN Situation_id = "STT-0006" THEN 1 ELSE 0 END) AS "Loss"
-            FROM items
-            LEFT JOIN orders ON orders.Order_id = items.Order_id
-            WHERE YEAR(orders.Create_at) = "' . $year . '"
-            AND MONTH(orders.Create_at) = "' . $month . '"
-        ')[0];
+            $type_sterile = DB::select('
+            SELECT MAX(CASE WHEN ST.Situation_id = "STT-0001" THEN ST.sum_item ELSE 0 END) AS "Sterlie",
+                    MAX(CASE WHEN ST.Situation_id = "STT-0002" THEN ST.sum_item ELSE 0 END) AS "Re-Sterlie",
+                    MAX(CASE WHEN ST.Situation_id = "STT-0003" THEN ST.sum_item ELSE 0 END) AS "Claim",
+                    MAX(CASE WHEN ST.Situation_id = "STT-0004" THEN ST.sum_item ELSE 0 END) AS "Borrow",
+                    MAX(CASE WHEN ST.Situation_id = "STT-0005" THEN ST.sum_item ELSE 0 END) AS "Damage",
+                    MAX(CASE WHEN ST.Situation_id = "STT-0006" THEN ST.sum_item ELSE 0 END) AS "Loss"
+            FROM (
+                SELECT Situation_id, sum(Quantity) as sum_item
+                FROM items
+                LEFT JOIN orders ON orders.Order_id = items.Order_id
+                WHERE YEAR(orders.Create_at) = "' . $year . '"
+                AND MONTH(orders.Create_at) = "' . $month . '"
+                GROUP BY Situation_id
+            ) ST
+            ')[0];
         } else {
-            $type_sterile = DB::select('SELECT SUM(CASE WHEN Situation_id = "STT-0001" THEN 1 ELSE 0 END) AS "Sterlie",
-                SUM(CASE WHEN Situation_id = "STT-0002" THEN 1 ELSE 0 END) AS "Re-Sterlie",
-                SUM(CASE WHEN Situation_id = "STT-0003" THEN 1 ELSE 0 END) AS "Claim",
-                SUM(CASE WHEN Situation_id = "STT-0004" THEN 1 ELSE 0 END) AS "Borrow",
-                SUM(CASE WHEN Situation_id = "STT-0005" THEN 1 ELSE 0 END) AS "Damage",
-                SUM(CASE WHEN Situation_id = "STT-0006" THEN 1 ELSE 0 END) AS "Loss"
-            FROM items
-            LEFT JOIN orders ON orders.Order_id = items.Order_id
-            WHERE YEAR(orders.Create_at) = "' . $year . '"
-            AND MONTH(orders.Create_at) = "' . $month . '"
-            AND orders.Department_id = "' . $dep_id . '"
-        ')[0];
+
+            $type_sterile = DB::select('
+            SELECT MAX(CASE WHEN ST.Situation_id = "STT-0001" THEN ST.sum_item ELSE 0 END) AS "Sterlie",
+                    MAX(CASE WHEN ST.Situation_id = "STT-0002" THEN ST.sum_item ELSE 0 END) AS "Re-Sterlie",
+                    MAX(CASE WHEN ST.Situation_id = "STT-0003" THEN ST.sum_item ELSE 0 END) AS "Claim",
+                    MAX(CASE WHEN ST.Situation_id = "STT-0004" THEN ST.sum_item ELSE 0 END) AS "Borrow",
+                    MAX(CASE WHEN ST.Situation_id = "STT-0005" THEN ST.sum_item ELSE 0 END) AS "Damage",
+                    MAX(CASE WHEN ST.Situation_id = "STT-0006" THEN ST.sum_item ELSE 0 END) AS "Loss"
+            FROM (
+                SELECT Situation_id, sum(Quantity) as sum_item
+                FROM items
+                LEFT JOIN orders ON orders.Order_id = items.Order_id
+                WHERE YEAR(orders.Create_at) = "' . $year . '"
+                AND MONTH(orders.Create_at) = "' . $month . '"
+                AND orders.Department_id = "' . $dep_id . '"
+                GROUP BY Situation_id
+            ) ST
+            ')[0];
         }
         // dd($type_sterile);
 
@@ -320,6 +355,8 @@ class Dashboard_Controller extends BaseController
             WHERE YEAR(date_in_stock) ="2022"
             and DATE_FORMAT(date_in_stock + INTERVAL 2 DAY, "%d/%m/%Y , %h:%m:%s") < DATE_FORMAT(date_out_stock, "%d/%m/%Y , %h:%m:%s")')[0];
 
+        // dd($stock_exp);
+
         $List_Deliver_late = new \stdClass();
         $List_Deliver_late->all = $deliver;
         $List_Deliver_late->late = $deliver_late;
@@ -341,7 +378,6 @@ class Dashboard_Controller extends BaseController
         $List->SUD_Month = $SUD_Month;
         $List->Sterile_Fail = $Sterile_Fail;
         $List->deliver_late = $List_Deliver_late;
-
         return $List;
     }
 }
