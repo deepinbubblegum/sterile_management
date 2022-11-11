@@ -16,14 +16,14 @@ $(document).ready(function () {
             // console.log(element);
             const rowHtml = `
             <tr>
-                <td class="border-dashed border-t border-gray-200 px-3">
+                <td class=" border-gray-200 px-3">
                     <label
                         class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
                         <input type="checkbox" ${(element.Approve_at != null ? "disabled": '')} name="order" value="${element.Order_id}"
                             class="form-checkbox rowCheckbox focus:outline-none ${(element.Approve_at != null ? "hidden": '')} ${(permitt['Receive Orders'] == 0 ? "hidden": '')} focus:shadow-outline bg-white dark:bg-dark dark:text-light">
                     </label>
                 </td>
-                <td class="border-dashed border-t border-gray-200 action">
+                <td class=" border-gray-200 action">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         <a type="button" value="${element.Order_id}" href="/orders/edit/${element.Order_id}"
@@ -41,45 +41,45 @@ $(document).ready(function () {
                     </span>
                 </td>
                 <td
-                    class="border-dashed border-t border-gray-200 Order_id">
+                    class=" border-gray-200 Order_id">
                     <span
                         class="text-nowrap text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.Order_id}
                     </span>
                 </td>
                 <td
-                    class="border-dashed border-t border-gray-200 customerName">
+                    class=" border-gray-200 customerName">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.Customer_name}
                     </span>
                 </td>
                 <td
-                    class="border-dashed border-t border-gray-200 departmentsName">
+                    class=" border-gray-200 departmentsName">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.Department_name}
                     </span>
                 </td>
-                <td class="border-dashed border-t border-gray-200 notes">
+                <td class=" border-gray-200 notes">
                     <span
                         class="cut-text text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.Notes != null ? element.Notes : "-"}
                     </span>
                 </td>
-                <td class="border-dashed border-t border-gray-200 created_by">
+                <td class=" border-gray-200 created_by">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.userCreate}
                     </span>
                 </td>
-                <td class="border-dashed border-t border-gray-200 created_at">
+                <td class=" border-gray-200 created_at">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.Create_at}
                     </span>
                 </td>
-                <td class="border-dashed border-t border-gray-200 Approve_by">
+                <td class=" border-gray-200 Approve_by">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${
@@ -89,7 +89,7 @@ $(document).ready(function () {
                         }
                     </span>
                 </td>
-                <td class="border-dashed border-t border-gray-200 Approve_by">
+                <td class=" border-gray-200 Approve_by">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.Approve_at != null ? element.Approve_at : "-"}
