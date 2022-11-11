@@ -27,7 +27,7 @@ $permissions = $users_permit->UserPermit();
          </div> --}}
         <div class="flex flex-col items-center justify-center flex-1 space-y-4">
             <!-- ScanQR button -->
-            <button
+            <button id="scan_qr_order"
                 class="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
                 <span class="sr-only">Open ScanQR panel</span>
                 <svg class="w-6 h-6" width="24px" height="24px" stroke="currentColor" aria-hidden="true" fill="none"
@@ -43,6 +43,8 @@ $permissions = $users_permit->UserPermit();
                         d="M68,170V124a56,56,0,0,1,56-56h46" />
                 </svg>
             </button>
+
+            @include('component.Order_Scan_QRcode')
 
             <!-- Notification button -->
             {{-- <button @click="openNotificationsPanel"

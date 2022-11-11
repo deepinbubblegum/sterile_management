@@ -32,7 +32,7 @@ use App\Http\Controllers\Reports_Controller;
 use App\Http\Controllers\COA_Controller;
 use App\Http\Controllers\Dashboard_Controller;
 use App\Http\Controllers\EditOrder_Controller;
-
+use App\Http\Controllers\Scan_QR_Code;
 
 
 /*
@@ -75,6 +75,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::post('/dashboard/Get_Data', [Dashboard_Controller::class, 'Get_Data']);
     Route::post('/dashboard/Get_Stock_Exp', [Dashboard_Controller::class, 'Get_Stock_Exp']);
 
+    Route::post('/QR_code/Check_order', [Scan_QR_Code::class, 'Get_order']);
 
 
     Route::get('/process', function () {

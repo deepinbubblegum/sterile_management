@@ -32,6 +32,8 @@
 
 <link href="{{ asset('assets/css/loading.css') }}" rel="stylesheet" />
 
+<script src="https://unpkg.com/html5-qrcode"></script>
+
 @vite('resources/js/app.js')
 @vite('resources/css/app.css')
 
