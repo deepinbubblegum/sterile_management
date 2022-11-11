@@ -48,6 +48,9 @@ $(document).ready(function () {
 
     // init notifications load
     loadNotifications();
+    setInterval(() => {
+        loadNotifications();
+    }, 15000);
 
     function NotificationsEditOrderUI(NotificationsDetail){
         $('.detail_edit_show').empty();
@@ -56,7 +59,7 @@ $(document).ready(function () {
                 <p class="p-1">
                     ${notification.Action == 'Add' ? 'เพิ่ม' : 'แก้ไข'} อุปกรณ์ <span class="text-base font-semibold">${notification.Name}</span> 
                     Situation <span class="text-base font-semibold">${notification.situation_from} ${notification.situation_to != null ? 'แก้ไขเป็น ' + notification.situation_to : ''}</span>
-                    จำนวน <span class="text-base font-semibold">${notification.Quantity_from} ชิ้น ${notification.Quantity_to != null ? 'แก้ไขเป็น ' + notification.Quantity_to : ''}</span> ชิ้น <br>         
+                    จำนวน <span class="text-base font-semibold">${notification.Quantity_from} ชิ้น ${notification.Quantity_to != null ? 'แก้ไขเป็น ' + notification.Quantity_to + ' ชิ้น': ''}</span><br>         
                 </p>
             `;
 
