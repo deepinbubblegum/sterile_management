@@ -7,7 +7,6 @@
 <!-- Backdrop -->
 <div x-show="isSidebarOpen" @click="isSidebarOpen = false" class="fixed inset-0 z-10 bg-primary-darker lg:hidden"
     style="opacity: 0.5" aria-hidden="true"></div>
-
 <!-- Sidebar content -->
 <aside x-show="isSidebarOpen" x-transition:enter="transition-all transform duration-300 ease-in-out"
     x-transition:enter-start="-translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100"
@@ -27,8 +26,9 @@
          </div> --}}
         <div class="flex flex-col items-center justify-center flex-1 space-y-4">
             <!-- ScanQR button -->
+            
             <button id="scan_qr_order"
-                class="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
+                class="{{$permissions->{'QR Scan'} != '1' ? 'hidden' : ''}} p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
                 <span class="sr-only">Open ScanQR panel</span>
                 <svg class="w-6 h-6" width="24px" height="24px" stroke="currentColor" aria-hidden="true"
                     fill="none" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
