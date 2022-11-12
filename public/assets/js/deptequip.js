@@ -228,4 +228,12 @@ $(document).ready(function () {
             }
         });
     }
+
+    $("#page_input").keydown(function (e) { 
+        if (e.keyCode == 13) {
+            let txt_search = $("#search").val();
+            let page = $("#page_input").val();
+            getDeptequip(page, txt_search);
+        }
+    });
 });

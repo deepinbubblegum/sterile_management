@@ -190,6 +190,14 @@ $(document).ready(function () {
         }
     });
 
+    $("#page_input").keydown(function (e) { 
+        if (e.keyCode == 13) {
+            let txt_search = $("#search").val();
+            let page = $("#page_input").val();
+            getListOrder(page, txt_search);
+        }
+    });
+
     // init function
     getListOrder();
 
