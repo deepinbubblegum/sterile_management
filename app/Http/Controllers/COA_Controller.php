@@ -100,12 +100,22 @@ class COA_Controller extends BaseController
             $return_data = new \stdClass();
             $data = $request->all();
 
+            $DateTime = null;
+            if ($data['Date'] != '') {
+                $DateTime = new Carbon($data['Date']);
+            }
+
+
             $coa_report = DB::table('coa_report')
                 ->select('*')
                 ->leftjoin('machine', 'coa_report.Machine_id', '=', 'machine.Machine_id')
-                ->where(function ($query) use ($data) {
+                ->where(function ($query) use ($data, $DateTime) {
                     if ($data['txt_search'] != '') {
                         $query->where('coa_report.Machine_id', $data['txt_search']);
+                    }
+
+                    if ($data['Date'] != '') {
+                        $query->whereDate('date', '=', $DateTime);
                     }
                 })
                 ->orderBy('coa_id', 'DESC')
