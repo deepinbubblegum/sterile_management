@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    $('#users').select2();
     const url_path = window.location.pathname;
     // set table
     function setTable(data) {
