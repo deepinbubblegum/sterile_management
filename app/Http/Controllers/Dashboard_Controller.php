@@ -27,6 +27,19 @@ class Dashboard_Controller extends BaseController
         $month = $req['month'];
         $year = $dateNow->year;
 
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+
+        $dep_id = null;
+        if ($permissions->{'Dashboard Admin'} == '0') {
+            $departments = DB::table('usersdepartments')
+                ->select('*')
+                ->where('User_id', Cookie::get('Username_server_User_id'))
+                ->get();
+            // dd($departments);
+            $dep_id = $departments[0]->Department_id;
+        }
+
         // stock_exp
         $stock_exp = DB::table('stock')
             ->select('stock.*', 'packing.Exp_date', 'equipments.Name')
@@ -36,6 +49,11 @@ class Dashboard_Controller extends BaseController
             ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
             ->whereYear('orders.Create_at', $year)
             ->whereMonth('orders.Create_at', $month)
+            ->where(function ($query) use ($dep_id) {
+                if ($dep_id != null) {
+                    $query->where('orders.Department_id', $dep_id);
+                }
+            })
             ->paginate(15);
 
         return $stock_exp;
