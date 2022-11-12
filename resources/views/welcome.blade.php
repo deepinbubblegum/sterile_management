@@ -233,6 +233,7 @@
 
                     </div>
 
+                    @endif
 
                     {{-- <div class="overflow-x-auto relative shadow-md sm:rounded-lg"> --}}
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto"
@@ -264,8 +265,9 @@
                     <div class="mt-3" style="display: none">
 
                         <div class="text-end text-slate-600 mr-2">
-                            View <span id="txt_firstItem"></span> - <span id="txt_lastItem"></span> of <span
-                                id="txt_total"></span>
+                            View <span id="txt_firstItem"></span> - <span id="txt_lastItem">
+                            </span> of
+                            <span id="txt_total"></span>
                         </div>
 
                         <div class="text-center w-full">
@@ -292,10 +294,6 @@
                         </div>
                     </div>
                     {{-- </div> --}}
-
-                    @endif
-
-
 
                     </section>
 
