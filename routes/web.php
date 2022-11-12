@@ -33,6 +33,7 @@ use App\Http\Controllers\COA_Controller;
 use App\Http\Controllers\Dashboard_Controller;
 use App\Http\Controllers\EditOrder_Controller;
 use App\Http\Controllers\Scan_QR_Code;
+use App\Http\Controllers\Notifications_Controller;
 
 
 /*
@@ -311,6 +312,12 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // UsersPermission_Controller
     Route::get('/settings/permitt', [UsersPermission_Controller::class, 'UserPermit']);
+
+    // Notifications
+    Route::get('/notifications', [Notifications_Controller::class, 'getNotifications']);
+    Route::get('/notificationsdetails', [Notifications_Controller::class, 'getNotificationEditOrderDetail']);
+    Route::post('/notificationreaded', [Notifications_Controller::class, 'NotificationReaded']);
+
 });
 
 Route::get('/logout', function () {

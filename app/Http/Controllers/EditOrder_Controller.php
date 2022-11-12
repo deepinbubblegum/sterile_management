@@ -100,6 +100,7 @@ class EditOrder_Controller extends BaseController
                 'notifications_to' => $_departments_id,
                 'notifications_readed' => '0',
                 'Create_at' => Carbon::now(),
+                'Order_id' => $order_id,
             ]);
 
             if (count($delete_data) > 0) {
