@@ -486,61 +486,7 @@
         <div class="flex-1 pt-4 overflow-y-hidden hover:overflow-y-auto">
             <!-- Action tab -->
             <div class="space-y-4" x-show.transition.in="activeTabe == 'action'" id="sidebar_notifications">
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <p class="hidden pt-1 text-sm font-semibold text-right">อ่านแล้ว</p>
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <p class="hidden pt-1 text-sm font-semibold text-right">อ่านแล้ว</p>
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <p class="hidden pt-1 text-sm font-semibold text-right">อ่านแล้ว</p>
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <p class="hidden pt-1 text-sm font-semibold text-right">อ่านแล้ว</p>
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <p class="hidden pt-1 text-sm font-semibold text-right">อ่านแล้ว</p>
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <p class="hidden pt-1 text-sm font-semibold text-right">อ่านแล้ว</p>
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
+                
             </div>
 
             <!-- User tab -->
