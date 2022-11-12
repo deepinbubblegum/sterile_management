@@ -217,4 +217,12 @@ $(document).ready(function () {
     $('.closeModal').on('click', function(e){
         $('#editModal').addClass('invisible');
     });
+
+    $("#page_input").keydown(function (e) { 
+        if (e.keyCode == 13) {
+            let txt_search = $("#search").val();
+            let page = $("#page_input").val();
+            getDepartments(page, txt_search);
+        }
+    });
 });
