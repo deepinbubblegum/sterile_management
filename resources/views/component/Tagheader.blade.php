@@ -43,3 +43,6 @@
     });
 
 </script>
+
+{{-- notification scripts --}}
+<script src="{{asset('assets/js/notifications.js')}}"></script>
