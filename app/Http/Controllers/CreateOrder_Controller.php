@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Support\Facades\Cookie;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\UsersPermission_Controller;
 
 class CreateOrder_Controller extends BaseController
 {
@@ -21,18 +22,30 @@ class CreateOrder_Controller extends BaseController
         $Customers_data = DB::table('customers')
             ->select('customers.Customer_id', 'customers.Customer_name')
             ->get();
-
         return $Customers_data;
     }
 
     public function getDepartments(Request $request)
     {
         $recv = $request->all();
-        // dd($recv);
-        $Department_data = DB::table('departments')
+        $user_id = Cookie::get('Username_server_User_id');
+        $users_permit = new UsersPermission_Controller();
+        $permit = $users_permit->UserPermit();
+        if($permit->{'All Department'} == "1"){
+            $Department_data = DB::table('departments')
+                ->select('departments.Department_id', 'departments.Department_name')
+                ->where('departments.Customer_id', $recv['Customer_id'])
+                ->get();
+        }else{
+            $Department_data = DB::table('departments')
             ->select('departments.Department_id', 'departments.Department_name')
-            ->where('departments.Customer_id', $recv['Customer_id'])
+            ->whereIn('departments.Department_id',(function ($query) use ($user_id) {
+                $query->from('usersdepartments')
+                    ->select('usersdepartments.Department_id')
+                    ->where('usersdepartments.User_id','=', $user_id);
+            }))
             ->get();
+        }
         return $Department_data;
     }
 
@@ -72,14 +85,25 @@ class CreateOrder_Controller extends BaseController
         return $itm[0]->auto_id;
     }
 
+    private function AutoIDImage()
+    {
+        $itm = DB::select(
+            'SELECT CONCAT("IMG_ODI-",LPAD(SUBSTRING(IFNULL(MAX(order_image.Image_id), "0"), 9,6)+1, 6,"0")) as auto_id FROM order_image'
+        );
+        return $itm[0]->auto_id;
+    }
+
     public function createOrders(Request $request)
     {
         try {
             $recv = $request->all();
+            if (isset($recv['file'])) {
+                $images = $request->file('file');
+            }
             $_notes_messages = $recv['notes_messages'];
             $_cutomers_id = $recv['customers_id'];
             $_departments_id = $recv['departments_id'];
-            $_items = $recv['items'];
+            $_items = json_decode($recv['items'], true);
             $order_id = $this->getAutoOrdersID();
             $user_id = $request->cookie('Username_server_User_id');
 
@@ -93,7 +117,6 @@ class CreateOrder_Controller extends BaseController
                 'Customer_id' => $_cutomers_id,
                 'Department_id' => $_departments_id,
             ]);
-    
             foreach ($_items as $key => $value) {
                 $item_id = $this->getAutoItemsID();
                 DB::table('items')->insert([
@@ -105,8 +128,20 @@ class CreateOrder_Controller extends BaseController
                     'Situation_id' => $value['situation']
                 ]);
             }
+            
+            if (isset($recv['file'])) {
+                foreach ($images as $image) {
+                    $image_id = $this->AutoIDImage();
+                    $image_name = $image_id . '.' . $image->getClientOriginalExtension();
+                    $image->move(public_path('assets/image/orders'), $image_name);
+                    DB::table('order_image')->insert([
+                        'Image_id' => $image_id,
+                        'Order_id' => $order_id,
+                        'Image_name' => $image_name,
+                    ]);
+                }
+            };
         } catch (\Throwable $th) {
-            // dd($th->getMessage());
             return json_decode(FALSE);
         }
         return json_decode(TRUE);
@@ -125,10 +160,7 @@ class CreateOrder_Controller extends BaseController
         $equip_image = DB::table('equipmentsimages')
             ->select('equipmentsimages.Image_id', 'equipmentsimages.Equipment_id', 'equipmentsimages.Image_path')
             ->where('equipmentsimages.Equipment_id', $equip_id)
-            ->first();
-        // if ($equip_image == null) {
-        //     return json_decode(FALSE);
-        // }
-        return json_encode($equip_image);
+            ->get();
+        return $equip_image;
     }
 }

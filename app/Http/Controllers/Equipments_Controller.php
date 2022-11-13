@@ -76,6 +76,8 @@ class Equipments_Controller extends BaseController
         $_equipment_process = $recv['equipment_process'];
         $_equipment_item_type = $recv['equipment_item_type'];
         $_equipment_descriptions = $recv['equipment_descriptions'];
+        $_equipment_sud = $recv['equipment_sud'];
+        $_equipment_limit = $recv['equipment_limit'];
 
         DB::table('equipments')->insert([
             'Equipment_id' => $this->getAutoEquipmentsID(),
@@ -86,6 +88,8 @@ class Equipments_Controller extends BaseController
             'Descriptions' => $_equipment_descriptions,
             'Item_Type' => $_equipment_item_type,
             'Activate' => 'A',
+            'SUD' => $_equipment_sud,
+            'SUD_Limit' => $_equipment_limit,
         ]);
         return json_encode(TRUE);
     }
@@ -123,6 +127,9 @@ class Equipments_Controller extends BaseController
         $_equipment_process = $recv['equipment_process'];
         $_equipment_item_type = $recv['equipment_item_type'];
         $_equipment_descriptions = $recv['equipment_descriptions'];
+        $_equipment_sud = $recv['equipment_sud'];
+        $_equipment_limit = $recv['equipment_limit'];
+
         DB::table('equipments')
             ->where('Equipment_id', $_equipment_id)
             ->update([
@@ -132,7 +139,65 @@ class Equipments_Controller extends BaseController
                 'Expire' => $_equipment_expire,
                 'Descriptions' => $_equipment_descriptions,
                 'Item_Type' => $_equipment_item_type,
+                'SUD' => $_equipment_sud,
+                'SUD_Limit' => $_equipment_limit
             ]);
+        return json_encode(TRUE);
+    }
+
+    private function AutoIDImage()
+    {
+        $itm = DB::select(
+            'SELECT CONCAT("IMG_EQP-",LPAD(SUBSTRING(IFNULL(MAX(equipmentsimages.Image_id), "0"), 9,6)+1, 6,"0")) as auto_id FROM equipmentsimages'
+        );
+        return $itm[0]->auto_id;
+    }
+
+    public function imagesUploadEquipment(Request $request)
+    {
+        $recv = $request->all();
+        // $imageName = $image_id . '.' . $data['files']->getClientOriginalExtension();
+        $images = $request->file('file');
+        $equipment_id = $recv['equipment_id'];
+
+        foreach ($images as $image) {
+            $image_id = $this->AutoIDImage();
+            $imageName = $image_id . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/image/equipments'), $imageName);
+            DB::table('equipmentsimages')->insert([
+                'Image_id' => $image_id,
+                'Equipment_id' => $equipment_id,
+                'Image_path' => $imageName,
+            ]);
+        }
+        return json_encode(TRUE);
+    }
+
+    public function getEquipImages(Request $request)
+    {
+        $recv = $request->all();
+        $equipment_id = $recv['equipment_id'];
+        $images = DB::table('equipmentsimages')
+            ->select('equipmentsimages.*')
+            ->where('Equipment_id', $equipment_id)
+            ->get();
+        return $images;
+    }
+
+    public function deleteImageEquipment(Request $request)
+    {
+        $recv = $request->all();
+        $image_id = $recv['image_id'];
+        $equipment_id = $recv['equipment_id'];
+        $image_path = $recv['image_path'];
+        $path = public_path('assets/image/equipments/' . $image_path);
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        DB::table('equipmentsimages')
+            ->where('Image_id', $image_id)
+            ->where('Equipment_id', $equipment_id)
+            ->delete();
         return json_encode(TRUE);
     }
 }

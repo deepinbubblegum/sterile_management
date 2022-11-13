@@ -26,7 +26,7 @@
             <main class="flex-1 overflow-x-hidden">
 
                 <div class="flex flex-col flex-1 h-full min-h-screen p-4 overflow-x-hidden overflow-y-auto">
-
+                    @include('component.ribbon')
                     {{-- Breadcrumb --}}
                     <div class="mx-auto rounded-md w-full bg-white dark:bg-darker dark:text-light p-4 mb-4 leading-6 ">
                         <nav class="flex" aria-label="Breadcrumb">
@@ -112,35 +112,35 @@
                                         {{-- @foreach ($data->data as $oder)
                                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 clickable-row cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
                                                 data-href='/Onprocess/{{ $oder->Oder_id }}'>
-                                                <th scope="row"
-                                                    class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                    {{ $oder->Oder_id }} </a>
-                                                </th>
-                                                <td class="py-4 px-6">
-                                                    {{ $oder->StatusOder }}
-                                                </td>
-                                                <td class="py-4 px-6">
-                                                    {{ $oder->Notes }}
-                                                </td>
-                                                <td class="py-4 px-6">
-                                                    {{ $oder->userApprove }}
-                                                </td>
-                                                <td class="py-4 px-6">
-                                                    {{ $oder->Approve_at }}
-                                                </td>
-                                                <td class="py-4 px-6">
-                                                    {{ $oder->userCreate }}
-                                                </td>
-                                                <td class="py-4 px-6">
-                                                    {{ $oder->Create_at }}
-                                                </td>
-                                                <td class="py-4 px-6">
-                                                    {{ $oder->userUpdate }}
-                                                </td>
-                                                <td class="py-4 px-6">
-                                                    {{ $oder->Update_at }}
-                                                </td>
-                                            </tr>
+                                        <th scope="row"
+                                            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{ $oder->Oder_id }} </a>
+                                        </th>
+                                        <td class="py-4 px-6">
+                                            {{ $oder->StatusOder }}
+                                        </td>
+                                        <td class="py-4 px-6">
+                                            {{ $oder->Notes }}
+                                        </td>
+                                        <td class="py-4 px-6">
+                                            {{ $oder->userApprove }}
+                                        </td>
+                                        <td class="py-4 px-6">
+                                            {{ $oder->Approve_at }}
+                                        </td>
+                                        <td class="py-4 px-6">
+                                            {{ $oder->userCreate }}
+                                        </td>
+                                        <td class="py-4 px-6">
+                                            {{ $oder->Create_at }}
+                                        </td>
+                                        <td class="py-4 px-6">
+                                            {{ $oder->userUpdate }}
+                                        </td>
+                                        <td class="py-4 px-6">
+                                            {{ $oder->Update_at }}
+                                        </td>
+                                        </tr>
                                         @endforeach --}}
                                     </tbody>
                                 </table>
@@ -159,28 +159,23 @@
                                     <button
                                         class="btn_first_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
                                         type="button" id="select_page" url_data="">
-                                        <<
-                                    </button>
-                                    <button
-                                        class="btn_prev_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
-                                        type="button" id="select_page" url_data="">
-                                        <
-                                    </button>
-                                            Page
-                                    <input type="text" id="page_input" value=""
-                                        class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 p-[7px] w-20 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        required>
-                                    of <span id="lastPage"></span>
-                                    <button
-                                        class="btn_next_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
-                                        type="button" id="select_page" url_data="nextPageUrl">
-                                        >
-                                    </button>
-                                    <button
-                                        class="btn_last_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
-                                        type="button"id="select_page" url_data="lastPage">
-                                        >>
-                                    </button>
+                                        << </button> <button
+                                            class="btn_prev_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                            type="button" id="select_page" url_data="">
+                                            < </button> Page <input type="text" id="page_input" value=""
+                                                class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 p-[7px] w-20 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                required>
+                                                of <span id="lastPage"></span>
+                                                <button
+                                                    class="btn_next_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                                    type="button" id="select_page" url_data="nextPageUrl">
+                                                    >
+                                                </button>
+                                                <button
+                                                    class="btn_last_page bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                                    type="button" id="select_page" url_data="lastPage">
+                                                    >>
+                                                </button>
                                 </div>
                             </div>
 
@@ -199,7 +194,7 @@
 
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         $.ajaxSetup({
             headers: {
@@ -220,15 +215,15 @@
         // function Start
         list_oder();
 
-        $(function() {
-            $('#oder_TBody').on("click", "tr.table-tr", function() {
+        $(function () {
+            $('#oder_TBody').on("click", "tr.table-tr", function () {
                 window.location = $(this).data("href");
                 // alert($(this).data("href"));
             });
         });
 
 
-        $(document).on('click', '#select_page', function() {
+        $(document).on('click', '#select_page', function () {
             let type_btn = $(this).attr("type_btn")
             let url_data = $(this).attr("url_data")
 
@@ -240,17 +235,17 @@
         })
 
 
-        $('#btn_search').on('click', function(){
+        $('#btn_search').on('click', function () {
             let txt_search = $('#txt_search').val();
 
-            list_oder( 1, txt_search);
+            list_oder(1, txt_search);
         })
 
-        $('#btn_clear_search').on('click', function(){
+        $('#btn_clear_search').on('click', function () {
             let txt_search = '';
             $('#txt_search').val('');
 
-            list_oder( 1, txt_search);
+            list_oder(1, txt_search);
         })
 
         function changPage(input, last_page) {
@@ -273,11 +268,11 @@
             $.ajax({
                 type: "POST",
                 url: `/process/GetOder?page=${page}`,
-                data:{
-                    txt_search : txt_search
+                data: {
+                    txt_search: txt_search
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
 
                     $('#txt_firstItem').text(response.orders.from)
                     $('#txt_lastItem').text(response.orders.to)
@@ -299,7 +294,7 @@
                     btn_last_page.setAttribute("url_data", response.orders.last_page_url);
 
                     console.log(response.orders.data)
-                    response.orders.data.forEach(function(item) {
+                    response.orders.data.forEach(function (item) {
                         html_oder += `
                         <tr class="table-tr bg-white border-b dark:bg-gray-800 dark:border-gray-700 clickable-row cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600" data-href='/Onprocess/${item.Order_id}'>
                             <th scope="row"
@@ -337,7 +332,8 @@
                     $('#oder_TBody').html(html_oder)
 
 
-                    document.querySelector('#page_input').addEventListener('keypress', function(e) {
+                    document.querySelector('#page_input').addEventListener('keypress', function (
+                    e) {
                         if (e.key === 'Enter') {
                             // code for enter
                             let input = $('#page_input').val()
@@ -350,12 +346,13 @@
             });
         }
 
-        $(".clickable-row").click(function() {
+        $(".clickable-row").click(function () {
             window.location = $(this).data("href");
             // alert($(this).data("href"))
         });
 
     })
+
 </script>
 
 </html>

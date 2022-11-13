@@ -1,75 +1,85 @@
 $(document).ready(function () {
+    var permitt = [];
+    $.ajax({
+        type: "get",
+        url: "/settings/permitt",
+        dataType: "json",
+        success: function (response) {
+            permitt = response;
+        }
+    });
     // set table
     function setTable(data) {
+        // console.log(permitt);
         $("#orderTable").empty();
         data.forEach((element) => {
             // console.log(element);
             const rowHtml = `
             <tr>
-                <td class="border-dashed border-t border-gray-200 px-3">
+                <td class=" border-gray-200 px-3">
                     <label
                         class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
                         <input type="checkbox" ${(element.Approve_at != null ? "disabled": '')} name="order" value="${element.Order_id}"
-                            class="form-checkbox rowCheckbox focus:outline-none ${(element.Approve_at != null ? "hidden": '')} focus:shadow-outline bg-white dark:bg-dark dark:text-light">
+                            class="form-checkbox rowCheckbox focus:outline-none ${(element.Approve_at != null ? "hidden": '')} ${(permitt['Receive Orders'] == 0 ? "hidden": '')} focus:shadow-outline bg-white dark:bg-dark dark:text-light">
                     </label>
                 </td>
-                <td class="border-dashed border-t border-gray-200 action">
+                <td class=" border-gray-200 action">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
-                        <button disabled type="button" value="${element.Order_id}"
-                            class="edit_order mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                        <a type="button" value="${element.Order_id}" href="/orders/edit/${element.Order_id}"
+                            class="edit_order ${(element.StatusApprove == 1 ? (permitt['Force Edit Orders'] == 1 ? '' : 'invisible') : '')} mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-regular fa-pen-to-square fa-xl mx-auto"></i>
-                        </button>
+                        </a>
                         <a type="button" value="${element.Order_id}" href="/orders/pdf?orderid=${element.Order_id}" target="_blank"
                             class="print_order mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-info inline-flex items-center hover:bg-info-dark focus:outline-none focus:ring focus:ring-info focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-solid fa-print fa-xl mx-auto"></i>
                         </a>
                         <button type="button" value="${element.Order_id}"
-                            class="delete_order mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                            class="delete_order ${(element.StatusApprove == 1 ? (permitt['Force Delete Orders'] == 1 ? '' : 'hidden') : '')} mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-danger inline-flex items-center hover:bg-danger-dark focus:outline-none focus:ring focus:ring-danger focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-solid fa-trash fa-xl mx-auto"></i>
                         </button>
                     </span>
                 </td>
                 <td
-                    class="border-dashed border-t border-gray-200 Order_id">
+                    class=" border-gray-200 Order_id">
                     <span
                         class="text-nowrap text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.Order_id}
                     </span>
                 </td>
                 <td
-                    class="border-dashed border-t border-gray-200 customerName">
+                    class=" border-gray-200 customerName">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.Customer_name}
                     </span>
                 </td>
                 <td
-                    class="border-dashed border-t border-gray-200 departmentsName">
+                    class=" border-gray-200 departmentsName">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.Department_name}
                     </span>
                 </td>
-                <td class="border-dashed border-t border-gray-200 notes">
+                <td class=" border-gray-200 notes">
                     <span
                         class="cut-text text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.Notes != null ? element.Notes : "-"}
                     </span>
                 </td>
-                <td class="border-dashed border-t border-gray-200 created_by">
+                <td class=" border-gray-200 created_by">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.userCreate}
                     </span>
                 </td>
-                <td class="border-dashed border-t border-gray-200 created_at">
+                <td class=" border-gray-200 created_at">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.Create_at}
                     </span>
                 </td>
-                <td class="border-dashed border-t border-gray-200 Approve_by">
+                <td class=" border-gray-200 Approve_by">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${
@@ -79,7 +89,7 @@ $(document).ready(function () {
                         }
                     </span>
                 </td>
-                <td class="border-dashed border-t border-gray-200 Approve_by">
+                <td class=" border-gray-200 Approve_by">
                     <span
                         class="text-gray-700 dark:text-light px-1 py-2 flex items-center">
                         ${element.Approve_at != null ? element.Approve_at : "-"}
@@ -177,6 +187,14 @@ $(document).ready(function () {
         if (e.keyCode == 13) {
             let txt_search = $("#search").val();
             getListOrder(null, txt_search);
+        }
+    });
+
+    $("#page_input").keydown(function (e) { 
+        if (e.keyCode == 13) {
+            let txt_search = $("#search").val();
+            let page = $("#page_input").val();
+            getListOrder(page, txt_search);
         }
     });
 

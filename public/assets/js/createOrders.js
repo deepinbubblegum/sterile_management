@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $(".select2").select2({});
-
+    var formDataImage = new FormData();
     //Functions
     // function getcustomers() {
     function getcustomers() {
@@ -109,23 +109,29 @@ $(document).ready(function () {
 
     // function CreateOrders()
     function CreateOrders(notes_messages, items, customers_id, departments_id) {
+        var form = new FormData();
+        formDataImage.forEach((value, key) => {
+            form.append('file[]', value);
+        });
+        form.append("notes_messages", notes_messages);
+        form.append("items", JSON.stringify(items));
+        form.append("customers_id", customers_id);
+        form.append("departments_id", departments_id);
         $.ajax({
             type: "POST",
             url: "/orders/create/createorders",
-            data: {
-                customers_id: customers_id,
-                departments_id: departments_id,
-                notes_messages: notes_messages,
-                items: items,
-            },
+            data: form,
             dataType: "json",
+            contentType: false,
+            cache: false,
+            processData: false,
             success: function (response) {
                 console.log(response);
                 if (response == true) {
                     window.location.href="/orders";
                 }else{
                     alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
-                    window.location.href="http://localhost/orders/create";
+                    window.location.href="/orders/create";
                 }
             }
         });
@@ -215,12 +221,50 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (response) {
-                if (response == null) {
-                    $("#img_item").attr("src", `/assets/image/image_preview.jpg`);
+                let length = response.length;
+                console.log(response);
+                $('.images-slides-show').empty();
+                $('.thumbnail-images').empty();
+                
+                if (length >= 1){
+                    $("#img_item").attr("src", `/assets/image/equipments/${response[0]['Image_path']}`);
+                    response.forEach((val, index) => {
+                        const html_txt = `
+                            <div class="mySlides p-1">
+                                <div class="numbertext">${index+1} / ${length}</div>
+                                <img class="max-w-full h-auto rounded-md object-center" src="/assets/image/equipments/${val['Image_path']}">
+                            </div>
+                        `;
+                        $('.images-slides-show').append(html_txt);
+                        const html_txt2 = `
+                            <div class="column p-1">
+                                <img class="demo cursor max-w-full h-auto" src="/assets/image/equipments/${val['Image_path']}" 
+                                data-currentSlide="${index+1}" alt="${val['Image_path']}">
+                            </div>
+                        `;
+                        $('.thumbnail-images').append(html_txt2);
+                    });
                 }else{
-                    // console.log(response);
-                    $("#img_item").attr("src", `/assets/${response.Image_path}/${response.Image_id}.jpg`);
+                    $("#img_item").attr("src", `/assets/image/image_preview.jpg`);
+                    const html_txt = `
+                        <div class="images-slides-show grid justify-items-center">
+                            <!-- Full-width images with number text -->
+                            <div class="mySlides p-1">
+                                <div class="numbertext">1 / 1</div>
+                                <img class="max-w-full h-auto rounded-md object-center" src="/assets/image/image_preview.jpg">
+                            </div>
+                        </div>
+                    `;
+                    $('.images-slides-show').append(html_txt);
+                    const html_txt2 = `
+                        <div class="column p-1">
+                            <img class="demo cursor max-w-full h-auto" src="/assets/image/image_preview.jpg"
+                                data-currentSlide="1" alt="image_preview">
+                        </div>
+                    `;
+                    $('.thumbnail-images').append(html_txt2);
                 }
+                image_slider_init();
             }
         });
     });
@@ -284,7 +328,7 @@ $(document).ready(function () {
         }
     }
 
-    $("#div_btn_save").click(function (e) {
+    $("#create_orders_save").click(function (e) {
         e.preventDefault();
         notes_messages = $("#notes_messages").val();
         customers_id = $("#customers").find(":selected").val();
@@ -302,5 +346,154 @@ $(document).ready(function () {
         }).get();
         // console.log(tbl);
         CreateOrders(notes_messages, tbl, customers_id, departments_id);
+    });
+
+
+    $('.show-image').click(function (e) { 
+        e.preventDefault();
+        $('#modal_show_image_packing').removeClass('invisible');
+    });
+
+    $('#Close_show_image_packing').click(function (e) { 
+        e.preventDefault();
+        $('#modal_show_image_packing').addClass('invisible');
+    });
+
+    image_slider_init();
+    function image_slider_init(){
+        // images slider
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        // Next/previous controls
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        // Thumbnail image controls
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        $('.demo.cursor').click(function (e) { 
+            e.preventDefault();
+            let currentIndex = $(this).attr('data-currentSlide');
+            currentSlide(currentIndex);
+        });
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("demo");
+            // let captionText = document.getElementById("caption");
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex-1].style.display = "block";
+            dots[slideIndex-1].className += "active";
+            // captionText.innerHTML = dots[slideIndex-1].alt;
+        }
+
+        $('.next').click(function (e) { 
+            e.preventDefault();
+            plusSlides(1)
+        });
+        $('.prev').click(function (e) { 
+            e.preventDefault();
+            plusSlides(-1)
+        });
+    }
+
+    function showImages(formDataImage){
+        $('#list_img').empty();
+        let index = 0;
+        formDataImage.forEach((value, key, fD) => {
+            // console.log(value.name);
+            // const [file] = value;
+            const html = `
+                <a class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                    <div class="relative" height="40px" width="auto">
+                        <img class="w-full" style="height: 15rem; object-fit: contain;" src="${URL.createObjectURL(value)}" alt="dummy-image">
+                        <button data-key="${key}" data-index="${index}" class="btn_remove_img absolute bottom-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
+                            Remove
+                        </button>
+                    </div>
+                </a>
+            `;
+            index++;
+            $('#list_img').append(html);
+        });
+
+
+        $('.btn_remove_img').click(function (e) {
+            e.preventDefault();
+            let key = $(this).attr('data-key');
+            formDataImage.delete(key);
+            showImages(formDataImage);
+        });
+    }
+
+    $('.closeModal').on('click', function(e){
+        $('#modal_images').addClass('invisible');
+    });
+
+    $('.openImageModal').click(function (e) { 
+        e.preventDefault();
+        $('#modal_images').removeClass('invisible');
+    });
+
+    $('.dropzone-file').on('drop', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        let files = e.originalEvent.dataTransfer.files;
+        let imageType = /^image\//;
+        if (files.length > 0) {
+            if (!imageType.test(files[0].type)) {
+                alert('กรุณาเลือกไฟล์รูปภาพ');
+                return false;
+            }
+        }
+        console.log(files);
+        let equip_id = $('#label_tag').attr('data-value');
+
+        for (let i = 0; i < files.length; i++) {
+            formDataImage.append(i, files[i]);
+        }
+        showImages(formDataImage);
+    });
+
+    $('.dropzone-file').on('dragenter', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('dragenter');
+    });
+
+    $('.dropzone-file').on('dragover', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('dragover');
+    });
+
+    $('#dropzone-file').change(function (e) { 
+        e.preventDefault();
+        let files = e.target.files;
+        let imageType = /^image\//;
+        if (files.length > 0) {
+            if (!imageType.test(files[0].type)) {
+                alert('กรุณาเลือกไฟล์รูปภาพ');
+                return false;
+            }
+        }
+
+        for (let i = 0; i < files.length; i++) {
+            formDataImage.append(i, files[i]);
+        }
+        showImages(formDataImage);
     });
 });

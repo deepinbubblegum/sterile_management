@@ -67,7 +67,7 @@
                 </div>
             </div>
             <hr>
-            <table class="w-full text-base px-2">
+            <table class="w-full text-base px-0">
                 <tbody class="">
                     <tr class="">
                         <td class="text-left px-1"><b>ออเดอร์ / เลขที่ :</b> {{$order_id}}</td>
@@ -85,7 +85,6 @@
                     </tr>
                 </tbody>
             </table>
-
             <hr>
         </header>
 

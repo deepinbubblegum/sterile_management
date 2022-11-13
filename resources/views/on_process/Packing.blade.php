@@ -39,6 +39,13 @@
                         <option>Item 03</option> --}}
                     </select>
                 </div>
+                <div>
+                    <label for="packing_cycle"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Cycle</label>
+                    <input type="text" id="packing_cycle"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Cycle">
+                </div>
             </div>
 
 
@@ -58,7 +65,7 @@
                     <label for="option_machine_sterile"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เลือกเครื่อง
                         Sterile</label>
-                    <select id="option_machine_sterile"
+                    <select id="option_machine_sterile" data-type=""
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         {{-- <option>Sterile 01</option>
                         <option>Sterile 02</option>
@@ -103,7 +110,7 @@
                     <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">เพิ่ม
                         Item</label>
                     <button type="button" id="item_add_packing"
-                        class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add</button>
+                        class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">เพิ่ม</button>
                 </div>
             </div>
 
@@ -226,13 +233,15 @@
                 <div class="lg:grid-cols-1 md:grid-cols-1 mt-1">
                     <div>
                         {{-- <a type="button" id="btn_pdf_packing" href="/Onprocess/pdf/{{ $oder_id }}" target="_blank"
-                            class="my-2 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Print QR Code
+                        class="my-2 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4
+                        focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600
+                        dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Print QR Code
                         </a> --}}
 
                         <button type="button" id="btn_save_packing"
-                            class="my-2 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                            Save
+                            class="my-2 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            บันทึก
                         </button>
                     </div>
                 </div>
@@ -265,8 +274,7 @@
                         </div>
 
                         <button id="modal_Packing_close" type="button" style="position: fixed; top: 1rem; right: 1rem;"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                            data-modal-toggle="Modal_Img_Packing">
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
@@ -277,49 +285,54 @@
                         </button>
 
                         <p class="mt-4">
-                        <div class="text-sm dark:text-light">
+                            <div class="text-sm dark:text-light">
 
-                            <div class="mt-3 mb-3">
-                                <div class="flex justify-center items-center w-full">
-                                    <label for="Input_Image_packing"
-                                        class="flex flex-col justify-center items-center w-full h-auto bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                        <div class="flex flex-col justify-center items-center pt-5 pb-6">
-                                            <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400"
-                                                fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
-                                                </path>
-                                            </svg>
-                                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
-                                                    class="font-semibold">Click to upload</span> or drag and drop</p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF</p>
-                                        </div>
-                                        <input id="Input_Image_packing" type="file" class="hidden" accept="image/png, image/gif, image/jpeg" />
-                                        <input id="id_packing_modal" type="text" class="hidden" />
-                                    </label>
+                                <div class="mt-3 mb-3">
+                                    <div class="flex justify-center items-center w-full">
+                                        <label for="Input_Image_packing"
+                                            class="flex flex-col justify-center items-center w-full h-auto bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                            <div class="flex flex-col justify-center items-center pt-5 pb-6">
+                                                <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                                    </path>
+                                                </svg>
+                                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
+                                                        class="font-semibold">Click to upload</span> or drag and drop
+                                                </p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF
+                                                </p>
+                                            </div>
+                                            <input id="Input_Image_packing" type="file" class="hidden"
+                                                accept="image/png,  image/jpeg" />
+                                            <input id="id_packing_modal" type="text" class="hidden" />
+                                        </label>
+                                    </div>
+
+                                    <div class="flex p-2 space-x-4 flex justify-center">
+                                        <img id="packing_img_preview" src="" alt=""
+                                            style="object-fit:contain !important;">
+                                    </div>
+
+                                    <div class="flex p-2 space-x-4 flex justify-center">
+                                        <button type="button" id="add_img_pakcing"
+                                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                            เพื่มรูป
+                                        </button>
+                                    </div>
+
                                 </div>
 
-                                <div class="flex p-2 space-x-4 flex justify-center">
-                                    <img id="packing_img_preview" src="" alt="" style="object-fit:contain !important;">
-                                </div>
+                                <hr class="mb-3">
 
-                                <div class="flex p-2 space-x-4 flex justify-center">
-                                    <button type="button" id="add_img_pakcing"
-                                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary hover:bg-primary-dark text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                        เพื่มรูป
-                                    </button>
-                                </div>
+                                <div class="grid gap-6 mb-6 lg:grid-cols-2 md:grid-cols-2" id="list_img_packing">
 
-                            </div>
-
-                            <hr class="mb-3">
-
-                            <div class="grid gap-6 mb-6 lg:grid-cols-2 md:grid-cols-2" id="list_img_packing">
-
-                                {{-- <div class="relative" height="40px" width="auto">
+                                    {{-- <div class="relative" height="40px" width="auto">
                                     <img class="w-full" src="{{ asset('assets/image/S__40607792.jpg') }}"
-                                        alt="dummy-image">
+                                    alt="dummy-image">
                                     <button
                                         class="absolute top-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
                                         remove </button>
@@ -327,27 +340,40 @@
 
                             </div>
 
-                        </div>
-                        </p>
                     </div>
+                    </p>
+                </div>
 
-                    <div class="bg-white dark:bg-darker dark:text-light px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="button" id="modal_Packing_close"
-                            class="closeModal mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                            ปิด
-                        </button>
-                    </div>
+                <div class="bg-white dark:bg-darker dark:text-light px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" id="modal_Packing_close"
+                        class="closeModal mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        ปิด
+                    </button>
                 </div>
             </div>
         </div>
+    </div>
 
+    </div>
+
+    {{-- Modal Show Images --}}
+    <div id="modal_show_image_packing"
+        class="z-50 hidden fixed top-0 left-0 w-screen h-screen bg-black/70 flex justify-center items-center overflow-auto">
+
+        <!-- The close button -->
+        <a class="fixed z-50 top-6 right-8 text-white text-5xl font-bold cursor-pointer text-orange-500"
+            id="Close_show_image_packing">&times;</a>
+
+        <!-- A big image will be displayed here -->
+        <img id="modal_Fullimg_packing" class="flex flex-col h-auto max-h-full" src="" />
     </div>
 
 </section>
 
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
     })
+
 </script>

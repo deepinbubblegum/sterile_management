@@ -12,6 +12,10 @@ $(document).ready(function () {
                             class="openEditModal mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             <i class="fa-regular fa-pen-to-square fa-xl mx-auto"></i>
                         </button>
+                        <button type="button" value="${element.Equipment_id}"
+                            class="openImageModal mr-1 w-10 h-10 px-2 py-2 text-base text-white rounded-md bg-primary inline-flex items-center hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
+                            <i class="fa-solid fa-image fa-xl mx-auto"></i>
+                        </button>
                         <button type="button" data-value="${element.Activate == 'A' ? 'I': 'A'}" value="${element.Equipment_id}"
                             class="toggle_activate_equipments mr-1 w-10 h-10 px-2 py-2 text-base text-white ${element.Activate == 'A' ? 'bg-success hover:bg-success-dark focus:ring-success' : 'bg-warning hover:bg-warning-dark focus:ring-warning'} rounded-md inline-flex items-center focus:outline-none focus:ring  focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark">
                             ${element.Activate == 'A' ? '<i class="fa-solid fa-check fa-xl mx-auto"></i>' : '<i class="fa-solid fa-x fa-xl mx-auto"></i>'}
@@ -161,17 +165,48 @@ $(document).ready(function () {
         $('#interestModal').addClass('invisible');
     });
 
+    $('#SUD_Check').click(function(){
+        if($(this).prop("checked") == true){
+            $('#input_div_limit').show();
+        }
+        else if($(this).prop("checked") == false){
+            $('#input_div_limit').hide();
+        }
+    });
+
+    $('#edit_SUD_Check').click(function(){
+        if($(this).prop("checked") == true){
+            $('#edit_input_div_limit').show();
+        }
+        else if($(this).prop("checked") == false){
+            $('#edit_input_div_limit').hide();
+        }
+    });
+
     $('#add_equip').click(function (e) { 
         e.preventDefault();
-        let equip_name = $('#equip_name').val();
-        let price = $('#price').val();
-        let expire = $('#expire').val();
-        let process = $("#process option:selected").val();
-        let item_type = $('#item_type').val();
-        let descriptions = $('#descriptions').val();
+        const equip_name = $('#equip_name').val();
+        const price = $('#price').val();
+        const expire = $('#expire').val();
+        const process = $("#process option:selected").val();
+        const item_type = $('#item_type').val();
+        const descriptions = $('#descriptions').val();
+        const sud_checked = $('#SUD_Check').not(this).prop('checked', this.checked);
+        const limit = $('#limit').val();
+        
         if (process == '0') {
             alert('กรุณาเลือกกระบวนการ');
             return false;
+        }
+
+        if (sud_checked.is(":checked")) {
+            if (limit <= 0) {
+                alert('กรุณากำหนดจำนวนรอบการใช้งานสูงสุด');
+                return false;
+            }
+            sud = 1;
+        }else{
+            sud = 0;
         }
 
         $.ajax({
@@ -183,16 +218,22 @@ $(document).ready(function () {
                 equipment_expire: expire,
                 equipment_process: process,
                 equipment_item_type: item_type,
-                equipment_descriptions: descriptions
+                equipment_descriptions: descriptions,
+                equipment_sud: sud,
+                equipment_limit: limit
             },
             dataType: "json",
             success: function (response) {
                 $('#interestModal').addClass('invisible');
                 $('#equip_name').val('');
-                $('#price').val('');
-                $('#expire').val('');
+                $('#price').val('0.00');
+                $('#expire').val(0);
+                $("#process").val(0).change();
                 $('#item_type').val('');
                 $('#descriptions').val('');
+                $('#SUD_Check').prop('checked', false);
+                $('#limit').val('');
+                $('#input_div_limit').hide();
 
                 let page = $('#page_input').val();
                 let txt_search = $("#search").val();
@@ -254,15 +295,24 @@ $(document).ready(function () {
                 },
                 dataType: "json",
                 success: function (response) {
-                    // console.log(response);
+                    console.log(response);
                     $('#edit_equip_name').attr('data-value', equip_id);
                     $('#edit_equip_name').val(response.equipment.Name);
                     $('#edit_price').val(response.equipment.Price);
                     $('#edit_expire').val(response.equipment.Expire);
                     $('#edit_item_type').val(response.equipment.Item_Type);
                     $('#edit_descriptions').val(response.equipment.Descriptions);
-                    $("#edit_process").val(response.equipment.Process.toUpperCase()).change();
+                    $("#edit_process").val(response.equipment.Process).change();
                     $('#editModal').removeClass('invisible');
+                    if (response.equipment.SUD == 1) {
+                        $('#edit_SUD_Check').prop('checked', true);
+                        $('#edit_input_div_limit').show();
+                        $('#edit_limit').val(response.equipment.SUD_Limit);
+                    }else{
+                        $('#edit_SUD_Check').prop('checked', false);
+                        $('#edit_input_div_limit').hide();
+                        $('#edit_limit').val('');
+                    }
                 }
             });
 
@@ -270,50 +320,240 @@ $(document).ready(function () {
 
         $('.closeModal').on('click', function(e){
             $('#editModal').addClass('invisible');
+            $('#modal_images').addClass('invisible');
         });
 
-        $('#save_edit_equip').click(function (e) {
+
+        $('.openImageModal').click(function (e) { 
             e.preventDefault();
-            let equip_id = $('#edit_equip_name').attr('data-value');
-            let edit_equip_name = $('#edit_equip_name').val();
-            let edit_price = $('#edit_price').val();
-            let edit_expire = $('#edit_expire').val();
-            let edit_process = $("#edit_process option:selected").val();
-            let edit_item_type = $('#edit_item_type').val();
-            let edit_descriptions = $('#edit_descriptions').val();
-            if (edit_process == '0') {
-                alert('กรุณาเลือกกระบวนการ');
+            let equip_id = $(this).val();
+            // console.log(equip_id);
+            $('#label_tag').attr('data-value', equip_id);
+            showImages();
+            $('#modal_images').removeClass('invisible');
+        });
+    }
+
+    $('#save_edit_equip').click(function (e) {
+        e.preventDefault();
+        let equip_id = $('#edit_equip_name').attr('data-value');
+        let edit_equip_name = $('#edit_equip_name').val();
+        let edit_price = $('#edit_price').val();
+        let edit_expire = $('#edit_expire').val();
+        let edit_process = $("#edit_process option:selected").val();
+        let edit_item_type = $('#edit_item_type').val();
+        let edit_descriptions = $('#edit_descriptions').val();
+        let edit_sud_checked = $('#edit_SUD_Check').not(this).prop('checked', this.checked);
+        let edit_limit = $('#edit_limit').val();
+
+        if (edit_process == '0') {
+            alert('กรุณาเลือกกระบวนการ');
+            return false;
+        }
+
+        let edit_sud = false;
+        if (edit_sud_checked.is(":checked")) {
+            if (edit_limit <= 0) {
+                alert('กรุณากำหนดจำนวนรอบการใช้งานสูงสุด');
                 return false;
             }
+            edit_sud = 1;
+        }else{
+            edit_sud = 0;
+        }
 
+        $.ajax({
+            type: "POST",
+            url: "/settings/equipments/updateequipments",
+            data: {
+                equipment_id: equip_id,
+                equipment_name: edit_equip_name,
+                equipment_price: edit_price,
+                equipment_expire: edit_expire,
+                equipment_process: edit_process,
+                equipment_item_type: edit_item_type,
+                equipment_descriptions: edit_descriptions,
+                equipment_sud: edit_sud,
+                equipment_limit: edit_limit
+            },
+            dataType: "json",
+            success: function (response) {
+                let page = $('#page_input').val();
+                let txt_search = $("#search").val();
+                getEquipments(page, txt_search);
+                $('#editModal').addClass('invisible');
+            }
+        });
+    });
+
+    $('#page_input').keydown(function (e) {
+        if (e.keyCode == 13) {
+            let page = $('#page_input').val();
+            let txt_search = $("#search").val();
+            getEquipments(page, txt_search);
+        }
+    });
+
+    $('.dropzone-file').on('dragenter', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('dragenter');
+    });
+
+    $('.dropzone-file').on('dragover', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('dragover');
+    });
+
+    function showImages(){
+        let equip_id = $('#label_tag').attr('data-value');
+        $.ajax({
+            type: "GET",
+            url: "/settings/equipments/getequipmentsimages",
+            data: {
+                equipment_id: equip_id
+            },
+            dataType: "json",
+            success: function (response) {
+                $('#list_img').empty();
+                response.forEach(element => {
+                    const html = `
+                        <a class="block p-1 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                            <div class="relative" height="40px" width="auto">
+                                <img class="w-full" style="height: 15rem; object-fit: contain;" src="/assets/image/equipments/${element.Image_path}" alt="dummy-image">
+                                <button src-data="${element.Image_path}" class="btn_View_img absolute top-1 right-1 bg-green-500 text-white p-2 rounded hover:bg-green-800">
+                                    View
+                                </button>
+                                <button data-id_img="${element.Image_id}" data-equipmentid="${element.Equipment_id}" data-image="${element.Image_path}" class="btn_remove_img absolute bottom-1 right-1 bg-red-500 text-white p-2 rounded hover:bg-red-800">
+                                    Remove
+                                </button>
+                            </div>
+                        </a>
+                    `;
+                    $('#list_img').append(html);
+                });
+                loadedshow();
+            }
+        });
+    }
+
+    function loadedshow(){
+        $('.btn_remove_img').click(function (e) { 
+            e.preventDefault();
+            let image_id = $(this).attr('data-id_img');
+            let equipment_id = $(this).attr('data-equipmentid');
+            let image_path = $(this).attr('data-image');
             $.ajax({
                 type: "POST",
-                url: "/settings/equipments/updateequipments",
+                url: "/settings/equipments/deleteimageequpment",
                 data: {
-                    equipment_id: equip_id,
-                    equipment_name: edit_equip_name,
-                    equipment_price: edit_price,
-                    equipment_expire: edit_expire,
-                    equipment_process: edit_process,
-                    equipment_item_type: edit_item_type,
-                    equipment_descriptions: edit_descriptions
+                    image_id: image_id,
+                    equipment_id: equipment_id,
+                    image_path: image_path
                 },
                 dataType: "json",
                 success: function (response) {
-                    let page = $('#page_input').val();
-                    let txt_search = $("#search").val();
-                    getEquipments(page, txt_search);
-                    $('#editModal').addClass('invisible');
+                    showImages();
                 }
             });
         });
 
-        $('#page_input').keydown(function (e) {
-            if (e.keyCode == 13) {
-                let page = $('#page_input').val();
-                let txt_search = $("#search").val();
-                getEquipments(page, txt_search);
+        $('.btn_View_img').click(function (e) {
+            e.preventDefault();
+            let src = $(this).attr('src-data');
+            $('#modal_Fullimg_packing').attr('src', `/assets/image/equipments/${src}`);
+            $('#modal_show_image_packing').removeClass('invisible');
+        });
+    
+        $('#Close_show_image_packing').click(function (e) {
+            e.preventDefault();
+            $('#modal_show_image_packing').addClass('invisible');
+        });
+    }
+
+    $('.dropzone-file').on('drop', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        let files = e.originalEvent.dataTransfer.files;
+        let imageType = /^image\//;
+        if (files.length > 0) {
+            if (!imageType.test(files[0].type)) {
+                alert('กรุณาเลือกไฟล์รูปภาพ');
+                return false;
+            }
+        }
+        console.log(files);
+        let equip_id = $('#label_tag').attr('data-value');
+        let formData = new FormData();
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append('file[]', files[i]);
+        }
+        formData.append('equipment_id', equip_id);
+
+        sendformData(formData);
+    });
+
+    function sendformData(formData){
+        $.ajax({
+            xhr: function () {
+                let xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener('progress', function (e) {
+                    if (e.lengthComputable) {
+                        let percentComplete = e.loaded / e.total;
+                        percentComplete = parseInt(percentComplete * 100);
+                        percentDecimal = percentComplete * 100;
+                        $('.percent_upload_bar').removeClass('invisible');
+                        $('.percent_upload').width(`${percentDecimal}%`);
+                        console.log(percentComplete);
+                        if (percentComplete === 100) {
+                            console.log('upload completed');
+                            $('.percent_upload_bar').addClass('invisible');
+                            $('.percent_upload').width(`100%`);
+                        }
+                    }
+                }, false);
+                return xhr;
+            },
+            type: "POST",
+            url: "/settings/equipments/imagesuploadequpment",
+            data: formData,
+            contentType: false,
+            cache: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                console.log('uploading...');
+            },
+            error: function (response) {
+                console.log('error');
+            },
+            success: function (response) {
+                // console.log(response);
+                showImages();
             }
         });
     }
+
+    $('#dropzone-file').change(function (e) { 
+        e.preventDefault();
+        let files = e.target.files;
+        let imageType = /^image\//;
+        if (files.length > 0) {
+            if (!imageType.test(files[0].type)) {
+                alert('กรุณาเลือกไฟล์รูปภาพ');
+                return false;
+            }
+        }
+        console.log(files);
+        let equip_id = $('#label_tag').attr('data-value');
+        let formData = new FormData();
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append('file[]', files[i]);
+        }
+        formData.append('equipment_id', equip_id);
+        sendformData(formData);
+    });
 });

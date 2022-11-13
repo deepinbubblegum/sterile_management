@@ -26,7 +26,7 @@
             <main class="flex-1 overflow-x-hidden">
 
                 <div class="flex flex-col flex-1 h-full min-h-screen p-4 overflow-x-hidden overflow-y-auto">
-
+                    @include('component.ribbon')
                     {{-- Breadcrumb --}}
                     <div class="mx-auto rounded-md w-full bg-white dark:bg-darker dark:text-light p-4 mb-4 leading-6 ">
                         <nav class="flex" aria-label="Breadcrumb">
@@ -191,8 +191,8 @@
                                             <select id="process" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                 <option value="0" disabled selected>เลือก Process Type</option>
                                                 <option value="STEAM">STEAM</option>
-                                                <option value="PLASMA">PLASMA</option>
-                                                <option value="ETO">ETO</option>
+                                                <option value="plasma">PLASMA</option>
+                                                <option value="eo">EO</option>
                                                 <option value="Wash&Disinfection">Wash&Disinfection</option>
                                             </select>
                                         </div>
@@ -202,7 +202,15 @@
                                         </div>
                                         <div class="mr-2 ml-2">
                                             <label for="descriptions" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">คำอธิบาย</label>
-                                            <textarea id="descriptions" name="descriptions" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>                                            
+                                            <textarea id="descriptions" name="descriptions" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>                                            
+                                        </div>
+                                        <div class="flex items-center mr-3 ml-3 mt-2">
+                                            <input id="SUD_Check" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="SUD_Check" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">อุปกรณ์ SUD</label>
+                                        </div>
+                                        <div class="mr-2 ml-2" hidden id="input_div_limit">
+                                            <label for="limit" class="block mt-1 mb-1 text-sm font-medium text-gray-900 dark:text-gray-400">จำนวนรอบสูงสุด</label>
+                                            <input type="number" id="limit" value="0" name="limit" min="0" step="0" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                     </div>
                                 </div>
@@ -257,9 +265,9 @@
                                             <select id="edit_process" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                 <option value="0" disabled selected>เลือก Process Type</option>
                                                 <option value="STEAM">STEAM</option>
-                                                <option value="PLASMA">PLASMA</option>
-                                                <option value="EO">EO</option>
-                                                <option value="DISINFECTION">DISINFECTION</option>
+                                                <option value="plasma">PLASMA</option>
+                                                <option value="eo">EO</option>
+                                                <option value="Wash&Disinfection">Wash&Disinfection</option>
                                             </select>
                                         </div>
                                         <div class="mr-2 ml-2">
@@ -268,7 +276,15 @@
                                         </div>
                                         <div class="mr-2 ml-2">
                                             <label for="edit_descriptions" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">คำอธิบาย</label>
-                                            <textarea id="edit_descriptions" name="edit_descriptions" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>                                            
+                                            <textarea id="edit_descriptions" name="edit_descriptions" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>                                            
+                                        </div>
+                                        <div class="flex items-center mr-3 ml-3 mt-2">
+                                            <input id="edit_SUD_Check" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="edit_SUD_Check" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">อุปกรณ์ SUD</label>
+                                        </div>
+                                        <div class="mr-2 ml-2" id="edit_input_div_limit" hidden>
+                                            <label for="edit_limit" class="block mt-1 mb-1 text-sm font-medium text-gray-900 dark:text-gray-400">จำนวนรอบสูงสุด</label>
+                                            <input type="number" id="edit_limit" value="0" name="edit_price" min="0" step="0" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                     </div>
                                 </div>
@@ -285,6 +301,70 @@
                     </div>
                 </div>
             </div>
+
+            <div class="fixed z-10 inset-0 w-full invisible overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modal_images">
+                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
+                        <div class="inline-block align-bottom bg-white dark:bg-darker dark:text-light rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-top sm:max-w-2xl w-full">
+                            <div class="bg-white dark:bg-darker dark:text-light px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                        {{-- <i class="fa-regular fa-building text-gray-700"></i> --}}
+                                        <i class="fa-solid fa-image fa-lg text-gray-700"></i>
+                                    </div>
+                                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                        <h3 class="text-lg mt-2 leading-6 font-medium bg-white dark:bg-darker dark:text-light" id="modal-title">
+                                            เพิ่มรูปภาพ
+                                        </h3>
+                                </div>
+                            </div>
+                            <p class="mt-4">
+                                <div class="text-sm dark:text-light">
+                                    <div class="flex flex-col flex-wrap">
+                                        <div class="flex justify-center items-center w-full">
+                                            <label for="dropzone-file" id="label_tag" data-value="" class="dropzone-file flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                                <div class="flex flex-col justify-center items-center pt-5 pb-6">
+                                                    <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF</p>
+                                                </div>
+                                                <input id="dropzone-file" type="file" accept="image/svg, image/png, image/gif, image/jpeg" class="hidden" multiple>
+                                            </label>
+                                        </div> 
+                                        <div class="py-2">
+                                            <span>
+                                                <h3 class="text-lg"><hr></h3> 
+                                                <div class="mb-1 text-base font-medium dark:text-white"></div>
+                                                    <div class="percent_upload_bar w-full invisible bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
+                                                    <div class="percent_upload bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 0%"></div>
+                                                </div>
+                                            </span>
+                                            <div class="grid gap-6 mb-6 lg:grid-cols-2 md:grid-cols-2" id="list_img">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p>
+                        </div>
+                        <div class="bg-white dark:bg-darker dark:text-light px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <button type="button" class="closeModal mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                ปิด
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modal_show_image_packing" class="z-50 invisible fixed top-0 left-0 w-screen h-screen bg-black/70 flex justify-center items-center overflow-auto">
+
+                <!-- The close button -->
+                <a class="fixed z-50 top-6 right-8 text-5xl font-bold cursor-pointer text-orange-500" id="Close_show_image_packing">×</a>
+        
+                <!-- A big image will be displayed here -->
+                <img id="modal_Fullimg_packing" class="flex flex-col h-auto max-h-full" src="">
+            </div>
+
             </main>
         </div>
     </div>

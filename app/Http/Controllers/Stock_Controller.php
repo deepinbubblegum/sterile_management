@@ -25,7 +25,8 @@ class Stock_Controller extends BaseController
 
             $list_Stock = DB::table('items')
             ->select('order_id')
-            ->where('Item_status', 'Stock')
+            // ->where('Item_status', 'Stock')
+            ->whereIn('Item_status', ['Stock', 'Deliver'])
             ->distinct('order_id')
             ->get()
             ->toArray();
@@ -47,7 +48,7 @@ class Stock_Controller extends BaseController
                 ->leftjoin('customers', 'orders.Customer_id', '=', 'customers.Customer_id')
                 ->where(function ($query) use ($data) {
                     if ($data['txt_search'] != '') {
-                        $query->where('order_id', 'like', '%' . $data['txt_search'] . '%');
+                        $query->where('orders.order_id', 'like', '%' . $data['txt_search'] . '%');
                     }
                 })
                 ->whereIn('orders.order_id', $data_list)

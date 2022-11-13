@@ -20,12 +20,19 @@
 <script defer src="{{ asset('assets/fontawesome-6.2/js/all.js') }}"></script>
 
 <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
+
+<script src="{{ asset('assets/datepicker.js') }}"></script>
 <style>
     body {
         /* font-family: 'Kanit', sans-serif !important; */
         font-family: 'Bai Jamjuree', sans-serif !important;
     }
+
 </style>
+
+<link href="{{ asset('assets/css/loading.css') }}" rel="stylesheet" />
+
+<script src="https://unpkg.com/html5-qrcode"></script>
 
 @vite('resources/js/app.js')
 @vite('resources/css/app.css')
@@ -36,4 +43,8 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
 </script>
+
+{{-- notification scripts --}}
+<script src="{{asset('assets/js/notifications.js')}}"></script>

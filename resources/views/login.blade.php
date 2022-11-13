@@ -26,6 +26,7 @@
                 class="inline-block mb-6 text-3xl font-bold tracking-wider uppercase text-primary-dark dark:text-light">
             </a> --}}
             <main>
+                @include('component.ribbon')
                 <div class="w-full max-w-sm px-4 py-6 space-y-6 bg-white rounded-md dark:bg-darker">
                     <h1 class="text-xl font-semibold text-center">Login</h1>
                     <form class="space-y-6" id="formLogin">
@@ -141,7 +142,7 @@
         // end setup
 
 
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -171,10 +172,11 @@
                     .then((response) => response.json())
                     .then((data) => {
 
-                        if(data.code == '200'){
-                            window.location = '{{ url('/') }}';
-                        }else{
-
+                        if (data.code == '200') {
+                            location.reload();
+                            // window.location = url_path;
+                        } else {
+                            alert('Username or Password Invalid')
                         }
                         // console.log('Success:', data.data.Permission);
                     })
@@ -185,6 +187,7 @@
 
 
         })
+
     </script>
 </body>
 
