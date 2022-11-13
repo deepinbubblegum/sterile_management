@@ -7,7 +7,6 @@
 <!-- Backdrop -->
 <div x-show="isSidebarOpen" @click="isSidebarOpen = false" class="fixed inset-0 z-10 bg-primary-darker lg:hidden"
     style="opacity: 0.5" aria-hidden="true"></div>
-
 <!-- Sidebar content -->
 <aside x-show="isSidebarOpen" x-transition:enter="transition-all transform duration-300 ease-in-out"
     x-transition:enter-start="-translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100"
@@ -27,8 +26,9 @@
          </div> --}}
         <div class="flex flex-col items-center justify-center flex-1 space-y-4">
             <!-- ScanQR button -->
+            
             <button id="scan_qr_order"
-                class="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
+                class="{{$permissions->{'QR Scan'} != '1' ? 'hidden' : ''}} p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
                 <span class="sr-only">Open ScanQR panel</span>
                 <svg class="w-6 h-6" width="24px" height="24px" stroke="currentColor" aria-hidden="true"
                     fill="none" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
@@ -148,11 +148,12 @@
                     :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button"
                     aria-haspopup="true" :aria-expanded="(open || isActive) ? 'true' : 'false'">
                     <span aria-hidden="true">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        {{-- <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                        </svg>
+                        </svg> --}}
+                        <i class="fa-solid fa-notes-medical fa-lg"></i>
                     </span>
                     <span class="ml-2 text-sm"> Orders </span>
                 </a>
@@ -181,11 +182,12 @@
                     :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button"
                     aria-haspopup="true" :aria-expanded="(open || isActive) ? 'true' : 'false'">
                     <span aria-hidden="true">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        {{-- <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                        </svg>
+                        </svg> --}}
+                        <i class="fa-solid fa-file-medical fa-lg"></i>
                     </span>
                     <span class="ml-2 text-sm">COA Report</span>
                 </a>
@@ -486,61 +488,7 @@
         <div class="flex-1 pt-4 overflow-y-hidden hover:overflow-y-auto">
             <!-- Action tab -->
             <div class="space-y-4" x-show.transition.in="activeTabe == 'action'" id="sidebar_notifications">
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <p class="hidden pt-1 text-sm font-semibold text-right">อ่านแล้ว</p>
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <p class="hidden pt-1 text-sm font-semibold text-right">อ่านแล้ว</p>
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <p class="hidden pt-1 text-sm font-semibold text-right">อ่านแล้ว</p>
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <p class="hidden pt-1 text-sm font-semibold text-right">อ่านแล้ว</p>
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <p class="hidden pt-1 text-sm font-semibold text-right">อ่านแล้ว</p>
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
-                <div
-                    class="px-4 cursor-pointer transition-colors dark:text-gray-400 dark:hover:text-light hover:text-gray-700">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam facere quasi, distinctio voluptatum
-                    minima totam odit hic vitae? Magni delectus corporis itaque aperiam nesciunt ea consectetur quaerat
-                    dolorem vero quam.
-                    <p class="hidden pt-1 text-sm font-semibold text-right">อ่านแล้ว</p>
-                    <hr class="mx-auto w-full h-1 bg-gray-100 rounded border-0 md:my-4 dark:bg-gray-700">
-                </div>
+                
             </div>
 
             <!-- User tab -->

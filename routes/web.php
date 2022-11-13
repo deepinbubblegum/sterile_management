@@ -80,14 +80,26 @@ Route::group(['middleware' => ['authLogin']], function () {
 
 
     Route::get('/process', function () {
-        return view('process');
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->Process == "1"){
+            return view('process');
+        }else{
+            return abort(404);
+        }
     });
 
     Route::post('/process/GetOder', [Process_Controller::class, 'GetListOder']);
 
     Route::get('/Onprocess/{oder_id}', function ($oder_id) {
         // dd($oder_id);
-        return view('Onprocess', ['oder_id' => $oder_id]);
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->Process == "1"){
+            return view('Onprocess', ['oder_id' => $oder_id]);
+        }else{
+            return abort(404);
+        }
     });
 
     Route::post('/Onprocess/GetOderItem', [OnProcess_controller::class, 'OnProcess_GetOderItem']);
@@ -127,7 +139,13 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // COA Report
     Route::get('/coa_report', function () {
-        return view('coa_report');
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->{'COA Report'} == "1"){
+            return view('coa_report');
+        }else{
+            return abort(404);
+        }
     });
     Route::get('/COA_Report_PDF/{coa_id}', [COA_Controller::class, 'COA_Report_pdf']);
     Route::post('/coa/Get_mechine', [COA_Controller::class, 'Get_machine']);
@@ -139,7 +157,13 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Stock
     Route::get('/stock', function () {
-        return view('stock');
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->Stock == "1"){
+            return view('stock');
+        }else{
+            return abort(404);
+        }
     });
     Route::post('/Get_Stock', [Stock_Controller::class, 'Get_Stock']);
     Route::get('/stock/{oder_id}', function ($oder_id) {
@@ -157,7 +181,13 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Create Order Page use here
     Route::get('/orders/create', function () {
-        return view('createOrders');
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->Orders == "1"){
+            return view('createOrders');
+        }else{
+            return abort(404);
+        }
     });
     Route::get('/orders/create/getcustomers', [CreateOrder_Controller::class, 'getCustomers']);
     Route::get('/orders/create/getdepartments', [CreateOrder_Controller::class, 'getDepartments']);
@@ -180,7 +210,13 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Order Page use here
     Route::get('/orders', function () {
-        return view('orders');
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->Orders == "1"){
+            return view('orders');
+        }else{
+            return abort(404);
+        }
     });
     Route::get('/orders/getlistorder', [Order_Controller::class, 'getListOrder']);
     Route::get('/orders/pdf', [Order_Controller::class, 'getOrderPDF']);
@@ -189,7 +225,13 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Settings Customer Page use here
     Route::get('/settings/customers', function () {
-        return view('customers');
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->Customers == "1"){
+            return view('customers');
+        }else{
+            return abort(404);
+        }
     });
     Route::get('/settings/customers/getlistcustomers', [Customers_Controller::class, 'getListCustomers']);
     Route::get('/settings/customers/getcustomersdetail', [Customers_Controller::class, 'getCustomersDetail']);
@@ -223,7 +265,13 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Settings Equipments Page use here
     Route::get('/settings/equipments', function () {
-        return view('equipments');
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->Equipments == "1"){
+            return view('equipments');
+        }else{
+            return abort(404);
+        }
     });
     Route::get('/settings/equipments/getlistequipments', [Equipments_Controller::class, 'getListEquipments']);
     Route::get('/settings/equipments/getequipmentsdetail', [Equipments_Controller::class, 'getEquipmentsDetail']);
@@ -237,7 +285,13 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Settings Users Page use here
     Route::get('/settings/users', function () {
-        return view('users');
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->Users == "1"){
+            return view('users');
+        }else{
+            return abort(404);
+        }
     });
     Route::get('/settings/getgroup', [Users_Controller::class, 'getGroup']);
     Route::get('/settings/users/getallusers', [Users_Controller::class, 'getAllUsers']);
@@ -249,7 +303,13 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Settings Groups Page use here
     Route::get('/settings/groups', function () {
-        return view('groups');
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->Groups == "1"){
+            return view('groups');
+        }else{
+            return abort(404);
+        }
     });
     Route::get('/settings/groups/getlistgroups', [Groups_Controller::class, 'getListGroups']);
     Route::get('/settings/groups/getgroupsdetail', [Groups_Controller::class, 'getGroupsDetail']);
@@ -261,7 +321,13 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Settings Programes Sterile Page use here
     Route::get('/settings/programs', function () {
-        return view('programs');
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->{'Programs Sterlie'} == "1"){
+            return view('programs');
+        }else{
+            return abort(404);
+        }
     });
     Route::get('/settings/programs/getlistprograms', [Programs_Controller::class, 'getListPrograms']);
     Route::get('/settings/programs/getprogramsdetail', [Programs_Controller::class, 'getProgramsDetail']);
@@ -271,7 +337,13 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Settings Machines sterile Page use here
     Route::get('/settings/machinessterile', function () {
-        return view('machinessterile');
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->{'Machines Sterlie'} == "1"){
+            return view('machinessterile');
+        }else{
+            return abort(404);
+        }
     });
     Route::get('/settings/machinessterile/getlistmachines', [MachinesSterile_Controller::class, 'getListMachinesSterile']);
     Route::get('/settings/machinessterile/getmachinesdetail', [MachinesSterile_Controller::class, 'getMachinesSterileDetail']);
@@ -292,7 +364,13 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Settings Machines washings Page use here
     Route::get('/settings/machineswashings', function () {
-        return view('machineswashings');
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->{'Machines Washings'} == "1"){
+            return view('machineswashings');
+        }else{
+            return abort(404);
+        }
     });
     Route::get('/settings/machineswashings/getlistmachines', [MachinesWashings_Controller::class, 'getListMachinesWashings']);
     Route::get('/settings/machineswashings/getmachinesdetail', [MachinesWashings_Controller::class, 'getMachinesWashingsDetail']);
@@ -303,7 +381,13 @@ Route::group(['middleware' => ['authLogin']], function () {
 
     // Reports Page use here
     Route::get('/reports', function () {
-        return view('reports');
+        $users_permit = new UsersPermission_Controller();
+        $permissions = $users_permit->UserPermit();
+        if ($permissions->Reports == "1"){
+            return view('reports');
+        }else{
+            return abort(404);
+        }
     });
     Route::get('/reports/getlistcustomers', [Reports_Controller::class, 'getListCustomers']);
     Route::get('/reports/getlistdepartments', [Reports_Controller::class, 'getListDepartments']);
