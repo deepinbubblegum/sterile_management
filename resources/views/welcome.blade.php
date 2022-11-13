@@ -358,8 +358,8 @@
                 success: function (response) {
                     console.log(response)
                     // item_per_month item_per_year txt_Customer txt_Department
-                    $('#item_per_month').text(response.item_month)
-                    $('#item_per_year').text(response.item_year)
+                    $('#item_per_month').text(new Intl.NumberFormat().format(response.item_month))
+                    $('#item_per_year').text(new Intl.NumberFormat().format(response.item_year))
 
                     $('#txt_Customer').text(response.customers)
                     $('#txt_Department').text(response.departments)
