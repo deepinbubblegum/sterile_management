@@ -97,6 +97,9 @@
                                                 class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" />
                                         </th>
                                         <th scope="col" class="py-3 px-6">
+                                            ส่งครบ
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
                                             หมายเลขอุปกรณ์
                                         </th>
                                         <th scope="col" class="py-3 px-6">
@@ -316,9 +319,13 @@
                         html_item_list += `
                         <tr>
                             <td class="py-4 px-6">
-                                <input id="WS_Check" type="checkbox" ${(item.Item_status == 'Deliver' ? 'Checked' : '')}
-                                        class="${(item.Item_status == 'Deliver' ? 'Deliver_Success' : '')} w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light ${( (item.Item_status == 'Stock' || item.Item_status == 'Deliver') ? '' : 'hidden' )}"  ${(item.Item_status == 'Stock' ? '' : 'disabled' )}>
-                                </td>
+                                <input id="WS_Check" type="checkbox"
+                                        class="${(item.Item_status == 'Deliver' ? 'Deliver_Success' : '')} w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light ${( (item.Item_status != 'Deliver') ? '' : 'hidden' )}"  ${(item.Item_status == 'Deliver' ? 'disabled' : '' )}>
+                            </td>
+                            <td class="py-4 px-6">
+                                <input id="count_Check" type="checkbox"
+                                        class="${(item.Item_status == 'Deliver' ? 'Deliver_Success' : '')} w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light ${( (item.Item_status != 'Deliver') ? '' : 'hidden' )}"  ${(item.Item_status == 'Deliver' ? 'disabled' : '' )}>
+                            </td>
                             <td scope="col" class="py-3 px-6" value="${item.Item_id}">
                                 ${item.Item_id}
                             </td>
@@ -366,7 +373,7 @@
         $('#washing_all_check').change(function () {
 
             if ($(this).prop('checked')) {
-                $(`tbody tr td input[type="checkbox"]`).each(
+                $(`tbody tr td input[id="WS_Check"]`).each(
                     function () {
                         if (!$(this).hasClass("Deliver_Success")) {
                             $(this).prop('checked', true);
@@ -375,7 +382,7 @@
 
                     });
             } else {
-                $(`tbody tr td input[type="checkbox"]`).each(
+                $(`tbody tr td input[id="WS_Check"]`).each(
                     function () {
                         if (!$(this).hasClass("Deliver_Success")) {
                             $(this).prop('checked', false);
@@ -516,11 +523,12 @@
 
             let tb_list_Stock = $('#list_item_id tr:has(td)').map(function (index, cell) {
                 var $td = $('td', this);
-                if (($td.eq(4).attr('value') == 'Stock') && $('td input', this).prop(
+                if (($td.eq(5).attr('value') != 'Deliver') && $('td input#WS_Check', this).prop(
                         'checked')) {
                     return {
-                        item_id: $td.eq(1).attr('value'),
-                        stock_id: $td.eq(10).attr('value'),
+                        item_id: $td.eq(2).attr('value'),
+                        stock_id: $td.eq(11).attr('value'),
+                        check: $('td input#count_Check', this).prop('checked') || 'false',
                     }
                 }
             }).get();
@@ -590,11 +598,12 @@
 
             let tb_list_Stock = $('#list_item_id tr:has(td)').map(function (index, cell) {
                 let $td = $('td', this);
-                if (($td.eq(4).attr('value') == 'Stock') && $('td input', this).prop(
+                if (($td.eq(5).attr('value') != 'Deliver') && $('td input#WS_Check', this).prop(
                         'checked')) {
                     return {
-                        item_id: $td.eq(1).attr('value'),
-                        stock_id: $td.eq(10).attr('value'),
+                        item_id: $td.eq(2).attr('value'),
+                        stock_id: $td.eq(11).attr('value'),
+                        check: $('td input#count_Check', this).prop('checked') || 'false',
                     }
                 }
             }).get();

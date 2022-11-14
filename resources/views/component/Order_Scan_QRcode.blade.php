@@ -90,19 +90,25 @@
         var html5QrcodeScanner = new Html5QrcodeScanner(
             "qr-reader", {
                 fps: 10,
-                qrbox: 250
+                qrbox: 250,
+                rememberLastUsedCamera: false
             });
         html5QrcodeScanner.render(onScanSuccess);
 
         $('#scan_qr_order').on('click', function () {
+            html5QrcodeScanner.render(onScanSuccess);
             $('#modal_show_QR_code').removeClass('invisible');
         })
 
         $(document).on('click', '#modal_QR_code_close', function () {
+            html5QrcodeScanner.clear();
             $('#modal_show_QR_code').addClass('invisible');
         })
 
         function check_order(order_id) {
+
+            html5QrcodeScanner.clear();
+
             $.ajax({
                 type: "POST",
                 url: `/QR_code/Check_order`,
