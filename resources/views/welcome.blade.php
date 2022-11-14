@@ -94,13 +94,25 @@
                     </div>
                     {{-- Breadcrumb end --}}
 
-                    <div class="mx-auto text-center">
+                    <div class="mx-auto text-center mb-5">
                         <span class="text-2xl">Dashboard</span>
                         <hr>
                         <div class="text-center mt-1 text-2xl">
                             <h1 id="Dashboard_month"></h1>
                         </div>
                     </div>
+
+                    <hr>
+
+                    <div class="mx-auto mt-5">
+                        <span class="text-xl p-5"> List Machine</span>
+                        <div class="grid grid-cols-2 gap-8 p-4 lg:grid-cols-4 xl:grid-cols-4" id="list_machine">
+
+                        </div>
+                    </div>
+
+
+                    <hr>
 
                     <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-2 xl:grid-cols-3">
                         <div class="flex flex-col items-center justify-between">
@@ -189,7 +201,7 @@
 
 
 
-                    <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-1 xl:grid-cols-3">
+                    <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-1 xl:grid-cols-3 mb-3">
                         <!-- Value card -->
                         <div class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
                             <span class="text-sm">KPI Set Accuracy Target</span>
@@ -233,11 +245,27 @@
 
                     </div>
 
+                    <hr>
+
+
+
+                    <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-2 xl:grid-cols-2 mt-5">
+                        <div>
+                            <label for="option_Department_search"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                                Select Department
+                            </label>
+                            <select id="option_departments"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="" selected> All Department</option>
+                            </select>
+                        </div>
+                    </div>
+
                     @endif
 
                     {{-- <div class="overflow-x-auto relative shadow-md sm:rounded-lg"> --}}
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto"
-                        style="display: none">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto mt-3">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="py-3 px-6">
@@ -262,7 +290,7 @@
                         </tbody>
                     </table>
 
-                    <div class="mt-3" style="display: none">
+                    <div class="mt-3">
 
                         <div class="text-end text-slate-600 mr-2">
                             View <span id="txt_firstItem"></span> - <span id="txt_lastItem">
@@ -311,7 +339,7 @@
 
 <script>
     $(document).ready(function () {
-
+        // $("#option_departments").select2({});
         var date = new Date(),
 
             now_month = date.getMonth(),
@@ -332,6 +360,7 @@
         $('#option_month').val(now_month + 1).change()
 
         Get_Data();
+        Get_Department();
 
         $('#option_month').on("change", function () {
             let month = $(this).val()
@@ -339,10 +368,49 @@
             list_Stock(1);
         })
 
+        $('#option_departments').on("change", function () {
+            list_Stock(1);
+        })
+
         var refreshId = setInterval(function () {
             let month = $('#option_month').val()
             Get_Data(parseInt(month));
         }, 1200000);
+
+        function Get_Department() {
+            $.ajax({
+                type: "POST",
+                url: `/dashboard/Get_Department`,
+                dataType: "json",
+                success: function (response) {
+                    response.forEach((element) => {
+                        $("#option_departments").append(
+                            `<option value="${element.Department_id}">${element.Department_name}</option>`
+                        );
+                    });
+                    // console.log(response)
+                    // item_per_month item_per_year txt_Customer txt_Department
+                    // if (response.length > 0) {
+                    //     $("#option_departments").prop("disabled", false);
+                    //     $("#option_departments").empty();
+                    //     $("#option_departments").append(
+                    //         `<option value="" disabled selected> --- แผนก หรือ หน่วยงาน --- </option>`
+                    //     );
+                    //     response.forEach((element) => {
+                    //         $("#option_departments").append(
+                    //             `<option value="${element.Department_id}">${element.Department_name}</option>`
+                    //         );
+                    //     });
+                    // } else {
+                    //     $("#option_departments").prop("disabled", true);
+                    //     $("#option_departments").empty();
+                    //     $("#option_departments").append(
+                    //         `<option value="" disabled selected>--- ไม่พบข้อมูล แผนก ภายใต้ สถานพยาบาล หรือ ศูนย์การแพทย์ นี้  ---</option>`
+                    //     );
+                    // }
+                }
+            });
+        }
 
 
         function Get_Data(month = now_month + 1) {
@@ -356,7 +424,7 @@
                 },
                 dataType: "json",
                 success: function (response) {
-                    console.log(response)
+                    // console.log(response)
                     // item_per_month item_per_year txt_Customer txt_Department
                     $('#item_per_month').text(response.item_month)
                     $('#item_per_year').text(response.item_year)
@@ -373,6 +441,7 @@
                     chart_kpi_Loss_Target(response.month_loss, response.month_list_item);
                     chart_kpi_Damage_Target(response.month_Damage, response.month_list_item);
                     chart_kpi_Delivery_Target(response.deliver_late)
+                    list_machine(response.List_Machine);
                 }
             });
         }
@@ -818,16 +887,44 @@
             );
         }
 
+        // ${element.detail != null ? 'green' : 'red'}
+        // <div>
+        //                 <a href="#" class="block p-6 max-w-sm bg-${element.detail != null ? 'green' : 'red'} rounded-lg border border-${element.detail != null ? 'green' : 'red'}-200 shadow-md hover:bg-${element.detail != null ? 'green' : 'red'}-100 dark:bg-${element.detail != null ? 'green' : 'red'}-800 dark:border-${element.detail != null ? 'green' : 'red'}-700 dark:hover:bg-${element.detail != null ? 'green' : 'red'}-700">
+        //                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-black-900 dark:text-${element.detail != null ? 'green' : 'red'}">${element.Machine_name}</h5>
+        //                     <p class="font-normal text-black-700 dark:text-black-400">
+        //                         Cycle : ${element.detail != null ? element.detail.cycle_now : '-'}
+        //                     </p>
+        //                 </a>
+        //             </div>
+        function list_machine(Data) {
+            Data.forEach((element) => {
+                $("#list_machine").append(
+                    `
+                    <div>
+                        <a href="#" class="block p-6 max-w-sm bg-${element.detail != null ? 'green' : 'red'}-500 bg-opacity-100 rounded-lg border border-${element.detail != null ? 'green' : 'red'}-200 shadow-md hover:bg-${element.detail != null ? 'green' : 'red'}-100 dark:bg-${element.detail != null ? 'green' : 'red'}-800 dark:border-${element.detail != null ? 'green' : 'red'}-700 dark:hover:bg-${element.detail != null ? 'green' : 'red'}-700">
+                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${element.Machine_name}</h5>
+                            <p class="font-normal text-gray-700 dark:text-gray-400">
+                                Cycle : ${element.detail != null ? element.detail.cycle_now : '-'}
+                            </p>
+                        </a>
+                    </div>
+                    `
+                );
+            });
+        }
+
         list_Stock();
 
         function list_Stock(page = 1) {
             let month = $('#option_month').val()
+            let departments = $('#option_departments').val() != null ? $('#option_departments').val() : ''
 
             $.ajax({
                 type: "POST",
                 url: `/dashboard/Get_Stock_Exp?page=${page}`,
                 data: {
-                    month: month
+                    month: month,
+                    departments: departments
                 },
                 dataType: "json",
                 success: function (response) {

@@ -185,12 +185,15 @@ class Stock_Deliver_Controller extends BaseController
 
             foreach ($list_stock as $item) {
 
+                $state_backlog = $item->check == 'true' ? 'Deliver' : 'Backlog';
+
                 DB::table('items')
                     ->where('Order_id', $data['OrderId'])
-                    ->where('Item_status', 'Stock')
+                    // ->where('Item_status', 'Stock')
                     ->where('Item_id', $item->item_id)
                     ->update([
-                        'Item_status' => 'Deliver',
+                        // 'Item_status' => 'Deliver',
+                        'Item_status' => $state_backlog,
                         'Delivery_date' =>  $dateNow,
                         'Signature' => $file_name
                     ]);
@@ -199,7 +202,7 @@ class Stock_Deliver_Controller extends BaseController
                     ->where('Order_id', $data['OrderId'])
                     ->where('Item_id', $item->item_id)
                     ->where('Stock_id', $item->stock_id)
-                    ->whereNull('date_out_stock')
+                    // ->whereNull('date_out_stock')
                     ->update([
                         'date_out_stock' =>  $dateNow,
                         'Signature_custumer' => $file_name,
@@ -232,6 +235,12 @@ class Stock_Deliver_Controller extends BaseController
                     ->update([
                         'StatusOrder' => 'Deliver',
                     ]);
+            } else {
+                DB::table('orders')
+                    ->where('Order_id', $data['OrderId'])
+                    ->update([
+                        'StatusOrder' => 'Backlog',
+                    ]);
             }
 
             $return_data->code = '1000';
@@ -263,7 +272,7 @@ class Stock_Deliver_Controller extends BaseController
             array_push($list_item, $value->item_id);
         }
 
-        // dd($list_item);
+        // dd($req_list);
 
         $items = DB::table('items')
             ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name', 'washing.washing_id', 'orders.Create_at')
@@ -276,6 +285,7 @@ class Stock_Deliver_Controller extends BaseController
             ->where(function ($query) {
                 $query->where('items.Item_status', 'Stock');
                 $query->orWhere('items.Item_status', 'Deliver');
+                $query->orWhere('items.Item_status', 'Backlog');
             })
             ->where('washing.PassStatus', 'Pass')
             ->whereIn('items.item_id', $list_item)
@@ -326,6 +336,7 @@ class Stock_Deliver_Controller extends BaseController
         $List_data->orders = $orders;
         $List_data->dateNow = $dateNow->format('d/m/Y');
         $List_data->User_Deliver = $user_deliver->Username;
+        $List_data->req_list = $req_list;
 
         $pdf = PDF::loadView('pdf.Deliver', compact('List_data'));
         $pdf->setPaper('A4');

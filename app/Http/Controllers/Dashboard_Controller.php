@@ -18,6 +18,16 @@ use App\Http\Controllers\UsersPermission_Controller;
 class Dashboard_Controller extends BaseController
 {
 
+    public function Get_Department()
+    {
+        $departments = DB::table('departments')
+            ->select('*')
+            ->get();
+
+        return $departments;
+    }
+
+
     public function Get_Stock_Exp(Request $request)
     {
 
@@ -26,6 +36,8 @@ class Dashboard_Controller extends BaseController
 
         $month = $req['month'];
         $year = $dateNow->year;
+
+        $Dep_select = $req['departments'];
 
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
@@ -49,9 +61,13 @@ class Dashboard_Controller extends BaseController
             ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
             ->whereYear('orders.Create_at', $year)
             ->whereMonth('orders.Create_at', $month)
-            ->where(function ($query) use ($dep_id) {
+            ->where(function ($query) use ($dep_id, $Dep_select) {
                 if ($dep_id != null) {
                     $query->where('orders.Department_id', $dep_id);
+                }
+
+                if ($Dep_select != null) {
+                    $query->where('orders.Department_id', $Dep_select);
                 }
             })
             ->paginate(15);
@@ -375,6 +391,29 @@ class Dashboard_Controller extends BaseController
 
         // dd($stock_exp);
 
+        $List_Machine = DB::table('machine')
+            ->select('*')
+            ->where('machine.Machine_type', '!=', 'Wash&Disinfection')
+            ->get();
+
+
+
+        foreach ($List_Machine as $item) {
+
+            $Cycle_Machine = DB::table('machine')
+                ->selectRaw(' machine.*, MAX(packing.Cycle) as cycle_now , coa_report.coa_id, coa_report.`status`')
+                ->leftjoin('packing', 'machine.Machine_id', '=', 'packing.Machine_id')
+                ->leftjoin('coa_report', 'machine.Machine_id', '=', 'coa_report.machine_id')
+                // ->whereYear('orders.Create_at', $year)
+                ->where('machine.Machine_id', $item->Machine_id)
+                ->where('machine.Machine_type', '!=', 'Wash&Disinfection')
+                ->whereDate('coa_report.date', '=', Carbon::today()->toDateString())
+                ->groupBy('machine.Machine_id')
+                ->first();
+
+            $item->detail = $Cycle_Machine;
+        }
+
         $List_Deliver_late = new \stdClass();
         $List_Deliver_late->all = $deliver;
         $List_Deliver_late->late = $deliver_late;
@@ -396,6 +435,7 @@ class Dashboard_Controller extends BaseController
         $List->SUD_Month = $SUD_Month;
         $List->Sterile_Fail = $Sterile_Fail;
         $List->deliver_late = $List_Deliver_late;
+        $List->List_Machine = $List_Machine;
         return $List;
     }
 }

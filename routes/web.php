@@ -75,6 +75,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     })->name('welcome');
     Route::post('/dashboard/Get_Data', [Dashboard_Controller::class, 'Get_Data']);
     Route::post('/dashboard/Get_Stock_Exp', [Dashboard_Controller::class, 'Get_Stock_Exp']);
+    Route::post('/dashboard/Get_Department', [Dashboard_Controller::class, 'Get_Department']);
 
     Route::post('/QR_code/Check_order', [Scan_QR_Code::class, 'Get_order']);
 
@@ -317,7 +318,6 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/notifications', [Notifications_Controller::class, 'getNotifications']);
     Route::get('/notificationsdetails', [Notifications_Controller::class, 'getNotificationEditOrderDetail']);
     Route::post('/notificationreaded', [Notifications_Controller::class, 'NotificationReaded']);
-
 });
 
 Route::get('/logout', function () {
