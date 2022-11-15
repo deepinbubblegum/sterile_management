@@ -23,7 +23,7 @@
     </style>
 </head>
 
-<body>
+<body class="overflow-y-hidden">
     <div x-data="setup()" x-init="$refs.loading.classList.add('hidden');
     setColors(color);" :class="{ 'dark': isDark }" @resize.window="watchScreen()">
         <div class="flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
@@ -39,7 +39,7 @@
             <!-- Main content -->
             <main class="flex-1 overflow-x-hidden">
 
-                <div class="flex flex-col flex-1 h-full min-h-screen p-4 overflow-x-hidden overflow-y-auto">
+                <div class="flex flex-col flex-1 h-full min-h-full p-4 ">
                     @include('component.ribbon')
                     {{-- Breadcrumb --}}
                     <div class="mx-auto rounded-md w-full bg-white dark:bg-darker dark:text-light p-4 mb-4 leading-6 ">
@@ -137,6 +137,7 @@
 <script>
     $(document).ready(function () {
 
+        $('#option_userQC').select2();
         // alert('{{ $oder_id }}')
 
         function DateNowDay() {
