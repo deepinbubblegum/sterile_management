@@ -289,6 +289,7 @@ class Stock_Deliver_Controller extends BaseController
             })
             ->where('washing.PassStatus', 'Pass')
             ->whereIn('items.item_id', $list_item)
+            ->groupBy('items.item_id')
             ->orderByRaw('LENGTH(items.item_id)')
             ->get();
         // dd($items);
