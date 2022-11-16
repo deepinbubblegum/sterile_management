@@ -22,6 +22,14 @@
 
     </style>
 
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css"
+        rel="stylesheet">
+
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js">
+    </script>
+
 </head>
 
 <body id="body_html">
@@ -69,7 +77,7 @@
                             </ol>
                         </nav>
                         <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-2 xl:grid-cols-6 mt-5">
-                            <div>
+                            {{-- <div>
                                 <label for="option_machine_sterile_search"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                                     Select Month
@@ -89,6 +97,16 @@
                                     <option value="11">November</option>
                                     <option value="12">December</option>
                                 </select>
+                            </div> --}}
+
+                            <div>
+                                <label for="option_machine_sterile_search"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                                    Select Month
+                                </label>
+                                <input type="text" class="form-control"
+                                    style="height: 2rem !important; font-size: 1.5rem;" name="datepicker"
+                                    id="datepicker_Option_select" autocomplete="off" />
                             </div>
                         </div>
 
@@ -106,7 +124,7 @@
                     <hr>
 
                     <div class="mx-auto mt-5">
-                        <span class="text-xl p-5"> List Machine</span>
+                        <span class="text-xl p-5"> Machine Cycle</span>
                         <div class="grid grid-cols-2 gap-8 p-4 lg:grid-cols-4 xl:grid-cols-4" id="list_machine">
 
                         </div>
@@ -358,25 +376,46 @@
             "July", "August", "September", "October", "November", "December"
         ];
 
-        $('#option_month').val(now_month + 1).change()
+        $("#datepicker_Option_select").datepicker({
+            format: "mm-yyyy",
+            startView: "months",
+            minViewMode: "months",
+            autoclose: true,
+        });
+        // $('#option_month').val(now_month + 1).change()
+        $('#datepicker_Option_select').val(now_month + 1 + '-' + now_year)
 
+
+        // Start Function
         Get_Data();
         Get_Department();
 
-        $('#option_month').on("change", function () {
-            let month = $(this).val()
-            Get_Data(parseInt(month));
-            list_Stock(1);
+
+        $('#datepicker_Option_select').on('changeDate', function (e) {
+            let date = $(this).val().split('-')
+            let year = date[1];
+            let month = date[0];
+            Get_Data(parseInt(month), parseInt(year));
+            // list_Stock(1);
         })
+
+        // $('#option_month').on("change", function () {
+        //     let month = $(this).val()
+        //     Get_Data(parseInt(month));
+        //     list_Stock(1);
+        // })
 
         $('#option_departments').on("change", function () {
             list_Stock(1);
         })
 
         var refreshId = setInterval(function () {
-            let month = $('#option_month').val()
-            Get_Data(parseInt(month));
+            let date = $('#datepicker_Option_select').val().split('-')
+            let year = date[1];
+            let month = date[0];
+            Get_Data(parseInt(month), parseInt(year));
         }, 1200000);
+
 
         function Get_Department() {
             $.ajax({
@@ -414,14 +453,15 @@
         }
 
 
-        function Get_Data(month = now_month + 1) {
+        function Get_Data(month = now_month + 1, year = now_year) {
             $('#Dashboard_month').text((month_EN_Names[month - 1]))
 
             $.ajax({
                 type: "POST",
                 url: `/dashboard/Get_Data`,
                 data: {
-                    month: month
+                    month: month,
+                    year: year
                 },
                 dataType: "json",
                 success: function (response) {
@@ -898,14 +938,17 @@
         //                 </a>
         //             </div>
         function list_machine(Data) {
+            console.log(Data)
+            $("#list_machine").empty();
             Data.forEach((element) => {
                 $("#list_machine").append(
                     `
                     <div>
-                        <a href="#" class="block p-6 max-w-sm bg-${element.detail != null ? 'green' : 'red'}-500 bg-opacity-100 rounded-lg border border-${element.detail != null ? 'green' : 'red'}-200 shadow-md hover:bg-${element.detail != null ? 'green' : 'red'}-100 dark:bg-${element.detail != null ? 'green' : 'red'}-800 dark:border-${element.detail != null ? 'green' : 'red'}-700 dark:hover:bg-${element.detail != null ? 'green' : 'red'}-700">
+                        <a class="block p-6 max-w-sm bg-${element.detail != null ? 'green' : 'red'}-500 bg-opacity-100 rounded-lg border border-${element.detail != null ? 'green' : 'red'}-200 shadow-md hover:bg-${element.detail != null ? 'green' : 'red'}-100 dark:bg-${element.detail != null ? 'green' : 'red'}-800 dark:border-${element.detail != null ? 'green' : 'red'}-700 dark:hover:bg-${element.detail != null ? 'green' : 'red'}-700">
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${element.Machine_name}</h5>
-                            <p class="font-normal text-gray-700 dark:text-gray-400">
-                                Cycle : ${element.detail != null ? element.detail.cycle_now : '-'}
+                            <p class="font-normal text-gray-700 dark:text-gray-900">
+                                Cycle/Day : ${element.detail != null ? element.detail.cycle_now : '-'} <br>
+                                Cycle/Month : ${element.detail_month != null ? element.detail_month : '-'}
                             </p>
                         </a>
                     </div>
@@ -917,7 +960,10 @@
         list_Stock();
 
         function list_Stock(page = 1) {
-            let month = $('#option_month').val()
+            // let month = $('#option_month').val()
+            let date = $('#datepicker_Option_select').val().split('-')
+            let year = date[1];
+            let month = date[0];
             let departments = $('#option_departments').val() != null ? $('#option_departments').val() : ''
 
             $.ajax({
@@ -925,6 +971,7 @@
                 url: `/dashboard/Get_Stock_Exp?page=${page}`,
                 data: {
                     month: month,
+                    year: year,
                     departments: departments
                 },
                 dataType: "json",
