@@ -70,6 +70,7 @@ class Dashboard_Controller extends BaseController
                     $query->where('orders.Department_id', $Dep_select);
                 }
             })
+            ->orderBy('packing.Exp_date')
             ->paginate(15);
 
         return $stock_exp;
