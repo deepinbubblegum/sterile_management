@@ -274,11 +274,20 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                                 Select Department
                             </label>
-                            <select id="option_departments"
+                            <select id="option_departments" style="padding: 0.1rem;"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="" selected> All Department</option>
                             </select>
                         </div>
+
+                        {{-- <div>
+                            <label for="datepicker_Exp"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                                Exp Date
+                            </label>
+                            <input type="text" class="form-control" style="height: 2rem !important; font-size: 1.5rem;"
+                                name="datepicker" id="datepicker_Exp" autocomplete="off" />
+                        </div> --}}
                     </div>
 
                     @endif
@@ -385,10 +394,18 @@
         // $('#option_month').val(now_month + 1).change()
         $('#datepicker_Option_select').val(now_month + 1 + '-' + now_year)
 
+        // $("#datepicker_Exp").datepicker({
+        //     format: "dd-mm-yyyy",
+        //     autoclose: true,
+        //     clearBtn: true
+        // });
+
+
 
         // Start Function
         Get_Data();
         Get_Department();
+        list_Stock();
 
 
         $('#datepicker_Option_select').on('changeDate', function (e) {
@@ -396,6 +413,7 @@
             let year = date[1];
             let month = date[0];
             Get_Data(parseInt(month), parseInt(year));
+            list_Stock();
             // list_Stock(1);
         })
 
@@ -956,8 +974,6 @@
                 );
             });
         }
-
-        list_Stock();
 
         function list_Stock(page = 1) {
             // let month = $('#option_month').val()
