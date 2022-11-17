@@ -342,7 +342,7 @@
                             <td scope="col" class="py-3 px-6">
                                 ${item.Item_Type}
                             </td>
-                            <td scope="col" class="py-3 px-6">
+                            <td scope="col" class="py-3 px-6 uppercase">
                                 ${item.Process}
                             </td>
                             <td scope="col" class="py-3 px-6">
