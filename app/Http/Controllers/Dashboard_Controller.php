@@ -59,8 +59,8 @@ class Dashboard_Controller extends BaseController
             ->leftjoin('orders', 'stock.Order_id', '=', 'orders.Order_id')
             ->leftjoin('items', 'stock.item_id', '=', 'items.item_id')
             ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
-            ->whereYear('orders.Create_at', $year)
-            ->whereMonth('orders.Create_at', $month)
+            ->whereYear('packing.Exp_date', $year)
+            ->whereMonth('packing.Exp_date', $month)
             ->where(function ($query) use ($dep_id, $Dep_select) {
                 if ($dep_id != null) {
                     $query->where('orders.Department_id', $dep_id);
