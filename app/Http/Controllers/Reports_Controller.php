@@ -106,7 +106,7 @@ class Reports_Controller extends BaseController
         $spreadsheet->createSheet();
 
         $items = DB::table('items')
-            ->select('departments.Department_name', 'orders.Create_at', 'equipments.Name', 'orders.Notes', 'items.Quantity', 'equipments.Price')
+            ->select('departments.Department_name', 'orders.Create_at', 'orders.Order_id', 'equipments.Name', 'orders.Notes', 'items.Quantity', 'equipments.Price')
             ->leftJoin('orders', 'items.Order_id', '=', 'orders.Order_id')
             ->leftJoin('departments', 'orders.Department_id', '=', 'departments.Department_id')
             ->leftJoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
@@ -146,6 +146,7 @@ class Reports_Controller extends BaseController
         $item_reports_head = [
             'DEPARTMENT',
             'REQUEST DATE',
+            'REQUEST ID',
             'ITEM NAME',
             'REMARK',
             'QTY',
@@ -155,10 +156,10 @@ class Reports_Controller extends BaseController
             'TOTAL'
         ];
         $spreadsheet->getActiveSheet()->fromArray($item_reports_head, null, 'A4', true, false);
-        $spreadsheet->getActiveSheet()->getStyle('A4:I4')->getFont()->setBold(true);    //ตั้งค่าตัวหนา
-        $spreadsheet->getActiveSheet()->getStyle('A4:I4')->getFill()->setFillType('solid')->getStartColor()->setARGB('A9D08E'); // ตั้งค่าสีพื้นหลัง
+        $spreadsheet->getActiveSheet()->getStyle('A4:J4')->getFont()->setBold(true);    //ตั้งค่าตัวหนา
+        $spreadsheet->getActiveSheet()->getStyle('A4:J4')->getFill()->setFillType('solid')->getStartColor()->setARGB('A9D08E'); // ตั้งค่าสีพื้นหลัง
 
-        $spreadsheet->getActiveSheet()->getStyle('F:I')->getNumberFormat()->setFormatCode('#,##0.00');
+        $spreadsheet->getActiveSheet()->getStyle('G:J')->getNumberFormat()->setFormatCode('#,##0.00');
         $spreadsheet->getActiveSheet()->fromArray($items, null, 'A5', true, false);
 
         // กำหนดให้ความกว้างของคอลัมน์เป็นอัตโนมัติ
@@ -167,26 +168,29 @@ class Reports_Controller extends BaseController
             $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
         }
         $spreadsheet->getActiveSheet()->getStyle('B')->getAlignment()->setHorizontal('center');
-        $spreadsheet->getActiveSheet()->getStyle('E:I')->getAlignment()->setHorizontal('center');
+        $spreadsheet->getActiveSheet()->getStyle('F:J')->getAlignment()->setHorizontal('center');
 
         $index = 0;
         foreach ($items as $key => $value) {
-            $spreadsheet->getActiveSheet()->setCellValue('G' . ($key + 5), '=E' . ($key + 5) . '*F' . ($key + 5));
-            $spreadsheet->getActiveSheet()->setCellValue('H' . ($key + 5), '=G' . ($key + 5) . '*0.07');
-            $spreadsheet->getActiveSheet()->setCellValue('I' . ($key + 5), '=G' . ($key + 5) . '+H' . ($key + 5));
+            $spreadsheet->getActiveSheet()->setCellValue('H' . ($key + 5), '=F' . ($key + 5) . '*G' . ($key + 5));
+            $spreadsheet->getActiveSheet()->setCellValue('I' . ($key + 5), '=H' . ($key + 5) . '*0.07');
+            $spreadsheet->getActiveSheet()->setCellValue('J' . ($key + 5), '=H' . ($key + 5) . '+I' . ($key + 5));
+            // $spreadsheet->getActiveSheet()->setCellValue('G' . ($key + 5), '=E' . ($key + 5) . '*F' . ($key + 5));
+            // $spreadsheet->getActiveSheet()->setCellValue('H' . ($key + 5), '=G' . ($key + 5) . '*0.07');
+            // $spreadsheet->getActiveSheet()->setCellValue('I' . ($key + 5), '=G' . ($key + 5) . '+H' . ($key + 5));
             $index = $key + 5;
         }
         $spreadsheet->getActiveSheet()->setCellValue('A' . ($index + 2), 'GRAND TOTAL');
-        $spreadsheet->getActiveSheet()->setCellValue('E' . ($index + 2), '=SUM(E5:E' . ($index + 1) . ')');
-        $spreadsheet->getActiveSheet()->setCellValue('G' . ($index + 2), '=SUM(G5:G' . ($index + 1) . ')');
+        $spreadsheet->getActiveSheet()->setCellValue('F' . ($index + 2), '=SUM(F5:F' . ($index + 1) . ')');
         $spreadsheet->getActiveSheet()->setCellValue('H' . ($index + 2), '=SUM(H5:H' . ($index + 1) . ')');
         $spreadsheet->getActiveSheet()->setCellValue('I' . ($index + 2), '=SUM(I5:I' . ($index + 1) . ')');
-        $spreadsheet->getActiveSheet()->getStyle('A' . ($index + 2) . ':I' . ($index + 2))->getFont()->setBold(true);    //ตั้งค่าตัวหนา
+        $spreadsheet->getActiveSheet()->setCellValue('J' . ($index + 2), '=SUM(J5:J' . ($index + 1) . ')');
+        $spreadsheet->getActiveSheet()->getStyle('A' . ($index + 2) . ':J' . ($index + 2))->getFont()->setBold(true);    //ตั้งค่าตัวหนา
         // $spreadsheet->getActiveSheet()->getStyle('A'.($index+2).':I'.($index+2))->getFill()->setFillType('solid')->getStartColor()->setARGB('A9D08E'); // ตั้งค่าสีพื้นหลัง
         // $spreadsheet->getActiveSheet()->getStyle('A4:I'.($index+2))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK)->setColor(new Color('000000')); // ตั้งค่าสีเส้นขอบ
-        $spreadsheet->getActiveSheet()->getStyle('A4:I' . ($index + 2))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN); // ตั้งค่าเส้นขอบ
-        $spreadsheet->getActiveSheet()->getStyle('A' . ($index + 2) . ':I' . ($index + 2))->getFill()->setFillType('solid')->getStartColor()->setARGB('A9D08E'); // ตั้งค่าสีพื้นหลัง
-
+        $spreadsheet->getActiveSheet()->getStyle('A4:J' . ($index + 2))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN); // ตั้งค่าเส้นขอบ
+        $spreadsheet->getActiveSheet()->getStyle('A' . ($index + 2) . ':J' . ($index + 2))->getFill()->setFillType('solid')->getStartColor()->setARGB('A9D08E'); // ตั้งค่าสีพื้นหลัง
+        $spreadsheet->getActiveSheet()->getStyle('F')->getNumberFormat()->setFormatCode('#,##0');
         $spreadsheet->setActiveSheetIndex(0); // กำหนดให้เปิด sheet แรกเป็น sheet ที่แสดงผล
         // เขียนข้อมูลลงไฟล์
         $writer = new Xlsx($spreadsheet);
