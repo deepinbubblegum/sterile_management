@@ -80,11 +80,21 @@
 
         <table class="table_top">
             <tr>
-                <td>
-                    วันที่นำเข้าเครื่อง <b class="dot"> {{$List_data->item->Sterile_date_create}} </b>
+                <td>                   
+                    @php
+                        $date_create_sterile = $List_data->item->Sterile_date_create;
+                        $date_create_sterile = date_create($date_create_sterile);
+                        $date_create_sterile = date_format($date_create_sterile,"Y-m-d");
+                    @endphp
+                    วันที่นำเข้าเครื่อง <b class="dot"> {{$date_create_sterile}} </b>
                 </td>
                 <td>
-                    วันที่นำออกเครื่อง <b class="dot"> {{$List_data->item->Sterile_date_Update}} </b>
+                    @php
+                        $date_update_sterile = $List_data->item->Sterile_date_Update;
+                        $date_update_sterile = date_create($date_update_sterile);
+                        $date_update_sterile = date_format($date_update_sterile,"Y-m-d");
+                    @endphp
+                    วันที่นำออกเครื่อง <b class="dot"> {{$date_update_sterile}} </b>
                 </td>
             </tr>
             <tr>
