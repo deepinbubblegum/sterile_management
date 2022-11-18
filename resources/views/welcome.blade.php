@@ -125,7 +125,8 @@
 
                     <div class="mx-auto mt-5">
                         <span class="text-xl p-5"> Machine Cycle</span>
-                        <div class="grid grid-cols-2 gap-8 p-4 lg:grid-cols-4 xl:grid-cols-4" id="list_machine">
+                        <div class="grid grid-cols-1 gap-8 p-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4"
+                            id="list_machine">
 
                         </div>
                     </div>

@@ -402,7 +402,7 @@ class Dashboard_Controller extends BaseController
         foreach ($List_Machine as $item) {
 
             $Cycle_Machine = DB::table('machine')
-                ->selectRaw(' machine.*, MAX(packing.Cycle) as cycle_now , coa_report.coa_id, coa_report.`status`')
+                ->selectRaw(' machine.*, count(DISTINCT packing.Cycle) as cycle_now , coa_report.coa_id, coa_report.`status`')
                 ->leftjoin('packing', 'machine.Machine_id', '=', 'packing.Machine_id')
                 ->leftjoin('coa_report', 'machine.Machine_id', '=', 'coa_report.machine_id')
                 // ->whereYear('orders.Create_at', $year)
@@ -415,28 +415,26 @@ class Dashboard_Controller extends BaseController
 
             $item->detail = $Cycle_Machine;
 
-            // $Cycle_Machine_month = DB::table('machine')
-            //     ->selectRaw(' machine.*, max(packing.Cycle) as cycle_now , coa_report.coa_id, coa_report.`status`')
-            //     ->leftjoin('packing', 'machine.Machine_id', '=', 'packing.Machine_id')
-            //     ->leftjoin('coa_report', 'machine.Machine_id', '=', 'coa_report.machine_id')
-            //     // ->whereYear('orders.Create_at', $year)
-            //     ->where('machine.Machine_id', $item->Machine_id)
-            //     ->where('machine.Machine_type', '!=', 'Wash&Disinfection')
+            // $Cycle_Machine_month = DB::table('packing')
+            //     ->select('Create_at , Cycle')
             //     ->whereYear('packing.Create_at', $year)
             //     ->whereMonth('packing.Create_at', $month)
-            //     ->groupBy('machine.Machine_id')
-            //     ->first();
+            //     ->where('Machine_id', $item->Machine_id)
+            //     ->groupBy('Cycle')
+            //     ->groupByRaw('CAST(Create_at AS DATE)')
+            //     ->count();
             $Cycle_Machine_month = DB::table('packing')
-                ->select('Create_at , Cycle')
+                ->selectRaw('DISTINCT packing.Cycle , DATE(Create_at) , packing.Machine_id')
                 ->whereYear('packing.Create_at', $year)
                 ->whereMonth('packing.Create_at', $month)
                 ->where('Machine_id', $item->Machine_id)
-                ->groupBy('Cycle')
-                ->groupByRaw('CAST(Create_at AS DATE)')
-                ->count();
-            // dd($Cycle_Machine_month);
+                // ->where('Cycle', '!=', '0')
+                // ->groupBy('Cycle')
+                // ->groupByRaw('CAST(Create_at AS DATE)')
+                ->get();
+            // dd(count($Cycle_Machine_month));
 
-            $item->detail_month = $Cycle_Machine_month;
+            $item->detail_month = count($Cycle_Machine_month);
         }
 
         $List_Deliver_late = new \stdClass();

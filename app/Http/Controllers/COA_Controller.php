@@ -334,6 +334,12 @@ class COA_Controller extends BaseController
             // $coa_report[0]->UserName_QC = isset($packing->UserName_QC) ? $packing->UserName_QC : null;
             $coa_report[0]->COA_USER_QC = isset($coa_report[0]->COA_USER_QC) ? $coa_report[0]->COA_USER_QC : null;
 
+            $machine_process = DB::table('machine')
+                ->select('*')
+                ->where('Machine_id', $coa_report[0]->machine_id)
+                ->first();
+            // dd($machine_process);
+
             $list_item = DB::table('items')
                 ->select('items.*', 'equipments.Name', 'equipments.Process', 'equipments.Price', 'equipments.Item_Type', 'equipments.Expire', 'equipments.Instrument_type', 'situations.Situation_name', 'equipments.Item_Type')
                 ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
@@ -342,6 +348,7 @@ class COA_Controller extends BaseController
                 // ->leftjoin('washing', 'items.item_id', '=', 'washing.item_id')
                 ->where('packing.Machine_id', $coa_report[0]->machine_id)
                 ->where('packing.Cycle', $coa_report[0]->cycle)
+                ->where('equipments.Process', $machine_process->Machine_type)
                 ->whereDate('packing.Create_at', $coa_report[0]->date)
                 // ->whereIn('items.Item_id', [$list_item])
                 ->distinct()
