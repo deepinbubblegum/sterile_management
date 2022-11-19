@@ -465,6 +465,7 @@ class Reports_Controller extends BaseController
             $writer->save('php://output');
         } catch (\Throwable $th) {
             echo "ไม่สามารถสร้างไฟล์ได้ เนื่องจากข้อมูลบางอย่างไม่ถูกต้อง หรือไม่มีข้อมูล";
+            dd($th);
         }
         exit();
     }
