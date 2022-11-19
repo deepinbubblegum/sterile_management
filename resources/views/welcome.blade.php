@@ -963,7 +963,7 @@
                 $("#list_machine").append(
                     `
                     <div>
-                        <a class="block p-6 max-w-sm bg-${element.detail != null ? 'green' : 'red'}-500 bg-opacity-100 rounded-lg border border-${element.detail != null ? 'green' : 'red'}-200 shadow-md hover:bg-${element.detail != null ? 'green' : 'red'}-100 dark:bg-${element.detail != null ? 'green' : 'red'}-800 dark:border-${element.detail != null ? 'green' : 'red'}-700 dark:hover:bg-${element.detail != null ? 'green' : 'red'}-700">
+                        <a class="block p-6 max-w-sm bg-${element.check_COA != 0 ? 'green' : 'red'}-500 bg-opacity-100 rounded-lg border border-${element.check_COA != 0 ? 'green' : 'red'}-200 shadow-md hover:bg-${element.check_COA != 0 ? 'green' : 'red'}-100 dark:bg-${element.check_COA != 0 ? 'green' : 'red'}-800 dark:border-${element.check_COA != 0 ? 'green' : 'red'}-700 dark:hover:bg-${element.check_COA != 0 ? 'green' : 'red'}-700">
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${element.Machine_name}</h5>
                             <p class="font-normal text-gray-700 dark:text-gray-900">
                                 Cycle/Day : ${element.detail != null ? element.detail.cycle_now : '-'} <br>
