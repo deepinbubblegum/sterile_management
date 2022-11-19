@@ -435,6 +435,22 @@ class Dashboard_Controller extends BaseController
             // dd(count($Cycle_Machine_month));
 
             $item->detail_month = count($Cycle_Machine_month);
+
+            // Check COA_Report
+            $check = DB::table('machine')
+                ->selectRaw('MAX(packing.Cycle) AS Max_Cycle , coa_report.coa_id')
+                ->leftjoin('packing', 'machine.Machine_id', '=', 'packing.Machine_id')
+                ->leftjoin('coa_report', 'machine.Machine_id', '=', 'coa_report.machine_id')
+                // ->whereYear('orders.Create_at', $year)
+                ->where('machine.Machine_id', $item->Machine_id)
+                ->where('machine.Machine_type', '!=', 'Wash&Disinfection')
+                ->whereDate('coa_report.date', '=', Carbon::today()->toDateString())
+                ->whereDate('packing.Create_at', '=', Carbon::today()->toDateString())
+                ->whereRaw('coa_report.cycle = (SELECT MAX(packing.Cycle) FROM packing
+                WHERE DATE(packing.Create_at) = "2022-11-19")')
+                ->groupBy('machine.Machine_id')
+                ->get();
+            $item->check_COA = count($check);
         }
 
         $List_Deliver_late = new \stdClass();
