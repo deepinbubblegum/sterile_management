@@ -395,6 +395,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/reports/getlistdepartments', [Reports_Controller::class, 'getListDepartments']);
     Route::get('/reports/export/excel/{customer}/order/{onlyapprove}/{department}/between/{date_start}/and/{date_end}', [Reports_Controller::class, 'ExportExcelOrder']);
     Route::get('/reports/export/excel/{customer}/process/{onlyapprove}/{department}/between/{date_start}/and/{date_end}', [Reports_Controller::class, 'ExportExcelProcess']);
+    Route::get('/reports/export/excel/{customer}/stock/{filter_status}/{department}/between/{date_start}/and/{date_end}', [Reports_Controller::class, 'ExportExcelStock']);
 
     // UsersPermission_Controller
     Route::get('/settings/permitt', [UsersPermission_Controller::class, 'UserPermit']);
