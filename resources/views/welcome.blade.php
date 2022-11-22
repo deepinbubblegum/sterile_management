@@ -269,7 +269,7 @@
 
 
 
-                    <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-2 xl:grid-cols-2 mt-5">
+                    <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-2 mt-3">
                         <div>
                             <label for="option_Department_search"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
@@ -289,6 +289,14 @@
                             <input type="text" class="form-control" style="height: 2rem !important; font-size: 1.5rem;"
                                 name="datepicker" id="datepicker_Exp" autocomplete="off" />
                         </div> --}}
+                    </div>
+
+                    <div class="">
+                        <button type="button" id="btn_export_csv"
+                            class="excel_xlsx_Process cursor-pointer text-white my-2 bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2">
+                            <i class="fa-solid fa-file-excel mr-2 -ml-1 fa-xl"></i>
+                            Export to Excel (.xlsx)
+                        </button>
                     </div>
 
                     @endif
@@ -1071,6 +1079,22 @@
             let page = getParameterByName('page', url_data)
 
             list_Stock(page);
+        })
+
+
+        $('#btn_export_csv').on('click', function () {
+
+            const url_path = window.location.pathname;
+
+            let date = $('#datepicker_Option_select').val().split('-')
+            let year = date[1];
+            let month = date[0];
+            let departments = $('#option_departments').val() != null ? $('#option_departments').val() :
+                'all';
+
+            window.open(
+                `/dashboard/Get_Stock_Exp/csv_file?year=${year}&month=${month}&departments=${departments}`,
+                '_blank');
         })
 
     })

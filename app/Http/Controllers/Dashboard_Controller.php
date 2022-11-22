@@ -15,6 +15,11 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\UsersPermission_Controller;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+
 class Dashboard_Controller extends BaseController
 {
 
@@ -476,5 +481,95 @@ class Dashboard_Controller extends BaseController
         $List->deliver_late = $List_Deliver_late;
         $List->List_Machine = $List_Machine;
         return $List;
+    }
+
+    public function Get_Stock_Exp_csv_file(Request $request)
+    {
+        try {
+            // dd($request);
+            $dateNow = Carbon::now();
+            $req = $request->all();
+
+            $month = $req['month'];
+            $year = $req['year'];
+
+            $Dep_select = $req['departments'];
+
+            $users_permit = new UsersPermission_Controller();
+
+            // stock_exp
+            $stock_exp = DB::table('stock')
+                ->select('stock.*', 'packing.Exp_date', 'equipments.Name', 'departments.Department_name')
+                ->leftjoin('packing', 'stock.item_id', '=', 'packing.item_id')
+                ->leftjoin('orders', 'stock.Order_id', '=', 'orders.Order_id')
+                ->leftjoin('items', 'stock.item_id', '=', 'items.item_id')
+                ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
+                ->leftjoin('departments', 'orders.Department_id', '=', 'departments.Department_id')
+                ->whereYear('packing.Exp_date', $year)
+                ->whereMonth('packing.Exp_date', $month)
+                ->where(function ($query) use ($Dep_select) {
+                    if ($Dep_select != null) {
+                        $query->where('orders.Department_id', $Dep_select);
+                    }
+                })
+                ->orderBy('packing.Exp_date')
+                ->get();
+
+            // return $stock_exp;
+            // dd($stock_exp);
+
+            $spreadsheet = new Spreadsheet();
+
+            $spreadsheet->setActiveSheetIndex(0); // กำหนดให้เป็น Sheet ที่ 1
+            $spreadsheet->getActiveSheet()->setTitle('Item EXP'); // ตั้งชื่อ Sheet
+
+            $item_reports_head = [
+                "A1" => "No.",
+                "B1" => "ORDER ID",
+                "C1" => "DEPARTMENT",
+                "D1" => "ITEM ID",
+                "E1" => "ITEM NAME",
+                "F1" => "STOCK IN",
+                "G1" => "STOCK OUT",
+                "H1" => "EXP DATE"
+            ];
+
+            $spreadsheet->getActiveSheet()->fromArray($item_reports_head, null, 'A1', true, false); // นำข้อมูลมาแสดงใน Excel
+            $spreadsheet->getActiveSheet()->getStyle('A1:G1')->getFont()->setBold(true); //ตั้งค่าตัวหนา
+            $spreadsheet->getActiveSheet()->getStyle('A1:G1')->getFill()->setFillType('solid')->getStartColor()->setARGB('002060'); // ตั้งค่าสีพื้นหลัง
+            $spreadsheet->getActiveSheet()->getStyle('A1:G1')->getFont()->getColor()->setARGB('FFFFFF'); // ตั้งค่าสีตัวอักษร
+            $spreadsheet->getActiveSheet()->getStyle('A1:G1')->getAlignment()->setHorizontal('center'); // ตั้งค่าตำแหน่งให้อยู่ตรงกลาง
+
+            $iteme_date = json_decode(json_encode($stock_exp), true);
+            foreach ($iteme_date as $index => $item) {
+                $spreadsheet->getActiveSheet()->setCellValue('A' . ($index + 2), $index + 1);
+                $spreadsheet->getActiveSheet()->setCellValue('B' . ($index + 2), $item['Order_id']);
+                $spreadsheet->getActiveSheet()->setCellValue('C' . ($index + 2), $item['Department_name']);
+                $spreadsheet->getActiveSheet()->setCellValue('D' . ($index + 2), $item['item_id']);
+                $spreadsheet->getActiveSheet()->setCellValue('E' . ($index + 2), $item['Name']);
+                $spreadsheet->getActiveSheet()->setCellValue('F' . ($index + 2), $item['date_in_stock']);
+                $spreadsheet->getActiveSheet()->setCellValue('G' . ($index + 2), $item['date_out_stock']);
+                $spreadsheet->getActiveSheet()->setCellValue('H' . ($index + 2), $item['Exp_date']);
+            }
+
+            $sheet = $spreadsheet->getActiveSheet();
+            foreach ($sheet->getColumnIterator() as $column) {
+                $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+            }
+
+            $writer = new Xlsx($spreadsheet);
+
+            // กำหนดชื่อไฟล์ และ ประเภทของไฟล์
+            $file_export = "ReportItemEXP-" . $year . '_' . $month;
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="' . $file_export . '.xlsx"');
+            header("Content-Transfer-Encoding: binary ");
+            $writer->save('php://output');
+        } catch (\Throwable $th) {
+            echo "ไม่สามารถสร้างไฟล์ได้ เนื่องจากข้อมูลบางอย่างไม่ถูกต้อง หรือไม่มีข้อมูล";
+            // dd($th);
+        }
+        exit();
     }
 }
