@@ -22,9 +22,11 @@
         <div
             class="flex flex-col items-center justify-center min-h-screen p-4 space-y-4 antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
             <!-- Brand -->
-            {{-- <a href="../index.html"
+            <div
                 class="inline-block mb-6 text-3xl font-bold tracking-wider uppercase text-primary-dark dark:text-light">
-            </a> --}}
+                <img src="{{asset('assets/image/S__40607792.jpg')}}" alt="" class="w-48 rounded-sm mx-auto mb-2">
+                <p class="mx-auto">PIYAVATE HOSPITAL</p>
+            </div>
             <main>
                 @include('component.ribbon')
                 <div class="w-full max-w-sm px-4 py-6 space-y-6 bg-white rounded-md dark:bg-darker">
