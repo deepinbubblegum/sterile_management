@@ -116,7 +116,7 @@ $(document).ready(function () {
     }
 
     // function EditOrders()
-    function EditOrders(notes_messages, items, customers_id, departments_id, delete_data) {
+    function EditOrders(notes_messages, items, customers_id, departments_id, delete_data, hn, procedure_name) {
         var form = new FormData();
         formDataImage.forEach((value, key) => {
             form.append('file[]', value);
@@ -129,6 +129,8 @@ $(document).ready(function () {
         form.append("delete_data", JSON.stringify(delete_data));
         form.append("delete_images", JSON.stringify(delete_images));
         form.append("delete_images_id", JSON.stringify(delete_images_id));
+        form.append("hn", hn);
+        form.append("procedure_name", procedure_name);
         $.ajax({
             type: "POST",
             url: "/orders/edit/editorder",
@@ -268,6 +270,8 @@ $(document).ready(function () {
                 $('#departments').prop('disabled', true);
                 getequipments(response.Department_id);
                 $('#notes_messages').val(response.Notes_messages);
+                $('#hn').val(response.HN);
+                $('#procedure_name').val(response.Procedure_name);
 
                 $.ajax({
                     type: "GET",
@@ -442,6 +446,8 @@ $(document).ready(function () {
         notes_messages = $("#notes_messages").val();
         customers_id = $("#customers").find(":selected").val();
         departments_id = $("#departments").find(":selected").val();
+        hn = $("#hn").val();
+        procedure_name = $("#procedure_name").val();
         // console.log(customers_id);
         // return;
         var tbl = $('#tbody_data tr:has(td)').map(function(index, cell) {
@@ -455,7 +461,7 @@ $(document).ready(function () {
                 }
         }).get();
         console.log(tbl);
-        EditOrders(notes_messages, tbl, customers_id, departments_id, delete_data);
+        EditOrders(notes_messages, tbl, customers_id, departments_id, delete_data, hn, procedure_name);
     });
 
 

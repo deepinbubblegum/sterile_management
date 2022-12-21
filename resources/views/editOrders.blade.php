@@ -84,6 +84,20 @@
                                                 </select>
                                             </div>
 
+                                            <div class="col-span-6 sm:col-span-3">
+                                                <label for="hn" class="block text-base font-medium dark:bg-darker dark:text-light mb-2">
+                                                    HN
+                                                </label>
+                                                <input type="text" id="hn" name="hn" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="">
+                                            </div>
+
+                                            <div class="col-span-6 sm:col-span-3">
+                                                <label for="procedure_name" class="block text-base font-medium dark:bg-darker dark:text-light mb-2">
+                                                    Procedure name
+                                                </label>
+                                                <input type="text" id="procedure_name" name="procedure_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="">
+                                            </div>
+
                                             <div class="col-span-6 sm:col-span-6">
                                                 <label for="notes_messages"
                                                     class="block text-base font-medium dark:bg-darker dark:text-light mb-2">หมายเหตุ</label>

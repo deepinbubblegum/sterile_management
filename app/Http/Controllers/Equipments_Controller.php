@@ -87,6 +87,7 @@ class Equipments_Controller extends BaseController
             'Expire' => $_equipment_expire,
             'Descriptions' => $_equipment_descriptions,
             'Item_Type' => $_equipment_item_type,
+            'Instrument_type' => $_equipment_item_type,
             'Activate' => 'A',
             'SUD' => $_equipment_sud,
             'SUD_Limit' => $_equipment_limit,
@@ -139,6 +140,7 @@ class Equipments_Controller extends BaseController
                 'Expire' => $_equipment_expire,
                 'Descriptions' => $_equipment_descriptions,
                 'Item_Type' => $_equipment_item_type,
+                'Instrument_type' => $_equipment_item_type,
                 'SUD' => $_equipment_sud,
                 'SUD_Limit' => $_equipment_limit
             ]);

@@ -108,7 +108,7 @@ $(document).ready(function () {
     }
 
     // function CreateOrders()
-    function CreateOrders(notes_messages, items, customers_id, departments_id) {
+    function CreateOrders(notes_messages, items, customers_id, departments_id, hn, procedure_name) {
         var form = new FormData();
         formDataImage.forEach((value, key) => {
             form.append('file[]', value);
@@ -117,6 +117,8 @@ $(document).ready(function () {
         form.append("items", JSON.stringify(items));
         form.append("customers_id", customers_id);
         form.append("departments_id", departments_id);
+        form.append("hn", hn);
+        form.append("procedure_name", procedure_name);
         $.ajax({
             type: "POST",
             url: "/orders/create/createorders",
@@ -333,8 +335,9 @@ $(document).ready(function () {
         notes_messages = $("#notes_messages").val();
         customers_id = $("#customers").find(":selected").val();
         departments_id = $("#departments").find(":selected").val();
+        hn = $("#hn").val();
+        procedure_name = $("#procedure_name").val();
         // console.log(customers_id);
-        // return;
         var tbl = $('#tbody_data tr:has(td)').map(function(index, cell) {
             var $td = $('td', this);
                 return {
@@ -345,7 +348,7 @@ $(document).ready(function () {
                 }
         }).get();
         // console.log(tbl);
-        CreateOrders(notes_messages, tbl, customers_id, departments_id);
+        CreateOrders(notes_messages, tbl, customers_id, departments_id, hn, procedure_name);
     });
 
 
