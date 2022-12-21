@@ -103,6 +103,8 @@ class CreateOrder_Controller extends BaseController
             $_notes_messages = $recv['notes_messages'];
             $_cutomers_id = $recv['customers_id'];
             $_departments_id = $recv['departments_id'];
+            $_hn = $recv['hn'];
+            $_procedure_name = $recv['procedure_name'];
             $_items = json_decode($recv['items'], true);
             $order_id = $this->getAutoOrdersID();
             $user_id = $request->cookie('Username_server_User_id');
@@ -116,6 +118,8 @@ class CreateOrder_Controller extends BaseController
                 'Create_at' => Carbon::now(),
                 'Customer_id' => $_cutomers_id,
                 'Department_id' => $_departments_id,
+                'HN' => $_hn,
+                'Procedure_name' => $_procedure_name
             ]);
             foreach ($_items as $key => $value) {
                 $item_id = $this->getAutoItemsID();

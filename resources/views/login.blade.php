@@ -24,8 +24,10 @@
             <!-- Brand -->
             <div
                 class="inline-block mb-6 text-3xl font-bold tracking-wider uppercase text-primary-dark dark:text-light">
-                <img src="{{asset('assets/image/S__40607792.jpg')}}" alt="" class="w-48 rounded-sm mx-auto mb-2">
-                <p class="mx-auto">PIYAVATE HOSPITAL</p>
+                @if (request()->getHost() == 'piyavate.tracesbymedihealth.com')
+                    <img src="{{asset('assets/image/S__40607792.jpg')}}" alt="" class="w-48 rounded-sm mx-auto mb-2">
+                    <p class="mx-auto">PIYAVATE HOSPITAL</p>
+                @endif
             </div>
             <main>
                 @include('component.ribbon')
