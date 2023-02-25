@@ -176,7 +176,7 @@ class Reports_Controller extends BaseController
         $index = 0;
         foreach ($items as $key => $value) {
             $spreadsheet->getActiveSheet()->setCellValue('J' . ($key + 5), '=H' . ($key + 5) . '*I' . ($key + 5));
-            $spreadsheet->getActiveSheet()->setCellValue('K' . ($key + 5), '=I' . ($key + 5) . '*0.07');
+            $spreadsheet->getActiveSheet()->setCellValue('K' . ($key + 5), '=J' . ($key + 5) . '*0.07');
             $spreadsheet->getActiveSheet()->setCellValue('L' . ($key + 5), '=J' . ($key + 5) . '+K' . ($key + 5));
 
             // $spreadsheet->getActiveSheet()->setCellValue('H' . ($key + 5), '=F' . ($key + 5) . '*G' . ($key + 5));
