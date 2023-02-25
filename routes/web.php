@@ -75,6 +75,8 @@ Route::group(['middleware' => ['authLogin']], function () {
     })->name('welcome');
     Route::post('/dashboard/Get_Data', [Dashboard_Controller::class, 'Get_Data']);
     Route::post('/dashboard/Get_Stock_Exp', [Dashboard_Controller::class, 'Get_Stock_Exp']);
+    Route::post('/dashboard/Get_Department', [Dashboard_Controller::class, 'Get_Department']);
+    Route::get('/dashboard/Get_Stock_Exp/csv_file', [Dashboard_Controller::class, 'Get_Stock_Exp_csv_file']);
 
     Route::post('/QR_code/Check_order', [Scan_QR_Code::class, 'Get_order']);
 
@@ -82,9 +84,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/process', function () {
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->Process == "1"){
+        if ($permissions->Process == "1") {
             return view('process');
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -95,9 +97,9 @@ Route::group(['middleware' => ['authLogin']], function () {
         // dd($oder_id);
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->Process == "1"){
+        if ($permissions->Process == "1") {
             return view('Onprocess', ['oder_id' => $oder_id]);
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -141,9 +143,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/coa_report', function () {
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->{'COA Report'} == "1"){
+        if ($permissions->{'COA Report'} == "1") {
             return view('coa_report');
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -159,9 +161,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/stock', function () {
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->Stock == "1"){
+        if ($permissions->Stock == "1") {
             return view('stock');
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -183,9 +185,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/orders/create', function () {
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->Orders == "1"){
+        if ($permissions->Orders == "1") {
             return view('createOrders');
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -212,9 +214,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/orders', function () {
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->Orders == "1"){
+        if ($permissions->Orders == "1") {
             return view('orders');
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -227,9 +229,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/settings/customers', function () {
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->Customers == "1"){
+        if ($permissions->Customers == "1") {
             return view('customers');
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -267,9 +269,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/settings/equipments', function () {
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->Equipments == "1"){
+        if ($permissions->Equipments == "1") {
             return view('equipments');
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -287,9 +289,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/settings/users', function () {
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->Users == "1"){
+        if ($permissions->Users == "1") {
             return view('users');
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -305,9 +307,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/settings/groups', function () {
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->Groups == "1"){
+        if ($permissions->Groups == "1") {
             return view('groups');
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -323,9 +325,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/settings/programs', function () {
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->{'Programs Sterlie'} == "1"){
+        if ($permissions->{'Programs Sterlie'} == "1") {
             return view('programs');
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -339,9 +341,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/settings/machinessterile', function () {
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->{'Machines Sterlie'} == "1"){
+        if ($permissions->{'Machines Sterlie'} == "1") {
             return view('machinessterile');
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -366,9 +368,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/settings/machineswashings', function () {
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->{'Machines Washings'} == "1"){
+        if ($permissions->{'Machines Washings'} == "1") {
             return view('machineswashings');
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -383,9 +385,9 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/reports', function () {
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
-        if ($permissions->Reports == "1"){
+        if ($permissions->Reports == "1") {
             return view('reports');
-        }else{
+        } else {
             return abort(404);
         }
     });
@@ -393,6 +395,7 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/reports/getlistdepartments', [Reports_Controller::class, 'getListDepartments']);
     Route::get('/reports/export/excel/{customer}/order/{onlyapprove}/{department}/between/{date_start}/and/{date_end}', [Reports_Controller::class, 'ExportExcelOrder']);
     Route::get('/reports/export/excel/{customer}/process/{onlyapprove}/{department}/between/{date_start}/and/{date_end}', [Reports_Controller::class, 'ExportExcelProcess']);
+    Route::get('/reports/export/excel/{customer}/stock/{filter_status}/{department}/between/{date_start}/and/{date_end}', [Reports_Controller::class, 'ExportExcelStock']);
 
     // UsersPermission_Controller
     Route::get('/settings/permitt', [UsersPermission_Controller::class, 'UserPermit']);
@@ -401,7 +404,6 @@ Route::group(['middleware' => ['authLogin']], function () {
     Route::get('/notifications', [Notifications_Controller::class, 'getNotifications']);
     Route::get('/notificationsdetails', [Notifications_Controller::class, 'getNotificationEditOrderDetail']);
     Route::post('/notificationreaded', [Notifications_Controller::class, 'NotificationReaded']);
-
 });
 
 Route::get('/logout', function () {

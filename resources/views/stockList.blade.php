@@ -69,12 +69,13 @@
                                 <li class="inline-flex items-center">
                                     <a href="#"
                                         class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                                        {{-- <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                                             </path>
-                                        </svg>
+                                        </svg> --}}
+                                        <i class="fa-solid fa-box fa-lg mr-2"></i>
                                         Stock
                                     </a>
                                 </li>
@@ -95,6 +96,9 @@
                                         <th scope="col" class="py-3 px-6">
                                             <input type="checkbox" id="washing_all_check"
                                                 class="w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light" />
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            ส่งครบ
                                         </th>
                                         <th scope="col" class="py-3 px-6">
                                             หมายเลขอุปกรณ์
@@ -316,9 +320,13 @@
                         html_item_list += `
                         <tr>
                             <td class="py-4 px-6">
-                                <input id="WS_Check" type="checkbox" ${(item.Item_status == 'Deliver' ? 'Checked' : '')}
-                                        class="${(item.Item_status == 'Deliver' ? 'Deliver_Success' : '')} w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light ${( (item.Item_status == 'Stock' || item.Item_status == 'Deliver') ? '' : 'hidden' )}"  ${(item.Item_status == 'Stock' ? '' : 'disabled' )}>
-                                </td>
+                                <input id="WS_Check" type="checkbox"
+                                        class="${(item.Item_status == 'Deliver' ? 'Deliver_Success' : '')} w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light ${( (item.Item_status != 'Deliver') ? '' : 'hidden' )}"  ${(item.Item_status == 'Deliver' ? 'disabled' : '' )}>
+                            </td>
+                            <td class="py-4 px-6">
+                                <input id="count_Check" type="checkbox"
+                                        class="${(item.Item_status == 'Deliver' ? 'Deliver_Success' : '')} w-6 h-6 rounded focus:outline-none focus:shadow-outline bg-white dark:bg-dark dark:text-light ${( (item.Item_status != 'Deliver') ? '' : 'hidden' )}"  ${(item.Item_status == 'Deliver' ? 'disabled' : '' )}>
+                            </td>
                             <td scope="col" class="py-3 px-6" value="${item.Item_id}">
                                 ${item.Item_id}
                             </td>
@@ -334,7 +342,7 @@
                             <td scope="col" class="py-3 px-6">
                                 ${item.Item_Type}
                             </td>
-                            <td scope="col" class="py-3 px-6">
+                            <td scope="col" class="py-3 px-6 uppercase">
                                 ${item.Process}
                             </td>
                             <td scope="col" class="py-3 px-6">
@@ -366,7 +374,7 @@
         $('#washing_all_check').change(function () {
 
             if ($(this).prop('checked')) {
-                $(`tbody tr td input[type="checkbox"]`).each(
+                $(`tbody tr td input[id="WS_Check"]`).each(
                     function () {
                         if (!$(this).hasClass("Deliver_Success")) {
                             $(this).prop('checked', true);
@@ -375,7 +383,7 @@
 
                     });
             } else {
-                $(`tbody tr td input[type="checkbox"]`).each(
+                $(`tbody tr td input[id="WS_Check"]`).each(
                     function () {
                         if (!$(this).hasClass("Deliver_Success")) {
                             $(this).prop('checked', false);
@@ -516,11 +524,12 @@
 
             let tb_list_Stock = $('#list_item_id tr:has(td)').map(function (index, cell) {
                 var $td = $('td', this);
-                if (($td.eq(4).attr('value') == 'Stock') && $('td input', this).prop(
+                if (($td.eq(5).attr('value') != 'Deliver') && $('td input#WS_Check', this).prop(
                         'checked')) {
                     return {
-                        item_id: $td.eq(1).attr('value'),
-                        stock_id: $td.eq(10).attr('value'),
+                        item_id: $td.eq(2).attr('value'),
+                        stock_id: $td.eq(11).attr('value'),
+                        check: $('td input#count_Check', this).prop('checked') || 'false',
                     }
                 }
             }).get();
@@ -590,11 +599,12 @@
 
             let tb_list_Stock = $('#list_item_id tr:has(td)').map(function (index, cell) {
                 let $td = $('td', this);
-                if (($td.eq(4).attr('value') == 'Stock') && $('td input', this).prop(
+                if (($td.eq(5).attr('value') != 'Deliver') && $('td input#WS_Check', this).prop(
                         'checked')) {
                     return {
-                        item_id: $td.eq(1).attr('value'),
-                        stock_id: $td.eq(10).attr('value'),
+                        item_id: $td.eq(2).attr('value'),
+                        stock_id: $td.eq(11).attr('value'),
+                        check: $('td input#count_Check', this).prop('checked') || 'false',
                     }
                 }
             }).get();

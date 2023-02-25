@@ -23,7 +23,7 @@
     </style>
 </head>
 
-<body>
+<body class="overflow-y-hidden">
     <div x-data="setup()" x-init="$refs.loading.classList.add('hidden');
     setColors(color);" :class="{ 'dark': isDark }" @resize.window="watchScreen()">
         <div class="flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
@@ -39,7 +39,7 @@
             <!-- Main content -->
             <main class="flex-1 overflow-x-hidden">
 
-                <div class="flex flex-col flex-1 h-full min-h-screen p-4 overflow-x-hidden overflow-y-auto">
+                <div class="flex flex-col flex-1 h-full min-h-full p-4 ">
                     @include('component.ribbon')
                     {{-- Breadcrumb --}}
                     <div class="mx-auto rounded-md w-full bg-white dark:bg-darker dark:text-light p-4 mb-4 leading-6 ">
@@ -48,12 +48,13 @@
                                 <li class="inline-flex items-center">
                                     <a href="#"
                                         class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                                        {{-- <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                                             </path>
-                                        </svg>
+                                        </svg> --}}
+                                        <i class="fa-solid fa-microchip fa-lg mr-2"></i>
                                         On-Process
                                     </a>
                                 </li>
@@ -137,6 +138,7 @@
 <script>
     $(document).ready(function () {
 
+        $('#option_userQC').select2();
         // alert('{{ $oder_id }}')
 
         function DateNowDay() {
@@ -844,7 +846,7 @@
                 },
                 dataType: "json",
                 success: function (response) {
-                    console.log(response)
+                    // console.log(response)
 
                     // alert($('#option_machine_sterile').attr('data-type'))
 
@@ -869,7 +871,6 @@
 
                     $('#option_machine_sterile').attr('data-type', item_process)
 
-                    // console.log(response.items_process)
                     html_list_process_sterile = ''
                     for (let item_pc of response.items_process) {
                         if (item_pc.Machine_type == item_process) {
@@ -977,9 +978,19 @@
             } else if (Cycle == '') {
                 alert('กรุณากรอก cycle')
                 return false;
+            } else if (machines_id == '' || machines_id == undefined) {
+                alert('กรุณาเลือกโปรแกรม')
+                return false;
+            } else if (program_id == '' || program_id == undefined) {
+                alert('กรุณาเลือกโปรแกรม')
+                return false;
             }
 
             $(`#item_packing option[value='${item_packing}']`).remove();
+            if ($('#item_packing option').length == 0) {
+                $('#option_machine_sterile').attr('data-type', '')
+            }
+            // alert($('#item_packing option').length);
 
             let _Item = Oder_item.filter(v => v.Item_id == item_packing);
             // resultChk = item_packing_checkDup(_Item[0].Item_id)
@@ -1044,7 +1055,7 @@
             $('#notes_packing_messages').val('');
         })
 
-        $("#tb_list_packing").on("click", "#item_Remove_Packing", async function () {
+        $("#tb_list_packing").on("click", "#item_Remove_Packing", function () {
             let currentRow = $(this).closest("tr");
             let item_name = currentRow.find("td:eq(3)").text();
             let item_id = currentRow.find("td:eq(3)").attr('value');
@@ -1052,9 +1063,9 @@
             $('#item_packing').append($('<option>', {
                 value: item_id,
                 text: `${item_id} - ${item_name}`,
-                "data-process": process
+                "data-process": process,
             }));
-            await Get_sterile_machine();
+            Get_sterile_machine();
             $(this).closest("tr").remove();
         });
 

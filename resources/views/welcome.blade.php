@@ -22,6 +22,14 @@
 
     </style>
 
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css"
+        rel="stylesheet">
+
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js">
+    </script>
+
 </head>
 
 <body id="body_html">
@@ -56,19 +64,20 @@
                                 <li class="inline-flex items-center">
                                     <a href="#"
                                         class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                                        {{-- <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                                             </path>
-                                        </svg>
-                                        Process
+                                        </svg> --}}
+                                        <i class="fa-solid fa-gauge fa-lg mr-2"></i>
+                                        Dashboard
                                     </a>
                                 </li>
                             </ol>
                         </nav>
                         <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-2 xl:grid-cols-6 mt-5">
-                            <div>
+                            {{-- <div>
                                 <label for="option_machine_sterile_search"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                                     Select Month
@@ -88,19 +97,42 @@
                                     <option value="11">November</option>
                                     <option value="12">December</option>
                                 </select>
+                            </div> --}}
+
+                            <div>
+                                <label for="option_machine_sterile_search"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                                    Select Month
+                                </label>
+                                <input type="text" class="form-control"
+                                    style="height: 2rem !important; font-size: 1.5rem;" name="datepicker"
+                                    id="datepicker_Option_select" autocomplete="off" />
                             </div>
                         </div>
 
                     </div>
                     {{-- Breadcrumb end --}}
 
-                    <div class="mx-auto text-center">
+                    <div class="mx-auto text-center mb-5">
                         <span class="text-2xl">Dashboard</span>
                         <hr>
                         <div class="text-center mt-1 text-2xl">
                             <h1 id="Dashboard_month"></h1>
                         </div>
                     </div>
+
+                    <hr>
+
+                    <div class="mx-auto mt-5">
+                        <span class="text-xl p-5"> Machine Cycle</span>
+                        <div class="grid grid-cols-1 gap-8 p-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4"
+                            id="list_machine">
+
+                        </div>
+                    </div>
+
+
+                    <hr>
 
                     <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-2 xl:grid-cols-3">
                         <div class="flex flex-col items-center justify-between">
@@ -189,7 +221,7 @@
 
 
 
-                    <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-1 xl:grid-cols-3">
+                    <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-1 xl:grid-cols-3 mb-3">
                         <!-- Value card -->
                         <div class="items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
                             <span class="text-sm">KPI Set Accuracy Target</span>
@@ -233,11 +265,44 @@
 
                     </div>
 
+                    <hr>
+
+
+
+                    <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-2 mt-3">
+                        <div>
+                            <label for="option_Department_search"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                                Select Department
+                            </label>
+                            <select id="option_departments" style="padding: 0.1rem;"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="" selected> All Department</option>
+                            </select>
+                        </div>
+
+                        {{-- <div>
+                            <label for="datepicker_Exp"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                                Exp Date
+                            </label>
+                            <input type="text" class="form-control" style="height: 2rem !important; font-size: 1.5rem;"
+                                name="datepicker" id="datepicker_Exp" autocomplete="off" />
+                        </div> --}}
+                    </div>
+
+                    <div class="">
+                        <button type="button" id="btn_export_csv"
+                            class="excel_xlsx_Process cursor-pointer text-white my-2 bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2">
+                            <i class="fa-solid fa-file-excel mr-2 -ml-1 fa-xl"></i>
+                            Export to Excel (.xlsx)
+                        </button>
+                    </div>
+
                     @endif
 
                     {{-- <div class="overflow-x-auto relative shadow-md sm:rounded-lg"> --}}
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto"
-                        style="display: none">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto mt-3">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="py-3 px-6">
@@ -262,7 +327,7 @@
                         </tbody>
                     </table>
 
-                    <div class="mt-3" style="display: none">
+                    <div class="mt-3">
 
                         <div class="text-end text-slate-600 mr-2">
                             View <span id="txt_firstItem"></span> - <span id="txt_lastItem">
@@ -311,7 +376,7 @@
 
 <script>
     $(document).ready(function () {
-
+        // $("#option_departments").select2({});
         var date = new Date(),
 
             now_month = date.getMonth(),
@@ -329,34 +394,105 @@
             "July", "August", "September", "October", "November", "December"
         ];
 
-        $('#option_month').val(now_month + 1).change()
+        $("#datepicker_Option_select").datepicker({
+            format: "mm-yyyy",
+            startView: "months",
+            minViewMode: "months",
+            autoclose: true,
+        });
+        // $('#option_month').val(now_month + 1).change()
+        $('#datepicker_Option_select').val(now_month + 1 + '-' + now_year)
 
+        // $("#datepicker_Exp").datepicker({
+        //     format: "dd-mm-yyyy",
+        //     autoclose: true,
+        //     clearBtn: true
+        // });
+
+
+
+        // Start Function
         Get_Data();
+        Get_Department();
+        list_Stock();
 
-        $('#option_month').on("change", function () {
-            let month = $(this).val()
-            Get_Data(parseInt(month));
+
+        $('#datepicker_Option_select').on('changeDate', function (e) {
+            let date = $(this).val().split('-')
+            let year = date[1];
+            let month = date[0];
+            Get_Data(parseInt(month), parseInt(year));
+            list_Stock();
+            // list_Stock(1);
+        })
+
+        // $('#option_month').on("change", function () {
+        //     let month = $(this).val()
+        //     Get_Data(parseInt(month));
+        //     list_Stock(1);
+        // })
+
+        $('#option_departments').on("change", function () {
             list_Stock(1);
         })
 
         var refreshId = setInterval(function () {
-            let month = $('#option_month').val()
-            Get_Data(parseInt(month));
+            let date = $('#datepicker_Option_select').val().split('-')
+            let year = date[1];
+            let month = date[0];
+            Get_Data(parseInt(month), parseInt(year));
         }, 1200000);
 
 
-        function Get_Data(month = now_month + 1) {
+        function Get_Department() {
+            $.ajax({
+                type: "POST",
+                url: `/dashboard/Get_Department`,
+                dataType: "json",
+                success: function (response) {
+                    response.forEach((element) => {
+                        $("#option_departments").append(
+                            `<option value="${element.Department_id}">${element.Department_name}</option>`
+                        );
+                    });
+                    // console.log(response)
+                    // item_per_month item_per_year txt_Customer txt_Department
+                    // if (response.length > 0) {
+                    //     $("#option_departments").prop("disabled", false);
+                    //     $("#option_departments").empty();
+                    //     $("#option_departments").append(
+                    //         `<option value="" disabled selected> --- แผนก หรือ หน่วยงาน --- </option>`
+                    //     );
+                    //     response.forEach((element) => {
+                    //         $("#option_departments").append(
+                    //             `<option value="${element.Department_id}">${element.Department_name}</option>`
+                    //         );
+                    //     });
+                    // } else {
+                    //     $("#option_departments").prop("disabled", true);
+                    //     $("#option_departments").empty();
+                    //     $("#option_departments").append(
+                    //         `<option value="" disabled selected>--- ไม่พบข้อมูล แผนก ภายใต้ สถานพยาบาล หรือ ศูนย์การแพทย์ นี้  ---</option>`
+                    //     );
+                    // }
+                }
+            });
+        }
+
+
+        function Get_Data(month = now_month + 1, year = now_year) {
             $('#Dashboard_month').text((month_EN_Names[month - 1]))
 
             $.ajax({
                 type: "POST",
                 url: `/dashboard/Get_Data`,
                 data: {
-                    month: month
+                    month: month,
+                    year: year
                 },
                 dataType: "json",
                 success: function (response) {
-                    console.log(response)
+                    // console.log(response)
                     // item_per_month item_per_year txt_Customer txt_Department
                     $('#item_per_month').text(new Intl.NumberFormat().format(response.item_month))
                     $('#item_per_year').text(new Intl.NumberFormat().format(response.item_year))
@@ -373,6 +509,7 @@
                     chart_kpi_Loss_Target(response.month_loss, response.month_list_item);
                     chart_kpi_Damage_Target(response.month_Damage, response.month_list_item);
                     chart_kpi_Delivery_Target(response.deliver_late)
+                    list_machine(response.List_Machine);
                 }
             });
         }
@@ -818,16 +955,49 @@
             );
         }
 
-        list_Stock();
+        // ${element.detail != null ? 'green' : 'red'}
+        // <div>
+        //                 <a href="#" class="block p-6 max-w-sm bg-${element.detail != null ? 'green' : 'red'} rounded-lg border border-${element.detail != null ? 'green' : 'red'}-200 shadow-md hover:bg-${element.detail != null ? 'green' : 'red'}-100 dark:bg-${element.detail != null ? 'green' : 'red'}-800 dark:border-${element.detail != null ? 'green' : 'red'}-700 dark:hover:bg-${element.detail != null ? 'green' : 'red'}-700">
+        //                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-black-900 dark:text-${element.detail != null ? 'green' : 'red'}">${element.Machine_name}</h5>
+        //                     <p class="font-normal text-black-700 dark:text-black-400">
+        //                         Cycle : ${element.detail != null ? element.detail.cycle_now : '-'}
+        //                     </p>
+        //                 </a>
+        //             </div>
+        function list_machine(Data) {
+            console.log(Data)
+            $("#list_machine").empty();
+            Data.forEach((element) => {
+                $("#list_machine").append(
+                    `
+                    <div>
+                        <a class="block p-6 max-w-sm bg-${element.check_COA != 0 ? 'green' : 'red'}-500 bg-opacity-100 rounded-lg border border-${element.check_COA != 0 ? 'green' : 'red'}-200 shadow-md hover:bg-${element.check_COA != 0 ? 'green' : 'red'}-100 dark:bg-${element.check_COA != 0 ? 'green' : 'red'}-800 dark:border-${element.check_COA != 0 ? 'green' : 'red'}-700 dark:hover:bg-${element.check_COA != 0 ? 'green' : 'red'}-700">
+                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${element.Machine_name}</h5>
+                            <p class="font-normal text-gray-700 dark:text-gray-900">
+                                Cycle/Day : ${element.detail != null ? element.detail.cycle_now : '-'} <br>
+                                Cycle/Month : ${element.detail_month != null ? element.detail_month : '-'}
+                            </p>
+                        </a>
+                    </div>
+                    `
+                );
+            });
+        }
 
         function list_Stock(page = 1) {
-            let month = $('#option_month').val()
+            // let month = $('#option_month').val()
+            let date = $('#datepicker_Option_select').val().split('-')
+            let year = date[1];
+            let month = date[0];
+            let departments = $('#option_departments').val() != null ? $('#option_departments').val() : ''
 
             $.ajax({
                 type: "POST",
                 url: `/dashboard/Get_Stock_Exp?page=${page}`,
                 data: {
-                    month: month
+                    month: month,
+                    year: year,
+                    departments: departments
                 },
                 dataType: "json",
                 success: function (response) {
@@ -909,6 +1079,22 @@
             let page = getParameterByName('page', url_data)
 
             list_Stock(page);
+        })
+
+
+        $('#btn_export_csv').on('click', function () {
+
+            const url_path = window.location.pathname;
+
+            let date = $('#datepicker_Option_select').val().split('-')
+            let year = date[1];
+            let month = date[0];
+            let departments = $('#option_departments').val() != null ? $('#option_departments').val() :
+                'all';
+
+            window.open(
+                `/dashboard/Get_Stock_Exp/csv_file?year=${year}&month=${month}&departments=${departments}`,
+                '_blank');
         })
 
     })

@@ -121,12 +121,13 @@
                         <th class="text-right px-2 py-1">ราคา/หน่วย</th>
                         <th class="text-right px-2 py-1">ยอดรวม</th>
                         <th class="text-center px-2 py-1">กระบวนการ</th>
-                        {{-- <th class="text-center px-2 py-1">สถานะ</th> --}}
+                        <th class="text-center px-2 py-1">ยอดส่ง</th>
                     </tr>
                 </thead>
                 <tbody class="border-bottom">
                     @foreach ($List_data->items as $key => $item)
-                    {{-- {{dd($item)}} --}}
+
+                    {{-- {{dd($List_data->req_list[$key]->check)}} --}}
                     <tr class="border-bottom">
                         <td class="text-center px-2 py-1">{{ $key + 1 }}</td>
                         <td class="text-left px-2 py-1">{{ $item->Name }}</td>
@@ -135,11 +136,11 @@
                         <td class="text-right px-2 py-1">
                             {{ number_format((float) $item->Price * $item->Quantity, 2, '.', '') }}</td>
                         <td class="text-center px-2 py-1 uppercase">{{ $item->Process }}</td>
-                        {{-- <td class="text-center px-2 py-1">
+                        <td class="text-center px-2 py-1">
                             {{
-                                $item->Item_status == "W" ? "Washing" : ($item->Item_status == "P" ? "Packing" : ($item->Item_status == "S" ? "sterile" : "-" ))
+                                $List_data->req_list[$key]->check == 'true' ? "ครบ" : "ค้าง"
                             }}
-                        </td> --}}
+                        </td>
                         {{-- <td class="text-center px-2 py-1 uppercase">{{ $item->Item_status }}</td> --}}
                     </tr>
                     @endforeach

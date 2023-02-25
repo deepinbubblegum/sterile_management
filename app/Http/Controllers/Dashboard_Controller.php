@@ -15,8 +15,23 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\UsersPermission_Controller;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+
 class Dashboard_Controller extends BaseController
 {
+
+    public function Get_Department()
+    {
+        $departments = DB::table('departments')
+            ->select('*')
+            ->get();
+
+        return $departments;
+    }
+
 
     public function Get_Stock_Exp(Request $request)
     {
@@ -25,7 +40,9 @@ class Dashboard_Controller extends BaseController
         $req = $request->all();
 
         $month = $req['month'];
-        $year = $dateNow->year;
+        $year = $req['year'];
+
+        $Dep_select = $req['departments'];
 
         $users_permit = new UsersPermission_Controller();
         $permissions = $users_permit->UserPermit();
@@ -47,13 +64,18 @@ class Dashboard_Controller extends BaseController
             ->leftjoin('orders', 'stock.Order_id', '=', 'orders.Order_id')
             ->leftjoin('items', 'stock.item_id', '=', 'items.item_id')
             ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
-            ->whereYear('orders.Create_at', $year)
-            ->whereMonth('orders.Create_at', $month)
-            ->where(function ($query) use ($dep_id) {
+            ->whereYear('packing.Exp_date', $year)
+            ->whereMonth('packing.Exp_date', $month)
+            ->where(function ($query) use ($dep_id, $Dep_select) {
                 if ($dep_id != null) {
                     $query->where('orders.Department_id', $dep_id);
                 }
+
+                if ($Dep_select != null) {
+                    $query->where('orders.Department_id', $Dep_select);
+                }
             })
+            ->orderBy('packing.Exp_date')
             ->paginate(15);
 
         return $stock_exp;
@@ -79,7 +101,7 @@ class Dashboard_Controller extends BaseController
         }
 
         $month = $req['month'];
-        $year = $dateNow->year;
+        $year = $req['year'];
         // dd($month);
 
         $departments = DB::table('departments')
@@ -375,6 +397,67 @@ class Dashboard_Controller extends BaseController
 
         // dd($stock_exp);
 
+        $List_Machine = DB::table('machine')
+            ->select('*')
+            ->where('machine.Machine_type', '!=', 'Wash&Disinfection')
+            ->get();
+
+
+
+        foreach ($List_Machine as $item) {
+
+            $Cycle_Machine = DB::table('machine')
+                ->selectRaw(' machine.*, count(DISTINCT packing.Cycle) as cycle_now , coa_report.coa_id, coa_report.`status`')
+                ->leftjoin('packing', 'machine.Machine_id', '=', 'packing.Machine_id')
+                ->leftjoin('coa_report', 'machine.Machine_id', '=', 'coa_report.machine_id')
+                // ->whereYear('orders.Create_at', $year)
+                ->where('machine.Machine_id', $item->Machine_id)
+                ->where('machine.Machine_type', '!=', 'Wash&Disinfection')
+                ->whereDate('coa_report.date', '=', Carbon::today()->toDateString())
+                ->whereDate('packing.Create_at', '=', Carbon::today()->toDateString())
+                ->groupBy('machine.Machine_id')
+                ->first();
+
+            $item->detail = $Cycle_Machine;
+
+            // $Cycle_Machine_month = DB::table('packing')
+            //     ->select('Create_at , Cycle')
+            //     ->whereYear('packing.Create_at', $year)
+            //     ->whereMonth('packing.Create_at', $month)
+            //     ->where('Machine_id', $item->Machine_id)
+            //     ->groupBy('Cycle')
+            //     ->groupByRaw('CAST(Create_at AS DATE)')
+            //     ->count();
+            $Cycle_Machine_month = DB::table('packing')
+                ->selectRaw('DISTINCT packing.Cycle , DATE(Create_at) , packing.Machine_id')
+                ->whereYear('packing.Create_at', $year)
+                ->whereMonth('packing.Create_at', $month)
+                ->where('Machine_id', $item->Machine_id)
+                // ->where('Cycle', '!=', '0')
+                // ->groupBy('Cycle')
+                // ->groupByRaw('CAST(Create_at AS DATE)')
+                ->get();
+            // dd(count($Cycle_Machine_month));
+
+            $item->detail_month = count($Cycle_Machine_month);
+
+            // Check COA_Report
+            $check = DB::table('machine')
+                ->selectRaw('MAX(packing.Cycle) AS Max_Cycle , coa_report.coa_id')
+                ->leftjoin('packing', 'machine.Machine_id', '=', 'packing.Machine_id')
+                ->leftjoin('coa_report', 'machine.Machine_id', '=', 'coa_report.machine_id')
+                // ->whereYear('orders.Create_at', $year)
+                ->where('machine.Machine_id', $item->Machine_id)
+                ->where('machine.Machine_type', '!=', 'Wash&Disinfection')
+                ->whereDate('coa_report.date', '=', Carbon::today()->toDateString())
+                ->whereDate('packing.Create_at', '=', Carbon::today()->toDateString())
+                ->whereRaw('coa_report.cycle = (SELECT MAX(packing.Cycle) FROM packing
+                WHERE DATE(packing.Create_at) = "2022-11-19")')
+                ->groupBy('machine.Machine_id')
+                ->get();
+            $item->check_COA = count($check);
+        }
+
         $List_Deliver_late = new \stdClass();
         $List_Deliver_late->all = $deliver;
         $List_Deliver_late->late = $deliver_late;
@@ -396,6 +479,97 @@ class Dashboard_Controller extends BaseController
         $List->SUD_Month = $SUD_Month;
         $List->Sterile_Fail = $Sterile_Fail;
         $List->deliver_late = $List_Deliver_late;
+        $List->List_Machine = $List_Machine;
         return $List;
+    }
+
+    public function Get_Stock_Exp_csv_file(Request $request)
+    {
+        try {
+            // dd($request);
+            $dateNow = Carbon::now();
+            $req = $request->all();
+
+            $month = $req['month'];
+            $year = $req['year'];
+
+            $Dep_select = $req['departments'];
+
+            $users_permit = new UsersPermission_Controller();
+
+            // stock_exp
+            $stock_exp = DB::table('stock')
+                ->select('stock.*', 'packing.Exp_date', 'equipments.Name', 'departments.Department_name')
+                ->leftjoin('packing', 'stock.item_id', '=', 'packing.item_id')
+                ->leftjoin('orders', 'stock.Order_id', '=', 'orders.Order_id')
+                ->leftjoin('items', 'stock.item_id', '=', 'items.item_id')
+                ->leftjoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
+                ->leftjoin('departments', 'orders.Department_id', '=', 'departments.Department_id')
+                ->whereYear('packing.Exp_date', $year)
+                ->whereMonth('packing.Exp_date', $month)
+                ->where(function ($query) use ($Dep_select) {
+                    if ($Dep_select != null) {
+                        $query->where('orders.Department_id', $Dep_select);
+                    }
+                })
+                ->orderBy('packing.Exp_date')
+                ->get();
+
+            // return $stock_exp;
+            // dd($stock_exp);
+
+            $spreadsheet = new Spreadsheet();
+
+            $spreadsheet->setActiveSheetIndex(0); // กำหนดให้เป็น Sheet ที่ 1
+            $spreadsheet->getActiveSheet()->setTitle('Item EXP'); // ตั้งชื่อ Sheet
+
+            $item_reports_head = [
+                "A1" => "No.",
+                "B1" => "ORDER ID",
+                "C1" => "DEPARTMENT",
+                "D1" => "ITEM ID",
+                "E1" => "ITEM NAME",
+                "F1" => "STOCK IN",
+                "G1" => "STOCK OUT",
+                "H1" => "EXP DATE"
+            ];
+
+            $spreadsheet->getActiveSheet()->fromArray($item_reports_head, null, 'A1', true, false); // นำข้อมูลมาแสดงใน Excel
+            $spreadsheet->getActiveSheet()->getStyle('A1:G1')->getFont()->setBold(true); //ตั้งค่าตัวหนา
+            $spreadsheet->getActiveSheet()->getStyle('A1:G1')->getFill()->setFillType('solid')->getStartColor()->setARGB('002060'); // ตั้งค่าสีพื้นหลัง
+            $spreadsheet->getActiveSheet()->getStyle('A1:G1')->getFont()->getColor()->setARGB('FFFFFF'); // ตั้งค่าสีตัวอักษร
+            $spreadsheet->getActiveSheet()->getStyle('A1:G1')->getAlignment()->setHorizontal('center'); // ตั้งค่าตำแหน่งให้อยู่ตรงกลาง
+
+            $iteme_date = json_decode(json_encode($stock_exp), true);
+            foreach ($iteme_date as $index => $item) {
+                $spreadsheet->getActiveSheet()->setCellValue('A' . ($index + 2), $index + 1);
+                $spreadsheet->getActiveSheet()->setCellValue('B' . ($index + 2), $item['Order_id']);
+                $spreadsheet->getActiveSheet()->setCellValue('C' . ($index + 2), $item['Department_name']);
+                $spreadsheet->getActiveSheet()->setCellValue('D' . ($index + 2), $item['item_id']);
+                $spreadsheet->getActiveSheet()->setCellValue('E' . ($index + 2), $item['Name']);
+                $spreadsheet->getActiveSheet()->setCellValue('F' . ($index + 2), $item['date_in_stock']);
+                $spreadsheet->getActiveSheet()->setCellValue('G' . ($index + 2), $item['date_out_stock']);
+                $spreadsheet->getActiveSheet()->setCellValue('H' . ($index + 2), $item['Exp_date']);
+            }
+
+            $sheet = $spreadsheet->getActiveSheet();
+            foreach ($sheet->getColumnIterator() as $column) {
+                $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+            }
+
+            $writer = new Xlsx($spreadsheet);
+
+            // กำหนดชื่อไฟล์ และ ประเภทของไฟล์
+            $file_export = "ReportItemEXP-" . $year . '_' . $month;
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="' . $file_export . '.xlsx"');
+            header("Content-Transfer-Encoding: binary ");
+            $writer->save('php://output');
+        } catch (\Throwable $th) {
+            echo "ไม่สามารถสร้างไฟล์ได้ เนื่องจากข้อมูลบางอย่างไม่ถูกต้อง หรือไม่มีข้อมูล";
+            // dd($th);
+        }
+        exit();
     }
 }

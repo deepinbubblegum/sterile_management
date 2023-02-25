@@ -35,12 +35,12 @@
                                 <li class="inline-flex items-center">
                                     <a href="#"
                                         class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                                        {{-- <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                                             </path>
-                                        </svg>
+                                        </svg> --}}
                                         <a class="hover:underline" href="/orders"> Orders </a>
                                         <i class="fa-solid fa-angle-right inline-flex ml-1 mr-1 mt-1 align-middle"></i>
                                         <a class="">Create Orders </a>
@@ -78,6 +78,20 @@
                                                     <option value="" disabled selected> --- แผนก หรือ หน่วยงาน ---
                                                     </option>
                                                 </select>
+                                            </div>
+
+                                            <div class="col-span-6 sm:col-span-3">
+                                                <label for="hn" class="block text-base font-medium dark:bg-darker dark:text-light mb-2">
+                                                    HN
+                                                </label>
+                                                <input type="text" id="hn" name="hn" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="">
+                                            </div>
+
+                                            <div class="col-span-6 sm:col-span-3">
+                                                <label for="procedure_name" class="block text-base font-medium dark:bg-darker dark:text-light mb-2">
+                                                    Procedure name
+                                                </label>
+                                                <input type="text" id="procedure_name" name="procedure_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="">
                                             </div>
 
                                             <div class="col-span-6 sm:col-span-6">

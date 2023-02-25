@@ -23,7 +23,7 @@ class EditOrder_Controller extends BaseController
         $recv = $request->all();
         $order_id = $recv['order_id'];
         $order_detail = DB::table('orders')
-            ->select('orders.Order_id', 'orders.Customer_id', 'orders.Department_id', 'orders.Notes')
+            ->select('orders.Order_id', 'orders.Customer_id', 'orders.Department_id', 'orders.Notes', 'orders.HN', 'orders.Procedure_name')
             ->where('orders.Order_id', $order_id)
             ->first();
         return $order_detail;
@@ -91,6 +91,8 @@ class EditOrder_Controller extends BaseController
             $delete_data = json_decode($recv['delete_data']);
             $delete_images = json_decode($recv['delete_images']);
             $delete_images_id = json_decode($recv['delete_images_id']);
+            $_hn = $recv['hn'];
+            $_procedure_name = $recv['procedure_name'];
 
 
             $NotificationID = $this->getAutoNotificationID();
@@ -132,6 +134,8 @@ class EditOrder_Controller extends BaseController
             DB::table('orders')->where('Order_id', $order_id)
                 ->update([
                     'Notes' => $_notes_messages,
+                    'HN' => $_hn,
+                    'Procedure_name' => $_procedure_name,
                     'Update_by' => $user_id,
                     'Update_at' => Carbon::now(),
                 ]);

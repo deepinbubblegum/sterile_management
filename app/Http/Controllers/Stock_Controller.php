@@ -24,12 +24,12 @@ class Stock_Controller extends BaseController
             $data = $request->all();
 
             $list_Stock = DB::table('items')
-            ->select('order_id')
-            // ->where('Item_status', 'Stock')
-            ->whereIn('Item_status', ['Stock', 'Deliver'])
-            ->distinct('order_id')
-            ->get()
-            ->toArray();
+                ->select('order_id')
+                // ->where('Item_status', 'Stock')
+                ->whereIn('Item_status', ['Stock', 'Deliver', 'Backlog'])
+                ->distinct('order_id')
+                ->get()
+                ->toArray();
 
             // $array = (array) $list_Stock;
             $data_list = array();
@@ -40,7 +40,7 @@ class Stock_Controller extends BaseController
             // dd($data_list);
 
             $items = DB::table('orders')
-                ->select('orders.*',  'userCreate.Username as userCreate', 'userUpdate.Username as userUpdate',  'userApprove.Username as userApprove' , 'customers.Customer_name')
+                ->select('orders.*',  'userCreate.Username as userCreate', 'userUpdate.Username as userUpdate',  'userApprove.Username as userApprove', 'customers.Customer_name')
                 ->leftjoin('users AS userCreate', 'orders.Create_by', '=', 'userCreate.user_id')
                 ->leftjoin('users AS userUpdate', 'orders.Update_by', '=', 'userUpdate.user_id')
                 ->leftjoin('users AS userApprove', 'orders.Approve_by', '=', 'userApprove.user_id')
@@ -72,5 +72,4 @@ class Stock_Controller extends BaseController
             return $return_data;
         }
     }
-
 }

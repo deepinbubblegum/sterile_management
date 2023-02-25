@@ -480,7 +480,8 @@ class Pro_Packing_Controller extends BaseController
                 'customers.Customer_name',
                 'equipments.Process',
                 'user_create.Name as UserCreate',
-                'equipments.Instrument_type'
+                'equipments.Instrument_type',
+                'equipments.Descriptions'
             )
             ->leftjoin('items', 'items.item_id', '=', 'packing.item_id')
             ->leftjoin('orders', 'items.Order_id', '=', 'orders.Order_id')
