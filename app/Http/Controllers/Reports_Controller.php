@@ -106,11 +106,12 @@ class Reports_Controller extends BaseController
         $spreadsheet->createSheet();
 
         $items = DB::table('items')
-            ->select('departments.Department_name', 'orders.Create_at', 'orders.Order_id', 'equipments.Name', 'orders.Notes', 'items.Quantity', 'equipments.Price')
+            ->select('departments.Department_name', 'orders.Create_at', 'orders.Order_id', 'equipments.Name', 'equipments.Process', 'situations.Situation_name', 'orders.Notes', 'items.Quantity', 'equipments.Price')
             ->leftJoin('orders', 'items.Order_id', '=', 'orders.Order_id')
             ->leftJoin('departments', 'orders.Department_id', '=', 'departments.Department_id')
             ->leftJoin('equipments', 'items.Equipment_id', '=', 'equipments.Equipment_id')
             ->leftJoin('customers', 'orders.Customer_id', '=', 'customers.Customer_id')
+            ->leftJoin('situations', 'items.Situation_id', '=', 'situations.Situation_id')
             ->where('customers.Customer_id', $customer_id)
             ->whereBetween('orders.Create_at', [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end)))])
             ->where(function ($query) use ($onlyapprove, $department) {
@@ -148,6 +149,8 @@ class Reports_Controller extends BaseController
             'REQUEST DATE',
             'REQUEST ID',
             'ITEM NAME',
+            'PROCESS',
+            'SITUATION',
             'REMARK',
             'QTY',
             'UNIT PRICE',
@@ -156,10 +159,10 @@ class Reports_Controller extends BaseController
             'TOTAL'
         ];
         $spreadsheet->getActiveSheet()->fromArray($item_reports_head, null, 'A4', true, false);
-        $spreadsheet->getActiveSheet()->getStyle('A4:J4')->getFont()->setBold(true);    //ตั้งค่าตัวหนา
-        $spreadsheet->getActiveSheet()->getStyle('A4:J4')->getFill()->setFillType('solid')->getStartColor()->setARGB('A9D08E'); // ตั้งค่าสีพื้นหลัง
+        $spreadsheet->getActiveSheet()->getStyle('A4:M4')->getFont()->setBold(true);    //ตั้งค่าตัวหนา
+        $spreadsheet->getActiveSheet()->getStyle('A4:M4')->getFill()->setFillType('solid')->getStartColor()->setARGB('A9D08E'); // ตั้งค่าสีพื้นหลัง
 
-        $spreadsheet->getActiveSheet()->getStyle('G:J')->getNumberFormat()->setFormatCode('#,##0.00');
+        $spreadsheet->getActiveSheet()->getStyle('G:M')->getNumberFormat()->setFormatCode('#,##0.00');
         $spreadsheet->getActiveSheet()->fromArray($items, null, 'A5', true, false);
 
         // กำหนดให้ความกว้างของคอลัมน์เป็นอัตโนมัติ
@@ -168,29 +171,34 @@ class Reports_Controller extends BaseController
             $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
         }
         $spreadsheet->getActiveSheet()->getStyle('B')->getAlignment()->setHorizontal('center');
-        $spreadsheet->getActiveSheet()->getStyle('F:J')->getAlignment()->setHorizontal('center');
+        $spreadsheet->getActiveSheet()->getStyle('F:M')->getAlignment()->setHorizontal('center');
 
         $index = 0;
         foreach ($items as $key => $value) {
-            $spreadsheet->getActiveSheet()->setCellValue('H' . ($key + 5), '=F' . ($key + 5) . '*G' . ($key + 5));
-            $spreadsheet->getActiveSheet()->setCellValue('I' . ($key + 5), '=H' . ($key + 5) . '*0.07');
-            $spreadsheet->getActiveSheet()->setCellValue('J' . ($key + 5), '=H' . ($key + 5) . '+I' . ($key + 5));
+            $spreadsheet->getActiveSheet()->setCellValue('J' . ($key + 5), '=H' . ($key + 5) . '*I' . ($key + 5));
+            $spreadsheet->getActiveSheet()->setCellValue('K' . ($key + 5), '=J' . ($key + 5) . '*0.07');
+            $spreadsheet->getActiveSheet()->setCellValue('L' . ($key + 5), '=J' . ($key + 5) . '+K' . ($key + 5));
+
+            // $spreadsheet->getActiveSheet()->setCellValue('H' . ($key + 5), '=F' . ($key + 5) . '*G' . ($key + 5));
+            // $spreadsheet->getActiveSheet()->setCellValue('I' . ($key + 5), '=H' . ($key + 5) . '*0.07');
+            // $spreadsheet->getActiveSheet()->setCellValue('J' . ($key + 5), '=H' . ($key + 5) . '+I' . ($key + 5));
+
             // $spreadsheet->getActiveSheet()->setCellValue('G' . ($key + 5), '=E' . ($key + 5) . '*F' . ($key + 5));
             // $spreadsheet->getActiveSheet()->setCellValue('H' . ($key + 5), '=G' . ($key + 5) . '*0.07');
             // $spreadsheet->getActiveSheet()->setCellValue('I' . ($key + 5), '=G' . ($key + 5) . '+H' . ($key + 5));
             $index = $key + 5;
         }
         $spreadsheet->getActiveSheet()->setCellValue('A' . ($index + 2), 'GRAND TOTAL');
-        $spreadsheet->getActiveSheet()->setCellValue('F' . ($index + 2), '=SUM(F5:F' . ($index + 1) . ')');
         $spreadsheet->getActiveSheet()->setCellValue('H' . ($index + 2), '=SUM(H5:H' . ($index + 1) . ')');
-        $spreadsheet->getActiveSheet()->setCellValue('I' . ($index + 2), '=SUM(I5:I' . ($index + 1) . ')');
         $spreadsheet->getActiveSheet()->setCellValue('J' . ($index + 2), '=SUM(J5:J' . ($index + 1) . ')');
-        $spreadsheet->getActiveSheet()->getStyle('A' . ($index + 2) . ':J' . ($index + 2))->getFont()->setBold(true);    //ตั้งค่าตัวหนา
+        $spreadsheet->getActiveSheet()->setCellValue('K' . ($index + 2), '=SUM(K5:K' . ($index + 1) . ')');
+        $spreadsheet->getActiveSheet()->setCellValue('L' . ($index + 2), '=SUM(L5:L' . ($index + 1) . ')');
+        $spreadsheet->getActiveSheet()->getStyle('A' . ($index + 2) . ':L' . ($index + 2))->getFont()->setBold(true);    //ตั้งค่าตัวหนา
         // $spreadsheet->getActiveSheet()->getStyle('A'.($index+2).':I'.($index+2))->getFill()->setFillType('solid')->getStartColor()->setARGB('A9D08E'); // ตั้งค่าสีพื้นหลัง
         // $spreadsheet->getActiveSheet()->getStyle('A4:I'.($index+2))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK)->setColor(new Color('000000')); // ตั้งค่าสีเส้นขอบ
-        $spreadsheet->getActiveSheet()->getStyle('A4:J' . ($index + 2))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN); // ตั้งค่าเส้นขอบ
-        $spreadsheet->getActiveSheet()->getStyle('A' . ($index + 2) . ':J' . ($index + 2))->getFill()->setFillType('solid')->getStartColor()->setARGB('A9D08E'); // ตั้งค่าสีพื้นหลัง
-        $spreadsheet->getActiveSheet()->getStyle('F')->getNumberFormat()->setFormatCode('#,##0');
+        $spreadsheet->getActiveSheet()->getStyle('A4:L' . ($index + 2))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN); // ตั้งค่าเส้นขอบ
+        $spreadsheet->getActiveSheet()->getStyle('A' . ($index + 2) . ':L' . ($index + 2))->getFill()->setFillType('solid')->getStartColor()->setARGB('A9D08E'); // ตั้งค่าสีพื้นหลัง
+        $spreadsheet->getActiveSheet()->getStyle('H')->getNumberFormat()->setFormatCode('#,##0');
         $spreadsheet->setActiveSheetIndex(0); // กำหนดให้เปิด sheet แรกเป็น sheet ที่แสดงผล
         // เขียนข้อมูลลงไฟล์
         $writer = new Xlsx($spreadsheet);
@@ -241,17 +249,18 @@ class Reports_Controller extends BaseController
             $items = DB::select(
                 'SELECT
                 departments.Department_name,
-                SUM(CASE WHEN equipments.Process = "STEAM" THEN 1 ELSE 0 END) AS "STEAM",
-                SUM(CASE WHEN equipments.Process = "plasma" THEN 1 ELSE 0 END) AS "plasma",
-                SUM(CASE WHEN equipments.Process = "eo" THEN 1 ELSE 0 END) AS "eo",
-                SUM(CASE WHEN equipments.Process = "Wash&Disinfection" THEN 1 ELSE 0 END) AS "Wash&Disinfection"
-            FROM items
-            LEFT JOIN equipments ON items.Equipment_id = equipments.Equipment_id
-            LEFT JOIN orders ON orders.Order_id = items.Order_id
-            LEFT JOIN departments ON orders.Department_id = departments.Department_id
-            WHERE orders.Create_at BETWEEN ? AND ?
-            AND orders.Customer_id = ?
-            GROUP BY departments.Department_name',
+                SUM(CASE WHEN equipments.Process = "STEAM" THEN Quantity ELSE 0 END) AS "STEAM",
+                SUM(CASE WHEN equipments.Process = "plasma" THEN Quantity ELSE 0 END) AS "plasma",
+                SUM(CASE WHEN equipments.Process = "eo" THEN Quantity ELSE 0 END) AS "eo",
+                SUM(CASE WHEN equipments.Process = "Wash&Disinfection" THEN Quantity ELSE 0 END) AS "Wash&Disinfection"
+                FROM items
+                LEFT JOIN orders ON items.Order_id =  orders.Order_id
+                LEFT JOIN customers ON orders.Customer_id = customers.Customer_id
+                LEFT JOIN equipments ON items.Equipment_id = equipments.Equipment_id
+                LEFT JOIN departments ON orders.Department_id = departments.Department_id
+                WHERE orders.Create_at BETWEEN ? AND ?
+                AND orders.Customer_id = ?
+                GROUP BY departments.Department_name',
                 [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id]
             );
 
@@ -298,6 +307,7 @@ class Reports_Controller extends BaseController
 
             $spreadsheet->getActiveSheet()->getStyle('A' . (count($items) + 2) . ':G' . (count($items) + 2))->getFont()->setBold(true); //ตั้งค่าตัวหนา
             $spreadsheet->getActiveSheet()->getStyle('A' . (count($items) + 2) . ':G' . (count($items) + 2))->getFill()->setFillType('solid')->getStartColor()->setARGB('FFC000'); // ตั้งค่าสีพื้นหลัง
+            $spreadsheet->getActiveSheet()->getStyle('C' . (count($items) + 2) . ':G' . (count($items) + 2))->getNumberFormat()->setFormatCode('#,##0');
 
             $sheet = $spreadsheet->getActiveSheet();
             foreach ($sheet->getColumnIterator() as $column) {
@@ -306,9 +316,11 @@ class Reports_Controller extends BaseController
 
             if ($department == "ALL") {
                 if ($onlyapprove == '1') {
-                    $iteme_date = DB::select("CALL items_date_data(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
-                } else {
                     $iteme_date = DB::select("CALL items_date_data_Approve_Status(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
+                    // $iteme_date = DB::select("CALL items_date_data(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
+                } else {
+                    // $iteme_date = DB::select("CALL items_date_data_Approve_Status(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
+                    $iteme_date = DB::select("CALL items_date_data(?, ?, ?, ?, ?)", [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end))), $customer_id, $department, $onlyapprove]);
                 }
             } else {
                 if ($onlyapprove == '1') {
@@ -479,10 +491,11 @@ class Reports_Controller extends BaseController
         $filter_status = $request->filter_status;
 
         $stock_data = DB::table('items')
-        ->select('orders.Order_id', 'orders.StatusOrder', 'orders.Create_at', 'departments.Department_name', 'items.Item_id', 'equipments.Name', 'items.Quantity', 'items.Item_status')
+        ->select('orders.Order_id', 'orders.StatusOrder', 'orders.Create_at', 'stock.date_in_stock', 'stock.date_out_stock', 'departments.Department_name', 'items.Item_id', 'equipments.Name', 'items.Quantity', 'items.Item_status')
         ->leftJoin('orders','items.Order_id','=','orders.Order_id')
         ->leftJoin('departments','orders.Department_id','=','departments.Department_id')
         ->leftJoin('equipments','items.Equipment_id','=','equipments.Equipment_id')
+        ->leftJoin('stock','items.Item_id','=','stock.Item_id')
         ->whereBetween('orders.Create_at', [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end)))])
         ->where('orders.Customer_id', $customer_id)
         ->where(function ($query) use ($department, $filter_status) {
@@ -509,29 +522,33 @@ class Reports_Controller extends BaseController
             "A1" => "Order ID",
             "B1" => "StatusOrder",
             "C1" => "Create_at",
-            "D1" => "Department Name",
-            "E1" => "Item ID",
-            "F1" => "Item Name",
-            "G1" => "Quantity",
-            "H1" => "Item Status",
+            "D1" => "StockIn_at",
+            "E1" => "StockOut_at",
+            "F1" => "Department Name",
+            "G1" => "Item ID",
+            "H1" => "Item Name",
+            "I1" => "Quantity",
+            "J1" => "Item Status",
         ];
         // dd($stock_data);
         $spreadsheet->getActiveSheet()->fromArray($item_reports_head, null, 'A1', true, false); // นำข้อมูลมาแสดงใน Excel
-        $spreadsheet->getActiveSheet()->getStyle('A1:H1')->getFont()->setBold(true); //ตั้งค่าตัวหนา
-        $spreadsheet->getActiveSheet()->getStyle('A1:H1')->getFill()->setFillType('solid')->getStartColor()->setARGB('002060'); // ตั้งค่าสีพื้นหลัง
-        $spreadsheet->getActiveSheet()->getStyle('A1:H1')->getFont()->getColor()->setARGB('FFFFFF'); // ตั้งค่าสีตัวอักษร
-        $spreadsheet->getActiveSheet()->getStyle('A1:H1')->getAlignment()->setHorizontal('center'); // ตั้งค่าตำแหน่งให้อยู่ตรงกลาง
+        $spreadsheet->getActiveSheet()->getStyle('A1:J1')->getFont()->setBold(true); //ตั้งค่าตัวหนา
+        $spreadsheet->getActiveSheet()->getStyle('A1:J1')->getFill()->setFillType('solid')->getStartColor()->setARGB('002060'); // ตั้งค่าสีพื้นหลัง
+        $spreadsheet->getActiveSheet()->getStyle('A1:J1')->getFont()->getColor()->setARGB('FFFFFF'); // ตั้งค่าสีตัวอักษร
+        $spreadsheet->getActiveSheet()->getStyle('A1:J1')->getAlignment()->setHorizontal('center'); // ตั้งค่าตำแหน่งให้อยู่ตรงกลาง
 
         foreach ($stock_data as $index => $item_report) {
             // $spreadsheet->getActiveSheet()->setCellValue('A' . ($index + 2), $index + 1);
             $spreadsheet->getActiveSheet()->setCellValue('A' . ($index + 2), $item_report->Order_id);
             $spreadsheet->getActiveSheet()->setCellValue('B' . ($index + 2), $item_report->StatusOrder);
             $spreadsheet->getActiveSheet()->setCellValue('C' . ($index + 2), $item_report->Create_at);
-            $spreadsheet->getActiveSheet()->setCellValue('D' . ($index + 2), $item_report->Department_name);
-            $spreadsheet->getActiveSheet()->setCellValue('E' . ($index + 2), $item_report->Item_id);
-            $spreadsheet->getActiveSheet()->setCellValue('F' . ($index + 2), $item_report->Name);
-            $spreadsheet->getActiveSheet()->setCellValue('G' . ($index + 2), $item_report->Quantity);
-            $spreadsheet->getActiveSheet()->setCellValue('H' . ($index + 2), $item_report->Item_status);
+            $spreadsheet->getActiveSheet()->setCellValue('D' . ($index + 2), $item_report->date_in_stock);
+            $spreadsheet->getActiveSheet()->setCellValue('E' . ($index + 2), $item_report->date_out_stock);
+            $spreadsheet->getActiveSheet()->setCellValue('F' . ($index + 2), $item_report->Department_name);
+            $spreadsheet->getActiveSheet()->setCellValue('G' . ($index + 2), $item_report->Item_id);
+            $spreadsheet->getActiveSheet()->setCellValue('H' . ($index + 2), $item_report->Name);
+            $spreadsheet->getActiveSheet()->setCellValue('I' . ($index + 2), $item_report->Quantity);
+            $spreadsheet->getActiveSheet()->setCellValue('J' . ($index + 2), $item_report->Item_status);
         }
 
         $sheet = $spreadsheet->getActiveSheet();
