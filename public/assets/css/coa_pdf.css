@@ -1,0 +1,81 @@
+body {
+    font-family: "THSarabunNew";
+}
+
+/**
+    Set the margins of the page to 0, so the footer and the header
+    can be of the full height and width !
+**/
+@page {
+    margin-top: 1cm;
+    margin-left: 1cm;
+    margin-right: 1cm;
+    margin-bottom: 1cm;
+}
+
+/** Define now the real margins of every page in the PDF **/
+
+.header {
+    line-height: 0.2cm;
+}
+
+.dot {
+    border-bottom: 1px dotted #000;
+    text-decoration: none;
+}
+
+.page_break {
+    page-break-before: always;
+}
+
+table,
+td,
+th {
+    /* border: 1px solid black; */
+}
+
+table.table_top {
+    width: 100%;
+    line-height: 0.6cm;
+}
+
+table.table_img {
+    width: 100%;
+    line-height: 0.2cm;
+}
+
+p {
+    line-height: 0.2cm;
+}
+
+.table_img td,
+.table_img th {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.text-xl {
+    font-size: 20px;
+}
+
+.text-2xl {
+    font-size: 25px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-1 {
+    margin-top: 5px !important;
+}
+
+.br_line {
+    top: 100px;
+}
+
+
+input.largerCheckbox {
+    transform: scale(1.5);
+}
