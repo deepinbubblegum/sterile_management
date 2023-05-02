@@ -482,6 +482,87 @@ class Reports_Controller extends BaseController
         exit();
     }
 
+    // public function ExportExcelStock(Request $request)
+    // {
+    //     $date_start = $request->date_start;
+    //     $date_end = $request->date_end;
+    //     $customer_id = $request->customer;
+    //     $department = $request->department;
+    //     $filter_status = $request->filter_status;
+
+    //     $stock_data = DB::table('items')
+    //     ->select('orders.Order_id', 'orders.StatusOrder', 'orders.Create_at', 'departments.Department_name', 'items.Item_id', 'equipments.Name', 'items.Quantity', 'items.Item_status')
+    //     ->leftJoin('orders','items.Order_id','=','orders.Order_id')
+    //     ->leftJoin('departments','orders.Department_id','=','departments.Department_id')
+    //     ->leftJoin('equipments','items.Equipment_id','=','equipments.Equipment_id')
+    //     ->whereBetween('orders.Create_at', [$date_start, date('Y-m-d', strtotime('+1 day', strtotime($date_end)))])
+    //     ->where('orders.Customer_id', $customer_id)
+    //     ->where(function ($query) use ($department, $filter_status) {
+    //         if ($department != 'ALL') {
+    //             $query->where('orders.Department_id', '=', $department);
+    //         }
+    //         if ($filter_status != 'ALL') {
+    //             $query->where('orders.StatusOrder', '=', $filter_status);
+    //         }else{
+    //             $query->where('orders.StatusOrder', '=', 'Stock');
+    //             $query->orWhere('orders.StatusOrder', '=', 'Deliver');
+    //             $query->orWhere('orders.StatusOrder', '=', 'Backlog');
+    //         }
+    //     })
+    //     ->get();
+
+    //     $spreadsheet = new Spreadsheet();
+
+    //     $spreadsheet->setActiveSheetIndex(0); // กำหนดให้เป็น Sheet ที่ 1
+    //     $spreadsheet->getActiveSheet()->setTitle('ReportStock'); // ตั้งชื่อ Sheet
+
+    //     // $stock_data = json_decode(json_encode($stock_data), true);
+    //     $item_reports_head = [
+    //         "A1" => "Order ID",
+    //         "B1" => "StatusOrder",
+    //         "C1" => "Create_at",
+    //         "D1" => "Department Name",
+    //         "E1" => "Item ID",
+    //         "F1" => "Item Name",
+    //         "G1" => "Quantity",
+    //         "H1" => "Item Status",
+    //     ];
+    //     // dd($stock_data);
+    //     $spreadsheet->getActiveSheet()->fromArray($item_reports_head, null, 'A1', true, false); // นำข้อมูลมาแสดงใน Excel
+    //     $spreadsheet->getActiveSheet()->getStyle('A1:H1')->getFont()->setBold(true); //ตั้งค่าตัวหนา
+    //     $spreadsheet->getActiveSheet()->getStyle('A1:H1')->getFill()->setFillType('solid')->getStartColor()->setARGB('002060'); // ตั้งค่าสีพื้นหลัง
+    //     $spreadsheet->getActiveSheet()->getStyle('A1:H1')->getFont()->getColor()->setARGB('FFFFFF'); // ตั้งค่าสีตัวอักษร
+    //     $spreadsheet->getActiveSheet()->getStyle('A1:H1')->getAlignment()->setHorizontal('center'); // ตั้งค่าตำแหน่งให้อยู่ตรงกลาง
+
+    //     foreach ($stock_data as $index => $item_report) {
+    //         // $spreadsheet->getActiveSheet()->setCellValue('A' . ($index + 2), $index + 1);
+    //         $spreadsheet->getActiveSheet()->setCellValue('A' . ($index + 2), $item_report->Order_id);
+    //         $spreadsheet->getActiveSheet()->setCellValue('B' . ($index + 2), $item_report->StatusOrder);
+    //         $spreadsheet->getActiveSheet()->setCellValue('C' . ($index + 2), $item_report->Create_at);
+    //         $spreadsheet->getActiveSheet()->setCellValue('D' . ($index + 2), $item_report->Department_name);
+    //         $spreadsheet->getActiveSheet()->setCellValue('E' . ($index + 2), $item_report->Item_id);
+    //         $spreadsheet->getActiveSheet()->setCellValue('F' . ($index + 2), $item_report->Name);
+    //         $spreadsheet->getActiveSheet()->setCellValue('G' . ($index + 2), $item_report->Quantity);
+    //         $spreadsheet->getActiveSheet()->setCellValue('H' . ($index + 2), $item_report->Item_status);
+    //     }
+
+    //     $sheet = $spreadsheet->getActiveSheet();
+    //     foreach ($sheet->getColumnIterator() as $column) {
+    //         $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+    //     }
+
+    //     // เขียนข้อมูลลงไฟล์
+    //     $writer = new Xlsx($spreadsheet);
+
+    //     // กำหนดชื่อไฟล์ และ ประเภทของไฟล์
+    //     $file_export = "ReportStock-" . $date_start . "-" . $date_end;
+    //     header('Content-Type: application/vnd.ms-excel');
+    //     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    //     header('Content-Disposition: attachment;filename="' . $file_export . '.xlsx"');
+    //     header("Content-Transfer-Encoding: binary ");
+    //     $writer->save('php://output');
+    // }
+
     public function ExportExcelStock(Request $request)
     {
         $date_start = $request->date_start;
