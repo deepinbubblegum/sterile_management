@@ -6,6 +6,7 @@ const colors = require('tailwindcss/colors')
 module.exports = {
     content: [
         "./resources/**/*.blade.php",
+        "./resources/**/**/*.blade.php",
         "./resources/**/*.js",
         "./resources/**/*.vue",
         "./resources/**/component/checkbox.blade.php",
